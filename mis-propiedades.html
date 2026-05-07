@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Propiedades - Lomaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f2f5;color:#333;}
+.topbar{background:#1a1a2e;color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar .logo{font-size:20px;font-weight:700;color:#e8b86d;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar .user-email{font-size:13px;color:#ccc;}
+.btn-topbar{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block;}
+.btn-topbar:hover{background:rgba(255,255,255,.1);}
+.btn-add{background:#e8b86d;border:none;color:#fff;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-add:hover{background:#d4a55a;}
+.container{max-width:1100px;margin:32px auto;padding:0 16px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:gap;}
+.page-title{font-size:26px;font-weight:700;color:#1a1a2e;}
+.page-subtitle{color:#666;font-size:14px;margin-top:4px;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-bottom:28px;}
+.stat-card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #e8b86d;}
+.stat-card.green{border-left-color:#27ae60;}
+.stat-card.blue{border-left-color:#2980b9;}
+.stat-card.red{border-left-color:#e74c3c;}
+.stat-card.purple{border-left-color:#8e44ad;}
+.stat-num{font-size:28px;font-weight:700;color:#1a1a2e;}
+.stat-label{font-size:12px;color:#888;margin-top:4px;}
+.filters-bar{background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.filters-bar input,.filters-bar select{padding:8px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;background:#fafafa;}
+.filters-bar input{flex:1;min-width:180px;}
+.filters-bar input:focus,.filters-bar select:focus{outline:none;border-color:#e8b86d;}
+.btn-filter{padding:8px 16px;background:#1a1a2e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;}
+.btn-filter:hover{background:#2d2d4e;}
+.btn-clear{padding:8px 14px;background:#f0f2f5;color:#555;border:none;border-radius:8px;cursor:pointer;font-size:13px;}
+.table-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;}
+.table-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f2f5;}
+.table-header h3{font-size:15px;font-weight:700;color:#1a1a2e;}
+.count-badge{background:#f0f2f5;color:#555;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:#f8f9fa;padding:12px 16px;text-align:left;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #f0f2f5;}
+tbody tr{transition:background .15s;}
+tbody tr:hover{background:#fffdf5;}
+tbody td{padding:14px 16px;font-size:13px;border-bottom:1px solid #f5f5f5;vertical-align:middle;}
+.prop-thumb{width:56px;height:42px;object-fit:cover;border-radius:6px;background:#eee;}
+.prop-no-img{width:56px;height:42px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.prop-title{font-weight:600;color:#1a1a2e;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prop-loc{font-size:12px;color:#888;margin-top:2px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-disponible{background:#eafaf1;color:#1e8449;}
+.badge-reservado{background:#fef9e7;color:#b7770d;}
+.badge-vendido{background:#fdecea;color:#c0392b;}
+.badge-arrendado{background:#eaf4fb;color:#1a5276;}
+.badge-venta{background:#f0f2f5;color:#555;}
+.badge-arriendo{background:#f5eef8;color:#6c3483;}
+.price{font-weight:700;color:#1a1a2e;white-space:nowrap;}
+.actions{display:flex;gap:8px;}
+.btn-action{padding:5px 10px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;display:inline-block;}
+.btn-view{background:#eaf4fb;color:#1a5276;}
+.btn-edit{background:#fef9e7;color:#b7770d;}
+.btn-del{background:#fdecea;color:#c0392b;}
+.btn-action:hover{opacity:.8;}
+.empty-state{text-align:center;padding:60px 20px;color:#aaa;}
+.empty-state .icon{font-size:48px;display:block;margin-bottom:12px;}
+.empty-state p{font-size:15px;}
+.empty-state a{color:#e8b86d;font-weight:600;}
+.pagination{display:flex;justify-content:center;gap:8px;padding:20px;}
+.page-btn{padding:7px 13px;border:1.5px solid #ddd;background:#fff;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#555;}
+.page-btn.active{background:#e8b86d;border-color:#e8b86d;color:#fff;}
+.page-btn:hover:not(.active){background:#f5f5f5;}
+.loading{text-align:center;padding:40px;color:#aaa;font-size:15px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal h3{font-size:18px;font-weight:700;margin-bottom:8px;color:#1a1a2e;}
+.modal p{color:#666;font-size:14px;margin-bottom:20px;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+.btn-danger{background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;}
+.btn-cancel{background:#f0f2f5;color:#555;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;}
+.hidden{display:none!important;}
+@media(max-width:768px){.stats-row{grid-template-columns:1fr 1fr;}thead th:nth-child(3),thead th:nth-child(4),tbody td:nth-child(3),tbody td:nth-child(4){display:none;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="logo">Lomaz Home</span>
+  <div class="topbar-right">
+    <span class="user-email" id="userName">Cargando...</span>
+    <a href="panel.html" class="btn-topbar">Panel</a>
+    <a href="agregar-propiedad.html" class="btn-add">+ Nueva propiedad</a>
+  </div>
+</div>
+<div class="container">
+  <div class="page-header">
+    <div>
+      <div class="page-title">&#127968; Mis Propiedades</div>
+      <div class="page-subtitle">Gestiona todas tus propiedades publicadas en Lomaz Home</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card green">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">Total propiedades</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statDisponible">0</div>
+      <div class="stat-label">Disponibles</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-num" id="statReservado">0</div>
+      <div class="stat-label">Reservadas</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-num" id="statVendido">0</div>
+      <div class="stat-label">Vendidas / Arrendadas</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-num" id="statVenta">0</div>
+      <div class="stat-label">En venta</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statArriendo">0</div>
+      <div class="stat-label">En arriendo</div>
+    </div>
+  </div>
+  <div class="filters-bar">
+    <input type="text" id="searchInput" placeholder="&#128269; Buscar por t&#237;tulo, ciudad, barrio..." oninput="filterProps()">
+    <select id="filterEstado" onchange="filterProps()">
+      <option value="">Todos los estados</option>
+      <option value="Disponible">Disponible</option>
+      <option value="Reservado">Reservado</option>
+      <option value="Vendido">Vendido</option>
+      <option value="Arrendado">Arrendado</option>
+    </select>
+    <select id="filterNegocio" onchange="filterProps()">
+      <option value="">Todo negocio</option>
+      <option value="Venta">Venta</option>
+      <option value="Arriendo">Arriendo</option>
+    </select>
+    <select id="filterTipo" onchange="filterProps()">
+      <option value="">Todo tipo</option>
+      <option value="Apartamento">Apartamento</option>
+      <option value="Casa">Casa</option>
+      <option value="Finca">Finca</option>
+      <option value="Lote">Lote</option>
+      <option value="Local Comercial">Local Comercial</option>
+      <option value="Oficina">Oficina</option>
+      <option value="Bodega">Bodega</option>
+    </select>
+    <button class="btn-clear" onclick="clearFilters()">Limpiar</button>
+  </div>
+  <div class="table-wrap">
+    <div class="table-header">
+      <h3>Lista de propiedades</h3>
+      <span class="count-badge" id="countBadge">0 propiedades</span>
+    </div>
+    <div id="tableContainer">
+      <div class="loading">Cargando propiedades...</div>
+    </div>
+  </div>
+  <div class="pagination" id="pagination"></div>
+</div>
+<div class="modal-overlay hidden" id="deleteModal">
+  <div class="modal">
+    <h3>&#128465;&#65039; Eliminar propiedad</h3>
+    <p>&#191;Est&#225;s seguro de que quieres eliminar esta propiedad? Esta acci&#243;n no se puede deshacer.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-danger" id="confirmDelete">S&#237;, eliminar</button>
+    </div>
+  </div>
+</div>
+<script>
+const K = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const U = "https://lniouebpuuuqctrgxoiw.supabase.co";
+const sb = supabase.createClient(U, K);
+
+let allProps = [];
+let filtered = [];
+let currentPage = 1;
+const PER_PAGE = 15;
+let deleteId = null;
+
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = "login.html"; return; }
+  document.getElementById("userName").textContent = session.user.email;
+  await loadProps(session.user.id);
+})();
+
+async function loadProps(uid) {
+  const { data, error } = await sb
+    .from("propiedades")
+    .select("id,titulo,tipo_negocio,tipo_inmueble,precio,estado,ciudad,barrio,area_construida,habitaciones,imagen_principal,created_at,portales_publicacion")
+    .eq("asesor_id", uid)
+    .order("created_at", { ascending: false });
+  if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon">&#10060;</span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
+  allProps = data || [];
+  updateStats();
+  filterProps();
+}
+
+function updateStats() {
+  document.getElementById("statTotal").textContent = allProps.length;
+  document.getElementById("statDisponible").textContent = allProps.filter(p => p.estado === "Disponible").length;
+  document.getElementById("statReservado").textContent = allProps.filter(p => p.estado === "Reservado").length;
+  document.getElementById("statVendido").textContent = allProps.filter(p => p.estado === "Vendido" || p.estado === "Arrendado").length;
+  document.getElementById("statVenta").textContent = allProps.filter(p => p.tipo_negocio === "Venta" || p.tipo_negocio === "Venta y Arriendo").length;
+  document.getElementById("statArriendo").textContent = allProps.filter(p => p.tipo_negocio === "Arriendo" || p.tipo_negocio === "Venta y Arriendo").length;
+}
+
+function filterProps() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const estado = document.getElementById("filterEstado").value;
+  const negocio = document.getElementById("filterNegocio").value;
+  const tipo = document.getElementById("filterTipo").value;
+  filtered = allProps.filter(p => {
+    const matchSearch = !search || (p.titulo||"").toLowerCase().includes(search) || (p.ciudad||"").toLowerCase().includes(search) || (p.barrio||"").toLowerCase().includes(search);
+    const matchEstado = !estado || p.estado === estado;
+    const matchNegocio = !negocio || (p.tipo_negocio||"").includes(negocio);
+    const matchTipo = !tipo || p.tipo_inmueble === tipo;
+    return matchSearch && matchEstado && matchNegocio && matchTipo;
+  });
+  currentPage = 1;
+  renderTable();
+  renderPagination();
+}
+
+function clearFilters() {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("filterEstado").value = "";
+  document.getElementById("filterNegocio").value = "";
+  document.getElementById("filterTipo").value = "";
+  filterProps();
+}
+
+function renderTable() {
+  const container = document.getElementById("tableContainer");
+  document.getElementById("countBadge").textContent = filtered.length + " propiedad" + (filtered.length !== 1 ? "es" : "");
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state"><span class="icon">&#127968;</span><p>No hay propiedades. <a href="agregar-propiedad.html">&#43; Agregar primera propiedad</a></p></div>`;
+    return;
+  }
+  const start = (currentPage - 1) * PER_PAGE;
+  const page = filtered.slice(start, start + PER_PAGE);
+  let html = `<table><thead><tr>
+    <th>Foto</th><th>Propiedad</th><th>Tipo</th><th>Precio</th><th>Estado</th><th>Portales</th><th>Fecha</th><th>Acciones</th>
+  </tr></thead><tbody>`;
+  page.forEach(p => {
+    const img = p.imagen_principal ? `<img src="${p.imagen_principal}" class="prop-thumb" onerror="this.style.display='none'">` : `<div class="prop-no-img">&#127968;</div>`;
+    const badgeE = `<span class="badge badge-${(p.estado||"disponible").toLowerCase()}">${p.estado||"N/A"}</span>`;
+    const badgeN = `<span class="badge badge-${(p.tipo_negocio||"").toLowerCase().replace(/ /g,"-")}">${p.tipo_negocio||""}</span>`;
+    const price = "$" + Number(p.precio||0).toLocaleString("es-CO");
+    const portalesCount = (p.portales_publicacion||[]).length;
+    const portalesText = portalesCount > 0 ? `&#127760; ${portalesCount} portal${portalesCount>1?"es":""}` : "-";
+    const fecha = p.created_at ? new Date(p.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}) : "-";
+    html += `<tr>
+      <td>${img}</td>
+      <td><div class="prop-title">${p.titulo||"Sin t\u00edtulo"}</div><div class="prop-loc">&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""} &#183; ${p.area_construida||"?"}m\u00b2${p.habitaciones?" &#183; "+p.habitaciones+"hab":""}</div></td>
+      <td>${badgeN}<br><small style="color:#888;font-size:11px">${p.tipo_inmueble||""}</small></td>
+      <td class="price">${price}</td>
+      <td>${badgeE}</td>
+      <td style="font-size:12px;color:#666">${portalesText}</td>
+      <td style="font-size:12px;color:#888">${fecha}</td>
+      <td><div class="actions">
+        <a href="propiedad.html?id=${p.id}" class="btn-action btn-view" target="_blank">Ver</a>
+        <button class="btn-action btn-edit" onclick="editProp('${p.id}')">Editar</button>
+        <button class="btn-action btn-del" onclick="confirmDelete('${p.id}')">Eliminar</button>
+      </div></td>
+    </tr>`;
+  });
+  html += "</tbody></table>";
+  container.innerHTML = html;
+}
+
+function renderPagination() {
+  const total = Math.ceil(filtered.length / PER_PAGE);
+  const pag = document.getElementById("pagination");
+  if (total <= 1) { pag.innerHTML = ""; return; }
+  let html = "";
+  if (currentPage > 1) html += `<button class="page-btn" onclick="changePage(${currentPage-1})">&#8592; Anterior</button>`;
+  for (let i = 1; i <= total; i++) {
+    if (i === currentPage) html += `<button class="page-btn active">${i}</button>`;
+    else if (i <= 3 || i > total-2 || Math.abs(i - currentPage) <= 1) html += `<button class="page-btn" onclick="changePage(${i})">${i}</button>`;
+    else if (i === 4 && currentPage > 5) html += `<span style="padding:7px 4px;color:#aaa">...</span>`;
+  }
+  if (currentPage < total) html += `<button class="page-btn" onclick="changePage(${currentPage+1})">Siguiente &#8594;</button>`;
+  pag.innerHTML = html;
+}
+
+function changePage(n) {
+  currentPage = n;
+  renderTable();
+  renderPagination();
+  window.scrollTo(0, 0);
+}
+
+function editProp(id) {
+  window.location.href = "agregar-propiedad.html?id=" + id;
+}
+
+function confirmDelete(id) {
+  deleteId = id;
+  document.getElementById("deleteModal").classList.remove("hidden");
+  document.getElementById("confirmDelete").onclick = async function() {
+    const { error } = await sb.from("propiedades").delete().eq("id", deleteId);
+    if (error) { alert("Error al eliminar: " + error.message); return; }
+    closeModal();
+    allProps = allProps.filter(p => p.id !== deleteId);
+    updateStats();
+    filterProps();
+  };
+}
+
+function closeModal() {
+  document.getElementById("deleteModal").classList.add("hidden");
+  deleteId = null;
+}
+</script>
+</body>
+</html>
