@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ingresar | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.bg{position:fixed;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(201,164,132,.07) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(201,164,132,.05) 0%,transparent 50%)}
+.card{position:relative;z-index:1;background:rgba(255,255,255,.04);border:1px solid rgba(201,164,132,.2);border-radius:16px;padding:3rem;width:100%;max-width:420px;margin:2rem}
+.logo{text-align:center;font-size:1.8rem;font-weight:900;margin-bottom:.5rem}
+.logo span{color:#c9a484}
+.tagline{text-align:center;font-size:.78rem;color:#555;letter-spacing:3px;text-transform:uppercase;margin-bottom:2.5rem}
+.tabs{display:flex;background:rgba(255,255,255,.04);border-radius:8px;padding:4px;margin-bottom:2rem;gap:4px}
+.tab{flex:1;padding:.6rem;border-radius:6px;border:none;background:transparent;color:#666;font-family:Montserrat,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .3s}
+.tab.on{background:#c9a484;color:#000}
+.fg{margin-bottom:1.2rem}
+.fg label{display:block;font-size:.7rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem}
+.fg input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.75rem 1rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none;transition:border-color .3s}
+.fg input:focus{border-color:#c9a484}
+.fg input::placeholder{color:#333}
+.btn{width:100%;background:#c9a484;color:#000;border:none;border-radius:6px;padding:.9rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:background .3s;margin-top:.5rem}
+.btn:hover{background:#b8906e}
+.btn:disabled{background:#333;color:#666;cursor:not-allowed}
+.msg{display:none;padding:.8rem;border-radius:6px;text-align:center;font-size:.8rem;margin-top:1rem}
+.msg.ok{background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.3);color:#00c864;display:block}
+.msg.err{background:rgba(255,50,50,.1);border:1px solid rgba(255,50,50,.3);color:#ff6b6b;display:block}
+.divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0;color:#333;font-size:.75rem}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.08)}
+.back{text-align:center;margin-top:1.5rem;font-size:.78rem;color:#555}
+.back a{color:#c9a484;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="card">
+<div class="logo">Lomaz<span>Home</span></div>
+<div class="tagline">Panel de Asesores</div>
+<div class="tabs">
+<button class="tab on" id="tab-login" onclick="showTab('login')">Ingresar</button>
+<button class="tab" id="tab-register" onclick="showTab('register')">Registrarse</button>
+</div>
+<!-- LOGIN FORM -->
+<div id="form-login">
+<div class="fg"><label>Correo electronico</label><input type="email" id="l-email" placeholder="tu@email.com"/></div>
+<div class="fg"><label>Contrasena</label><input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+<button class="btn" onclick="doLogin()">Ingresar</button>
+<div id="msg-login" class="msg"></div>
+</div>
+<!-- REGISTER FORM -->
+<div id="form-register" style="display:none">
+<div class="fg"><label>Nombre completo</label><input type="text" id="r-nombre" placeholder="Juan Perez"/></div>
+<div class="fg"><label>Correo electronico</label><input type="email" id="r-email" placeholder="tu@email.com"/></div>
+<div class="fg"><label>Contrasena (min 6 caracteres)</label><input type="password" id="r-pass" placeholder="••••••••"/></div>
+<div class="fg"><label>Telefono</label><input type="tel" id="r-tel" placeholder="3001234567"/></div>
+<button class="btn" onclick="doRegister()">Crear Cuenta</button>
+<div id="msg-register" class="msg"></div>
+</div>
+<div class="back"><a href="/">Volver al inicio</a></div>
+</div>
+<script>
+const SU="https://lniouebpuuuqctrgxoiw.supabase.co",SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+const {createClient}=supabase;
+const db=createClient(SU,SK);
+// Redirigir si ya esta logueado
+db.auth.getSession().then(({data:{session}})=>{if(session)window.location.href="/dashboard.html"});
+function showTab(t){
+document.getElementById("form-login").style.display=t==="login"?"block":"none";
+document.getElementById("form-register").style.display=t==="register"?"block":"none";
+document.getElementById("tab-login").classList.toggle("on",t==="login");
+document.getElementById("tab-register").classList.toggle("on",t==="register");
+}
+function showMsg(id,text,type){const el=document.getElementById(id);el.textContent=text;el.className="msg "+type}
+async function doLogin(){
+const email=document.getElementById("l-email").value.trim();
+const pass=document.getElementById("l-pass").value;
+const btn=document.querySelectorAll(".btn")[0];
+if(!email||!pass){showMsg("msg-login","Completa todos los campos.","err");return}
+btn.disabled=true;btn.textContent="Ingresando...";
+const{data,error}=await db.auth.signInWithPassword({email,password:pass});
+if(error){showMsg("msg-login",error.message,"err");btn.disabled=false;btn.textContent="Ingresar";return}
+showMsg("msg-login","Bienvenido! Redirigiendo...","ok");
+setTimeout(()=>window.location.href="/dashboard.html",1000);
+}
+async function doRegister(){
+const nombre=document.getElementById("r-nombre").value.trim();
+const email=document.getElementById("r-email").value.trim();
+const pass=document.getElementById("r-pass").value;
+const tel=document.getElementById("r-tel").value.trim();
+const btn=document.querySelectorAll(".btn")[1];
+if(!nombre||!email||!pass){showMsg("msg-register","Nombre, email y contrasena son obligatorios.","err");return}
+if(pass.length<6){showMsg("msg-register","La contrasena debe tener al menos 6 caracteres.","err");return}
+btn.disabled=true;btn.textContent="Creando cuenta...";
+const{data,error}=await db.auth.signUp({email,password:pass,options:{data:{full_name:nombre,phone:tel}}});
+if(error){showMsg("msg-register",error.message,"err");btn.disabled=false;btn.textContent="Crear Cuenta";return}
+showMsg("msg-register","Cuenta creada! Ingresando...","ok");
+setTimeout(()=>window.location.href="/dashboard.html",1500);
+}
+</script>
+</body>
+</html>
