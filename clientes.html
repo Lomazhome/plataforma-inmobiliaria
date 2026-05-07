@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clientes - Lomaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f2f5;color:#333;}
+.topbar{background:#1a1a2e;color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-size:20px;font-weight:700;color:#e8b86d;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.user-email{font-size:13px;color:#ccc;}
+.btn-tb{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block;}
+.btn-gold{background:#e8b86d;border:none;color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+.btn-gold:hover{background:#d4a55a;}
+.container{max-width:1100px;margin:32px auto;padding:0 16px;}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.page-title{font-size:26px;font-weight:700;color:#1a1a2e;}
+.page-sub{color:#666;font-size:14px;margin-top:4px;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-bottom:24px;}
+.stat{background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.stat.gold{border-left:4px solid #e8b86d;}
+.stat.green{border-left:4px solid #27ae60;}
+.stat.blue{border-left:4px solid #2980b9;}
+.stat.purple{border-left:4px solid #8e44ad;}
+.stat.red{border-left:4px solid #e74c3c;}
+.stat-n{font-size:28px;font-weight:700;color:#1a1a2e;}
+.stat-l{font-size:12px;color:#888;margin-top:3px;}
+.filters{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.filters input,.filters select{padding:8px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;background:#fafafa;}
+.filters input{flex:1;min-width:180px;}
+.filters input:focus,.filters select:focus{outline:none;border-color:#e8b86d;}
+.btn-clr{padding:8px 14px;background:#f0f2f5;color:#555;border:none;border-radius:8px;cursor:pointer;font-size:13px;}
+.wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;}
+.wrap-hdr{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f2f5;}
+.wrap-hdr h3{font-size:15px;font-weight:700;color:#1a1a2e;}
+.cnt-badge{background:#f0f2f5;color:#555;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:#f8f9fa;padding:11px 16px;text-align:left;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #f0f2f5;}
+tbody tr:hover{background:#fffdf5;}
+tbody td{padding:13px 16px;font-size:13px;border-bottom:1px solid #f5f5f5;vertical-align:middle;}
+.avatar{width:36px;height:36px;border-radius:50%;background:#e8b86d;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;flex-shrink:0;}
+.client-name{font-weight:600;color:#1a1a2e;}
+.client-sub{font-size:12px;color:#888;margin-top:2px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-compra{background:#eafaf1;color:#1e8449;}
+.badge-arriendo{background:#f5eef8;color:#6c3483;}
+.badge-ambos{background:#fef9e7;color:#b7770d;}
+.badge-activo{background:#eafaf1;color:#1e8449;}
+.badge-inactivo{background:#f0f2f5;color:#888;}
+.badge-cerrado{background:#fdecea;color:#c0392b;}
+.price-range{font-size:12px;color:#555;font-weight:600;}
+.actions{display:flex;gap:6px;}
+.btn-a{padding:5px 10px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;}
+.btn-edit{background:#fef9e7;color:#b7770d;}
+.btn-del{background:#fdecea;color:#c0392b;}
+.btn-a:hover{opacity:.8;}
+.empty{text-align:center;padding:56px 20px;color:#aaa;}
+.empty .ic{font-size:48px;display:block;margin-bottom:12px;}
+.pagination{display:flex;justify-content:center;gap:8px;padding:20px;}
+.pg-btn{padding:7px 13px;border:1.5px solid #ddd;background:#fff;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#555;}
+.pg-btn.active{background:#e8b86d;border-color:#e8b86d;color:#fff;}
+.pg-btn:hover:not(.active){background:#f5f5f5;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal h3{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #f0f2f5;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.full{grid-template-columns:1fr;}
+.fg{display:flex;flex-direction:column;gap:6px;}
+.fg.span2{grid-column:span 2;}
+label{font-size:13px;font-weight:600;color:#555;}
+label .req{color:#e74c3c;}
+input,select,textarea{padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:#fafafa;transition:border .2s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#e8b86d;background:#fff;}
+textarea{resize:vertical;min-height:80px;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
+.btn-save{background:#e8b86d;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;}
+.btn-save:hover{background:#d4a55a;}
+.btn-cancel{background:#f0f2f5;color:#555;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;}
+.del-modal{max-width:400px;}
+.del-modal p{color:#666;font-size:14px;margin-bottom:20px;}
+.btn-danger{background:#e74c3c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;}
+.alert{padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;}
+.alert-err{background:#fdecea;color:#c0392b;border:1px solid #f5c6c2;}
+.alert-ok{background:#eafaf1;color:#1e8449;border:1px solid #a9dfba;}
+.hidden{display:none!important;}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr;}.fg.span2{grid-column:span 1;}thead th:nth-child(3),thead th:nth-child(4),tbody td:nth-child(3),tbody td:nth-child(4){display:none;}}
+</style></head><body>
+<div class="topbar">
+  <span class="logo">Lomaz Home</span>
+  <div class="topbar-right">
+    <span class="user-email" id="uEmail"></span>
+    <a href="panel.html" class="btn-tb">Panel</a>
+    <a href="mis-propiedades.html" class="btn-tb">Propiedades</a>
+    <button class="btn-gold" onclick="openAdd()">&#43; Nuevo cliente</button>
+  </div>
+</div>
+<div class="container">
+  <div class="page-header">
+    <div><div class="page-title">&#128101; CRM Clientes</div><div class="page-sub">Gestiona tus clientes y su búsqueda de inmuebles</div></div>
+  </div>
+  <div class="stats-row">
+    <div class="stat gold"><div class="stat-n" id="sTotal">0</div><div class="stat-l">Total clientes</div></div>
+    <div class="stat green"><div class="stat-n" id="sActivos">0</div><div class="stat-l">Activos</div></div>
+    <div class="stat blue"><div class="stat-n" id="sCompra">0</div><div class="stat-l">Compradores</div></div>
+    <div class="stat purple"><div class="stat-n" id="sArriendo">0</div><div class="stat-l">Arrendatarios</div></div>
+    <div class="stat red"><div class="stat-n" id="sCerrado">0</div><div class="stat-l">Cerrados</div></div>
+  </div>
+  <div class="filters">
+    <input type="text" id="fSearch" placeholder="&#128269; Buscar por nombre, email, ciudad..." oninput="applyFilter()">
+    <select id="fTipo" onchange="applyFilter()"><option value="">Todo tipo</option><option value="Compra">Compra</option><option value="Arriendo">Arriendo</option><option value="Ambos">Ambos</option></select>
+    <select id="fEstado" onchange="applyFilter()"><option value="">Todo estado</option><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option><option value="Cerrado">Cerrado</option></select>
+    <button class="btn-clr" onclick="clearFilter()">Limpiar</button>
+  </div>
+  <div class="wrap">
+    <div class="wrap-hdr"><h3>Lista de clientes</h3><span class="cnt-badge" id="cntBadge">0 clientes</span></div>
+    <div id="tblCont"><div style="text-align:center;padding:40px;color:#aaa;">Cargando...</div></div>
+  </div>
+  <div class="pagination" id="pag"></div>
+</div>
+<div class="overlay hidden" id="formModal">
+  <div class="modal">
+    <h3 id="modalTitle">Nuevo cliente</h3>
+    <div id="formAlert" class="hidden"></div>
+    <div class="form-grid">
+      <div class="fg"><label>Nombre completo <span class="req">*</span></label><input type="text" id="fNombre" placeholder="Ej: María García" maxlength="100"></div>
+      <div class="fg"><label>Teléfono <span class="req">*</span></label><input type="tel" id="fTelefono" placeholder="Ej: 3001234567" maxlength="20"></div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" id="fEmail" placeholder="Ej: maria@gmail.com"></div>
+      <div class="fg"><label>Códula / NIT</label><input type="text" id="fCedula" placeholder="Ej: 1234567890" maxlength="20"></div>
+      <div class="fg"><label>Tipo de búsqueda <span class="req">*</span></label><select id="fTipoBus"><option value="">Seleccionar...</option><option value="Compra">Compra</option><option value="Arriendo">Arriendo</option><option value="Ambos">Ambos</option></select></div>
+      <div class="fg"><label>Estado del cliente</label><select id="fEstadoCli"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option><option value="Cerrado">Cerrado</option></select></div>
+      <div class="fg"><label>Tipo de inmueble de interés</label><select id="fTipoInm"><option value="">Cualquiera</option><option value="Apartamento">Apartamento</option><option value="Casa">Casa</option><option value="Casa Campestre">Casa Campestre</option><option value="Finca">Finca</option><option value="Lote">Lote</option><option value="Local Comercial">Local Comercial</option><option value="Oficina">Oficina</option></select></div>
+      <div class="fg"><label>Ciudad de interés</label><input type="text" id="fCiudad" placeholder="Ej: Medellín"></div>
+      <div class="fg"><label>Barrio / Zona de interés</label><input type="text" id="fBarrio" placeholder="Ej: El Poblado, Laureles"></div>
+      <div class="fg"><label>Estrato de interés</label><select id="fEstrato"><option value="">Cualquiera</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+      <div class="fg"><label>Presupuesto mínimo (COP)</label><input type="number" id="fPresMin" placeholder="Ej: 100000000" min="0"></div>
+      <div class="fg"><label>Presupuesto máximo (COP)</label><input type="number" id="fPresMax" placeholder="Ej: 500000000" min="0"></div>
+      <div class="fg"><label>Habitaciones mínimas</label><select id="fHab"><option value="">Cualquiera</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
+      <div class="fg"><label>Baños mínimos</label><select id="fBan"><option value="">Cualquiera</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
+      <div class="fg"><label>Cómo nos conociste</label><select id="fFuente"><option value="">Seleccionar...</option><option value="Referido">Referido</option><option value="Redes sociales">Redes sociales</option><option value="Portal inmobiliario">Portal inmobiliario</option><option value="Busqueda Google">Búsqueda Google</option><option value="Valla/Aviso">Valla / Aviso</option><option value="Llamada directa">Llamada directa</option><option value="Otro">Otro</option></select></div>
+      <div class="fg"><label>Prioridad</label><select id="fPrioridad"><option value="Media">Media</option><option value="Alta">Alta</option><option value="Baja">Baja</option></select></div>
+      <div class="fg span2"><label>Observaciones / Notas</label><textarea id="fObs" placeholder="Anota detalles importantes sobre este cliente, sus preferencias, reuniones, etc."></textarea></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" id="btnSave" onclick="saveClient()">Guardar cliente</button>
+    </div>
+  </div>
+</div>
+<div class="overlay hidden" id="delModal">
+  <div class="modal del-modal">
+    <h3>&#128465;&#65039; Eliminar cliente</h3>
+    <p>¿Estás seguro de que quieres eliminar este cliente? Se perderán todos sus datos.</p>
+    <div class="modal-btns"><button class="btn-cancel" onclick="closeDelModal()">Cancelar</button><button class="btn-danger" id="btnConfDel">Sí, eliminar</button></div>
+  </div>
+</div>
+<script>
+const K=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const U="https://lniouebpuuuqctrgxoiw.supabase.co";
+const sb=supabase.createClient(U,K);
+let all=[],filtered=[],uid=null,editId=null,delId=null,curPage=1;
+const PER=20;
+
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  uid=session.user.id;
+  document.getElementById("uEmail").textContent=session.user.email;
+  await loadClients();
+})();
+
+async function loadClients(){
+  const{data,error}=await sb.from("clientes").select("*").eq("asesor_id",uid).order("created_at",{ascending:false});
+  if(error){document.getElementById("tblCont").innerHTML=`<div class="empty"><span class="ic">&#10060;</span>Error: ${error.message}</div>`;return;}
+  all=data||[];
+  updateStats();applyFilter();
+}
+
+function updateStats(){
+  document.getElementById("sTotal").textContent=all.length;
+  document.getElementById("sActivos").textContent=all.filter(c=>c.estado==="Activo").length;
+  document.getElementById("sCompra").textContent=all.filter(c=>c.tipo_busqueda==="Compra").length;
+  document.getElementById("sArriendo").textContent=all.filter(c=>c.tipo_busqueda==="Arriendo").length;
+  document.getElementById("sCerrado").textContent=all.filter(c=>c.estado==="Cerrado").length;
+}
+
+function applyFilter(){
+  const s=document.getElementById("fSearch").value.toLowerCase();
+  const t=document.getElementById("fTipo").value;
+  const e=document.getElementById("fEstado").value;
+  filtered=all.filter(c=>{
+    const ms=!s||(c.nombre||"").toLowerCase().includes(s)||(c.email||"").toLowerCase().includes(s)||(c.ciudad_interes||"").toLowerCase().includes(s)||(c.telefono||"").includes(s);
+    const mt=!t||c.tipo_busqueda===t;
+    const me=!e||c.estado===e;
+    return ms&&mt&&me;
+  });
+  curPage=1;renderTable();renderPag();
+}
+
+function clearFilter(){document.getElementById("fSearch").value="";document.getElementById("fTipo").value="";document.getElementById("fEstado").value="";applyFilter();}
+
+function renderTable(){
+  const cont=document.getElementById("tblCont");
+  document.getElementById("cntBadge").textContent=filtered.length+" cliente"+(filtered.length!==1?"s":"");
+  if(!filtered.length){cont.innerHTML=`<div class="empty"><span class="ic">&#128101;</span><p>No hay clientes aún. <strong style="color:#e8b86d;cursor:pointer" onclick="openAdd()">+ Agregar primer cliente</strong></p></div>`;return;}
+  const start=(curPage-1)*PER;
+  const pg=filtered.slice(start,start+PER);
+  let h=`<table><thead><tr><th>Cliente</th><th>Contacto</th><th>Búsqueda</th><th>Presupuesto</th><th>Estado</th><th>Fuente</th><th>Acciones</th></tr></thead><tbody>`;
+  pg.forEach(c=>{
+    const ini=(c.nombre||"?")[0].toUpperCase();
+    const bTipo=`<span class="badge badge-${(c.tipo_busqueda||"compra").toLowerCase()}">${c.tipo_busqueda||"-"}</span>`;
+    const bEst=`<span class="badge badge-${(c.estado||"activo").toLowerCase()}">${c.estado||"-"}</span>`;
+    const pMin=c.presupuesto_min?("$"+Number(c.presupuesto_min).toLocaleString("es-CO")):"";
+    const pMax=c.presupuesto_max?("$"+Number(c.presupuesto_max).toLocaleString("es-CO")):"";
+    const pres=pMin||pMax?(pMin&&pMax?pMin+" - "+pMax:pMin||pMax):"-";
+    const subInfo=[c.tipo_inmueble_interes,c.ciudad_interes,c.habitaciones_min?(c.habitaciones_min+"hab+"):""].filter(Boolean).join(" · ");
+    h+=`<tr>
+      <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">${ini}</div><div><div class="client-name">${c.nombre||"-"}</div><div class="client-sub">${subInfo||"Sin preferencia"}</div></div></div></td>
+      <td><div style="font-size:13px">${c.telefono||"-"}</div><div style="font-size:12px;color:#888">${c.email||""}</div></td>
+      <td>${bTipo}</td>
+      <td class="price-range">${pres}</td>
+      <td>${bEst}</td>
+      <td style="font-size:12px;color:#888">${c.fuente||"-"}</td>
+      <td><div class="actions"><button class="btn-a btn-edit" onclick="openEdit('${c.id}')">Editar</button><button class="btn-a btn-del" onclick="openDel('${c.id}')">Eliminar</button></div></td>
+    </tr>`;
+  });
+  h+="</tbody></table>";
+  cont.innerHTML=h;
+}
+
+function renderPag(){
+  const total=Math.ceil(filtered.length/PER);
+  const p=document.getElementById("pag");
+  if(total<=1){p.innerHTML="";return;}
+  let h="";
+  if(curPage>1)h+=`<button class="pg-btn" onclick="goPage(${curPage-1})">&#8592;</button>`;
+  for(let i=1;i<=total;i++){
+    if(i===curPage)h+=`<button class="pg-btn active">${i}</button>`;
+    else if(i<=2||i>total-1||Math.abs(i-curPage)<=1)h+=`<button class="pg-btn" onclick="goPage(${i})">${i}</button>`;
+    else if(i===3&&curPage>4)h+=`<span style="padding:7px 4px;color:#aaa">...</span>`;
+  }
+  if(curPage<total)h+=`<button class="pg-btn" onclick="goPage(${curPage+1})">&#8594;</button>`;
+  p.innerHTML=h;
+}
+function goPage(n){curPage=n;renderTable();renderPag();window.scrollTo(0,0);}
+
+function openAdd(){
+  editId=null;
+  document.getElementById("modalTitle").textContent="Nuevo cliente";
+  ["fNombre","fTelefono","fEmail","fCedula","fCiudad","fBarrio","fObs","fPresMin","fPresMax"].forEach(id=>document.getElementById(id).value="");
+  ["fTipoBus","fTipoInm","fEstrato","fHab","fBan","fFuente"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("fEstadoCli").value="Activo";
+  document.getElementById("fPrioridad").value="Media";
+  document.getElementById("formAlert").classList.add("hidden");
+  document.getElementById("formModal").classList.remove("hidden");
+}
+
+function openEdit(id){
+  const c=all.find(x=>x.id===id);
+  if(!c)return;
+  editId=id;
+  document.getElementById("modalTitle").textContent="Editar cliente";
+  document.getElementById("fNombre").value=c.nombre||"";
+  document.getElementById("fTelefono").value=c.telefono||"";
+  document.getElementById("fEmail").value=c.email||"";
+  document.getElementById("fCedula").value=c.cedula||"";
+  document.getElementById("fTipoBus").value=c.tipo_busqueda||"";
+  document.getElementById("fEstadoCli").value=c.estado||"Activo";
+  document.getElementById("fTipoInm").value=c.tipo_inmueble_interes||"";
+  document.getElementById("fCiudad").value=c.ciudad_interes||"";
+  document.getElementById("fBarrio").value=c.barrio_interes||"";
+  document.getElementById("fEstrato").value=c.estrato_interes||"";
+  document.getElementById("fPresMin").value=c.presupuesto_min||"";
+  document.getElementById("fPresMax").value=c.presupuesto_max||"";
+  document.getElementById("fHab").value=c.habitaciones_min||"";
+  document.getElementById("fBan").value=c.banos_min||"";
+  document.getElementById("fFuente").value=c.fuente||"";
+  document.getElementById("fPrioridad").value=c.prioridad||"Media";
+  document.getElementById("fObs").value=c.observaciones||"";
+  document.getElementById("formAlert").classList.add("hidden");
+  document.getElementById("formModal").classList.remove("hidden");
+}
+
+function closeModal(){document.getElementById("formModal").classList.add("hidden");editId=null;}
+
+async function saveClient(){
+  const nombre=document.getElementById("fNombre").value.trim();
+  const tel=document.getElementById("fTelefono").value.trim();
+  const tipoBus=document.getElementById("fTipoBus").value;
+  if(!nombre||!tel||!tipoBus){showFormAlert("Completa: Nombre, Teléfono y Tipo de búsqueda son obligatorios.","err");return;}
+  const btn=document.getElementById("btnSave");
+  btn.disabled=true;btn.textContent="Guardando...";
+  const payload={
+    asesor_id:uid,
+    nombre,
+    telefono:tel,
+    email:document.getElementById("fEmail").value.trim()||null,
+    cedula:document.getElementById("fCedula").value.trim()||null,
+    tipo_busqueda:tipoBus,
+    estado:document.getElementById("fEstadoCli").value,
+    tipo_inmueble_interes:document.getElementById("fTipoInm").value||null,
+    ciudad_interes:document.getElementById("fCiudad").value.trim()||null,
+    barrio_interes:document.getElementById("fBarrio").value.trim()||null,
+    estrato_interes:document.getElementById("fEstrato").value?Number(document.getElementById("fEstrato").value):null,
+    presupuesto_min:document.getElementById("fPresMin").value?Number(document.getElementById("fPresMin").value):null,
+    presupuesto_max:document.getElementById("fPresMax").value?Number(document.getElementById("fPresMax").value):null,
+    habitaciones_min:document.getElementById("fHab").value?Number(document.getElementById("fHab").value):null,
+    banos_min:document.getElementById("fBan").value?Number(document.getElementById("fBan").value):null,
+    fuente:document.getElementById("fFuente").value||null,
+    prioridad:document.getElementById("fPrioridad").value,
+    observaciones:document.getElementById("fObs").value.trim()||null
+  };
+  try{
+    let error;
+    if(editId){({error}=await sb.from("clientes").update(payload).eq("id",editId));}
+    else{({error}=await sb.from("clientes").insert([payload]));}
+    if(error)throw error;
+    closeModal();await loadClients();
+  }catch(err){showFormAlert("Error: "+err.message,"err");}
+  btn.disabled=false;btn.textContent="Guardar cliente";
+}
+
+function showFormAlert(msg,type){const a=document.getElementById("formAlert");a.textContent=msg;a.className="alert alert-"+type;a.classList.remove("hidden");}
+
+function openDel(id){delId=id;document.getElementById("delModal").classList.remove("hidden");document.getElementById("btnConfDel").onclick=async function(){const{error}=await sb.from("clientes").delete().eq("id",delId);if(error){alert("Error: "+error.message);return;}closeDelModal();await loadClients();};}
+function closeDelModal(){document.getElementById("delModal").classList.add("hidden");delId=null;}
+</script>
+</body></html>
