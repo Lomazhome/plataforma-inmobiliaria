@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leads - Lomaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f2f5;color:#333;}
+.topbar{background:#1a1a2e;color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:12px;}
+.logo{font-size:20px;font-weight:700;color:#e8b86d;white-space:nowrap;}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.uemail{font-size:13px;color:#ccc;}
+.btn-tb{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 13px;border-radius:6px;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block;white-space:nowrap;}
+.container{max-width:1150px;margin:28px auto;padding:0 16px;}
+.page-title{font-size:26px;font-weight:700;color:#1a1a2e;}
+.page-sub{color:#666;font-size:14px;margin-top:4px;margin-bottom:22px;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:22px;}
+.stat{background:#fff;border-radius:12px;padding:15px 18px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.stat.gold{border-left:4px solid #e8b86d;} .stat.blue{border-left:4px solid #2980b9;}
+.stat.orange{border-left:4px solid #e67e22;} .stat.green{border-left:4px solid #27ae60;}
+.stat.red{border-left:4px solid #e74c3c;} .stat.purple{border-left:4px solid #8e44ad;}
+.stat-n{font-size:26px;font-weight:700;color:#1a1a2e;} .stat-l{font-size:12px;color:#888;margin-top:3px;}
+.filters{background:#fff;border-radius:12px;padding:13px 18px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.filters input,.filters select{padding:8px 11px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;background:#fafafa;}
+.filters input{flex:1;min-width:160px;}
+.filters input:focus,.filters select:focus{outline:none;border-color:#e8b86d;}
+.btn-clr{padding:8px 13px;background:#f0f2f5;color:#555;border:none;border-radius:8px;cursor:pointer;font-size:13px;}
+.wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;}
+.wrap-hdr{padding:13px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f2f5;}
+.wrap-hdr h3{font-size:15px;font-weight:700;color:#1a1a2e;}
+.cnt{background:#f0f2f5;color:#555;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:#f8f9fa;padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #f0f2f5;white-space:nowrap;}
+tbody tr:hover{background:#fffdf5;}
+tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid #f5f5f5;vertical-align:middle;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.b-nuevo{background:#eaf4fb;color:#1a5276;} .b-contactado{background:#fef9e7;color:#b7770d;}
+.b-visita{background:#f5eef8;color:#6c3483;} .b-negociacion{background:#fdebd0;color:#784212;}
+.b-cerrado{background:#eafaf1;color:#1e8449;} .b-perdido{background:#fdecea;color:#c0392b;}
+.lead-name{font-weight:600;color:#1a1a2e;} .lead-sub{font-size:12px;color:#888;margin-top:2px;}
+.prop-link{font-size:12px;color:#2980b9;text-decoration:none;max-width:160px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prop-link:hover{text-decoration:underline;}
+.sel-estado{padding:5px 8px;border:1.5px solid #ddd;border-radius:6px;font-size:12px;cursor:pointer;background:#fff;}
+.sel-estado:focus{outline:none;border-color:#e8b86d;}
+.actions{display:flex;gap:6px;}
+.btn-a{padding:5px 9px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:600;white-space:nowrap;}
+.btn-ver{background:#eaf4fb;color:#1a5276;} .btn-notas{background:#fef9e7;color:#b7770d;} .btn-del{background:#fdecea;color:#c0392b;}
+.btn-a:hover{opacity:.8;}
+.empty{text-align:center;padding:52px 20px;color:#aaa;}
+.empty .ic{font-size:48px;display:block;margin-bottom:12px;}
+.pagination{display:flex;justify-content:center;gap:8px;padding:18px;}
+.pg-btn{padding:7px 13px;border:1.5px solid #ddd;background:#fff;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#555;}
+.pg-btn.active{background:#e8b86d;border-color:#e8b86d;color:#fff;}
+.pg-btn:hover:not(.active){background:#f5f5f5;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal{background:#fff;border-radius:16px;padding:26px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal h3{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #f0f2f5;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.info-item label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;}
+.info-item span{font-size:14px;color:#1a1a2e;font-weight:500;}
+.notes-section label{font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;}
+textarea{width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;resize:vertical;min-height:90px;font-family:inherit;}
+textarea:focus{outline:none;border-color:#e8b86d;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+.btn-save{background:#e8b86d;color:#fff;border:none;padding:9px 22px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;}
+.btn-save:hover{background:#d4a55a;}
+.btn-cancel{background:#f0f2f5;color:#555;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:14px;}
+.btn-danger{background:#e74c3c;color:#fff;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;}
+.assign-section{background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:16px;}
+.assign-section label{font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;}
+select{padding:9px 11px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;background:#fff;width:100%;}
+select:focus{outline:none;border-color:#e8b86d;}
+.hidden{display:none!important;}
+@media(max-width:768px){.info-grid{grid-template-columns:1fr;}thead th:nth-child(4),thead th:nth-child(5),tbody td:nth-child(4),tbody td:nth-child(5){display:none;}}
+</style></head><body>
+<div class="topbar">
+  <span class="logo">Lomaz Home</span>
+  <div class="topbar-right">
+    <span class="uemail" id="uEmail"></span>
+    <a href="panel.html" class="btn-tb">Panel</a>
+    <a href="mis-propiedades.html" class="btn-tb">Propiedades</a>
+    <a href="clientes.html" class="btn-tb">Clientes</a>
+  </div>
+</div>
+<div class="container">
+  <div class="page-title">&#128386; Leads / Contactos</div>
+  <div class="page-sub">Personas que han contactado sobre tus propiedades. Gestiona el seguimiento de cada oportunidad.</div>
+  <div class="stats-row">
+    <div class="stat gold"><div class="stat-n" id="sTotal">0</div><div class="stat-l">Total leads</div></div>
+    <div class="stat blue"><div class="stat-n" id="sNuevo">0</div><div class="stat-l">Nuevos</div></div>
+    <div class="stat orange"><div class="stat-n" id="sContactado">0</div><div class="stat-l">Contactados</div></div>
+    <div class="stat purple"><div class="stat-n" id="sVisita">0</div><div class="stat-l">En visita</div></div>
+    <div class="stat green"><div class="stat-n" id="sCerrado">0</div><div class="stat-l">Cerrados</div></div>
+    <div class="stat red"><div class="stat-n" id="sPerdido">0</div><div class="stat-l">Perdidos</div></div>
+  </div>
+  <div class="filters">
+    <input type="text" id="fSearch" placeholder="&#128269; Buscar por nombre, email, teléfono..." oninput="applyFilter()">
+    <select id="fEstado" onchange="applyFilter()"><option value="">Todos los estados</option><option value="Nuevo">Nuevo</option><option value="Contactado">Contactado</option><option value="Visita programada">Visita programada</option><option value="En negociación">En negociación</option><option value="Cerrado ganado">Cerrado ganado</option><option value="Perdido">Perdido</option></select>
+    <select id="fFecha" onchange="applyFilter()"><option value="">Todo tiempo</option><option value="hoy">Hoy</option><option value="semana">Esta semana</option><option value="mes">Este mes</option></select>
+    <button class="btn-clr" onclick="clearFilter()">Limpiar</button>
+  </div>
+  <div class="wrap">
+    <div class="wrap-hdr"><h3>Lista de leads</h3><span class="cnt" id="cntBadge">0 leads</span></div>
+    <div id="tblCont"><div style="text-align:center;padding:40px;color:#aaa">Cargando leads...</div></div>
+  </div>
+  <div class="pagination" id="pag"></div>
+</div>
+<div class="overlay hidden" id="detailModal">
+  <div class="modal">
+    <h3>&#128386; Detalle del lead</h3>
+    <div class="info-grid" id="modalInfo"></div>
+    <div class="assign-section">
+      <label>&#128101; Asignar a cliente existente</label>
+      <select id="clienteSelect"><option value="">-- Sin asignar --</option></select>
+    </div>
+    <div class="notes-section">
+      <label>&#128221; Notas de seguimiento</label>
+      <textarea id="notasInput" placeholder="Escribe aquí las notas, resultado de llamadas, visitas, acuerdos..."></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeDetail()">Cerrar</button>
+      <button class="btn-save" onclick="saveNotes()">Guardar notas</button>
+    </div>
+  </div>
+</div>
+<div class="overlay hidden" id="delModal">
+  <div class="modal" style="max-width:380px">
+    <h3>&#128465;&#65039; Eliminar lead</h3>
+    <p style="color:#666;font-size:14px;margin-bottom:18px">¿Eliminar este lead? La acción no se puede deshacer.</p>
+    <div class="modal-btns"><button class="btn-cancel" onclick="closeDelModal()">Cancelar</button><button class="btn-danger" id="btnConfDel">Sí, eliminar</button></div>
+  </div>
+</div>
+<script>
+const K=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const U="https://lniouebpuuuqctrgxoiw.supabase.co";
+const sb=supabase.createClient(U,K);
+let all=[],filtered=[],uid=null,clientes=[],detailId=null,delId=null,curPage=1;
+const PER=20;
+
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  uid=session.user.id;
+  document.getElementById("uEmail").textContent=session.user.email;
+  await Promise.all([loadLeads(),loadClientes()]);
+})();
+
+async function loadLeads(){
+  const{data,error}=await sb.from("leads")
+    .select("id,nombre,email,telefono,mensaje,estado,notas,cliente_id,propiedad_id,created_at,propiedades(titulo,ciudad)")
+    .eq("asesor_id",uid)
+    .order("created_at",{ascending:false});
+  if(error){document.getElementById("tblCont").innerHTML=`<div class="empty"><span class="ic">&#10060;</span>Error: ${error.message}</div>`;return;}
+  all=data||[];
+  updateStats();applyFilter();
+}
+
+async function loadClientes(){
+  const{data}=await sb.from("clientes").select("id,nombre,telefono").eq("asesor_id",uid).order("nombre");
+  clientes=data||[];
+  const sel=document.getElementById("clienteSelect");
+  clientes.forEach(c=>{const o=document.createElement("option");o.value=c.id;o.textContent=c.nombre+" ("+c.telefono+")";sel.appendChild(o);});
+}
+
+function updateStats(){
+  document.getElementById("sTotal").textContent=all.length;
+  document.getElementById("sNuevo").textContent=all.filter(l=>l.estado==="Nuevo").length;
+  document.getElementById("sContactado").textContent=all.filter(l=>l.estado==="Contactado").length;
+  document.getElementById("sVisita").textContent=all.filter(l=>l.estado==="Visita programada").length;
+  document.getElementById("sCerrado").textContent=all.filter(l=>l.estado==="Cerrado ganado").length;
+  document.getElementById("sPerdido").textContent=all.filter(l=>l.estado==="Perdido").length;
+}
+
+function applyFilter(){
+  const s=document.getElementById("fSearch").value.toLowerCase();
+  const e=document.getElementById("fEstado").value;
+  const f=document.getElementById("fFecha").value;
+  const now=new Date();
+  filtered=all.filter(l=>{
+    const ms=!s||(l.nombre||"").toLowerCase().includes(s)||(l.email||"").toLowerCase().includes(s)||(l.telefono||"").includes(s);
+    const me=!e||l.estado===e;
+    let mf=true;
+    if(f){
+      const d=new Date(l.created_at);
+      if(f==="hoy")mf=d.toDateString()===now.toDateString();
+      else if(f==="semana"){const w=new Date(now);w.setDate(now.getDate()-7);mf=d>=w;}
+      else if(f==="mes"){const m=new Date(now);m.setDate(1);mf=d>=m;}
+    }
+    return ms&&me&&mf;
+  });
+  curPage=1;renderTable();renderPag();
+}
+function clearFilter(){document.getElementById("fSearch").value="";document.getElementById("fEstado").value="";document.getElementById("fFecha").value="";applyFilter();}
+
+const ESTADOS=["Nuevo","Contactado","Visita programada","En negociación","Cerrado ganado","Perdido"];
+const BCLASS={Nuevo:"b-nuevo",Contactado:"b-contactado","Visita programada":"b-visita","En negociación":"b-negociacion","Cerrado ganado":"b-cerrado",Perdido:"b-perdido"};
+
+function renderTable(){
+  const cont=document.getElementById("tblCont");
+  document.getElementById("cntBadge").textContent=filtered.length+" lead"+(filtered.length!==1?"s":"");
+  if(!filtered.length){cont.innerHTML=`<div class="empty"><span class="ic">&#128386;</span><p>No hay leads aún. Cuando alguien llene el formulario de una propiedad, aparecerá aquí.</p></div>`;return;}
+  const start=(curPage-1)*PER;
+  const pg=filtered.slice(start,start+PER);
+  let h=`<table><thead><tr><th>Contacto</th><th>Propiedad</th><th>Mensaje</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>`;
+  pg.forEach(l=>{
+    const bCls=BCLASS[l.estado]||"b-nuevo";
+    const propTxt=l.propiedades?l.propiedades.titulo+(l.propiedades.ciudad?" - "+l.propiedades.ciudad:""):"Sin propiedad";
+    const propHref=l.propiedad_id?`<a href="propiedad.html?id=${l.propiedad_id}" class="prop-link" target="_blank">${propTxt}</a>`:`<span style="font-size:12px;color:#aaa">-</span>`;
+    const msg=(l.mensaje||"").substring(0,60)+(l.mensaje&&l.mensaje.length>60?"...":"");
+    const fecha=new Date(l.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"});
+    const opts=ESTADOS.map(s=>`<option value="${s}"${l.estado===s?" selected":""}>${s}</option>`).join("");
+    h+=`<tr>
+      <td><div class="lead-name">${l.nombre||"Sin nombre"}</div><div class="lead-sub">${l.telefono||""} ${l.email?"&middot; "+l.email:""}</div></td>
+      <td>${propHref}</td>
+      <td style="max-width:180px;font-size:12px;color:#666">${msg||"-"}</td>
+      <td style="font-size:12px;color:#888;white-space:nowrap">${fecha}</td>
+      <td><select class="sel-estado" onchange="changeEstado('${l.id}',this.value)">${opts}</select></td>
+      <td><div class="actions">
+        <button class="btn-a btn-notas" onclick="openDetail('${l.id}')">Notas</button>
+        <button class="btn-a btn-del" onclick="openDel('${l.id}')">&#10006;</button>
+      </div></td>
+    </tr>`;
+  });
+  h+="</tbody></table>";
+  cont.innerHTML=h;
+}
+
+function renderPag(){
+  const total=Math.ceil(filtered.length/PER);
+  const p=document.getElementById("pag");
+  if(total<=1){p.innerHTML="";return;}
+  let h="";
+  if(curPage>1)h+=`<button class="pg-btn" onclick="goPage(${curPage-1})">&#8592;</button>`;
+  for(let i=1;i<=total;i++){
+    if(i===curPage)h+=`<button class="pg-btn active">${i}</button>`;
+    else if(i<=2||i>total-1||Math.abs(i-curPage)<=1)h+=`<button class="pg-btn" onclick="goPage(${i})">${i}</button>`;
+    else if(i===3&&curPage>4)h+=`<span style="padding:7px 4px;color:#aaa">...</span>`;
+  }
+  if(curPage<total)h+=`<button class="pg-btn" onclick="goPage(${curPage+1})">&#8594;</button>`;
+  p.innerHTML=h;
+}
+function goPage(n){curPage=n;renderTable();renderPag();window.scrollTo(0,0);}
+
+async function changeEstado(id,estado){
+  const{error}=await sb.from("leads").update({estado}).eq("id",id);
+  if(error){alert("Error al actualizar estado: "+error.message);return;}
+  const lead=all.find(l=>l.id===id);
+  if(lead)lead.estado=estado;
+  updateStats();
+}
+
+function openDetail(id){
+  const l=all.find(x=>x.id===id);
+  if(!l)return;
+  detailId=id;
+  const fecha=new Date(l.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  const propNm=l.propiedades?l.propiedades.titulo:"N/A";
+  document.getElementById("modalInfo").innerHTML=`
+    <div class="info-item"><label>Nombre</label><span>${l.nombre||"-"}</span></div>
+    <div class="info-item"><label>Teléfono</label><span>${l.telefono||"-"}</span></div>
+    <div class="info-item"><label>Email</label><span>${l.email||"-"}</span></div>
+    <div class="info-item"><label>Estado</label><span><span class="badge ${BCLASS[l.estado]||"b-nuevo"}">${l.estado}</span></span></div>
+    <div class="info-item"><label>Propiedad</label><span>${propNm}</span></div>
+    <div class="info-item"><label>Fecha contacto</label><span>${fecha}</span></div>
+    <div class="info-item" style="grid-column:span 2"><label>Mensaje original</label><span style="font-size:13px;color:#666">${l.mensaje||"-"}</span></div>`;
+  document.getElementById("notasInput").value=l.notas||"";
+  document.getElementById("clienteSelect").value=l.cliente_id||"";
+  document.getElementById("detailModal").classList.remove("hidden");
+}
+function closeDetail(){document.getElementById("detailModal").classList.add("hidden");detailId=null;}
+
+async function saveNotes(){
+  if(!detailId)return;
+  const notas=document.getElementById("notasInput").value.trim();
+  const cliente_id=document.getElementById("clienteSelect").value||null;
+  const{error}=await sb.from("leads").update({notas,cliente_id}).eq("id",detailId);
+  if(error){alert("Error: "+error.message);return;}
+  const lead=all.find(l=>l.id===detailId);
+  if(lead){lead.notas=notas;lead.cliente_id=cliente_id;}
+  closeDetail();
+}
+
+function openDel(id){
+  delId=id;
+  document.getElementById("delModal").classList.remove("hidden");
+  document.getElementById("btnConfDel").onclick=async function(){
+    const{error}=await sb.from("leads").delete().eq("id",delId);
+    if(error){alert("Error: "+error.message);return;}
+    closeDelModal();
+    all=all.filter(l=>l.id!==delId);
+    updateStats();applyFilter();
+  };
+}
+function closeDelModal(){document.getElementById("delModal").classList.add("hidden");delId=null;}
+</script>
+</body></html>
