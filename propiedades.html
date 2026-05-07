@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Propiedades | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(201,164,132,.2);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.4rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.nl{display:flex;gap:2rem;list-style:none}
+.nl a{color:#ccc;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.nl a:hover{color:#c9a484}
+.ncta{background:#c9a484;color:#000;padding:.5rem 1.2rem;border-radius:4px;font-weight:700;font-size:.75rem;text-decoration:none}
+.page{padding:100px 2rem 4rem;max-width:1400px;margin:0 auto}
+.page-header{margin-bottom:2rem}
+.page-title{font-size:2rem;font-weight:800;margin-bottom:.5rem}
+.page-title span{color:#c9a484}
+.page-sub{color:#666;font-size:.85rem}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:2rem;align-items:start}
+.filters{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.5rem;position:sticky;top:90px}
+.filter-title{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#c9a484;margin-bottom:1.2rem;font-weight:700}
+.filter-group{margin-bottom:1.5rem}
+.filter-group label{display:block;font-size:.75rem;color:#888;margin-bottom:.5rem;font-weight:600}
+.filter-group select,.filter-group input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.6rem .8rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none}
+.filter-group select:focus,.filter-group input:focus{border-color:#c9a484}
+.filter-group select option{background:#1a1a1a}
+.filter-tabs{display:flex;gap:.4rem;margin-bottom:1.5rem}
+.ftab{flex:1;padding:.5rem;border-radius:6px;border:1px solid rgba(201,164,132,.3);background:transparent;color:#888;font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .3s;text-align:center}
+.ftab.on{background:#c9a484;color:#000;border-color:#c9a484}
+.btn-filter{width:100%;background:#c9a484;color:#000;border:none;border-radius:6px;padding:.75rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:.5rem}
+.btn-clear{width:100%;background:transparent;color:#666;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.6rem;font-family:Montserrat,sans-serif;font-size:.8rem;cursor:pointer;margin-top:.5rem}
+.btn-clear:hover{color:#c9a484;border-color:#c9a484}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.results-count{font-size:.85rem;color:#666}
+.results-count span{color:#c9a484;font-weight:700}
+.sort-select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.5rem .8rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none}
+.sort-select option{background:#1a1a1a}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.pc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;transition:all .3s;cursor:pointer;text-decoration:none;color:#fff;display:block}
+.pc:hover{transform:translateY(-3px);border-color:rgba(201,164,132,.4);box-shadow:0 15px 30px rgba(0,0,0,.3)}
+.ci{height:180px;background:linear-gradient(135deg,#1a1208,#2a1f10);position:relative;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:rgba(255,255,255,.15)}
+.cbadge{position:absolute;top:.8rem;left:.8rem;background:#c9a484;color:#000;padding:.2rem .6rem;border-radius:4px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.cstatus{position:absolute;top:.8rem;right:.8rem;background:rgba(0,200,100,.2);color:#00c864;border:1px solid rgba(0,200,100,.3);padding:.2rem .6rem;border-radius:4px;font-size:.65rem;font-weight:700}
+.cbody{padding:1rem}
+.cprice{font-size:1.3rem;font-weight:800;color:#c9a484;margin-bottom:.3rem}
+.ctitle{font-size:.88rem;font-weight:600;margin-bottom:.3rem;line-height:1.3}
+.cloc{font-size:.75rem;color:#555;margin-bottom:.8rem;display:flex;align-items:center;gap:.3rem}
+.cfeat{display:flex;gap:.8rem;font-size:.75rem;color:#777;flex-wrap:wrap}
+.cfeat span{display:flex;align-items:center;gap:.2rem}
+.empty{text-align:center;padding:4rem 2rem;grid-column:1/-1}
+.empty h3{color:#c9a484;margin-bottom:1rem;font-size:1.3rem}
+.empty p{color:#555;font-size:.9rem}
+.loading{text-align:center;padding:4rem;grid-column:1/-1;color:#666}
+.pagination{display:flex;gap:.5rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+.pag-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.5rem 1rem;color:#888;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.8rem;transition:all .3s}
+.pag-btn.on{background:#c9a484;color:#000;border-color:#c9a484}
+.pag-btn:hover:not(.on){border-color:#c9a484;color:#c9a484}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.filters{position:static}.nl{display:none}}
+</style>
+</head>
+<body>
+<nav>
+<a href="/" class="logo">Lomaz<span>Home</span></a>
+<ul class="nl">
+<li><a href="/" >Inicio</a></li>
+<li><a href="/propiedades.html" style="color:#c9a484">Propiedades</a></li>
+<li><a href="#contacto">Contacto</a></li>
+</ul>
+<a href="/login.html" class="ncta">Ingresar</a>
+</nav>
+<div class="page">
+<div class="page-header">
+<h1 class="page-title">Propiedades <span>Disponibles</span></h1>
+<p class="page-sub" id="sub">Cargando propiedades...</p>
+</div>
+<div class="layout">
+<!-- FILTROS -->
+<div class="filters">
+<div class="filter-title">Filtrar Busqueda</div>
+<div class="filter-tabs">
+<button class="ftab on" onclick="setNeg('Venta',this)">Venta</button>
+<button class="ftab" onclick="setNeg('Arriendo',this)">Arriendo</button>
+</div>
+<div class="filter-group">
+<label>Tipo de Propiedad</label>
+<select id="f-tipo" onchange="applyFilters()">
+<option value="">Todos los tipos</option>
+<option>Casa</option>
+<option>Apartamento</option>
+<option>Local Comercial</option>
+<option>Oficina</option>
+<option>Bodega</option>
+<option>Lote</option>
+<option>Finca</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Ciudad</label>
+<select id="f-ciudad" onchange="applyFilters()">
+<option value="">Todas las ciudades</option>
+<option>Bogota</option>
+<option>Medellin</option>
+<option>Cali</option>
+<option>Barranquilla</option>
+<option>Cartagena</option>
+<option>Bucaramanga</option>
+<option>Pereira</option>
+<option>Manizales</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Precio Maximo</label>
+<select id="f-precio" onchange="applyFilters()">
+<option value="">Sin limite</option>
+<option value="200000000">$200M</option>
+<option value="500000000">$500M</option>
+<option value="800000000">$800M</option>
+<option value="1000000000">$1.000M</option>
+<option value="2000000000">$2.000M</option>
+<option value="5000000000">$5.000M</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Habitaciones (minimo)</label>
+<select id="f-hab" onchange="applyFilters()">
+<option value="">Cualquier cantidad</option>
+<option value="1">1+</option>
+<option value="2">2+</option>
+<option value="3">3+</option>
+<option value="4">4+</option>
+<option value="5">5+</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Area minima (m2)</label>
+<input type="number" id="f-area" placeholder="Ej: 50" onchange="applyFilters()"/>
+</div>
+<button class="btn-clear" onclick="clearFilters()">Limpiar Filtros</button>
+</div>
+<!-- RESULTADOS -->
+<div>
+<div class="results-header">
+<div class="results-count">Mostrando <span id="count">0</span> propiedades</div>
+<select class="sort-select" id="f-orden" onchange="applyFilters()">
+<option value="created_at_desc">Mas recientes</option>
+<option value="precio_asc">Menor precio</option>
+<option value="precio_desc">Mayor precio</option>
+<option value="area_desc">Mayor area</option>
+</select>
+</div>
+<div id="grid" class="grid"><div class="loading">Cargando propiedades...</div></div>
+<div id="pagination" class="pagination"></div>
+</div>
+</div>
+</div>
+<script>
+const SU="https://lniouebpuuuqctrgxoiw.supabase.co",SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+const {createClient}=supabase;
+const db=createClient(SU,SK);
+let negocio="Venta";
+let pagina=1;
+const POR_PAG=12;
+function setNeg(n,btn){negocio=n;document.querySelectorAll(".ftab").forEach(b=>b.classList.remove("on"));btn.classList.add("on");pagina=1;applyFilters()}
+function clearFilters(){
+["f-tipo","f-ciudad","f-precio","f-hab","f-area","f-orden"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});
+document.getElementById("f-orden").value="created_at_desc";
+pagina=1;applyFilters()
+}
+function getParams(){
+const params=new URLSearchParams(window.location.search);
+if(params.get("negocio")){negocio=params.get("negocio");document.querySelectorAll(".ftab").forEach(b=>{b.classList.toggle("on",b.textContent.trim()===negocio)})}
+if(params.get("tipo")){const el=document.getElementById("f-tipo");if(el)el.value=params.get("tipo")}
+if(params.get("ciudad")){const el=document.getElementById("f-ciudad");if(el)el.value=params.get("ciudad")}
+if(params.get("precio")){const el=document.getElementById("f-precio");if(el)el.value=params.get("precio")}
+}
+function fmt(p){if(!p)return"Precio a convenir";if(p>=1e9)return"$"+(p/1e9).toFixed(1)+" Mil M";if(p>=1e6)return"$"+Math.round(p/1e6)+"M";return"$"+p.toLocaleString()}
+function icon(tipo){const m={"Casa":"&#127968;","Apartamento":"&#127963;","Local Comercial":"&#127978;","Oficina":"&#127970;","Bodega":"&#127979;","Lote":"&#127807;","Finca":"&#127806;"};return m[tipo]||"&#127968;"}
+async function applyFilters(){
+const grid=document.getElementById("grid");
+grid.innerHTML='<div class="loading">Buscando...</div>';
+const tipo=document.getElementById("f-tipo").value;
+const ciudad=document.getElementById("f-ciudad").value;
+const precio=document.getElementById("f-precio").value;
+const hab=document.getElementById("f-hab").value;
+const area=document.getElementById("f-area").value;
+const orden=document.getElementById("f-orden").value;
+try{
+let q=db.from("propiedades").select("id,titulo,tipo_propiedad,tipo_negocio,precio,ciudad,barrio,habitaciones,banos,area_construida,estado",{count:"exact"});
+q=q.eq("estado","Disponible");
+if(negocio)q=q.eq("tipo_negocio",negocio);
+if(tipo)q=q.eq("tipo_propiedad",tipo);
+if(ciudad)q=q.ilike("ciudad","%"+ciudad+"%");
+if(precio)q=q.lte("precio",parseInt(precio));
+if(hab)q=q.gte("habitaciones",parseInt(hab));
+if(area)q=q.gte("area_construida",parseInt(area));
+if(orden==="precio_asc")q=q.order("precio",{ascending:true});
+else if(orden==="precio_desc")q=q.order("precio",{ascending:false});
+else if(orden==="area_desc")q=q.order("area_construida",{ascending:false});
+else q=q.order("created_at",{ascending:false});
+const from=(pagina-1)*POR_PAG;
+q=q.range(from,from+POR_PAG-1);
+const{data,error,count}=await q;
+if(error)throw error;
+const total=count||0;
+document.getElementById("count").textContent=total;
+document.getElementById("sub").textContent=total+" propiedades en "+negocio;
+if(!data||!data.length){grid.innerHTML='<div class="empty"><h3>Sin resultados</h3><p>No hay propiedades con esos filtros. Intenta con criterios diferentes.</p></div>';document.getElementById("pagination").innerHTML="";return}
+grid.innerHTML=data.map(p=>
+'<a class="pc" href="/propiedad.html?id='+p.id+'">'+
+'<div class="ci">'+icon(p.tipo_propiedad)+'<div class="cbadge">'+( p.tipo_negocio||"Venta")+'</div><div class="cstatus">Disponible</div></div>'+
+'<div class="cbody">'+
+'<div class="cprice">'+fmt(p.precio)+'</div>'+
+'<div class="ctitle">'+(p.titulo||p.tipo_propiedad||"Propiedad")+'</div>'+
+'<div class="cloc">&#128205; '+(p.barrio?p.barrio+", ":"")+( p.ciudad||"Colombia")+'</div>'+
+'<div class="cfeat">'+(p.habitaciones?'<span>&#127968; '+p.habitaciones+' hab</span>':'')+( p.banos?'<span>&#128704; '+p.banos+' ban</span>':'')+( p.area_construida?'<span>&#128207; '+p.area_construida+'m2</span>':'')+'</div>'+
+'</div></a>'
+).join("");
+renderPag(total);
+}catch(e){grid.innerHTML='<div class="empty"><h3>Error de conexion</h3><p>'+e.message+'</p></div>'}
+}
+function renderPag(total){
+const pag=document.getElementById("pagination");
+const pages=Math.ceil(total/POR_PAG);
+if(pages<=1){pag.innerHTML="";return}
+let html="";
+for(let i=1;i<=Math.min(pages,10);i++){html+='<button class="pag-btn'+(i===pagina?" on":"")+'" onclick="goPage('+i+')">'+ i+'</button>'}
+pag.innerHTML=html
+}
+function goPage(p){pagina=p;applyFilters();window.scrollTo({top:0,behavior:"smooth"})}
+getParams();
+applyFilters();
+</script>
+</body>
+</html>
