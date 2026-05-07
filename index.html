@@ -1,362 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lomaz Home | Plataforma Inmobiliaria</title>
-  <meta name="description" content="Encuentra tu propiedad ideal en Colombia. Casas, apartamentos, locales y más con Lomaz Home."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Montserrat', sans-serif; background: #0a0a0a; color: #fff; }
-
-    /* NAV */
-    nav {
-      position: fixed; top: 0; width: 100%; z-index: 100;
-      background: rgba(10,10,10,0.95); backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(201,164,132,0.2);
-      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; color: #fff; text-decoration: none; }
-    .nav-logo span { color: #c9a484; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: #ccc; text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; }
-    .nav-links a:hover { color: #c9a484; }
-    .nav-cta { background: #c9a484; color: #000; padding: 0.6rem 1.5rem; border-radius: 4px; font-weight: 700; font-size: 0.8rem; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: background 0.3s; }
-    .nav-cta:hover { background: #b8906e; }
-
-    /* HERO */
-    .hero {
-      min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1208 50%, #0a0a0a 100%);
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(201,164,132,0.08) 0%, transparent 70%);
-    }
-    .hero-pattern {
-      position: absolute; inset: 0; opacity: 0.03;
-      background-image: repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(201,164,132,0.5) 50px, rgba(201,164,132,0.5) 51px),
-        repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(201,164,132,0.5) 50px, rgba(201,164,132,0.5) 51px);
-    }
-    .hero-content { position: relative; z-index: 1; text-align: center; padding: 2rem; max-width: 900px; }
-    .hero-badge { display: inline-block; background: rgba(201,164,132,0.15); border: 1px solid rgba(201,164,132,0.3); color: #c9a484; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem; }
-    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
-    .hero h1 span { color: #c9a484; }
-    .hero p { font-size: 1.1rem; color: #888; margin-bottom: 3rem; line-height: 1.7; max-width: 600px; margin-left: auto; margin-right: auto; }
-
-    /* SEARCH BOX */
-    .search-box {
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(201,164,132,0.3);
-      border-radius: 12px; padding: 1.5rem; max-width: 800px; margin: 0 auto;
-      backdrop-filter: blur(10px);
-    }
-    .search-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
-    .search-tab {
-      padding: 0.5rem 1.5rem; border-radius: 6px; border: 1px solid rgba(201,164,132,0.3);
-      background: transparent; color: #888; font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s;
-    }
-    .search-tab.active, .search-tab:hover { background: #c9a484; color: #000; border-color: #c9a484; }
-    .search-fields { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.8rem; align-items: end; }
-    .search-field label { display: block; font-size: 0.7rem; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.4rem; }
-    .search-field select, .search-field input {
-      width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px; padding: 0.75rem 1rem; color: #fff; font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem; outline: none; transition: border-color 0.3s;
-    }
-    .search-field select:focus, .search-field input:focus { border-color: #c9a484; }
-    .search-field select option { background: #1a1a1a; }
-    .search-btn {
-      background: #c9a484; color: #000; border: none; border-radius: 6px;
-      padding: 0.75rem 1.5rem; font-family: 'Montserrat', sans-serif; font-weight: 700;
-      font-size: 0.85rem; cursor: pointer; transition: background 0.3s; white-space: nowrap;
-      letter-spacing: 1px; text-transform: uppercase;
-    }
-    .search-btn:hover { background: #b8906e; }
-
-    /* STATS */
-    .stats { padding: 4rem 2rem; text-align: center; }
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 800px; margin: 0 auto; }
-    .stat-item h3 { font-size: 2.5rem; font-weight: 900; color: #c9a484; }
-    .stat-item p { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-top: 0.3rem; }
-
-    /* SECTION TITLES */
-    .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
-    .section-header { text-align: center; margin-bottom: 3rem; }
-    .section-label { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: #c9a484; margin-bottom: 1rem; }
-    .section-title { font-size: 2.2rem; font-weight: 800; }
-    .section-title span { color: #c9a484; }
-
-    /* PROPERTY CARDS */
-    .properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-    .property-card {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px; overflow: hidden; transition: all 0.3s; cursor: pointer;
-    }
-    .property-card:hover { transform: translateY(-4px); border-color: rgba(201,164,132,0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .card-img { height: 200px; background: linear-gradient(135deg, #1a1208, #2a1f10); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .card-img-placeholder { font-size: 3rem; opacity: 0.3; }
-    .card-badge { position: absolute; top: 1rem; left: 1rem; background: #c9a484; color: #000; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .card-body { padding: 1.2rem; }
-    .card-price { font-size: 1.4rem; font-weight: 800; color: #c9a484; margin-bottom: 0.5rem; }
-    .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
-    .card-location { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
-    .card-features { display: flex; gap: 1rem; font-size: 0.8rem; color: #888; }
-    .card-feat { display: flex; align-items: center; gap: 0.3rem; }
-
-    /* LOADING / EMPTY */
-    .loading-grid { text-align: center; padding: 3rem; color: #666; }
-    .empty-state { text-align: center; padding: 4rem 2rem; }
-    .empty-state h3 { color: #c9a484; margin-bottom: 1rem; }
-    .empty-state p { color: #666; margin-bottom: 2rem; }
-
-    /* CTA SECTION */
-    .cta-section {
-      background: linear-gradient(135deg, rgba(201,164,132,0.1) 0%, rgba(201,164,132,0.05) 100%);
-      border-top: 1px solid rgba(201,164,132,0.2); border-bottom: 1px solid rgba(201,164,132,0.2);
-      padding: 5rem 2rem; text-align: center;
-    }
-    .cta-section h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; }
-    .cta-section p { color: #888; margin-bottom: 2.5rem; font-size: 1.1rem; }
-    .cta-btn { display: inline-block; background: #c9a484; color: #000; padding: 1rem 2.5rem; border-radius: 6px; font-weight: 700; text-decoration: none; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; transition: background 0.3s; margin: 0.5rem; }
-    .cta-btn:hover { background: #b8906e; }
-    .cta-btn-outline { background: transparent; color: #c9a484; border: 2px solid #c9a484; }
-    .cta-btn-outline:hover { background: #c9a484; color: #000; }
-
-    /* FOOTER */
-    footer {
-      background: #050505; border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 4rem 2rem 2rem; text-align: center;
-    }
-    .footer-logo { font-size: 1.8rem; font-weight: 900; margin-bottom: 1rem; }
-    .footer-logo span { color: #c9a484; }
-    .footer-tagline { color: #444; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem; }
-    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }
-    .footer-links a { color: #555; text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
-    .footer-links a:hover { color: #c9a484; }
-    .footer-divider { height: 1px; background: rgba(255,255,255,0.05); margin-bottom: 2rem; }
-    .footer-bottom { font-size: 0.75rem; color: #333; }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .search-fields { grid-template-columns: 1fr 1fr; }
-      .search-fields .search-btn { grid-column: span 2; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lomaz Home | Plataforma Inmobiliaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff}
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,164,132,.2);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.5rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.nl{display:flex;gap:2rem;list-style:none}
+.nl a{color:#ccc;text-decoration:none;font-size:.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.nl a:hover{color:#c9a484}
+.ncta{background:#c9a484;color:#000;padding:.6rem 1.5rem;border-radius:4px;font-weight:700;font-size:.8rem;text-decoration:none}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a0a,#1a1208,#0a0a0a);position:relative}
+.hbg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(201,164,132,.08),transparent 70%)}
+.hc{position:relative;z-index:1;text-align:center;padding:8rem 2rem 2rem;max-width:900px}
+.badge{display:inline-block;background:rgba(201,164,132,.15);border:1px solid rgba(201,164,132,.3);color:#c9a484;padding:.4rem 1.2rem;border-radius:50px;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem}
+.hc h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem}
+.hc h1 span{color:#c9a484}
+.hc > p{font-size:1.1rem;color:#888;margin-bottom:3rem;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto}
+.sbox{background:rgba(255,255,255,.05);border:1px solid rgba(201,164,132,.3);border-radius:12px;padding:1.5rem}
+.stabs{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.stab{padding:.5rem 1.5rem;border-radius:6px;border:1px solid rgba(201,164,132,.3);background:transparent;color:#888;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .3s}
+.stab.on,.stab:hover{background:#c9a484;color:#000;border-color:#c9a484}
+.sf-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:.8rem;align-items:end}
+.sf label{display:block;font-size:.7rem;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem}
+.sf select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.75rem 1rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none}
+.sf select:focus{border-color:#c9a484}
+.sf select option{background:#1a1a1a}
+.sbtn{background:#c9a484;color:#000;border:none;border-radius:6px;padding:.75rem 1.5rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap;letter-spacing:1px;text-transform:uppercase}
+.stats{padding:4rem 2rem;text-align:center;background:rgba(201,164,132,.03)}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:800px;margin:0 auto}
+.si h3{font-size:2.5rem;font-weight:900;color:#c9a484}
+.si p{font-size:.8rem;color:#666;text-transform:uppercase;letter-spacing:2px;margin-top:.3rem}
+.sec{padding:5rem 2rem;max-width:1200px;margin:0 auto}
+.sh{text-align:center;margin-bottom:3rem}
+.sl{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:#c9a484;margin-bottom:1rem}
+.st{font-size:2.2rem;font-weight:800}
+.st span{color:#c9a484}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+.pc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;transition:all .3s;cursor:pointer}
+.pc:hover{transform:translateY(-4px);border-color:rgba(201,164,132,.4);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.ci{height:200px;background:linear-gradient(135deg,#1a1208,#2a1f10);position:relative;display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.2)}
+.cbadge{position:absolute;top:1rem;left:1rem;background:#c9a484;color:#000;padding:.25rem .75rem;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase}
+.cbody{padding:1.2rem}
+.cprice{font-size:1.4rem;font-weight:800;color:#c9a484;margin-bottom:.5rem}
+.ctitle{font-size:.95rem;font-weight:600;margin-bottom:.4rem}
+.cloc{font-size:.8rem;color:#666;margin-bottom:1rem}
+.cfeat{display:flex;gap:1rem;font-size:.8rem;color:#888}
+.es{text-align:center;padding:4rem 2rem;grid-column:1/-1}
+.es h3{color:#c9a484;font-size:1.5rem;margin-bottom:1rem}
+.es p{color:#666;margin-bottom:2rem}
+.bg{display:inline-block;background:#c9a484;color:#000;padding:.75rem 2rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.85rem;letter-spacing:1px;text-transform:uppercase}
+.cta{background:linear-gradient(135deg,rgba(201,164,132,.1),rgba(201,164,132,.03));border-top:1px solid rgba(201,164,132,.2);border-bottom:1px solid rgba(201,164,132,.2);padding:5rem 2rem;text-align:center}
+.cta h2{font-size:2.5rem;font-weight:900;margin-bottom:1rem}
+.cta > p{color:#888;margin-bottom:2.5rem;font-size:1.1rem}
+.cbtn{display:inline-block;background:#c9a484;color:#000;padding:1rem 2.5rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;margin:.5rem}
+.co{background:transparent;color:#c9a484;border:2px solid #c9a484}
+.co:hover{background:#c9a484;color:#000}
+footer{background:#050505;border-top:1px solid rgba(255,255,255,.05);padding:4rem 2rem 2rem;text-align:center}
+.flogo{font-size:1.8rem;font-weight:900;margin-bottom:1rem}
+.flogo span{color:#c9a484}
+.ftag{color:#444;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem}
+.flinks{display:flex;justify-content:center;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
+.flinks a{color:#555;text-decoration:none;font-size:.85rem}
+.flinks a:hover{color:#c9a484}
+.fdiv{height:1px;background:rgba(255,255,255,.05);margin-bottom:2rem}
+.fcopy{font-size:.75rem;color:#333}
+@media(max-width:768px){.nl{display:none}.sf-grid{grid-template-columns:1fr 1fr}.sf-grid .sbtn{grid-column:span 2}.sg{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
-
-  <!-- NAV -->
-  <nav>
-    <a href="/" class="nav-logo">Lomaz<span>Home</span></a>
-    <ul class="nav-links">
-      <li><a href="/propiedades.html">Propiedades</a></li>
-      <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-    </ul>
-    <a href="/login.html" class="nav-cta">Ingresar</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-pattern"></div>
-    <div class="hero-content">
-      <div class="hero-badge">🏠 Plataforma Inmobiliaria Premium</div>
-      <h1>Encuentra tu<br/><span>propiedad ideal</span><br/>en Colombia</h1>
-      <p>Miles de propiedades verificadas en todo el país. Conectamos compradores, arrendatarios y asesores de manera inteligente.</p>
-
-      <!-- SEARCH -->
-      <div class="search-box">
-        <div class="search-tabs">
-          <button class="search-tab active" onclick="setTipo('Venta',this)">Comprar</button>
-          <button class="search-tab" onclick="setTipo('Arriendo',this)">Arrendar</button>
-        </div>
-        <div class="search-fields">
-          <div class="search-field">
-            <label>Tipo de Propiedad</label>
-            <select id="s-tipo">
-              <option value="">Todos</option>
-              <option>Casa</option>
-              <option>Apartamento</option>
-              <option>Local Comercial</option>
-              <option>Oficina</option>
-              <option>Bodega</option>
-              <option>Lote</option>
-              <option>Finca</option>
-            </select>
-          </div>
-          <div class="search-field">
-            <label>Ciudad</label>
-            <select id="s-ciudad">
-              <option value="">Todas las ciudades</option>
-              <option>Bogotá</option>
-              <option>Medellín</option>
-              <option>Cali</option>
-              <option>Barranquilla</option>
-              <option>Cartagena</option>
-              <option>Bucaramanga</option>
-              <option>Pereira</option>
-            </select>
-          </div>
-          <div class="search-field">
-            <label>Precio Máximo</label>
-            <select id="s-precio">
-              <option value="">Sin límite</option>
-              <option value="200000000">$200M</option>
-              <option value="500000000">$500M</option>
-              <option value="1000000000">$1.000M</option>
-              <option value="2000000000">$2.000M</option>
-              <option value="5000000000">$5.000M</option>
-            </select>
-          </div>
-          <button class="search-btn" onclick="buscar()">🔍 Buscar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stats-grid">
-      <div class="stat-item"><h3 id="stat-props">-</h3><p>Propiedades</p></div>
-      <div class="stat-item"><h3>12</h3><p>Ciudades</p></div>
-      <div class="stat-item"><h3>98%</h3><p>Satisfacción</p></div>
-      <div class="stat-item"><h3>500+</h3><p>Asesores</p></div>
-    </div>
-  </div>
-
-  <!-- PROPIEDADES DESTACADAS -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-label">Selección curada</div>
-      <h2 class="section-title">Propiedades <span>Destacadas</span></h2>
-    </div>
-    <div id="properties-grid" class="properties-grid">
-      <div class="loading-grid">
-        <p>⏳ Cargando propiedades...</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="cta-section" id="contacto">
-    <h2>¿Eres <span style="color:#c9a484">asesor inmobiliario</span>?</h2>
-    <p>Gestiona tus propiedades, clientes y pipeline de ventas desde una sola plataforma</p>
-    <a href="/login.html" class="cta-btn">Comenzar Gratis</a>
-    <a href="#nosotros" class="cta-btn cta-btn-outline">Saber Más</a>
-  </div>
-
-  <!-- FOOTER -->
-  <footer id="nosotros">
-    <div class="footer-logo">Lomaz<span>Home</span></div>
-    <div class="footer-tagline">Plataforma Inmobiliaria de Colombia</div>
-    <div class="footer-links">
-      <a href="/propiedades.html">Propiedades</a>
-      <a href="/login.html">Asesores</a>
-      <a href="#contacto">Contacto</a>
-      <a href="#">Política de Privacidad</a>
-    </div>
-    <div class="footer-divider"></div>
-    <div class="footer-bottom">© 2025 Lomaz Home. Todos los derechos reservados.</div>
-  </footer>
-
-  <script>
-    const SUPABASE_URL = 'https://lniouebpuuuqctrgxoiw.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA';
-    const { createClient } = supabase;
-    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    let tipoNegocio = 'Venta';
-
-    function setTipo(tipo, btn) {
-      tipoNegocio = tipo;
-      document.querySelectorAll('.search-tab').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function buscar() {
-      const tipo = document.getElementById('s-tipo').value;
-      const ciudad = document.getElementById('s-ciudad').value;
-      const precio = document.getElementById('s-precio').value;
-      let url = '/propiedades.html?negocio=' + tipoNegocio;
-      if (tipo) url += '&tipo=' + encodeURIComponent(tipo);
-      if (ciudad) url += '&ciudad=' + encodeURIComponent(ciudad);
-      if (precio) url += '&precio=' + precio;
-      window.location.href = url;
-    }
-
-    function formatPrice(price) {
-      if (!price) return 'Precio a convenir';
-      if (price >= 1000000000) return '$' + (price/1000000000).toFixed(1) + ' Mil M';
-      if (price >= 1000000) return '$' + Math.round(price/1000000) + 'M';
-      return '$' + price.toLocaleString();
-    }
-
-    function getEmoji(tipo) {
-      const map = { 'Casa': '🏠', 'Apartamento': '🏢', 'Local Comercial': '🏪', 'Oficina': '🏛️', 'Bodega': '🏭', 'Lote': '🌿', 'Finca': '🌾' };
-      return map[tipo] || '🏠';
-    }
-
-    async function loadProperties() {
-      const grid = document.getElementById('properties-grid');
-      try {
-        const { data, error } = await db
-          .from('propiedades')
-          .select('id, titulo, tipo_propiedad, tipo_negocio, precio, ciudad, habitaciones, banos, area_construida, estado')
-          .eq('estado', 'Disponible')
-          .limit(6)
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        document.getElementById('stat-props').textContent = data.length > 0 ? data.length + '+' : '0';
-
-        if (!data || data.length === 0) {
-          grid.innerHTML = `
-            <div class="empty-state" style="grid-column:1/-1">
-              <h3>🏗️ Próximamente</h3>
-              <p>Estamos cargando las primeras propiedades. Vuelve pronto o ingresa como asesor para agregar propiedades.</p>
-              <a href="/login.html" class="cta-btn" style="display:inline-block">Ingresar como Asesor</a>
-            </div>`;
-          return;
-        }
-
-        grid.innerHTML = data.map(p => `
-          <div class="property-card" onclick="window.location='/propiedad.html?id=${p.id}'">
-            <div class="card-img">
-              <div class="card-img-placeholder">${getEmoji(p.tipo_propiedad)}</div>
-              <div class="card-badge">${p.tipo_negocio || 'Venta'}</div>
-            </div>
-            <div class="card-body">
-              <div class="card-price">${formatPrice(p.precio)}</div>
-              <div class="card-title">${p.titulo || p.tipo_propiedad}</div>
-              <div class="card-location">📍 ${p.ciudad || 'Colombia'}</div>
-              <div class="card-features">
-                ${p.habitaciones ? `<div class="card-feat">🛏️ ${p.habitaciones} hab</div>` : ''}
-                ${p.banos ? `<div class="card-feat">🚿 ${p.banos} baños</div>` : ''}
-                ${p.area_construida ? `<div class="card-feat">📐 ${p.area_construida}m²</div>` : ''}
-              </div>
-            </div>
-          </div>
-        `).join('');
-
-      } catch (err) {
-        console.log('Supabase:', err.message);
-        grid.innerHTML = `
-          <div class="empty-state" style="grid-column:1/-1">
-            <h3>🏗️ Cargando...</h3>
-            <p>Conectando con la base de datos. Si persiste, configura las políticas RLS en Supabase.</p>
-          </div>`;
-      }
-    }
-
-    loadProperties();
-  </script>
+<nav>
+<a href="/" class="logo">Lomaz<span>Home</span></a>
+<ul class="nl">
+<li><a href="/propiedades.html">Propiedades</a></li>
+<li><a href="#nosotros">Nosotros</a></li>
+<li><a href="#contacto">Contacto</a></li>
+</ul>
+<a href="/login.html" class="ncta">Ingresar</a>
+</nav>
+<section class="hero">
+<div class="hbg"></div>
+<div class="hc">
+<div class="badge">Plataforma Inmobiliaria Premium</div>
+<h1>Encuentra tu<br><span>propiedad ideal</span><br>en Colombia</h1>
+<p>Miles de propiedades verificadas. Conectamos compradores, arrendatarios y asesores.</p>
+<div class="sbox">
+<div class="stabs">
+<button class="stab on" onclick="setT('Venta',this)">Comprar</button>
+<button class="stab" onclick="setT('Arriendo',this)">Arrendar</button>
+</div>
+<div class="sf-grid">
+<div class="sf"><label>Tipo</label><select id="st"><option value="">Todos</option><option>Casa</option><option>Apartamento</option><option>Local Comercial</option><option>Oficina</option><option>Lote</option></select></div>
+<div class="sf"><label>Ciudad</label><select id="sc"><option value="">Todas</option><option>Bogota</option><option>Medellin</option><option>Cali</option><option>Barranquilla</option><option>Cartagena</option></select></div>
+<div class="sf"><label>Precio Max</label><select id="sp"><option value="">Sin limite</option><option value="200000000">$200M</option><option value="500000000">$500M</option><option value="1000000000">$1.000M</option><option value="2000000000">$2.000M</option></select></div>
+<button class="sbtn" onclick="buscar()">Buscar</button>
+</div>
+</div>
+</div>
+</section>
+<div class="stats">
+<div class="sg">
+<div class="si"><h3 id="sp2">0</h3><p>Propiedades</p></div>
+<div class="si"><h3>12</h3><p>Ciudades</p></div>
+<div class="si"><h3>98%</h3><p>Satisfaccion</p></div>
+<div class="si"><h3>500+</h3><p>Asesores</p></div>
+</div>
+</div>
+<div class="sec">
+<div class="sh"><div class="sl">Seleccion curada</div><h2 class="st">Propiedades <span>Destacadas</span></h2></div>
+<div id="pg" class="pg"><div class="es"><p>Cargando...</p></div></div>
+</div>
+<div class="cta" id="contacto">
+<h2>Eres <span style="color:#c9a484">asesor inmobiliario</span>?</h2>
+<p>Gestiona propiedades, clientes y pipeline desde una sola plataforma</p>
+<a href="/login.html" class="cbtn">Comenzar Gratis</a>
+<a href="#nosotros" class="cbtn co">Saber Mas</a>
+</div>
+<footer id="nosotros">
+<div class="flogo">Lomaz<span>Home</span></div>
+<div class="ftag">Plataforma Inmobiliaria de Colombia</div>
+<div class="flinks"><a href="/propiedades.html">Propiedades</a><a href="/login.html">Asesores</a><a href="#contacto">Contacto</a></div>
+<div class="fdiv"></div>
+<div class="fcopy">2025 Lomaz Home. Todos los derechos reservados.</div>
+</footer>
+<script>
+const SU="https://lniouebpuuuqctrgxoiw.supabase.co",SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+const {createClient}=supabase;
+const db=createClient(SU,SK);
+let tn="Venta";
+function setT(t,b){tn=t;document.querySelectorAll(".stab").forEach(x=>x.classList.remove("on"));b.classList.add("on")}
+function buscar(){let u="/propiedades.html?negocio="+tn;const t=document.getElementById("st").value;const c=document.getElementById("sc").value;const p=document.getElementById("sp").value;if(t)u+="&tipo="+encodeURIComponent(t);if(c)u+="&ciudad="+encodeURIComponent(c);if(p)u+="&precio="+p;window.location.href=u}
+function fmt(p){if(!p)return"Precio a convenir";if(p>=1e9)return"$"+(p/1e9).toFixed(1)+" Mil M";if(p>=1e6)return"$"+Math.round(p/1e6)+"M";return"$"+p.toLocaleString()}
+async function load(){
+const g=document.getElementById("pg");
+try{
+const {data,error}=await db.from("propiedades").select("id,titulo,tipo_propiedad,tipo_negocio,precio,ciudad,habitaciones,banos,area_construida").eq("estado","Disponible").limit(6).order("created_at",{ascending:false});
+if(error)throw error;
+document.getElementById("sp2").textContent=(data&&data.length)?data.length+"+":"0";
+if(!data||!data.length){g.innerHTML='<div class="es"><h3>Proximas propiedades</h3><p>Ingresa como asesor para agregar propiedades al inventario.</p><a href="/login.html" class="bg">Ingresar como Asesor</a></div>';return}
+g.innerHTML=data.map(p=>'<div class="pc" onclick="location.href=\"/propiedad.html?id='+p.id+'\"">'+'<div class="ci">&#127968;<div class="cbadge">'+(p.tipo_negocio||"Venta")+'</div></div>'+'<div class="cbody"><div class="cprice">'+fmt(p.precio)+'</div><div class="ctitle">'+(p.titulo||p.tipo_propiedad)+'</div><div class="cloc">&#128205; '+(p.ciudad||"Colombia")+'</div><div class="cfeat">'+(p.habitaciones?'<span>'+p.habitaciones+' hab</span>':'')+'</div></div></div>').join("");
+}catch(e){g.innerHTML='<div class="es"><h3>Conectando...</h3><p>Si persiste, configura politicas RLS en Supabase.</p></div>'}
+}
+load();
+</script>
 </body>
 </html>
