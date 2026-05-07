@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Detalle Propiedad | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff}
+nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(201,164,132,.2);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.4rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.nl{display:flex;gap:2rem;list-style:none}
+.nl a{color:#ccc;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.nl a:hover{color:#c9a484}
+.ncta{background:#c9a484;color:#000;padding:.5rem 1.2rem;border-radius:4px;font-weight:700;font-size:.75rem;text-decoration:none}
+.page{padding:90px 0 4rem;max-width:1200px;margin:0 auto}
+.breadcrumb{padding:1rem 2rem;font-size:.75rem;color:#555}
+.breadcrumb a{color:#c9a484;text-decoration:none}
+.breadcrumb span{margin:0 .5rem}
+.hero-gallery{background:#111;height:420px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:0 2rem;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+.gallery-main{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6rem;color:rgba(255,255,255,.1)}
+.gallery-badge{position:absolute;top:1.5rem;left:1.5rem;background:#c9a484;color:#000;padding:.4rem 1rem;border-radius:6px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.gallery-ref{position:absolute;top:1.5rem;right:1.5rem;background:rgba(0,0,0,.7);color:#c9a484;padding:.4rem 1rem;border-radius:6px;font-size:.75rem;font-weight:600;border:1px solid rgba(201,164,132,.3)}
+.content{display:grid;grid-template-columns:1fr 360px;gap:2rem;padding:2rem}
+.main-col{}
+.price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap}
+.price{font-size:2.2rem;font-weight:900;color:#c9a484}
+.neg-badge{background:rgba(201,164,132,.15);color:#c9a484;border:1px solid rgba(201,164,132,.3);padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;text-transform:uppercase}
+.prop-title{font-size:1.4rem;font-weight:700;margin-bottom:.5rem;line-height:1.3}
+.prop-loc{font-size:.9rem;color:#666;margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem}
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1.5rem}
+.feat-item{text-align:center}
+.feat-icon{font-size:1.6rem;margin-bottom:.4rem}
+.feat-val{font-size:1rem;font-weight:700;color:#fff}
+.feat-label{font-size:.7rem;color:#666;text-transform:uppercase;letter-spacing:1px;margin-top:.2rem}
+.section-title{font-size:1rem;font-weight:700;color:#c9a484;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(201,164,132,.2)}
+.desc-text{color:#aaa;line-height:1.8;font-size:.9rem;margin-bottom:2rem}
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:2rem}
+.detail-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center}
+.detail-label{font-size:.75rem;color:#666;text-transform:uppercase;letter-spacing:1px}
+.detail-val{font-size:.85rem;font-weight:600;color:#fff}
+.map-container{height:300px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08);margin-bottom:2rem}
+.sidebar{}
+.contact-card{background:rgba(255,255,255,.04);border:1px solid rgba(201,164,132,.2);border-radius:12px;padding:1.5rem;position:sticky;top:90px}
+.contact-title{font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.contact-sub{font-size:.8rem;color:#666;margin-bottom:1.5rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none;resize:vertical}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#c9a484}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#444}
+.btn-contact{width:100%;background:#c9a484;color:#000;border:none;border-radius:6px;padding:.9rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:background .3s;margin-top:.5rem}
+.btn-contact:hover{background:#b8906e}
+.btn-contact:disabled{background:#444;color:#777;cursor:not-allowed}
+.msg-ok{display:none;background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.3);color:#00c864;padding:.8rem;border-radius:6px;text-align:center;font-size:.82rem;margin-top:.8rem}
+.msg-err{display:none;background:rgba(255,50,50,.1);border:1px solid rgba(255,50,50,.3);color:#ff6b6b;padding:.8rem;border-radius:6px;text-align:center;font-size:.82rem;margin-top:.8rem}
+.whatsapp-btn{width:100%;background:#25d366;color:#fff;border:none;border-radius:6px;padding:.8rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none}
+.whatsapp-btn:hover{background:#1da851}
+.loading-state{text-align:center;padding:8rem 2rem;color:#666}
+.loading-state h2{color:#c9a484;margin-bottom:1rem}
+.not-found{text-align:center;padding:8rem 2rem}
+.not-found h2{color:#c9a484;margin-bottom:1rem}
+.not-found a{color:#c9a484}
+@media(max-width:900px){.content{grid-template-columns:1fr}.features-grid{grid-template-columns:repeat(2,1fr)}.contact-card{position:static}.nl{display:none}.details-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+<a href="/" class="logo">Lomaz<span>Home</span></a>
+<ul class="nl">
+<li><a href="/">Inicio</a></li>
+<li><a href="/propiedades.html">Propiedades</a></li>
+</ul>
+<a href="/login.html" class="ncta">Ingresar</a>
+</nav>
+<div id="app" class="page">
+<div class="loading-state"><h2>Cargando propiedad...</h2><p>Obteniendo informacion...</p></div>
+</div>
+<script>
+const SU="https://lniouebpuuuqctrgxoiw.supabase.co",SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+const {createClient}=supabase;
+const db=createClient(SU,SK);
+function fmt(p){if(!p)return"Precio a convenir";if(p>=1e9)return"$"+(p/1e9).toFixed(1)+" Mil M";if(p>=1e6)return"$"+Math.round(p/1e6)+"M";return"$"+p.toLocaleString()}
+function icon(t){const m={"Casa":"&#127968;","Apartamento":"&#127963;","Local Comercial":"&#127978;","Oficina":"&#127970;","Bodega":"&#127979;","Lote":"&#127807;","Finca":"&#127806;"};return m[t]||"&#127968;"}
+function val(v,suffix){return(v!==null&&v!==undefined&&v!=="")?v+(suffix||""):"N/A"}
+async function loadProp(){
+const params=new URLSearchParams(window.location.search);
+const id=params.get("id");
+const app=document.getElementById("app");
+if(!id){app.innerHTML='<div class="not-found"><h2>Propiedad no encontrada</h2><p>No se especifico un ID valido. <a href="/propiedades.html">Ver todas las propiedades</a></p></div>';return}
+try{
+const{data:p,error}=await db.from("propiedades").select("*").eq("id",id).single();
+if(error||!p){app.innerHTML='<div class="not-found"><h2>Propiedad no encontrada</h2><p>Esta propiedad no existe o fue eliminada. <a href="/propiedades.html">Ver otras propiedades</a></p></div>';return}
+document.title=(p.titulo||p.tipo_propiedad||"Propiedad")+" | Lomaz Home";
+const lat=p.latitud||4.7110;
+const lng=p.longitud||-74.0721;
+app.innerHTML=
+`<div class="breadcrumb"><a href="/">Inicio</a><span>›</span><a href="/propiedades.html">Propiedades</a><span>›</span>${p.titulo||p.tipo_propiedad||"Propiedad"}</div>
+<div class="hero-gallery">
+<div class="gallery-main">${icon(p.tipo_propiedad)}</div>
+<div class="gallery-badge">${p.tipo_negocio||"Venta"}</div>
+${p.codigo_interno?`<div class="gallery-ref">REF: ${p.codigo_interno}</div>`:""}
+</div>
+<div class="content">
+<div class="main-col">
+<div class="price-row">
+<div class="price">${fmt(p.precio)}</div>
+${p.canon_administracion?`<div class="neg-badge">Adm: ${fmt(p.canon_administracion)}/mes</div>`:""}
+</div>
+<div class="prop-title">${p.titulo||((p.tipo_propiedad||"Propiedad")+" en "+(p.tipo_negocio||"Venta"))}</div>
+<div class="prop-loc">&#128205; ${[p.barrio,p.ciudad,p.departamento].filter(Boolean).join(", ")||"Colombia"}</div>
+<div class="features-grid">
+<div class="feat-item"><div class="feat-icon">&#127968;</div><div class="feat-val">${val(p.habitaciones)}</div><div class="feat-label">Habitaciones</div></div>
+<div class="feat-item"><div class="feat-icon">&#128704;</div><div class="feat-val">${val(p.banos)}</div><div class="feat-label">Banos</div></div>
+<div class="feat-item"><div class="feat-icon">&#128663;</div><div class="feat-val">${val(p.garajes)}</div><div class="feat-label">Garajes</div></div>
+<div class="feat-item"><div class="feat-icon">&#128207;</div><div class="feat-val">${val(p.area_construida,"m2")}</div><div class="feat-label">Area</div></div>
+</div>
+<div class="section-title">Descripcion</div>
+<div class="desc-text">${p.descripcion||"Sin descripcion disponible para esta propiedad."}</div>
+<div class="section-title">Caracteristicas</div>
+<div class="details-grid">
+<div class="detail-item"><span class="detail-label">Tipo</span><span class="detail-val">${val(p.tipo_propiedad)}</span></div>
+<div class="detail-item"><span class="detail-label">Negocio</span><span class="detail-val">${val(p.tipo_negocio)}</span></div>
+<div class="detail-item"><span class="detail-label">Estrato</span><span class="detail-val">${val(p.estrato)}</span></div>
+<div class="detail-item"><span class="detail-label">Piso</span><span class="detail-val">${val(p.piso)}</span></div>
+<div class="detail-item"><span class="detail-label">Area construida</span><span class="detail-val">${val(p.area_construida,"m2")}</span></div>
+<div class="detail-item"><span class="detail-label">Area privada</span><span class="detail-val">${val(p.area_privada,"m2")}</span></div>
+<div class="detail-item"><span class="detail-label">Antiguedad</span><span class="detail-val">${val(p.antiguedad)} anos</span></div>
+<div class="detail-item"><span class="detail-label">Estado</span><span class="detail-val">${val(p.estado_propiedad||p.estado)}</span></div>
+</div>`,
+`<div class="section-title">Ubicacion</div>
+<div id="map" class="map-container"></div>`,
+`</div>`,
+`<div class="sidebar">
+<div class="contact-card">
+<div class="contact-title">Solicitar Informacion</div>
+<div class="contact-sub">Uno de nuestros asesores te contactara</div>
+<div class="form-group"><label>Nombre *</label><input type="text" id="l-nombre" placeholder="Tu nombre completo"/></div>
+<div class="form-group"><label>Telefono *</label><input type="tel" id="l-tel" placeholder="Ej: 3001234567"/></div>
+<div class="form-group"><label>Email</label><input type="email" id="l-email" placeholder="tu@email.com"/></div>
+<div class="form-group"><label>Mensaje</label><textarea id="l-msg" rows="3" placeholder="Escribeme aqui..."></textarea></div>
+<button class="btn-contact" onclick="enviarLead('${p.id}','${p.titulo||p.tipo_propiedad||"Propiedad"}','${p.asesor_id||""}')">Solicitar Informacion</button>
+<a href="https://wa.me/57${p.telefono_contacto||"3000000000"}?text=Hola,%20me%20interesa%20la%20propiedad%20${encodeURIComponent(p.titulo||p.tipo_propiedad||"Propiedad")}%20en%20Lomaz%20Home" target="_blank" class="whatsapp-btn">&#128172; WhatsApp</a>
+<div id="msg-ok" class="msg-ok">Solicitud enviada. Te contactaremos pronto.</div>
+<div id="msg-err" class="msg-err">Error al enviar. Intenta de nuevo.</div>
+</div>
+</div>`,
+`</div></div>`;
+// Init map
+setTimeout(()=>{
+const mapEl=document.getElementById("map");
+if(mapEl&&typeof L!=="undefined"){
+const map=L.map("map").setView([lat,lng],15);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"OpenStreetMap"}).addTo(map);
+L.marker([lat,lng]).addTo(map).bindPopup(p.titulo||p.tipo_propiedad||"Propiedad").openPopup();
+}
+},500);
+}catch(e){app.innerHTML=`<div class="not-found"><h2>Error</h2><p>${e.message}</p><p><a href="/propiedades.html">Volver a propiedades</a></p></div>`}
+}
+async function enviarLead(propId,propTitulo,asesorId){
+const nombre=document.getElementById("l-nombre").value.trim();
+const tel=document.getElementById("l-tel").value.trim();
+const email=document.getElementById("l-email").value.trim();
+const msg=document.getElementById("l-msg").value.trim();
+const ok=document.getElementById("msg-ok");
+const err=document.getElementById("msg-err");
+const btn=document.querySelector(".btn-contact");
+if(!nombre||!tel){err.textContent="Nombre y telefono son obligatorios.";err.style.display="block";ok.style.display="none";return}
+btn.disabled=true;btn.textContent="Enviando...";
+try{
+const{error}=await db.from("leads").insert({
+nombre_contacto:nombre,
+telefono:tel,
+email:email||null,
+mensaje:msg||("Me interesa la propiedad: "+propTitulo),
+propiedad_id:propId,
+asesor_id:asesorId||null,
+estado:"Nuevo",
+fuente:"Web"
+});
+if(error)throw error;
+ok.style.display="block";err.style.display="none";
+btn.textContent="Solicitud Enviada";
+["l-nombre","l-tel","l-email","l-msg"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});
+}catch(e){
+err.textContent="Error: "+e.message;err.style.display="block";ok.style.display="none";
+btn.disabled=false;btn.textContent="Solicitar Informacion";
+}
+}
+loadProp();
+</script>
+</body>
+</html>
