@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mi Perfil | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+.logo{font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.user-info{display:flex;align-items:center;gap:12px}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c9a484,#a07850);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;overflow:hidden}
+.user-avatar img{width:100%;height:100%;object-fit:cover}
+.user-email{font-size:.78rem;color:#888}
+.btn-logout{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;transition:all .2s}
+.btn-logout:hover{background:rgba(255,80,80,.15);border-color:rgba(255,80,80,.3);color:#ff6060}
+.layout{display:flex;min-height:100vh;padding-top:56px}
+.sidebar{width:230px;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.06);padding:20px 0;position:fixed;top:56px;bottom:0;overflow-y:auto}
+.sidebar-section{padding:8px 16px 4px;font-size:.65rem;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 20px;color:#aaa;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+.sidebar a:hover{color:#fff;background:rgba(255,255,255,.05)}
+.sidebar a.active{color:#c9a484;background:rgba(201,164,132,.07);border-left-color:#c9a484}
+.sidebar a .icon{width:18px;text-align:center;font-size:1rem}
+.content{margin-left:230px;flex:1;padding:28px;max-width:900px}
+.page-header{margin-bottom:28px}
+.page-header h1{font-size:1.5rem;font-weight:700}
+.page-header p{color:#666;font-size:.85rem;margin-top:4px}
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:4px}
+.tab-btn{flex:1;padding:9px 16px;background:transparent;border:none;color:#666;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.82rem;font-weight:600;border-radius:7px;transition:all .2s}
+.tab-btn.active{background:rgba(201,164,132,.15);color:#c9a484}
+.tab-btn:hover:not(.active){color:#aaa;background:rgba(255,255,255,.04)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:24px;margin-bottom:20px}
+.card h3{font-size:.95rem;font-weight:700;margin-bottom:18px;color:#ddd;display:flex;align-items:center;gap:8px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:.75rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em}
+.form-group input,.form-group select,.form-group textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;transition:border-color .2s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(201,164,132,.5);background:rgba(201,164,132,.04)}
+.form-group select option{background:#1a1a1a}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-group input[readonly]{opacity:.5;cursor:not-allowed}
+.avatar-section{display:flex;align-items:center;gap:24px;margin-bottom:20px}
+.avatar-big{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#c9a484,#a07850);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;overflow:hidden;border:3px solid rgba(201,164,132,.3);flex-shrink:0}
+.avatar-big img{width:100%;height:100%;object-fit:cover}
+.avatar-info h4{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.avatar-info p{font-size:.75rem;color:#666;margin-bottom:10px}
+.btn-upload{background:rgba(201,164,132,.1);border:1px solid rgba(201,164,132,.3);color:#c9a484;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s;display:inline-block}
+.btn-upload:hover{background:rgba(201,164,132,.2)}
+.btn-primary{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:11px 24px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:700;transition:all .2s;margin-top:6px}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-secondary{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:11px 24px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:600;transition:all .2s;margin-top:6px;margin-right:8px}
+.btn-secondary:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-danger{background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.25);color:#ff6060;padding:11px 24px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:600;transition:all .2s;margin-top:6px}
+.btn-danger:hover{background:rgba(255,60,60,.15)}
+.alert{padding:11px 16px;border-radius:8px;font-size:.82rem;font-weight:600;margin-bottom:14px;display:none}
+.alert.success{background:rgba(76,175,80,.12);border:1px solid rgba(76,175,80,.3);color:#81c784}
+.alert.error{background:rgba(255,82,82,.12);border:1px solid rgba(255,82,82,.3);color:#ff8080}
+.alert.show{display:block}
+.social-row{display:flex;align-items:center;gap:10px}
+.social-prefix{font-size:.8rem;color:#555;white-space:nowrap;min-width:90px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-mini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;text-align:center}
+.stat-mini .val{font-size:1.5rem;font-weight:700;color:#c9a484}
+.stat-mini .lbl{font-size:.7rem;color:#666;margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+.pwd-strength{height:4px;border-radius:2px;margin-top:6px;background:#222;overflow:hidden}
+.pwd-strength-bar{height:100%;border-radius:2px;transition:width .3s,background .3s;width:0}
+.pwd-hint{font-size:.7rem;color:#555;margin-top:4px}
+@media(max-width:768px){.sidebar{display:none}.content{margin-left:0}.form-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">Lomaz <span>Home</span></a>
+  <div class="user-info">
+    <div class="user-avatar" id="topAvatar"><span id="topInitial">?</span></div>
+    <div><div id="topEmail" class="user-email">Cargando...</div><div style="font-size:.7rem;color:#555">Asesor Inmobiliario</div></div>
+    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+  </div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">Principal</div>
+  <a href="dashboard.html"><span class="icon">🏠</span>Dashboard</a>
+  <a href="propiedades.html"><span class="icon">🏢</span>Ver Propiedades</a>
+  <div class="sidebar-section">Mis Herramientas</div>
+  <a href="agregar-propiedad.html"><span class="icon">➕</span>Agregar Propiedad</a>
+  <a href="mis-propiedades.html"><span class="icon">📋</span>Mis Propiedades</a>
+  <a href="leads.html"><span class="icon">🎯</span>Leads</a>
+  <a href="clientes.html"><span class="icon">👥</span>Clientes</a>
+  <a href="pipeline.html"><span class="icon">📊</span>Pipeline de Ventas</a>
+  <div class="sidebar-section">Análisis</div>
+  <a href="calculadora.html"><span class="icon">🧮</span>Calculadora</a>
+  <div class="sidebar-section">Cuenta</div>
+  <a href="perfil-asesor.html" class="active"><span class="icon">⚙️</span>Mi Perfil</a>
+  <a href="index.html"><span class="icon">🌐</span>Ver Sitio Web</a>
+</nav>
+<main class="content">
+  <div class="page-header">
+    <h1>⚙️ Mi Perfil</h1>
+    <p>Gestiona tu información personal, profesional y configuración de cuenta.</p>
+  </div>
+  <div id="globalAlert" class="alert"></div>
+  <div class="stats-row">
+    <div class="stat-mini"><div class="val" id="stProp">-</div><div class="lbl">Propiedades</div></div>
+    <div class="stat-mini"><div class="val" id="stLeads">-</div><div class="lbl">Leads</div></div>
+    <div class="stat-mini"><div class="val" id="stClientes">-</div><div class="lbl">Clientes</div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('info')">👤 Información Personal</button>
+    <button class="tab-btn" onclick="showTab('pro')">🏆 Perfil Profesional</button>
+    <button class="tab-btn" onclick="showTab('seg')">🔒 Seguridad</button>
+  </div>
+  <!-- TAB 1: Informacion Personal -->
+  <div id="tab-info" class="tab-panel active">
+    <div class="card">
+      <h3>📷 Foto de Perfil</h3>
+      <div class="avatar-section">
+        <div class="avatar-big" id="bigAvatar"><span id="bigInitial">?</span></div>
+        <div class="avatar-info">
+          <h4 id="profileName">Tu Nombre</h4>
+          <p>JPG o PNG · Máx 2MB · Recomendado 200x200px</p>
+          <label class="btn-upload" for="fotoInput">📤 Cambiar foto</label>
+          <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="uploadFoto(this)"/>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 Datos Personales</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre *</label><input type="text" id="pNombre" placeholder="Tu nombre" /></div>
+        <div class="form-group"><label>Apellido *</label><input type="text" id="pApellido" placeholder="Tu apellido" /></div>
+        <div class="form-group"><label>Teléfono</label><input type="tel" id="pTelefono" placeholder="+57 300 000 0000" /></div>
+        <div class="form-group"><label>WhatsApp</label><input type="tel" id="pWhatsapp" placeholder="+57 300 000 0000" /></div>
+        <div class="form-group"><label>Correo (cuenta)</label><input type="email" id="pEmail" readonly /></div>
+        <div class="form-group"><label>Ciudad</label><input type="text" id="pCiudad" placeholder="Bogotá, Medellín..." /></div>
+        <div class="form-group full"><label>Dirección de oficina</label><input type="text" id="pDireccion" placeholder="Dirección de tu oficina o agencia" /></div>
+      </div>
+      <div style="margin-top:18px">
+        <button class="btn-primary" onclick="saveInfo()">💾 Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+  <!-- TAB 2: Perfil Profesional -->
+  <div id="tab-pro" class="tab-panel">
+    <div class="card">
+      <h3>🏆 Información Profesional</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Agencia / Empresa</label><input type="text" id="pAgencia" placeholder="Lomaz Home, Century 21..." /></div>
+        <div class="form-group"><label>Cargo / Título</label><input type="text" id="pCargo" placeholder="Asesor Inmobiliario Senior" /></div>
+        <div class="form-group"><label>Años de experiencia</label><input type="number" id="pExperiencia" placeholder="5" min="0" max="60" /></div>
+        <div class="form-group"><label>Licencia / Registro</label><input type="text" id="pLicencia" placeholder="N° de matrícula o registro" /></div>
+        <div class="form-group"><label>Zona de trabajo principal</label><input type="text" id="pZona" placeholder="Norte de Bogotá, Chapinero..." /></div>
+        <div class="form-group"><label>Especialidad</label><select id="pEspecialidad"><option value="">Selecciona...</option><option>Residencial</option><option>Comercial</option><option>Industrial</option><option>Proyectos nuevos</option><option>Arriendo</option><option>Inversión</option></select></div>
+        <div class="form-group full"><label>Descripción profesional (bio)</label><textarea id="pBio" rows="3" placeholder="Cuéntale a tus clientes quién eres, tu experiencia y en qué te especializas..."></textarea></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🌐 Redes Sociales y Portales</h3>
+      <div class="form-grid single">
+        <div class="form-group">
+          <label>Instagram</label>
+          <div class="social-row"><span class="social-prefix">instagram.com/</span><input type="text" id="pInstagram" placeholder="tu_usuario" style="flex:1" /></div>
+        </div>
+        <div class="form-group">
+          <label>Facebook</label>
+          <div class="social-row"><span class="social-prefix">facebook.com/</span><input type="text" id="pFacebook" placeholder="tu_pagina" style="flex:1" /></div>
+        </div>
+        <div class="form-group">
+          <label>LinkedIn</label>
+          <div class="social-row"><span class="social-prefix">linkedin.com/in/</span><input type="text" id="pLinkedin" placeholder="tu_perfil" style="flex:1" /></div>
+        </div>
+        <div class="form-group">
+          <label>Sitio Web personal</label>
+          <input type="url" id="pWebsite" placeholder="https://tu-sitio.com" />
+        </div>
+      </div>
+      <div style="margin-top:18px">
+        <button class="btn-primary" onclick="savePro()">💾 Guardar Perfil Profesional</button>
+      </div>
+    </div>
+  </div>
+  <!-- TAB 3: Seguridad -->
+  <div id="tab-seg" class="tab-panel">
+    <div class="card">
+      <h3>🔑 Cambiar Contraseña</h3>
+      <div id="alertSeg" class="alert"></div>
+      <div class="form-grid single">
+        <div class="form-group"><label>Nueva contraseña</label><input type="password" id="newPass" placeholder="Mínimo 8 caracteres" oninput="checkPwd(this.value)" /></div>
+        <div class="pwd-strength"><div class="pwd-strength-bar" id="pwdBar"></div></div>
+        <p class="pwd-hint" id="pwdHint">Ingresa una contraseña nueva</p>
+        <div class="form-group"><label>Confirmar nueva contraseña</label><input type="password" id="confirmPass" placeholder="Repite la contraseña" /></div>
+      </div>
+      <div style="margin-top:18px">
+        <button class="btn-primary" onclick="changePassword()">🔒 Actualizar Contraseña</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📧 Información de Cuenta</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Correo electrónico (login)</label><input type="email" id="accountEmail" readonly /></div>
+        <div class="form-group"><label>Fecha de registro</label><input type="text" id="accountCreated" readonly /></div>
+        <div class="form-group"><label>ID de usuario</label><input type="text" id="accountId" readonly style="font-size:.7rem" /></div>
+        <div class="form-group"><label>Último acceso</label><input type="text" id="accountLastLogin" readonly /></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#ff8080">⚠️ Zona de Peligro</h3>
+      <p style="font-size:.82rem;color:#666;margin-bottom:14px">Estas acciones son irreversibles. Procede con cuidado.</p>
+      <button class="btn-danger" onclick="signOutAll()">🚪 Cerrar sesión en todos los dispositivos</button>
+    </div>
+  </div>
+</main>
+</div>
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let currentUser=null;
+let currentProfile=null;
+
+function showTab(t){
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+t).classList.add("active");
+  event.target.classList.add("active");
+}
+
+function showAlert(msg,type,id){
+  const el=document.getElementById(id||"globalAlert");
+  el.textContent=msg;
+  el.className="alert "+type+" show";
+  setTimeout(()=>{el.classList.remove("show");},4000);
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  window.location.href="login.html";
+}
+
+async function signOutAll(){
+  if(!confirm("¿Cerrar sesión en todos los dispositivos?"))return;
+  await sb.auth.signOut({scope:"global"});
+  window.location.href="login.html";
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  currentUser=session.user;
+  const email=currentUser.email;
+  const initial=email.charAt(0).toUpperCase();
+  document.getElementById("topEmail").textContent=email;
+  document.getElementById("topInitial").textContent=initial;
+  document.getElementById("bigInitial").textContent=initial;
+  document.getElementById("pEmail").value=email;
+  document.getElementById("accountEmail").value=email;
+  document.getElementById("accountId").value=currentUser.id;
+  const created=new Date(currentUser.created_at).toLocaleDateString("es-CO",{year:"numeric",month:"long",day:"numeric"});
+  document.getElementById("accountCreated").value=created;
+  const lastLogin=currentUser.last_sign_in_at?new Date(currentUser.last_sign_in_at).toLocaleString("es-CO"):"N/A";
+  document.getElementById("accountLastLogin").value=lastLogin;
+  await Promise.all([loadProfile(),loadStats()]);
+}
+
+async function loadStats(){
+  const uid=currentUser.id;
+  const [{count:cP},{count:cL},{count:cC}]=await Promise.all([
+    sb.from("propiedades").select("*",{count:"exact",head:true}).eq("asesor_id",uid),
+    sb.from("leads").select("*",{count:"exact",head:true}).eq("asesor_id",uid),
+    sb.from("clientes").select("*",{count:"exact",head:true}).eq("asesor_id",uid)
+  ]);
+  document.getElementById("stProp").textContent=cP||0;
+  document.getElementById("stLeads").textContent=cL||0;
+  document.getElementById("stClientes").textContent=cC||0;
+}
+
+async function loadProfile(){
+  const {data,error}=await sb.from("asesores").select("*").eq("user_id",currentUser.id).single();
+  if(error||!data)return;
+  currentProfile=data;
+  const n=(data.nombre||"")+" "+(data.apellido||"");
+  document.getElementById("profileName").textContent=n.trim()||currentUser.email;
+  if(data.foto_url){
+    document.getElementById("bigAvatar").innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
+    document.getElementById("topAvatar").innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
+  }
+  // Info personal
+  const fields={pNombre:"nombre",pApellido:"apellido",pTelefono:"telefono",pWhatsapp:"whatsapp",pCiudad:"ciudad",pDireccion:"direccion"};
+  Object.entries(fields).forEach(([id,key])=>{if(data[key])document.getElementById(id).value=data[key];});
+  // Info profesional
+  const proFields={pAgencia:"agencia",pCargo:"cargo",pExperiencia:"anos_experiencia",pLicencia:"licencia",pZona:"zona_trabajo",pEspecialidad:"especialidad",pBio:"bio",pInstagram:"instagram",pFacebook:"facebook",pLinkedin:"linkedin",pWebsite:"website"};
+  Object.entries(proFields).forEach(([id,key])=>{if(data[key]!==undefined&&data[key]!==null){const el=document.getElementById(id);if(el)el.value=data[key];}});
+}
+
+async function saveInfo(){
+  const nombre=document.getElementById("pNombre").value.trim();
+  const apellido=document.getElementById("pApellido").value.trim();
+  if(!nombre){showAlert("El nombre es obligatorio","error");return;}
+  const payload={
+    user_id:currentUser.id,
+    nombre,
+    apellido,
+    telefono:document.getElementById("pTelefono").value.trim(),
+    whatsapp:document.getElementById("pWhatsapp").value.trim(),
+    ciudad:document.getElementById("pCiudad").value.trim(),
+    direccion:document.getElementById("pDireccion").value.trim(),
+    updated_at:new Date().toISOString()
+  };
+  const {error}=await sb.from("asesores").upsert(payload,{onConflict:"user_id"});
+  if(error){showAlert("Error: "+error.message,"error");return;}
+  document.getElementById("profileName").textContent=(nombre+" "+apellido).trim();
+  showAlert("✅ Información personal guardada correctamente","success");
+}
+
+async function savePro(){
+  const payload={
+    user_id:currentUser.id,
+    agencia:document.getElementById("pAgencia").value.trim(),
+    cargo:document.getElementById("pCargo").value.trim(),
+    anos_experiencia:parseInt(document.getElementById("pExperiencia").value)||null,
+    licencia:document.getElementById("pLicencia").value.trim(),
+    zona_trabajo:document.getElementById("pZona").value.trim(),
+    especialidad:document.getElementById("pEspecialidad").value,
+    bio:document.getElementById("pBio").value.trim(),
+    instagram:document.getElementById("pInstagram").value.trim(),
+    facebook:document.getElementById("pFacebook").value.trim(),
+    linkedin:document.getElementById("pLinkedin").value.trim(),
+    website:document.getElementById("pWebsite").value.trim(),
+    updated_at:new Date().toISOString()
+  };
+  const {error}=await sb.from("asesores").upsert(payload,{onConflict:"user_id"});
+  if(error){showAlert("Error: "+error.message,"error");return;}
+  showAlert("✅ Perfil profesional guardado correctamente","success");
+}
+
+async function uploadFoto(input){
+  const file=input.files[0];
+  if(!file)return;
+  if(file.size>2097152){showAlert("La imagen debe ser menor a 2MB","error");return;}
+  const ext=file.name.split(".").pop().toLowerCase();
+  const path=`asesores/${currentUser.id}/avatar.${ext}`;
+  const {error:upErr}=await sb.storage.from("fotos-propiedades").upload(path,file,{upsert:true});
+  if(upErr){showAlert("Error subiendo imagen: "+upErr.message,"error");return;}
+  const {data:{publicUrl}}=sb.storage.from("fotos-propiedades").getPublicUrl(path);
+  const {error}=await sb.from("asesores").upsert({user_id:currentUser.id,foto_url:publicUrl,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+  if(error){showAlert("Error guardando URL: "+error.message,"error");return;}
+  document.getElementById("bigAvatar").innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
+  document.getElementById("topAvatar").innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
+  showAlert("✅ Foto de perfil actualizada","success");
+}
+
+function checkPwd(v){
+  const bar=document.getElementById("pwdBar");
+  const hint=document.getElementById("pwdHint");
+  let score=0;
+  if(v.length>=8)score++;
+  if(/[A-Z]/.test(v))score++;
+  if(/[0-9]/.test(v))score++;
+  if(/[^A-Za-z0-9]/.test(v))score++;
+  const pcts=["0%","25%","50%","75%","100%"];
+  const cols=["#333","#f44336","#ff9800","#2196f3","#4caf50"];
+  const hints=["Ingresa una contraseña nueva","Muy débil","Débil","Aceptable","Fuerte","Muy fuerte"];
+  bar.style.width=pcts[score];
+  bar.style.background=cols[score];
+  hint.textContent=hints[score+1]||hints[hints.length-1];
+}
+
+async function changePassword(){
+  const np=document.getElementById("newPass").value;
+  const cp=document.getElementById("confirmPass").value;
+  if(np.length<8){showAlert("La contraseña debe tener al menos 8 caracteres","error","alertSeg");return;}
+  if(np!==cp){showAlert("Las contraseñas no coinciden","error","alertSeg");return;}
+  const {error}=await sb.auth.updateUser({password:np});
+  if(error){showAlert("Error: "+error.message,"error","alertSeg");return;}
+  document.getElementById("newPass").value="";
+  document.getElementById("confirmPass").value="";
+  showAlert("✅ Contraseña actualizada correctamente","success","alertSeg");
+}
+
+init();
+</script>
+</body>
+</html>
