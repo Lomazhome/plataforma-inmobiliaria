@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Favoritos | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+.logo{font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.btn-topbar{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;text-decoration:none;transition:all .2s;font-family:Montserrat,sans-serif}
+.btn-topbar:hover{background:rgba(201,164,132,.15);border-color:rgba(201,164,132,.3);color:#c9a484}
+.page{padding:80px 24px 40px;max-width:1200px;margin:0 auto}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:gap}
+.page-header h1{font-size:1.5rem;font-weight:700}
+.page-header p{color:#666;font-size:.85rem;margin-top:4px}
+.header-actions{display:flex;gap:10px;align-items:center}
+.count-badge{background:rgba(201,164,132,.15);border:1px solid rgba(201,164,132,.3);color:#c9a484;padding:4px 12px;border-radius:20px;font-size:.78rem;font-weight:700}
+.filter-bar{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.filter-bar select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none;cursor:pointer}
+.filter-bar select option{background:#1a1a1a}
+.search-fav{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none;min-width:200px}
+.search-fav::placeholder{color:#555}
+.search-fav:focus{border-color:rgba(201,164,132,.4)}
+.fav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
+.prop-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;position:relative}
+.prop-card:hover{transform:translateY(-3px);border-color:rgba(201,164,132,.25)}
+.card-img{width:100%;height:175px;object-fit:cover;background:rgba(255,255,255,.05);display:block;position:relative}
+.card-img-placeholder{width:100%;height:175px;background:linear-gradient(135deg,rgba(201,164,132,.08),rgba(160,120,80,.04));display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.card-badge{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.badge-venta{background:rgba(201,164,132,.9);color:#1a1a1a}
+.badge-arriendo{background:rgba(33,150,243,.85);color:#fff}
+.badge-venta_arriendo{background:rgba(76,175,80,.85);color:#fff}
+.btn-remove{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,60,60,.85);border:none;color:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.btn-remove:hover{background:rgba(255,60,60,1);transform:scale(1.1)}
+.card-body{padding:16px}
+.card-price{font-size:1.15rem;font-weight:700;color:#c9a484;margin-bottom:6px}
+.card-title{font-size:.85rem;font-weight:600;color:#ddd;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-location{font-size:.75rem;color:#666;margin-bottom:10px;display:flex;align-items:center;gap:4px}
+.card-features{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.feat{font-size:.72rem;color:#888;display:flex;align-items:center;gap:3px}
+.card-footer{display:flex;gap:8px}
+.btn-view{flex:1;background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:9px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;text-align:center;text-decoration:none;transition:opacity .2s;display:block}
+.btn-view:hover{opacity:.85}
+.btn-share{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .2s}
+.btn-share:hover{background:rgba(255,255,255,.1);color:#fff}
+.saved-date{font-size:.68rem;color:#444;margin-top:6px;text-align:right}
+.empty-state{text-align:center;padding:80px 20px;color:#555}
+.empty-state .icon{font-size:3.5rem;margin-bottom:16px}
+.empty-state h3{font-size:1.1rem;font-weight:700;color:#666;margin-bottom:8px}
+.empty-state p{font-size:.85rem;margin-bottom:20px}
+.btn-primary{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:11px 24px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:700;text-decoration:none;display:inline-block;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-clear{background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);color:#ff6060;padding:7px 16px;border-radius:7px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
+.btn-clear:hover{background:rgba(255,60,60,.15)}
+.toast{position:fixed;bottom:24px;right:24px;background:rgba(30,30,30,.97);border:1px solid rgba(201,164,132,.3);color:#fff;padding:12px 18px;border-radius:10px;font-size:.82rem;font-weight:600;z-index:999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:600px){.fav-grid{grid-template-columns:1fr}.filter-bar{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">Lomaz <span>Home</span></a>
+  <div class="topbar-right">
+    <a href="propiedades.html" class="btn-topbar">🔍 Buscar propiedades</a>
+    <a href="dashboard.html" class="btn-topbar">🏠 Dashboard</a>
+  </div>
+</div>
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>❤️ Mis Favoritos</h1>
+      <p>Propiedades que guardaste para revisar más tarde.</p>
+    </div>
+    <div class="header-actions">
+      <span class="count-badge" id="countBadge">0 guardadas</span>
+      <button class="btn-clear" id="btnClear" onclick="clearAll()" style="display:none">🗑️ Limpiar todo</button>
+    </div>
+  </div>
+  <div class="filter-bar" id="filterBar" style="display:none">
+    <input type="text" class="search-fav" id="searchInput" placeholder="🔍 Buscar en favoritos..." oninput="renderCards()"/>
+    <select id="filterTipo" onchange="renderCards()">
+      <option value="">Todos los tipos</option>
+      <option value="venta">Venta</option>
+      <option value="arriendo">Arriendo</option>
+      <option value="venta_arriendo">Venta o Arriendo</option>
+    </select>
+    <select id="sortBy" onchange="renderCards()">
+      <option value="reciente">Más reciente primero</option>
+      <option value="precio_asc">Precio: menor a mayor</option>
+      <option value="precio_desc">Precio: mayor a menor</option>
+      <option value="nombre">Nombre A-Z</option>
+    </select>
+  </div>
+  <div id="favGrid" class="fav-grid"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const STORAGE_KEY="lomaz_favoritos";
+let allFavs=[];
+let propiedadesData={};
+
+// Toast helper
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3000);
+}
+
+// Format price COP
+function fmtPrice(n){
+  if(!n)return "Precio a convenir";
+  if(n>=1000000000)return "$"+(n/1000000000).toFixed(2)+"B";
+  if(n>=1000000)return "$"+(n/1000000).toFixed(0)+"M";
+  return "$"+n.toLocaleString("es-CO");
+}
+
+// Get saved IDs from localStorage
+function getSavedIds(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}
+  catch(e){return [];}
+}
+
+// Save IDs to localStorage
+function saveIds(ids){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(ids));
+}
+
+// Remove single favorite
+function removeFav(id){
+  const ids=getSavedIds().filter(x=>x.id!==id);
+  saveIds(ids);
+  allFavs=ids;
+  renderCards();
+  showToast("💔 Propiedad eliminada de favoritos");
+}
+
+// Clear all favorites
+function clearAll(){
+  if(!confirm("¿Eliminar todos los favoritos?"))return;
+  saveIds([]);allFavs=[];renderCards();
+  showToast("🗑️ Favoritos eliminados");
+}
+
+// Share property
+function shareProperty(id,titulo){
+  const url=window.location.origin+"/propiedad.html?id="+id;
+  if(navigator.share){navigator.share({title:titulo,url});return;}
+  navigator.clipboard.writeText(url).then(()=>showToast("🔗 Enlace copiado al portapapeles"));
+}
+
+function renderCards(){
+  const grid=document.getElementById("favGrid");
+  const search=document.getElementById("searchInput")?.value.toLowerCase()||"";
+  const tipo=document.getElementById("filterTipo")?.value||"";
+  const sort=document.getElementById("sortBy")?.value||"reciente";
+  // Filter
+  let items=allFavs.filter(fav=>{
+    const p=propiedadesData[fav.id];
+    if(!p)return true;
+    if(tipo&&p.tipo_negocio!==tipo)return false;
+    if(search){
+      const hay=(p.titulo+" "+p.ciudad+" "+p.barrio+" "+p.tipo_inmueble).toLowerCase();
+      if(!hay.includes(search))return false;
+    }
+    return true;
+  });
+  // Sort
+  items.sort((a,b)=>{
+    const pa=propiedadesData[a.id]||{};
+    const pb=propiedadesData[b.id]||{};
+    if(sort==="precio_asc")return (pa.precio||0)-(pb.precio||0);
+    if(sort==="precio_desc")return (pb.precio||0)-(pa.precio||0);
+    if(sort==="nombre")return (pa.titulo||"").localeCompare(pb.titulo||"");
+    return new Date(b.savedAt)-new Date(a.savedAt);
+  });
+  // Count badge
+  const total=allFavs.length;
+  document.getElementById("countBadge").textContent=total+" guardada"+(total!==1?"s":"");
+  document.getElementById("btnClear").style.display=total>0?"block":"none";
+  document.getElementById("filterBar").style.display=total>0?"flex":"none";
+  // Empty state
+  if(items.length===0){
+    if(total===0){
+      grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="icon">❤️</div><h3>No tienes favoritos guardados</h3><p>Explora las propiedades disponibles y guarda las que más te gusten.</p><a href="propiedades.html" class="btn-primary">🔍 Explorar propiedades</a></div>`;
+    }else{
+      grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div><h3>Sin resultados</h3><p>Ningún favorito coincide con los filtros aplicados.</p></div>`;
+    }
+    return;
+  }
+  grid.innerHTML=items.map(fav=>buildCard(fav)).join("");
+}
+
+function buildCard(fav){
+  const p=propiedadesData[fav.id];
+  const title=p?p.titulo:"Propiedad guardada";
+  const price=p?fmtPrice(p.precio):"Cargando...";
+  const tipo=p?p.tipo_negocio:"venta";
+  const city=p?(p.ciudad||"")+(p.barrio?", "+p.barrio:""):"";
+  const habs=p&&p.habitaciones?`<span class="feat">🛏️ ${p.habitaciones}</span>`:"";
+  const banos=p&&p.banos?`<span class="feat">🚿 ${p.banos}</span>`:"";
+  const area=p&&p.area_construida?`<span class="feat">📐 ${p.area_construida}m²</span>`:"";
+  const tipo_inm=p&&p.tipo_inmueble?`<span class="feat">🏠 ${p.tipo_inmueble}</span>`:"";
+  const badgeClass=tipo==="arriendo"?"badge-arriendo":tipo==="venta_arriendo"?"badge-venta_arriendo":"badge-venta";
+  const badgeTxt=tipo==="arriendo"?"Arriendo":tipo==="venta_arriendo"?"Venta/Arriendo":"Venta";
+  const imgUrl=p&&p.fotos&&p.fotos.length>0?`<img src="${p.fotos[0]}" class="card-img" alt="${title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="card-img-placeholder" style="display:none">🏠</div>`:`<div class="card-img-placeholder">🏠</div>`;
+  const savedDate=fav.savedAt?new Date(fav.savedAt).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}):"";
+  return `
+  <div class="prop-card" id="card-${fav.id}">
+    <div style="position:relative">${imgUrl}<span class="card-badge ${badgeClass}">${badgeTxt}</span><button class="btn-remove" onclick="removeFav('${fav.id}')" title="Quitar de favoritos">✕</button></div>
+    <div class="card-body">
+      <div class="card-price">${price}</div>
+      <div class="card-title">${title}</div>
+      <div class="card-location">📍 ${city||"Colombia"}</div>
+      <div class="card-features">${tipo_inm}${habs}${banos}${area}</div>
+      <div class="card-footer">
+        <a href="propiedad.html?id=${fav.id}" class="btn-view">Ver propiedad →</a>
+        <button class="btn-share" onclick="shareProperty('${fav.id}','${title.replace(/'/g,"")}')" title="Compartir">🔗</button>
+      </div>
+      <div class="saved-date">Guardado el ${savedDate}</div>
+    </div>
+  </div>`;
+}
+
+async function loadPropertyData(ids){
+  if(ids.length===0)return;
+  const {data,error}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,tipo_inmueble,ciudad,barrio,habitaciones,banos,area_construida,fotos").in("id",ids);
+  if(error||!data)return;
+  data.forEach(p=>{propiedadesData[p.id]=p;});
+}
+
+async function init(){
+  // Auth check
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){
+    // For non-authenticated users, still show favorites from localStorage
+    // (public feature — anyone can save favorites)
+  }
+  // Load saved IDs from localStorage
+  allFavs=getSavedIds();
+  // Fetch property details from Supabase
+  const ids=allFavs.map(f=>f.id).filter(Boolean);
+  await loadPropertyData(ids);
+  renderCards();
+}
+
+// ============================================
+// GLOBAL helper: call from any page to add a fav
+// Usage: toggleFavorito(id, titulo)
+// ============================================
+function toggleFavorito(id,titulo){
+  const ids=getSavedIds();
+  const exists=ids.find(x=>x.id===id);
+  if(exists){
+    saveIds(ids.filter(x=>x.id!==id));
+    return false;
+  }else{
+    ids.push({id,titulo:titulo||"",savedAt:new Date().toISOString()});
+    saveIds(ids);
+    return true;
+  }
+}
+
+function isFavorito(id){
+  return getSavedIds().some(x=>x.id===id);
+}
+
+init();
+</script>
+</body>
+</html>
