@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline - Lomaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f2f5;color:#333;}
+.topbar{background:#1a1a2e;color:#fff;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:12px;}
+.logo{font-size:19px;font-weight:700;color:#e8b86d;white-space:nowrap;}
+.topbar-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.uemail{font-size:12px;color:#ccc;}
+.btn-tb{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;display:inline-block;white-space:nowrap;}
+.page-wrap{padding:20px;}
+.page-title{font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
+.page-sub{color:#666;font-size:13px;margin-bottom:18px;}
+.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.sbar{background:#fff;border-radius:10px;padding:12px 18px;box-shadow:0 2px 6px rgba(0,0,0,.05);display:flex;align-items:center;gap:10px;}
+.sbar-icon{font-size:22px;}
+.sbar-n{font-size:20px;font-weight:700;color:#1a1a2e;}
+.sbar-l{font-size:11px;color:#888;}
+.board{display:flex;gap:14px;overflow-x:auto;padding-bottom:20px;min-height:70vh;}
+.col{flex:0 0 260px;display:flex;flex-direction:column;gap:0;}
+.col-header{border-radius:10px 10px 0 0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;}
+.col-title{font-size:13px;font-weight:700;color:#fff;}
+.col-count{background:rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.col-body{background:#e8eaf0;border-radius:0 0 10px 10px;padding:8px;min-height:300px;display:flex;flex-direction:column;gap:8px;transition:background .2s;}
+.col-body.drag-over{background:#d0d4e0;border:2px dashed #aaa;}
+.card{background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 2px 6px rgba(0,0,0,.07);cursor:grab;border-left:4px solid #e8b86d;transition:box-shadow .2s,transform .1s;}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.12);}
+.card.dragging{opacity:.5;transform:rotate(2deg);}
+.card-name{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
+.card-prop{font-size:11px;color:#2980b9;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-info{display:flex;flex-direction:column;gap:3px;}
+.card-line{font-size:11px;color:#888;display:flex;align-items:center;gap:5px;}
+.card-price{font-size:12px;font-weight:700;color:#27ae60;margin-top:5px;}
+.card-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid #f0f2f5;}
+.cbtn{padding:4px 8px;border-radius:5px;border:none;cursor:pointer;font-size:11px;font-weight:600;}
+.cbtn-notes{background:#fef9e7;color:#b7770d;}
+.cbtn-leads{background:#eaf4fb;color:#1a5276;}
+.cbtn-move{background:#f0f2f5;color:#555;}
+.cbtn:hover{opacity:.8;}
+.empty-col{text-align:center;padding:24px 10px;color:#bbb;font-size:12px;}
+.empty-col span{font-size:28px;display:block;margin-bottom:6px;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal{background:#fff;border-radius:14px;padding:24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal h3{font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #f0f2f5;}
+.info-row{display:flex;gap:8px;margin-bottom:8px;font-size:13px;}
+.info-row .lbl{font-weight:700;color:#888;min-width:90px;}
+.info-row .val{color:#1a1a2e;}
+textarea{width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;resize:vertical;min-height:90px;font-family:inherit;margin-top:8px;}
+textarea:focus{outline:none;border-color:#e8b86d;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+.btn-save{background:#e8b86d;color:#fff;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;}
+.btn-cancel{background:#f0f2f5;color:#555;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;}
+.move-opts{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.move-opt{padding:10px 14px;border-radius:8px;border:none;cursor:pointer;text-align:left;font-size:13px;font-weight:600;transition:opacity .15s;}
+.move-opt:hover{opacity:.85;}
+.hidden{display:none!important;}
+</style></head><body>
+<div class="topbar">
+  <span class="logo">Lomaz Home</span>
+  <div class="topbar-right">
+    <span class="uemail" id="uEmail"></span>
+    <a href="panel.html" class="btn-tb">Panel</a>
+    <a href="leads.html" class="btn-tb">Lista</a>
+    <a href="clientes.html" class="btn-tb">Clientes</a>
+    <a href="mis-propiedades.html" class="btn-tb">Propiedades</a>
+  </div>
+</div>
+<div class="page-wrap">
+  <div class="page-title">&#128200; Pipeline de Ventas</div>
+  <div class="page-sub">Arrastra las tarjetas entre columnas para actualizar el estado del lead automáticamente.</div>
+  <div class="stats-bar">
+    <div class="sbar"><span class="sbar-icon">&#128386;</span><div><div class="sbar-n" id="sTotalL">0</div><div class="sbar-l">Total leads</div></div></div>
+    <div class="sbar"><span class="sbar-icon">&#128722;</span><div><div class="sbar-n" id="sNegocio">0</div><div class="sbar-l">En negociación</div></div></div>
+    <div class="sbar"><span class="sbar-icon">&#9989;</span><div><div class="sbar-n" id="sCerrados">0</div><div class="sbar-l">Cerrados ganados</div></div></div>
+    <div class="sbar"><span class="sbar-icon">&#128176;</span><div><div class="sbar-n" id="sValor">$0</div><div class="sbar-l">Valor en pipeline</div></div></div>
+  </div>
+  <div class="board" id="board">
+    <div class="col">
+      <div class="col-header" style="background:#2980b9">
+        <span class="col-title">Nuevo</span>
+        <span class="col-count" id="cnt_0">0</span>
+      </div>
+      <div class="col-body" id="col_0" data-estado="Nuevo" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,this)">
+        <div class="empty-col" id="empty_0"><span>&#128386;</span>Sin leads</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#e67e22">
+        <span class="col-title">Contactado</span>
+        <span class="col-count" id="cnt_1">0</span>
+      </div>
+      <div class="col-body" id="col_1" data-estado="Contactado" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,this)">
+        <div class="empty-col" id="empty_1"><span>&#128386;</span>Sin leads</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#8e44ad">
+        <span class="col-title">Visita programada</span>
+        <span class="col-count" id="cnt_2">0</span>
+      </div>
+      <div class="col-body" id="col_2" data-estado="Visita programada" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,this)">
+        <div class="empty-col" id="empty_2"><span>&#128386;</span>Sin leads</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#d35400">
+        <span class="col-title">En negociación</span>
+        <span class="col-count" id="cnt_3">0</span>
+      </div>
+      <div class="col-body" id="col_3" data-estado="En negociación" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,this)">
+        <div class="empty-col" id="empty_3"><span>&#128386;</span>Sin leads</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#27ae60">
+        <span class="col-title">Cerrado &#10003;</span>
+        <span class="col-count" id="cnt_4">0</span>
+      </div>
+      <div class="col-body" id="col_4" data-estado="Cerrado ganado" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,this)">
+        <div class="empty-col" id="empty_4"><span>&#128386;</span>Sin leads</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#c0392b">
+        <span class="col-title">Perdido</span>
+        <span class="col-count" id="cnt_5">0</span>
+      </div>
+      <div class="col-body" id="col_5" data-estado="Perdido" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,this)">
+        <div class="empty-col" id="empty_5"><span>&#128386;</span>Sin leads</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay hidden" id="notesModal">
+  <div class="modal">
+    <h3>&#128221; Notas del lead</h3>
+    <div id="notesInfo"></div>
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-top:10px;">Notas de seguimiento</label>
+    <textarea id="notesText" placeholder="Escribe tus notas, resultado de llamadas, visitas..."></textarea>
+    <div class="modal-btns"><button class="btn-cancel" onclick="closeNotes()">Cerrar</button><button class="btn-save" onclick="saveNotes()">Guardar</button></div>
+  </div>
+</div>
+<div class="overlay hidden" id="moveModal">
+  <div class="modal">
+    <h3>&#128257; Mover lead a...</h3>
+    <div class="move-opts" id="moveOpts"></div>
+    <div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeMoveModal()">Cancelar</button></div>
+  </div>
+</div>
+<script>
+const K=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const U="https://lniouebpuuuqctrgxoiw.supabase.co";
+const sb=supabase.createClient(U,K);
+
+const ESTADOS=["Nuevo","Contactado","Visita programada","En negociación","Cerrado ganado","Perdido"];
+const COL_COLORS=["#2980b9","#e67e22","#8e44ad","#d35400","#27ae60","#c0392b"];
+const CARD_BORDER=["#2980b9","#e67e22","#8e44ad","#d35400","#27ae60","#c0392b"];
+let allLeads=[],uid=null,dragId=null,notesId=null,moveId=null;
+
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  uid=session.user.id;
+  document.getElementById("uEmail").textContent=session.user.email;
+  await loadLeads();
+})();
+
+async function loadLeads(){
+  const{data,error}=await sb.from("leads")
+    .select("id,nombre,telefono,email,mensaje,estado,notas,propiedad_id,created_at,propiedades(titulo,precio,ciudad)")
+    .eq("asesor_id",uid)
+    .order("created_at",{ascending:false});
+  if(error){console.error(error);return;}
+  allLeads=data||[];
+  renderBoard();
+  updateStats();
+}
+
+function updateStats(){
+  document.getElementById("sTotalL").textContent=allLeads.length;
+  document.getElementById("sNegocio").textContent=allLeads.filter(l=>l.estado==="En negociación").length;
+  document.getElementById("sCerrados").textContent=allLeads.filter(l=>l.estado==="Cerrado ganado").length;
+  const valor=allLeads.filter(l=>l.estado!=="Perdido"&&l.propiedades&&l.propiedades.precio).reduce((a,l)=>a+Number(l.propiedades.precio),0);
+  document.getElementById("sValor").textContent=valor>0?"$"+valor.toLocaleString("es-CO"):"$0";
+}
+
+function renderBoard(){
+  ESTADOS.forEach((estado,i)=>{
+    const col=document.getElementById("col_"+i);
+    const emptyEl=document.getElementById("empty_"+i);
+    // Remove old cards (keep empty placeholder)
+    Array.from(col.querySelectorAll(".card")).forEach(c=>c.remove());
+    const leads=allLeads.filter(l=>l.estado===estado);
+    document.getElementById("cnt_"+i).textContent=leads.length;
+    if(leads.length===0){emptyEl.classList.remove("hidden");return;}
+    emptyEl.classList.add("hidden");
+    leads.forEach(l=>{
+      const card=createCard(l,i);
+      col.appendChild(card);
+    });
+  });
+}
+
+function createCard(l,colIdx){
+  const div=document.createElement("div");
+  div.className="card";
+  div.draggable=true;
+  div.dataset.id=l.id;
+  div.style.borderLeftColor=CARD_BORDER[colIdx];
+  const propNm=l.propiedades?l.propiedades.titulo+(l.propiedades.ciudad?" · "+l.propiedades.ciudad:""):"Sin propiedad";
+  const precio=l.propiedades&&l.propiedades.precio?"$"+Number(l.propiedades.precio).toLocaleString("es-CO"):"";
+  const fecha=new Date(l.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short"});
+  div.innerHTML=`
+    <div class="card-name">${l.nombre||"Sin nombre"}</div>
+    <div class="card-prop">${propNm}</div>
+    <div class="card-info">
+      <div class="card-line">&#128222; ${l.telefono||"-"}</div>
+      ${l.email?`<div class="card-line">&#9993; ${l.email}</div>`:""}
+      <div class="card-line">&#128197; ${fecha}</div>
+    </div>
+    ${precio?`<div class="card-price">${precio}</div>`:""}
+    <div class="card-actions">
+      <button class="cbtn cbtn-notes" onclick="openNotes('${l.id}')">Notas</button>
+      <button class="cbtn cbtn-leads" onclick="window.location.href='leads.html'">Leads</button>
+      <button class="cbtn cbtn-move" onclick="openMove('${l.id}')">Mover</button>
+    </div>`;
+  div.addEventListener("dragstart",onDragStart);
+  div.addEventListener("dragend",onDragEnd);
+  return div;
+}
+
+// ---- Drag & Drop ----
+function onDragStart(e){
+  dragId=e.currentTarget.dataset.id;
+  e.currentTarget.classList.add("dragging");
+  e.dataTransfer.effectAllowed="move";
+  e.dataTransfer.setData("text/plain",dragId);
+}
+function onDragEnd(e){e.currentTarget.classList.remove("dragging");}
+function onDragOver(e){e.preventDefault();e.currentTarget.classList.add("drag-over");e.dataTransfer.dropEffect="move";}
+function onDragLeave(e){e.currentTarget.classList.remove("drag-over");}
+
+async function onDrop(e,colEl){
+  e.preventDefault();
+  colEl.classList.remove("drag-over");
+  const id=e.dataTransfer.getData("text/plain")||dragId;
+  if(!id)return;
+  const newEstado=colEl.dataset.estado;
+  const lead=allLeads.find(l=>l.id===id);
+  if(!lead||lead.estado===newEstado)return;
+  const{error}=await sb.from("leads").update({estado:newEstado}).eq("id",id);
+  if(error){alert("Error al mover: "+error.message);return;}
+  lead.estado=newEstado;
+  renderBoard();
+  updateStats();
+  dragId=null;
+}
+
+// ---- Notes Modal ----
+function openNotes(id){
+  const l=allLeads.find(x=>x.id===id);
+  if(!l)return;
+  notesId=id;
+  const propNm=l.propiedades?l.propiedades.titulo:"N/A";
+  document.getElementById("notesInfo").innerHTML=`
+    <div class="info-row"><span class="lbl">Nombre</span><span class="val">${l.nombre||"-"}</span></div>
+    <div class="info-row"><span class="lbl">Teléfono</span><span class="val">${l.telefono||"-"}</span></div>
+    <div class="info-row"><span class="lbl">Propiedad</span><span class="val">${propNm}</span></div>
+    <div class="info-row"><span class="lbl">Mensaje</span><span class="val" style="font-size:12px;color:#666">${(l.mensaje||"-").substring(0,120)}</span></div>`;
+  document.getElementById("notesText").value=l.notas||"";
+  document.getElementById("notesModal").classList.remove("hidden");
+}
+function closeNotes(){document.getElementById("notesModal").classList.add("hidden");notesId=null;}
+
+async function saveNotes(){
+  if(!notesId)return;
+  const notas=document.getElementById("notesText").value.trim();
+  const{error}=await sb.from("leads").update({notas}).eq("id",notesId);
+  if(error){alert("Error: "+error.message);return;}
+  const lead=allLeads.find(l=>l.id===notesId);
+  if(lead)lead.notas=notas;
+  closeNotes();
+}
+
+// ---- Move Modal (for mobile / fallback) ----
+function openMove(id){
+  moveId=id;
+  const lead=allLeads.find(l=>l.id===id);
+  const opts=document.getElementById("moveOpts");
+  opts.innerHTML="";
+  ESTADOS.forEach((estado,i)=>{
+    if(lead&&lead.estado===estado)return;
+    const btn=document.createElement("button");
+    btn.className="move-opt";
+    btn.style.background=COL_COLORS[i];
+    btn.style.color="#fff";
+    btn.textContent=estado;
+    btn.onclick=()=>moveCard(estado);
+    opts.appendChild(btn);
+  });
+  document.getElementById("moveModal").classList.remove("hidden");
+}
+function closeMoveModal(){document.getElementById("moveModal").classList.add("hidden");moveId=null;}
+
+async function moveCard(newEstado){
+  if(!moveId)return;
+  const{error}=await sb.from("leads").update({estado:newEstado}).eq("id",moveId);
+  if(error){alert("Error: "+error.message);return;}
+  const lead=allLeads.find(l=>l.id===moveId);
+  if(lead)lead.estado=newEstado;
+  closeMoveModal();
+  renderBoard();
+  updateStats();
+}
+</script>
+</body></html>
