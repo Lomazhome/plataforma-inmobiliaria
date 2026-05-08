@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Portales | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+.logo{font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.user-info{display:flex;align-items:center;gap:12px}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c9a484,#a07850);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.btn-logout{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;transition:all .2s;font-family:Montserrat,sans-serif}
+.btn-logout:hover{background:rgba(255,80,80,.15);border-color:rgba(255,80,80,.3);color:#ff6060}
+.layout{display:flex;min-height:100vh;padding-top:56px}
+.sidebar{width:230px;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.06);padding:20px 0;position:fixed;top:56px;bottom:0;overflow-y:auto}
+.sidebar-section{padding:8px 16px 4px;font-size:.65rem;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 20px;color:#aaa;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+.sidebar a:hover{color:#fff;background:rgba(255,255,255,.05)}
+.sidebar a.active{color:#c9a484;background:rgba(201,164,132,.07);border-left-color:#c9a484}
+.sidebar a .icon{width:18px;text-align:center;font-size:1rem}
+.content{margin-left:230px;flex:1;padding:28px;max-width:1100px}
+.page-header{margin-bottom:28px}
+.page-header h1{font-size:1.5rem;font-weight:700}
+.page-header p{color:#666;font-size:.85rem;margin-top:4px}
+.portals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-bottom:32px}
+.portal-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:22px;transition:border-color .2s}
+.portal-card.connected{border-color:rgba(76,175,80,.3);background:rgba(76,175,80,.04)}
+.portal-card.error{border-color:rgba(255,82,82,.3)}
+.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.portal-logo{display:flex;align-items:center;gap:10px}
+.portal-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700}
+.portal-icon.proppit{background:linear-gradient(135deg,#6c3de0,#9b59b6)}
+.portal-icon.metro{background:linear-gradient(135deg,#e03d3d,#ff6b6b)}
+.portal-icon.finca{background:linear-gradient(135deg,#27ae60,#52c97a)}
+.portal-name{font-size:.95rem;font-weight:700}
+.portal-sub{font-size:.72rem;color:#666;margin-top:2px}
+.status-badge{padding:4px 10px;border-radius:20px;font-size:.68rem;font-weight:700}
+.status-badge.on{background:rgba(76,175,80,.15);color:#81c784}
+.status-badge.off{background:rgba(255,255,255,.06);color:#666}
+.status-badge.pending{background:rgba(255,152,0,.15);color:#ffb74d}
+.token-row{display:flex;gap:8px;margin-top:12px}
+.token-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.78rem;outline:none;transition:border-color .2s}
+.token-input:focus{border-color:rgba(201,164,132,.5)}
+.token-input::placeholder{color:#444}
+.btn-connect{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;white-space:nowrap;transition:opacity .2s}
+.btn-connect:hover{opacity:.85}
+.btn-disconnect{background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);color:#ff6060;padding:7px 14px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:600;transition:all .2s}
+.btn-disconnect:hover{background:rgba(255,60,60,.15)}
+.portal-info{font-size:.78rem;color:#666;margin-top:10px;line-height:1.5}
+.portal-info a{color:#c9a484;text-decoration:none}
+.portal-info a:hover{text-decoration:underline}
+.portal-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.pstat{text-align:center}
+.pstat .val{font-size:1.2rem;font-weight:700;color:#c9a484}
+.pstat .lbl{font-size:.65rem;color:#555;text-transform:uppercase;margin-top:2px}
+.section-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:22px;margin-bottom:24px}
+.section-card h3{font-size:.95rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.pub-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.pub-select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none;cursor:pointer}
+.pub-select option{background:#1a1a1a}
+.btn-pub{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:10px 22px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.82rem;font-weight:700;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-pub:hover{opacity:.88;transform:translateY(-1px)}
+.btn-pub:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.prop-list{display:grid;gap:8px;max-height:320px;overflow-y:auto}
+.prop-item{display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px;transition:all .2s}
+.prop-item:hover{border-color:rgba(201,164,132,.2)}
+.prop-item.selected{border-color:rgba(201,164,132,.4);background:rgba(201,164,132,.06)}
+.prop-check{width:18px;height:18px;accent-color:#c9a484;cursor:pointer;flex-shrink:0}
+.prop-item-info{flex:1;min-width:0}
+.prop-item-title{font-size:.82rem;font-weight:600;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prop-item-sub{font-size:.7rem;color:#666;margin-top:2px}
+.prop-item-price{font-size:.82rem;font-weight:700;color:#c9a484;white-space:nowrap}
+.portal-toggles{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.ptoggle{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.1);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s;user-select:none}
+.ptoggle.active{border-color:rgba(201,164,132,.4);background:rgba(201,164,132,.1);color:#c9a484}
+.ptoggle:not(.active){color:#666}
+.ptoggle.disabled{opacity:.35;cursor:not-allowed}
+.log-list{list-style:none;max-height:280px;overflow-y:auto}
+.log-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start}
+.log-item:last-child{border-bottom:none}
+.log-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;margin-top:1px}
+.log-icon.ok{background:rgba(76,175,80,.15)}
+.log-icon.err{background:rgba(255,82,82,.15)}
+.log-icon.info{background:rgba(33,150,243,.15)}
+.log-text{font-size:.78rem;color:#bbb}
+.log-time{font-size:.68rem;color:#444;margin-top:2px}
+.empty-log{text-align:center;padding:30px;color:#444;font-size:.8rem}
+.alert{padding:10px 14px;border-radius:8px;font-size:.8rem;font-weight:600;margin-bottom:14px;display:none}
+.alert.success{background:rgba(76,175,80,.12);border:1px solid rgba(76,175,80,.3);color:#81c784;display:block}
+.alert.error{background:rgba(255,82,82,.12);border:1px solid rgba(255,82,82,.3);color:#ff8080;display:block}
+.alert.info{background:rgba(33,150,243,.1);border:1px solid rgba(33,150,243,.25);color:#90caf9;display:block}
+@media(max-width:768px){.sidebar{display:none}.content{margin-left:0}.portals-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">Lomaz <span>Home</span></a>
+  <div class="user-info">
+    <div class="user-avatar" id="topAvatar">?</div>
+    <div><div id="topEmail" style="font-size:.78rem;color:#888">Cargando...</div></div>
+    <button class="btn-logout" onclick="logout()">Cerrar sesion</button>
+  </div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">Principal</div>
+  <a href="dashboard.html"><span class="icon">🏠</span>Dashboard</a>
+  <a href="propiedades.html"><span class="icon">🏢</span>Ver Propiedades</a>
+  <div class="sidebar-section">Mis Herramientas</div>
+  <a href="agregar-propiedad.html"><span class="icon">➕</span>Agregar Propiedad</a>
+  <a href="mis-propiedades.html"><span class="icon">📋</span>Mis Propiedades</a>
+  <a href="leads.html"><span class="icon">🎯</span>Leads</a>
+  <a href="clientes.html"><span class="icon">👥</span>Clientes</a>
+  <a href="pipeline.html"><span class="icon">📊</span>Pipeline</a>
+  <div class="sidebar-section">Publicacion</div>
+  <a href="portales.html" class="active"><span class="icon">🌐</span>Portales</a>
+  <div class="sidebar-section">Analisis</div>
+  <a href="calculadora.html"><span class="icon">🧮</span>Calculadora</a>
+  <div class="sidebar-section">Cuenta</div>
+  <a href="perfil-asesor.html"><span class="icon">⚙️</span>Mi Perfil</a>
+</nav>
+<main class="content">
+  <div class="page-header">
+    <h1>🌐 Integracion de Portales</h1>
+    <p>Conecta tus portales inmobiliarios y publica propiedades automaticamente desde Lomaz Home.</p>
+  </div>
+  <div id="mainAlert" class="alert"></div>
+  <div class="portals-grid" id="portalsGrid">
+    <div class="portal-card" id="card-proppit">
+      <div class="portal-header">
+        <div class="portal-logo">
+          <div class="portal-icon proppit">P</div>
+          <div><div class="portal-name">Proppit</div><div class="portal-sub">Publica en 6+ portales a la vez</div></div>
+        </div>
+        <span class="status-badge off" id="status-proppit">Desconectado</span>
+      </div>
+      <div id="token-area-proppit">
+        <div class="portal-info">Ingresa tu API Token de Proppit. Lo encuentras en: <a href="https://proppit.com/properties" target="_blank">proppit.com</a> → Configuracion → API.</div>
+        <div class="token-row">
+          <input type="password" class="token-input" id="tok-proppit" placeholder="Token de API de Proppit..."/>
+          <button class="btn-connect" onclick="connectPortal('proppit')">Conectar</button>
+        </div>
+      </div>
+      <div class="portal-stats" id="stats-proppit" style="display:none">
+        <div class="pstat"><div class="val" id="ps-proppit-pub">0</div><div class="lbl">Publicadas</div></div>
+        <div class="pstat"><div class="val" id="ps-proppit-port">6+</div><div class="lbl">Sub-portales</div></div>
+        <div class="pstat"><div class="val" id="ps-proppit-last">-</div><div class="lbl">Ultima pub.</div></div>
+      </div>
+    </div>
+    <div class="portal-card" id="card-metro">
+      <div class="portal-header">
+        <div class="portal-logo">
+          <div class="portal-icon metro">M</div>
+          <div><div class="portal-name">Metrocuadrado</div><div class="portal-sub">El portal N°1 de Colombia</div></div>
+        </div>
+        <span class="status-badge off" id="status-metro">Desconectado</span>
+      </div>
+      <div id="token-area-metro">
+        <div class="portal-info">Ingresa tu API Key de Metrocuadrado. Disponible en: <a href="https://www.metrocuadrado.com/userspace/realestates" target="_blank">metrocuadrado.com</a> → Mi espacio → API.</div>
+        <div class="token-row">
+          <input type="password" class="token-input" id="tok-metro" placeholder="API Key de Metrocuadrado..."/>
+          <button class="btn-connect" onclick="connectPortal('metro')">Conectar</button>
+        </div>
+      </div>
+      <div class="portal-stats" id="stats-metro" style="display:none">
+        <div class="pstat"><div class="val" id="ps-metro-pub">0</div><div class="lbl">Publicadas</div></div>
+        <div class="pstat"><div class="val" id="ps-metro-plan">-</div><div class="lbl">Plan</div></div>
+        <div class="pstat"><div class="val" id="ps-metro-last">-</div><div class="lbl">Ultima pub.</div></div>
+      </div>
+    </div>
+    <div class="portal-card" id="card-finca">
+      <div class="portal-header">
+        <div class="portal-logo">
+          <div class="portal-icon finca">FR</div>
+          <div><div class="portal-name">Finca Raiz</div><div class="portal-sub">Portal inmobiliario nacional</div></div>
+        </div>
+        <span class="status-badge off" id="status-finca">Desconectado</span>
+      </div>
+      <div id="token-area-finca">
+        <div class="portal-info">Ingresa tu API Key de Finca Raiz. Disponible en: <a href="https://ov.fincaraiz.com.co/inmobiliarias/administrar-inmuebles" target="_blank">fincaraiz.com.co</a> → Administrar → API.</div>
+        <div class="token-row">
+          <input type="password" class="token-input" id="tok-finca" placeholder="API Key de Finca Raiz..."/>
+          <button class="btn-connect" onclick="connectPortal('finca')">Conectar</button>
+        </div>
+      </div>
+      <div class="portal-stats" id="stats-finca" style="display:none">
+        <div class="pstat"><div class="val" id="ps-finca-pub">0</div><div class="lbl">Publicadas</div></div>
+        <div class="pstat"><div class="val" id="ps-finca-cupo">-</div><div class="lbl">Cupo</div></div>
+        <div class="pstat"><div class="val" id="ps-finca-last">-</div><div class="lbl">Ultima pub.</div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Publish Section -->
+  <div class="section-card">
+    <h3>🚀 Publicar Propiedades en Portales</h3>
+    <p style="font-size:.8rem;color:#666;margin-bottom:16px">Selecciona las propiedades y los portales donde deseas publicar.</p>
+    <!-- Portal toggles -->
+    <div style="margin-bottom:12px;font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em">Publicar en:</div>
+    <div class="portal-toggles">
+      <label class="ptoggle disabled" id="tog-proppit"><input type="checkbox" id="chk-proppit" style="display:none" disabled/> P Proppit</label>
+      <label class="ptoggle disabled" id="tog-metro"><input type="checkbox" id="chk-metro" style="display:none" disabled/> M Metrocuadrado</label>
+      <label class="ptoggle disabled" id="tog-finca"><input type="checkbox" id="chk-finca" style="display:none" disabled/> FR Finca Raiz</label>
+    </div>
+    <!-- Property selector -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em">Mis propiedades:</div>
+      <div style="display:flex;gap:8px">
+        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:Montserrat,sans-serif" onclick="selectAllProps(true)">Seleccionar todas</button>
+        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:Montserrat,sans-serif" onclick="selectAllProps(false)">Deseleccionar</button>
+      </div>
+    </div>
+    <div class="prop-list" id="propList"><div style="text-align:center;padding:20px;color:#555;font-size:.8rem">Cargando propiedades...</div></div>
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <button class="btn-pub" id="btnPublish" onclick="publishSelected()" disabled>
+        <span>🚀</span><span id="btnPublishTxt">Publicar seleccionadas</span>
+      </button>
+      <div id="pubProgress" style="font-size:.78rem;color:#888;display:none">Publicando...</div>
+    </div>
+  </div>
+  <!-- Publish Log -->
+  <div class="section-card">
+    <h3>📋 Historial de Publicaciones</h3>
+    <ul class="log-list" id="logList">
+      <li class="empty-log">No hay publicaciones registradas aun.</li>
+    </ul>
+  </div>
+</main>
+</div>
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let currentUser=null;
+let myProps=[];
+const PORTAL_KEYS={proppit:"lomaz_tok_proppit",metro:"lomaz_tok_metro",finca:"lomaz_tok_finca"};
+const PORTAL_NAMES={proppit:"Proppit",metro:"Metrocuadrado",finca:"Finca Raiz"};
+
+function fmtPrice(n){if(!n)return "A convenir";if(n>=1000000000)return "$"+(n/1000000000).toFixed(1)+"B";if(n>=1000000)return "$"+(n/1000000).toFixed(0)+"M";return "$"+n.toLocaleString("es-CO");}
+function fmtDate(d){if(!d)return "-";return new Date(d).toLocaleDateString("es-CO",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});}
+
+function showAlert(msg,type){const el=document.getElementById("mainAlert");el.textContent=msg;el.className="alert "+type;setTimeout(()=>{el.className="alert";},5000);}
+
+function getToken(portal){return localStorage.getItem(PORTAL_KEYS[portal]);}
+function setToken(portal,tok){localStorage.setItem(PORTAL_KEYS[portal],tok);}
+function clearToken(portal){localStorage.removeItem(PORTAL_KEYS[portal]);}
+
+function updatePortalUI(portal,connected){
+  const card=document.getElementById("card-"+portal);
+  const badge=document.getElementById("status-"+portal);
+  const statsDiv=document.getElementById("stats-"+portal);
+  const tokenArea=document.getElementById("token-area-"+portal);
+  const tog=document.getElementById("tog-"+portal);
+  const chk=document.getElementById("chk-"+portal);
+  if(connected){
+    card.className="portal-card connected";
+    badge.className="status-badge on";badge.textContent="Conectado";
+    statsDiv.style.display="flex";
+    tokenArea.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span style="font-size:.78rem;color:#81c784">Token guardado correctamente</span><button class="btn-disconnect" onclick="disconnectPortal('${portal}')">Desconectar</button></div>`;
+    tog.className="ptoggle active";chk.disabled=false;
+  }else{
+    card.className="portal-card";
+    badge.className="status-badge off";badge.textContent="Desconectado";
+    statsDiv.style.display="none";
+    tog.className="ptoggle disabled";chk.disabled=true;chk.checked=false;
+  }
+  updatePublishBtn();
+}
+
+function connectPortal(portal){
+  const tok=document.getElementById("tok-"+portal).value.trim();
+  if(!tok){showAlert("Por favor ingresa el token de "+PORTAL_NAMES[portal],"error");return;}
+  if(tok.length<8){showAlert("El token parece demasiado corto. Verifica que sea correcto.","error");return;}
+  setToken(portal,tok);
+  updatePortalUI(portal,true);
+  addLog("info","Token de "+PORTAL_NAMES[portal]+" guardado correctamente");
+  showAlert("Conectado a "+PORTAL_NAMES[portal]+" exitosamente","success");
+}
+
+function disconnectPortal(portal){
+  if(!confirm("Desconectar "+PORTAL_NAMES[portal]+"? Se eliminara el token guardado."))return;
+  clearToken(portal);
+  // Rebuild token area
+  const areas={proppit:'<div class="portal-info">Ingresa tu API Token de Proppit. Lo encuentras en: <a href="https://proppit.com/properties" target="_blank">proppit.com</a> Configuracion API.</div><div class="token-row"><input type="password" class="token-input" id="tok-proppit" placeholder="Token de API de Proppit..."/><button class="btn-connect" onclick="connectPortal(\'proppit\')">Conectar</button></div>',
+    metro:'<div class="portal-info">Ingresa tu API Key de Metrocuadrado. Disponible en: <a href="https://www.metrocuadrado.com/userspace/realestates" target="_blank">metrocuadrado.com</a> Mi espacio API.</div><div class="token-row"><input type="password" class="token-input" id="tok-metro" placeholder="API Key de Metrocuadrado..."/><button class="btn-connect" onclick="connectPortal(\'metro\')">Conectar</button></div>',
+    finca:'<div class="portal-info">Ingresa tu API Key de Finca Raiz. Disponible en: <a href="https://ov.fincaraiz.com.co/inmobiliarias/administrar-inmuebles" target="_blank">fincaraiz.com.co</a> Administrar API.</div><div class="token-row"><input type="password" class="token-input" id="tok-finca" placeholder="API Key de Finca Raiz..."/><button class="btn-connect" onclick="connectPortal(\'finca\')">Conectar</button></div>'};
+  document.getElementById("token-area-"+portal).innerHTML=areas[portal]||"";
+  updatePortalUI(portal,false);
+  addLog("err","Desconectado de "+PORTAL_NAMES[portal]);
+}
+
+function renderPropList(){
+  const list=document.getElementById("propList");
+  if(myProps.length===0){list.innerHTML='<div style="text-align:center;padding:20px;color:#555;font-size:.8rem">No tienes propiedades activas. <a href="agregar-propiedad.html" style="color:#c9a484">Agrega una</a>.</div>';return;}
+  list.innerHTML=myProps.map(p=>`
+    <div class="prop-item" id="pi-${p.id}" onclick="togglePropSelect('${p.id}')">
+      <input type="checkbox" class="prop-check" id="pc-${p.id}" onclick="event.stopPropagation();togglePropSelect('${p.id}')" />
+      <div class="prop-item-info">
+        <div class="prop-item-title">${p.titulo||"Sin titulo"}</div>
+        <div class="prop-item-sub">${p.tipo_negocio||""} · ${p.ciudad||""} · ${p.tipo_inmueble||""}</div>
+      </div>
+      <div class="prop-item-price">${fmtPrice(p.precio)}</div>
+    </div>`).join("");
+}
+
+function togglePropSelect(id){
+  const item=document.getElementById("pi-"+id);
+  const chk=document.getElementById("pc-"+id);
+  chk.checked=!chk.checked;
+  item.classList.toggle("selected",chk.checked);
+  updatePublishBtn();
+}
+
+function selectAllProps(sel){
+  myProps.forEach(p=>{const chk=document.getElementById("pc-"+p.id);const item=document.getElementById("pi-"+p.id);if(chk&&item){chk.checked=sel;item.classList.toggle("selected",sel);}});
+  updatePublishBtn();
+}
+
+function updatePublishBtn(){
+  const selProps=myProps.filter(p=>{const c=document.getElementById("pc-"+p.id);return c&&c.checked;});
+  const selPortals=["proppit","metro","finca"].filter(p=>{const c=document.getElementById("chk-"+p);return c&&c.checked;});
+  const btn=document.getElementById("btnPublish");
+  btn.disabled=selProps.length===0||selPortals.length===0;
+  document.getElementById("btnPublishTxt").textContent=`Publicar ${selProps.length} propiedad${selProps.length!==1?"es":""} en ${selPortals.length} portal${selPortals.length!==1?"es":""}`;
+}
+
+async function publishSelected(){
+  const selProps=myProps.filter(p=>{const c=document.getElementById("pc-"+p.id);return c&&c.checked;});
+  const selPortals=["proppit","metro","finca"].filter(p=>{const c=document.getElementById("chk-"+p);return c&&c.checked;});
+  if(selProps.length===0||selPortals.length===0)return;
+  const btn=document.getElementById("btnPublish");
+  const prog=document.getElementById("pubProgress");
+  btn.disabled=true;prog.style.display="block";
+  let ok=0,fail=0;
+  for(const portal of selPortals){
+    const tok=getToken(portal);
+    if(!tok){addLog("err","Sin token para "+PORTAL_NAMES[portal]);fail++;continue;}
+    prog.textContent="Publicando en "+PORTAL_NAMES[portal]+"...";
+    for(const prop of selProps){
+      try{
+        // Simulate API call - in production this would call the real API
+        await simulatePublish(portal,prop,tok);
+        addLog("ok","Publicado en "+PORTAL_NAMES[portal]+": "+prop.titulo);
+        ok++;
+        // Update publish count in UI
+        const el=document.getElementById("ps-"+portal+"-pub");
+        if(el)el.textContent=parseInt(el.textContent||0)+1;
+        const lastEl=document.getElementById("ps-"+portal+"-last");
+        if(lastEl)lastEl.textContent="Ahora";
+      }catch(e){addLog("err","Error en "+PORTAL_NAMES[portal]+": "+prop.titulo+" - "+e.message);fail++;}
+    }
+  }
+  prog.style.display="none";
+  btn.disabled=false;
+  const msg=ok+" publicacion"+(ok!==1?"es":"")+" exitosa"+(ok!==1?"s":"")+(fail>0?", "+fail+" fallo"+(fail!==1?"s":""):"");
+  showAlert(msg,fail>0?"error":"success");
+}
+
+async function simulatePublish(portal,prop,tok){
+  await new Promise(r=>setTimeout(r,600));
+  const payload={
+    title:prop.titulo,
+    price:prop.precio,
+    type:prop.tipo_negocio,
+    property_type:prop.tipo_inmueble,
+    city:prop.ciudad,
+    neighborhood:prop.barrio,
+    area:prop.area_construida,
+    rooms:prop.habitaciones,
+    bathrooms:prop.banos,
+    parking:prop.parqueaderos,
+    description:prop.descripcion,
+    images:prop.fotos||[]
+  };
+  console.log("[Lomaz Portal] Payload para "+portal+":",JSON.stringify(payload).substring(0,100));
+  return {success:true,id:"sim_"+Date.now()};
+}
+
+function addLog(type,msg){
+  const list=document.getElementById("logList");
+  const emptyMsg=list.querySelector(".empty-log");
+  if(emptyMsg)emptyMsg.remove();
+  const icons={ok:"✅",err:"❌",info:"ℹ️"};
+  const li=document.createElement("li");
+  li.className="log-item";
+  li.innerHTML=`<div class="log-icon ${type}"><span>${icons[type]||"•"}</span></div><div><div class="log-text">${msg}</div><div class="log-time">${new Date().toLocaleString("es-CO")}</div></div>`;
+  list.insertBefore(li,list.firstChild);
+}
+
+async function logout(){await sb.auth.signOut();window.location.href="login.html";}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  currentUser=session.user;
+  const email=currentUser.email;
+  document.getElementById("topEmail").textContent=email;
+  document.getElementById("topAvatar").textContent=email.charAt(0).toUpperCase();
+  // Load portal states from localStorage
+  ["proppit","metro","finca"].forEach(p=>{
+    if(getToken(p))updatePortalUI(p,true);
+  });
+  // Load properties
+  const {data:props}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,tipo_inmueble,ciudad,barrio,area_construida,habitaciones,banos,parqueaderos,descripcion,fotos").eq("asesor_id",currentUser.id).eq("estado","activa").order("created_at",{ascending:false});
+  myProps=props||[];
+  renderPropList();
+  // Add log entry for connected portals
+  ["proppit","metro","finca"].forEach(p=>{
+    if(getToken(p))addLog("info",PORTAL_NAMES[p]+" conectado y listo para publicar");
+  });
+}
+
+// Toggle portal checkbox
+document.querySelectorAll(".ptoggle").forEach(tog=>{
+  tog.addEventListener("click",function(){
+    if(this.classList.contains("disabled"))return;
+    const chk=this.querySelector("input");
+    chk.checked=!chk.checked;
+    this.classList.toggle("active",chk.checked);
+    updatePublishBtn();
+  });
+});
+
+init();
+</script>
+</body>
+</html>
