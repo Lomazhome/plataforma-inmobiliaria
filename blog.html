@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Blog | Lomaz Home</title>
+<meta name="description" content="Blog inmobiliario de Lomaz Home. Consejos, noticias y guías para comprar, vender y arrendar propiedades en Colombia."/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+.logo{font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.nav-links{display:flex;gap:6px}
+.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:6px;transition:all .2s}
+.nav-link:hover,.nav-link.active{color:#c9a484;background:rgba(201,164,132,.08)}
+.page{padding:76px 20px 60px;max-width:1200px;margin:0 auto}
+.blog-hero{text-align:center;padding:48px 20px 40px;margin-bottom:40px}
+.blog-hero h1{font-size:2.2rem;font-weight:900;margin-bottom:10px}
+.blog-hero h1 span{color:#c9a484}
+.blog-hero p{color:#666;font-size:.9rem;max-width:500px;margin:0 auto 24px}
+.search-bar{display:flex;gap:10px;max-width:480px;margin:0 auto}
+.search-bar input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 16px;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none;transition:border-color .2s}
+.search-bar input:focus{border-color:rgba(201,164,132,.5)}
+.search-bar input::placeholder{color:#444}
+.btn-search{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:11px 20px;border-radius:9px;cursor:pointer;font-size:.85rem;font-weight:700;font-family:Montserrat,sans-serif;transition:opacity .2s}
+.btn-search:hover{opacity:.85}
+.cats{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px}
+.cat-btn{padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#888;font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.cat-btn:hover,.cat-btn.active{background:rgba(201,164,132,.12);border-color:rgba(201,164,132,.35);color:#c9a484}
+.featured{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;margin-bottom:40px}
+.featured-main{border-radius:16px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);cursor:pointer;transition:transform .2s,border-color .2s;position:relative}
+.featured-main:hover{transform:translateY(-3px);border-color:rgba(201,164,132,.3)}
+.featured-img{width:100%;height:240px;object-fit:cover}
+.featured-img-ph{width:100%;height:240px;background:linear-gradient(135deg,rgba(201,164,132,.15),rgba(10,10,10,.8));display:flex;align-items:center;justify-content:center;font-size:3rem}
+.featured-body{padding:20px}
+.featured-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.featured-main .featured-title{font-size:1.15rem;font-weight:700;color:#eee;margin-bottom:8px;line-height:1.4}
+.featured-main .featured-excerpt{font-size:.82rem;color:#777;line-height:1.6;margin-bottom:12px}
+.featured-meta{font-size:.72rem;color:#555;display:flex;gap:12px;align-items:center}
+.featured-side{display:flex;flex-direction:column;gap:14px}
+.side-card{display:flex;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s}
+.side-card:hover{border-color:rgba(201,164,132,.25);transform:translateX(3px)}
+.side-card-img{width:80px;height:80px;object-fit:cover;flex-shrink:0}
+.side-card-img-ph{width:80px;height:80px;background:rgba(255,255,255,.05);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.side-card-body{padding:10px 12px 10px 0;flex:1;min-width:0}
+.side-card-title{font-size:.8rem;font-weight:700;color:#ddd;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.side-card-meta{font-size:.68rem;color:#555}
+.section-title{font-size:1rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.07)}
+.articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:40px}
+.art-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s}
+.art-card:hover{transform:translateY(-3px);border-color:rgba(201,164,132,.25)}
+.art-card-img{width:100%;height:150px;object-fit:cover}
+.art-card-img-ph{width:100%;height:150px;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.art-card-body{padding:14px}
+.art-cat-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.62rem;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.art-title{font-size:.88rem;font-weight:700;color:#ddd;margin-bottom:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.art-excerpt{font-size:.75rem;color:#666;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.art-meta{font-size:.68rem;color:#555;display:flex;justify-content:space-between}
+.cat-compra{background:rgba(201,164,132,.15);color:#c9a484}
+.cat-arriendo{background:rgba(33,150,243,.15);color:#64b5f6}
+.cat-inversion{background:rgba(76,175,80,.15);color:#81c784}
+.cat-noticias{background:rgba(156,39,176,.15);color:#ce93d8}
+.cat-consejos{background:rgba(255,152,0,.15);color:#ffb74d}
+.cat-legal{background:rgba(244,67,54,.15);color:#ef9a9a}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;overflow-y:auto;padding:20px}
+.modal-overlay.show{display:block}
+.modal-box{max-width:760px;margin:0 auto;background:#111;border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden}
+.modal-img{width:100%;height:280px;object-fit:cover}
+.modal-img-ph{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,rgba(201,164,132,.1),rgba(0,0,0,.5))}
+.modal-content{padding:28px 32px 32px}
+.modal-close{position:sticky;top:0;float:right;background:rgba(255,255,255,.08);border:none;color:#aaa;width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:all .2s}
+.modal-close:hover{background:rgba(255,60,60,.2);color:#ff6060}
+.modal-cat{margin-bottom:10px}
+.modal-title{font-size:1.5rem;font-weight:800;line-height:1.3;margin-bottom:12px;color:#fff}
+.modal-meta{font-size:.75rem;color:#555;margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap}
+.modal-body{font-size:.88rem;color:#bbb;line-height:1.9;white-space:pre-line}
+.modal-body p{margin-bottom:14px}
+.modal-footer{margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:10px;flex-wrap:wrap}
+.btn-modal-share{background:rgba(201,164,132,.1);border:1px solid rgba(201,164,132,.25);color:#c9a484;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:700;font-family:Montserrat,sans-serif;transition:all .2s}
+.btn-modal-share:hover{background:rgba(201,164,132,.2)}
+.btn-modal-props{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:700;font-family:Montserrat,sans-serif;text-decoration:none;display:inline-block;transition:opacity .2s}
+.load-more-wrap{text-align:center;margin-top:10px}
+.btn-load{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:11px 28px;border-radius:9px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:600;transition:all .2s}
+.btn-load:hover{background:rgba(201,164,132,.1);border-color:rgba(201,164,132,.3);color:#c9a484}
+.empty{text-align:center;padding:60px 20px;color:#555}
+.empty .icon{font-size:3rem;margin-bottom:14px}
+@media(max-width:768px){.featured{grid-template-columns:1fr}.blog-hero h1{font-size:1.5rem}.modal-content{padding:18px 18px 24px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">Lomaz <span>Home</span></a>
+  <nav class="nav-links">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <a href="propiedades.html" class="nav-link">Propiedades</a>
+    <a href="blog.html" class="nav-link active">Blog</a>
+    <a href="calculadora.html" class="nav-link">Calculadora</a>
+    <a href="dashboard.html" class="nav-link">Dashboard</a>
+  </nav>
+</div>
+<div class="page">
+  <div class="blog-hero">
+    <h1>Blog <span>Inmobiliario</span></h1>
+    <p>Consejos, noticias y guías para tomar las mejores decisiones en el mercado inmobiliario colombiano.</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Buscar artículos..." oninput="onSearch()"/>
+      <button class="btn-search" onclick="onSearch()">Buscar</button>
+    </div>
+  </div>
+  <div class="cats" id="catsRow">
+    <button class="cat-btn active" onclick="filterCat('',this)">Todos</button>
+    <button class="cat-btn" onclick="filterCat('compra',this)">🏠 Compra</button>
+    <button class="cat-btn" onclick="filterCat('arriendo',this)">🔑 Arriendo</button>
+    <button class="cat-btn" onclick="filterCat('inversion',this)">📈 Inversión</button>
+    <button class="cat-btn" onclick="filterCat('consejos',this)">💡 Consejos</button>
+    <button class="cat-btn" onclick="filterCat('noticias',this)">📰 Noticias</button>
+    <button class="cat-btn" onclick="filterCat('legal',this)">⚖️ Legal</button>
+  </div>
+  <div id="featuredSection" class="featured" style="display:none">
+    <div class="featured-main" id="featuredMain" onclick="openArticle(0)"></div>
+    <div class="featured-side" id="featuredSide"></div>
+  </div>
+  <div class="section-title" id="gridTitle">📚 Todos los artículos</div>
+  <div class="articles-grid" id="articlesGrid"></div>
+  <div class="load-more-wrap"><button class="btn-load" id="btnLoadMore" onclick="loadMore()" style="display:none">Cargar más artículos</button></div>
+</div>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div id="modalImgWrap"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div class="modal-cat" id="modalCat"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button class="btn-modal-share" onclick="shareArticle()">🔗 Compartir</button>
+        <a href="propiedades.html" class="btn-modal-props">🏢 Ver propiedades</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let allArticles=[];let filteredArticles=[];let currentCat="";let currentSearch="";let currentPage=0;const PAGE_SIZE=6;let currentArticleIdx=0;
+const CAT_LABELS={compra:"Compra",arriendo:"Arriendo",inversion:"Inversion",consejos:"Consejos",noticias:"Noticias",legal:"Legal"};
+function fmtDate(d){if(!d)return "";return new Date(d).toLocaleDateString("es-CO",{year:"numeric",month:"long",day:"numeric"});}
+function readTime(txt){if(!txt)return "2 min";return Math.max(1,Math.round(txt.split(" ").length/200))+" min";}
+function catClass(c){return "cat-"+(c||"consejos");}
+function catLabel(c){return CAT_LABELS[c]||c||"General";}
+
+var SEED_ARTICLES=[];
+(function(){
+var a={id:"s1",destacado:true,categoria:"compra",vistas:1250,autor:"Lomaz Home",created_at:"2026-03-15T10:00:00Z"};
+a.titulo="Como comprar tu primera vivienda en Colombia: Guia 2026";
+a.resumen="Todos los pasos para adquirir tu primera propiedad, desde la cuota inicial hasta la escritura.";
+a.contenido="Comprar una vivienda es uno de los pasos mas importantes en la vida. Con informacion correcta es alcanzable.\n\nCUOTA INICIAL: Necesitas entre el 20% y 30% del valor. Para un apartamento de 300 millones, entre 60 y 90 millones ahorrados.\n\nCREDITO HIPOTECARIO: Los bancos ofrecen hasta el 80% del valor. Tasas entre 12% y 18% E.A. Compara en Bancolombia, Davivienda y Banco de Bogota.\n\nLA BUSQUEDA: Define zona, tipo y presupuesto. Visita al menos 5-10 propiedades antes de decidir.\n\nLA ESCRITURACION: El proceso ante notaria toma 30 a 60 dias. Los gastos representan el 2-3% adicional del valor.";
+SEED_ARTICLES.push(a);
+var b={id:"s2",destacado:true,categoria:"inversion",vistas:980,autor:"Lomaz Home",created_at:"2026-02-20T10:00:00Z"};
+b.titulo="Invertir en finca raiz vs otros activos: cual rinde mas en 2026";
+b.resumen="Comparamos la rentabilidad de la finca raiz frente a acciones, CDTs y criptomonedas.";
+b.contenido="La finca raiz ha sido el activo favorito de los colombianos por decadas.\n\nRENTABILIDAD: Valorizacion promedio del 6-8% anual mas canon de arriendo del 4-6% anual = retorno total de 10-14% anual.\n\nVS CDTs: Ofrecen 12-14% E.A. sin valorizacion de capital ni cubrimiento ante inflacion.\n\nVS ACCIONES: Alta volatilidad. La finca raiz ofrece mas estabilidad para el inversor conservador.\n\nCONCLUSION: Sigue siendo excelente a largo plazo en Medellin, Bogota y Barranquilla donde la demanda de arriendo es alta.";
+SEED_ARTICLES.push(b);
+var c={id:"s3",destacado:false,categoria:"arriendo",vistas:1540,autor:"Lomaz Home",created_at:"2026-01-10T10:00:00Z"};
+c.titulo="5 errores que debes evitar al arrendar tu propiedad";
+c.resumen="Aprende a proteger tu inversion y a encontrar el arrendatario ideal sin contratiempos.";
+c.contenido="Arrendar puede ser excelente fuente de ingresos pasivos si tomas las precauciones necesarias.\n\n1. HACER ESTUDIO DE CREDITO: Verifica siempre la capacidad de pago. El canon no debe superar el 30% del ingreso.\n\n2. CONTRATO ESCRITO: Nunca arriendas verbal. Incluye valor, fecha de pago, duracion y condiciones de entrega.\n\n3. PRECIO DE MERCADO: Precio muy alto alarga vacancia. Usa herramientas de comparacion para fijar canon.\n\n4. DOCUMENTAR ESTADO: Fotos detalladas antes de la entrega. Acta de entrega firmada por ambas partes.\n\n5. OBLIGACIONES LEGALES: Propietario paga predial, administracion y reparaciones estructurales.";
+SEED_ARTICLES.push(c);
+var d={id:"s4",destacado:false,categoria:"noticias",vistas:720,autor:"Lomaz Home",created_at:"2026-04-05T10:00:00Z"};
+d.titulo="Reforma tributaria y su impacto en el sector inmobiliario";
+d.resumen="Como los cambios tributarios afectan a compradores, vendedores e inversores de finca raiz en Colombia.";
+d.contenido="Los cambios en la reforma tributaria afectan directamente al sector inmobiliario colombiano.\n\nGANANCIAS OCASIONALES: Venta de inmuebles genera renta del 15% sobre la diferencia entre precio de venta y costo fiscal.\n\nIMPUESTO PREDIAL: Reformas al avaluo catastral buscan actualizar valores de mercado. Puede incrementar predial en zonas desactualizadas.\n\nIVA EN VIVIENDA: Vivienda VIS exenta de IVA. Para NO VIS aplica IVA del 19% sobre materiales de construccion.\n\nRECOMENDACION: Consulta con un contador antes de vender tu propiedad para optimizar la carga tributaria.";
+SEED_ARTICLES.push(d);
+var e={id:"s5",destacado:true,categoria:"consejos",vistas:2100,autor:"Lomaz Home",created_at:"2026-03-01T10:00:00Z"};
+e.titulo="7 estrategias para negociar el precio de una propiedad";
+e.resumen="Las tecnicas que usan los mejores asesores para lograr el mejor precio al comprar o vender.";
+e.contenido="La negociacion es un arte. Con las estrategias correctas puedes ahorrar millones.\n\n1. INVESTIGA EL MERCADO: Conoce precios comparables. Un buen asesor te da datos de transacciones recientes.\n\n2. MOTIVACION DEL VENDEDOR: Vendedor urgente acepta mejores condiciones. Pregunta cuanto lleva en venta.\n\n3. MUESTRA SOLVENCIA: Carta de aprobacion de credito da poder de negociacion real.\n\n4. NEGOCIA MAS QUE PRECIO: Electrodomesticos, parqueadero o reparaciones pueden valer mas que un descuento.\n\n5. USA EL SILENCIO: Despues de tu oferta, guarda silencio. El primero que habla pierde terreno.\n\n6. ESCALADA PROGRESIVA: Empieza bajo y sube en incrementos pequenos para dar sensacion de esfuerzo.\n\n7. URGENCIA: Oferta con tiempo limite genera decision rapida.";
+SEED_ARTICLES.push(e);
+var f={id:"s6",destacado:false,categoria:"legal",vistas:1890,autor:"Lomaz Home",created_at:"2026-02-01T10:00:00Z"};
+f.titulo="Tramites legales para comprar o vender una casa en Colombia";
+f.resumen="Todo sobre promesas de compraventa, escrituracion, registro y los impuestos que se deben pagar.";
+f.contenido="El proceso legal de compraventa involucra varios pasos importantes que debes conocer.\n\nPROMESA DE COMPRAVENTA: Primer documento legal. Incluye descripcion del inmueble, precio, plazo y penalidades por incumplimiento.\n\nESCRITURA PUBLICA: Se firma ante notario con cedula, certificado de tradicion, paz y salvo predial y de administracion.\n\nCOSTOS NOTARIALES: 0.54% del valor de la transaccion, dividido entre comprador y vendedor.\n\nREGISTRO: Despues de la escritura se registra en la Oficina de Registro. Costo: 1% del valor (impuesto de registro).\n\nTIEMPO TOTAL: De promesa a registro, entre 45 y 90 dias en condiciones normales.";
+SEED_ARTICLES.push(f);
+})();
+
+function applyFilters(){
+  filteredArticles=allArticles.filter(a=>{
+    if(currentCat&&a.categoria!==currentCat)return false;
+    if(currentSearch){
+      const hay=(a.titulo+" "+a.resumen).toLowerCase();
+      if(!hay.includes(currentSearch.toLowerCase()))return false;
+    }
+    return true;
+  });
+  currentPage=0;
+  renderFeatured();
+  renderGrid();
+}
+
+function filterCat(cat,btn){
+  currentCat=cat;
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  applyFilters();
+}
+
+function onSearch(){
+  currentSearch=document.getElementById("searchInput").value.trim();
+  applyFilters();
+}
+
+function renderFeatured(){
+  const featured=filteredArticles.filter(a=>a.destacado);
+  const sec=document.getElementById("featuredSection");
+  if(featured.length===0||currentSearch){sec.style.display="none";return;}
+  sec.style.display="grid";
+  // Main featured
+  const main=featured[0];
+  const mainIdx=allArticles.indexOf(main);
+  const mainImg=main.imagen_url
+    ?`<img src="${main.imagen_url}" class="featured-img" alt="${main.titulo}">`
+    :`<div class="featured-img-ph">📰</div>`;
+  document.getElementById("featuredMain").innerHTML=`
+    ${mainImg}
+    <div class="featured-body">
+      <span class="featured-badge ${catClass(main.categoria)}">${catLabel(main.categoria)}</span>
+      <div class="featured-title">${main.titulo}</div>
+      <div class="featured-excerpt">${main.resumen}</div>
+      <div class="featured-meta"><span>${fmtDate(main.created_at)}</span><span>✍️ ${main.autor||""}</span><span>👁 ${main.vistas||0}</span></div>
+    </div>`;
+  document.getElementById("featuredMain").onclick=()=>openArticle(mainIdx);
+  // Side featured
+  const side=featured.slice(1,4);
+  document.getElementById("featuredSide").innerHTML=side.map(a=>{
+    const idx=allArticles.indexOf(a);
+    const sImg=a.imagen_url
+      ?`<img src="${a.imagen_url}" class="side-card-img" alt="${a.titulo}">`
+      :`<div class="side-card-img-ph">📄</div>`;
+    return `<div class="side-card" onclick="openArticle(${idx})">${sImg}<div class="side-card-body"><div class="side-card-title">${a.titulo}</div><div class="side-card-meta">${fmtDate(a.created_at)} · ${readTime(a.contenido)}</div></div></div>`;
+  }).join("");
+}
+
+function renderGrid(){
+  const title=document.getElementById("gridTitle");
+  const grid=document.getElementById("articlesGrid");
+  const btnMore=document.getElementById("btnLoadMore");
+  // Skip featured from grid when no filter
+  const skip=(!currentCat&&!currentSearch)?filteredArticles.filter(a=>a.destacado).map(a=>a.id):[];
+  const items=filteredArticles.filter(a=>!skip.includes(a.id));
+  title.textContent=currentSearch?"Resultados de busqueda: "+items.length+" articulo"+(items.length!==1?"s":""):currentCat?"Categoria: "+catLabel(currentCat):"Todos los articulos";
+  if(items.length===0){grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="icon">📭</div><p>No hay articulos que coincidan.</p></div>`;btnMore.style.display="none";return;}
+  const page=items.slice(0,(currentPage+1)*PAGE_SIZE);
+  grid.innerHTML=page.map(a=>{
+    const idx=allArticles.indexOf(a);
+    const aImg=a.imagen_url
+      ?`<img src="${a.imagen_url}" class="art-card-img" alt="${a.titulo}">`
+      :`<div class="art-card-img-ph" style="background:rgba(255,255,255,.04)">📄</div>`;
+    return `<div class="art-card" onclick="openArticle(${idx})">${aImg}<div class="art-card-body"><span class="art-cat-badge ${catClass(a.categoria)}">${catLabel(a.categoria)}</span><div class="art-title">${a.titulo}</div><div class="art-excerpt">${a.resumen}</div><div class="art-meta"><span>${fmtDate(a.created_at)}</span><span>${readTime(a.contenido)}</span></div></div></div>`;
+  }).join("");
+  btnMore.style.display=items.length>(currentPage+1)*PAGE_SIZE?"block":"none";
+}
+
+function loadMore(){currentPage++;renderGrid();}
+
+function openArticle(idx){
+  const a=allArticles[idx];
+  if(!a)return;
+  currentArticleIdx=idx;
+  const overlay=document.getElementById("modalOverlay");
+  document.getElementById("modalImgWrap").innerHTML=a.imagen_url
+    ?`<img src="${a.imagen_url}" class="modal-img" alt="${a.titulo}">`
+    :`<div class="modal-img-ph">📰</div>`;
+  document.getElementById("modalCat").innerHTML=`<span class="art-cat-badge ${catClass(a.categoria)}">${catLabel(a.categoria)}</span>`;
+  document.getElementById("modalTitle").textContent=a.titulo;
+  document.getElementById("modalMeta").innerHTML=`<span>📅 ${fmtDate(a.created_at)}</span><span>✍️ ${a.autor||"Lomaz Home"}</span><span>⏱️ ${readTime(a.contenido)}</span><span>👁️ ${a.vistas||0} vistas</span>`;
+  document.getElementById("modalBody").innerHTML=`<p>${(a.contenido||"").replace(/\n\n/g,"</p><p>")}</p>`;
+  overlay.classList.add("show");
+  document.body.style.overflow="hidden";
+  // Increment view count
+  if(a.vistas!==undefined)a.vistas++;
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById("modalOverlay"))closeModalDirect();
+}
+
+function closeModalDirect(){
+  document.getElementById("modalOverlay").classList.remove("show");
+  document.body.style.overflow="";
+}
+
+function shareArticle(){
+  const a=allArticles[currentArticleIdx];
+  const url=window.location.href.split("?")[0]+"?articulo="+a.id;
+  if(navigator.share){navigator.share({title:a.titulo,url});return;}
+  navigator.clipboard.writeText(url).then(()=>alert("Enlace copiado al portapapeles"));
+}
+
+async function init(){
+  // Try to load from Supabase first
+  try{
+    const {data}=await sb.from("articulos").select("*").eq("publicado",true).order("created_at",{ascending:false}).limit(50);
+    if(data&&data.length>0){allArticles=data;}
+    else{allArticles=SEED_ARTICLES;}
+  }catch(e){allArticles=SEED_ARTICLES;}
+  filteredArticles=[...allArticles];
+  document.getElementById("featuredSection").style.display="grid";
+  applyFilters();
+  // Auto-open article from URL
+  const params=new URLSearchParams(window.location.search);
+  const artId=params.get("articulo");
+  if(artId){const idx=allArticles.findIndex(a=>a.id===artId);if(idx>=0)openArticle(idx);}
+}
+
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModalDirect();});
+init();
+</script>
+</body>
+</html>
