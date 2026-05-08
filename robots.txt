@@ -1,0 +1,30 @@
+# Lomaz Home - robots.txt
+# Generated: 2026-05-08
+
+# Allow all search engine crawlers
+User-agent: *
+Allow: /
+
+# Block private/admin pages from indexing
+Disallow: /dashboard.html
+Disallow: /agregar-propiedad.html
+Disallow: /mis-propiedades.html
+Disallow: /clientes.html
+Disallow: /leads.html
+Disallow: /pipeline.html
+Disallow: /perfil-asesor.html
+
+# Allow public pages
+Allow: /index.html
+Allow: /propiedades.html
+Allow: /propiedad.html
+Allow: /blog.html
+Allow: /calculadora.html
+Allow: /comparador.html
+Allow: /favoritos.html
+
+# Sitemap location
+Sitemap: https://plataforma-inmobiliaria-two.vercel.app/sitemap.xml
+
+# Crawl delay (be nice to server)
+Crawl-delay: 1
