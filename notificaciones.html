@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notificaciones - Lomaz Home</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#f0f2f5;color:#1a1a2e}
+.wrap{display:flex;min-height:100vh}
+/* SIDEBAR */
+.sidebar{width:240px;background:linear-gradient(160deg,#1a1a2e,#16213e);color:#fff;position:fixed;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sb-logo{padding:20px 18px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:10px}
+.sb-logo .icon{width:36px;height:36px;background:#e4a853;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#1a1a2e;font-size:16px}
+.sb-logo .name{font-size:16px;font-weight:700;color:#e4a853}
+.sb-nav{flex:1;padding:10px 0}
+.sb-sec{padding:8px 18px 3px;font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.sb-link{display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;border-left:3px solid transparent;transition:all 0.2s;cursor:pointer}
+.sb-link:hover,.sb-link.active{background:rgba(228,168,83,0.12);color:#e4a853;border-left-color:#e4a853}
+.sb-link .ico{font-size:15px;width:18px;text-align:center}
+.sb-link .cnt{margin-left:auto;background:#e74c3c;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700}
+/* MAIN */
+.main{margin-left:240px;flex:1}
+.topbar{background:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,0.08);position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-title{font-size:18px;font-weight:700;color:#1a1a2e}
+.topbar-title span{color:#e4a853}
+.btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s}
+.btn-gold{background:#e4a853;color:#1a1a2e}.btn-gold:hover{background:#d4923f}
+.btn-outline{background:transparent;border:1.5px solid #e4a853;color:#e4a853}.btn-outline:hover{background:#e4a853;color:#1a1a2e}
+.btn-ghost{background:transparent;border:1.5px solid #ddd;color:#888}.btn-ghost:hover{border-color:#999;color:#555}
+.content{padding:22px 24px}
+/* FILTER TABS */
+.filter-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.ftab{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid #e8e8e8;background:#fff;color:#888;transition:all 0.2s}
+.ftab:hover{border-color:#e4a853;color:#e4a853}
+.ftab.active{background:#e4a853;color:#1a1a2e;border-color:#e4a853}
+.ftab .badge{background:#e74c3c;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:6px}
+/* NOTIF LIST */
+.notif-list{display:flex;flex-direction:column;gap:0}
+.notif-item{background:#fff;border-radius:0;padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:flex-start;gap:14px;transition:background 0.15s;cursor:pointer;position:relative}
+.notif-item:first-child{border-radius:14px 14px 0 0}
+.notif-item:last-child{border-radius:0 0 14px 14px;border-bottom:none}
+.notif-item:only-child{border-radius:14px}
+.notif-item:hover{background:#fafbfc}
+.notif-item.unread{background:#fffdf5;border-left:3px solid #e4a853}
+.notif-item.unread:hover{background:#fff8e8}
+.notif-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-icon.lead{background:#e8f4fd;}.notif-icon.prop{background:#e8f8f0;}.notif-icon.sistema{background:#f3eafd;}.notif-icon.cliente{background:#fff8ec;}.notif-icon.portal{background:#fdecea;}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:3px}
+.notif-desc{font-size:13px;color:#666;line-height:1.4}
+.notif-meta{font-size:11px;color:#aaa;margin-top:6px;display:flex;align-items:center;gap:8px}
+.notif-meta .tag{background:#f0f2f5;color:#888;border-radius:10px;padding:2px 8px;font-size:10px;font-weight:600}
+.notif-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.dot-unread{width:10px;height:10px;background:#e4a853;border-radius:50%;flex-shrink:0;margin-top:4px}
+.notif-item.read .dot-unread{background:transparent}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:#aaa}
+.empty-state .emoji{font-size:48px;margin-bottom:16px}
+.empty-state .msg{font-size:16px;font-weight:600;margin-bottom:8px;color:#bbb}
+.empty-state .sub{font-size:13px}
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:22px}
+.scard{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);text-align:center}
+.scard .sv{font-size:28px;font-weight:800;color:#1a1a2e}
+.scard .sl{font-size:12px;color:#888;margin-top:4px}
+.scard.gold .sv{color:#e4a853}
+.scard.red .sv{color:#e74c3c}
+.scard.blue .sv{color:#3498db}
+.scard.green .sv{color:#27ae60}
+/* TOAST SYSTEM */
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{background:#1a1a2e;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.3);pointer-events:all;animation:slideIn 0.3s ease;border-left:4px solid #e4a853;min-width:260px}
+.toast.success{border-left-color:#27ae60}.toast.error{border-left-color:#e74c3c}.toast.info{border-left-color:#3498db}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
+.toast.hiding{animation:slideOut 0.3s ease forwards}
+/* FLOATING ARIA BUTTON */
+#aria-float{position:fixed;bottom:88px;right:24px;width:52px;height:52px;background:linear-gradient(135deg,#e4a853,#d4923f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(228,168,83,0.5);z-index:8000;transition:transform 0.2s;text-decoration:none}
+#aria-float:hover{transform:scale(1.1)}
+#aria-float::after{content:"ARIA";position:absolute;right:60px;background:#1a1a2e;color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity 0.2s;pointer-events:none}
+#aria-float:hover::after{opacity:1}
+/* BACK TO TOP */
+#back-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:#1a1a2e;color:#fff;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:7999;transition:all 0.2s;border:none}
+#back-top:hover{background:#e4a853;color:#1a1a2e}
+#back-top.visible{display:flex}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeInUp 0.4s ease forwards}
+</style>
+</head>
+<body>
+<div id="ls" style="position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:14px">
+<div style="width:44px;height:44px;border:4px solid rgba(228,168,83,0.3);border-top-color:#e4a853;border-radius:50%;animation:spin 0.8s linear infinite"></div>
+<div style="color:#e4a853;font-size:14px;font-weight:600">Cargando notificaciones...</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<div class="wrap" id="app" style="display:none">
+<aside class="sidebar">
+<div class="sb-logo"><div class="icon">L</div><div><div class="name">Lomaz Home</div><div style="font-size:10px;color:rgba(255,255,255,0.4)">Notificaciones</div></div></div>
+<nav class="sb-nav">
+<div class="sb-sec">Menu Principal</div>
+<a class="sb-link" href="dashboard.html"><span class="ico">🏡</span>Dashboard</a>
+<a class="sb-link" href="propiedades.html"><span class="ico">🏠</span>Propiedades</a>
+<a class="sb-link" href="clientes.html"><span class="ico">🤝</span>Clientes</a>
+<a class="sb-link" href="leads.html"><span class="ico">📩</span>Leads</a>
+<a class="sb-link" href="pipeline.html"><span class="ico">📋</span>Pipeline</a>
+<div class="sb-sec">Herramientas</div>
+<a class="sb-link active" href="notificaciones.html"><span class="ico">🔔</span>Notificaciones<span class="cnt" id="sb-unread">0</span></a>
+<a class="sb-link" href="favoritos.html"><span class="ico">❤️</span>Favoritos</a>
+<a class="sb-link" href="comparador.html"><span class="ico">⚖️</span>Comparador</a>
+<a class="sb-link" href="calculadora.html"><span class="ico">🧮</span>Calculadora</a>
+<a class="sb-link" href="portales.html"><span class="ico">🔗</span>Portales</a>
+<a class="sb-link" href="aria.html"><span class="ico">🤖</span>Chat ARIA</a>
+<a class="sb-link" href="blog.html"><span class="ico">📝</span>Blog</a>
+<div class="sb-sec">Cuenta</div>
+<a class="sb-link" href="perfil-asesor.html"><span class="ico">👤</span>Mi Perfil</a>
+<a class="sb-link" id="logout-btn"><span class="ico">🚪</span>Cerrar Sesion</a>
+</nav>
+</aside>
+<main class="main">
+<div class="topbar">
+<div class="topbar-left">
+<div class="topbar-title"><span>🔔</span> Notificaciones</div>
+</div>
+<div style="display:flex;gap:10px">
+<button class="btn btn-ghost" onclick="markAllRead()">✓ Marcar todas como leidas</button>
+<button class="btn btn-ghost" onclick="clearRead()">🗑 Limpiar leidas</button>
+<button class="btn btn-gold" onclick="loadNotifs()">↺ Actualizar</button>
+</div>
+</div>
+<div class="content fade-in">
+<!-- STATS -->
+<div class="stats-row">
+<div class="scard gold"><div class="sv" id="st-total">0</div><div class="sl">Total</div></div>
+<div class="scard red"><div class="sv" id="st-unread">0</div><div class="sl">Sin leer</div></div>
+<div class="scard blue"><div class="sv" id="st-leads">0</div><div class="sl">Leads</div></div>
+<div class="scard green"><div class="sv" id="st-props">0</div><div class="sl">Propiedades</div></div>
+</div>
+<!-- FILTER TABS -->
+<div class="filter-tabs">
+<button class="ftab active" data-type="all" onclick="filterNotifs('all',this)">Todas <span class="badge" id="fb-all">0</span></button>
+<button class="ftab" data-type="lead" onclick="filterNotifs('lead',this)">📩 Leads <span class="badge" id="fb-lead">0</span></button>
+<button class="ftab" data-type="propiedad" onclick="filterNotifs('propiedad',this)">🏠 Propiedades <span class="badge" id="fb-prop">0</span></button>
+<button class="ftab" data-type="cliente" onclick="filterNotifs('cliente',this)">🤝 Clientes <span class="badge" id="fb-cli">0</span></button>
+<button class="ftab" data-type="sistema" onclick="filterNotifs('sistema',this)">⚙️ Sistema <span class="badge" id="fb-sis">0</span></button>
+<button class="ftab" data-type="portal" onclick="filterNotifs('portal',this)">🔗 Portales <span class="badge" id="fb-port">0</span></button>
+</div>
+<!-- LIST -->
+<div id="notif-list" class="notif-list"></div>
+</div>
+</main>
+</div>
+<!-- Toast container -->
+<div id="toast-container"></div>
+<!-- Floating ARIA button -->
+<a id="aria-float" href="aria.html" title="Hablar con ARIA">🤖</a>
+<!-- Back to top -->
+<button id="back-top" title="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+var SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+var SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+var sb=null;
+var allNotifs=[];
+var currentFilter="all";
+var readSet=new Set(JSON.parse(localStorage.getItem("lh_notif_read")||"[]"));
+
+async function initSB(){
+  var s=document.createElement("script");
+  s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+  document.head.appendChild(s);
+  await new Promise(function(r){s.onload=r;});
+  sb=supabase.createClient(SB_URL,SB_KEY);
+}
+
+async function checkAuth(){
+  await initSB();
+  var res=await sb.auth.getSession();
+  if(!res.data.session){window.location.href="login.html";return;}
+  document.getElementById("ls").style.display="none";
+  document.getElementById("app").style.display="flex";
+  loadNotifs();
+  setInterval(loadNotifs,60000);
+}
+
+async function loadNotifs(){
+  var notifs=[];
+  // Load recent leads as notifications
+  var res1=await sb.from("leads").select("id,nombre,email,telefono,mensaje,created_at,propiedad_id").order("created_at",{ascending:false}).limit(30);
+  if(res1.data){
+    res1.data.forEach(function(l){
+      notifs.push({id:"lead_"+l.id,tipo:"lead",icon:"📩",titulo:"Nuevo lead: "+(l.nombre||"Anonimo"),desc:(l.email||"Sin email")+" - "+(l.mensaje?l.mensaje.substring(0,60)+"...":"Sin mensaje"),fecha:l.created_at,link:"leads.html"});
+    });
+  }
+  // Load recent propiedades as notifications
+  var res2=await sb.from("propiedades").select("id,titulo,estado,tipo,ciudad,created_at").order("created_at",{ascending:false}).limit(20);
+  if(res2.data){
+    res2.data.forEach(function(p){
+      var msg=p.estado==="publicado"?"fue publicada":"fue guardada como borrador";
+      notifs.push({id:"prop_"+p.id,tipo:"propiedad",icon:"🏠",titulo:"Propiedad: "+(p.titulo||"Sin titulo"),desc:"La propiedad "+msg+" en "+(p.ciudad||"--"),fecha:p.created_at,link:"propiedad.html?id="+p.id});
+    });
+  }
+  // Load recent clientes
+  var res3=await sb.from("clientes").select("id,nombre_completo,tipo_cliente,created_at").order("created_at",{ascending:false}).limit(10);
+  if(res3.data){
+    res3.data.forEach(function(c){
+      notifs.push({id:"cli_"+c.id,tipo:"cliente",icon:"🤝",titulo:"Cliente registrado: "+(c.nombre_completo||"Sin nombre"),desc:"Tipo: "+(c.tipo_cliente||"--"),fecha:c.created_at,link:"clientes.html"});
+    });
+  }
+  // System notifications (static milestones)
+  notifs.push({id:"sys_welcome",tipo:"sistema",icon:"🎉",titulo:"Bienvenido a Lomaz Home",desc:"Tu plataforma inmobiliaria esta lista. Completa tu perfil para mejor visibilidad.",fecha:new Date().toISOString(),link:"perfil-asesor.html"});
+  notifs.push({id:"sys_aria",tipo:"sistema",icon:"🤖",titulo:"ARIA lista para usar",desc:"El asistente virtual ARIA esta activo. Puedes hablar con ella desde cualquier pagina.",fecha:new Date().toISOString(),link:"aria.html"});
+  notifs.push({id:"sys_portales",tipo:"portal",icon:"🔗",titulo:"Portales de publicacion configurados",desc:"Conecta Metrocuadrado, Finca Raiz y Proppit para publicar automaticamente.",fecha:new Date().toISOString(),link:"portales.html"});
+  notifs.push({id:"sys_calcu",tipo:"sistema",icon:"🧮",titulo:"Calculadora financiera disponible",desc:"Calcula ROI, credito hipotecario y rentabilidad de arriendo en segundos.",fecha:new Date().toISOString(),link:"calculadora.html"});
+  // sort by date desc
+  notifs.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});
+  allNotifs=notifs;
+  updateStats();
+  renderNotifs(getFiltered());
+}
+
+function getFiltered(){
+  if(currentFilter==="all")return allNotifs;
+  return allNotifs.filter(function(n){return n.tipo===currentFilter;});
+}
+
+function updateStats(){
+  var unread=allNotifs.filter(function(n){return !readSet.has(n.id);}).length;
+  document.getElementById("st-total").textContent=allNotifs.length;
+  document.getElementById("st-unread").textContent=unread;
+  document.getElementById("st-leads").textContent=allNotifs.filter(function(n){return n.tipo==="lead";}).length;
+  document.getElementById("st-props").textContent=allNotifs.filter(function(n){return n.tipo==="propiedad";}).length;
+  document.getElementById("sb-unread").textContent=unread;
+  document.getElementById("fb-all").textContent=allNotifs.length;
+  document.getElementById("fb-lead").textContent=allNotifs.filter(function(n){return n.tipo==="lead";}).length;
+  document.getElementById("fb-prop").textContent=allNotifs.filter(function(n){return n.tipo==="propiedad";}).length;
+  document.getElementById("fb-cli").textContent=allNotifs.filter(function(n){return n.tipo==="cliente";}).length;
+  document.getElementById("fb-sis").textContent=allNotifs.filter(function(n){return n.tipo==="sistema";}).length;
+  document.getElementById("fb-port").textContent=allNotifs.filter(function(n){return n.tipo==="portal";}).length;
+}
+
+function renderNotifs(arr){
+  var el=document.getElementById("notif-list");
+  if(!arr||!arr.length){
+    el.innerHTML='<div class="empty-state"><div class="emoji">🔔</div><div class="msg">Sin notificaciones</div><div class="sub">No hay notificaciones en esta categoria.</div></div>';
+    return;
+  }
+  el.innerHTML=arr.map(function(n){
+    var isRead=readSet.has(n.id);
+    var tipoCls=n.tipo||"sistema";
+    var timeStr=fmtTime(n.fecha);
+    return '<div class="notif-item '+(isRead?"read":"unread")+'" onclick="markRead(\''+ n.id +'\',event,\''+ (n.link||"#") +'\')">'+
+      '<div class="notif-icon '+tipoCls+'">'+n.icon+'</div>'+
+      '<div class="notif-body">'+
+        '<div class="notif-title">'+escHtml(n.titulo)+'</div>'+
+        '<div class="notif-desc">'+escHtml(n.desc)+'</div>'+
+        '<div class="notif-meta">'+timeStr+'<span class="tag">'+n.tipo.toUpperCase()+'</span></div>'+
+      '</div>'+
+      '<div class="notif-actions">'+
+        '<div class="dot-unread"></div>'+
+      '</div>'+
+      '</div>';
+  }).join("");
+}
+
+function markRead(id,e,link){
+  e.stopPropagation();
+  readSet.add(id);
+  saveRead();
+  updateStats();
+  renderNotifs(getFiltered());
+  if(link&&link!="#"){window.location.href=link;}
+}
+
+function markAllRead(){
+  allNotifs.forEach(function(n){readSet.add(n.id);});
+  saveRead();
+  updateStats();
+  renderNotifs(getFiltered());
+  showToast("Todas las notificaciones marcadas como leidas","success");
+}
+
+function clearRead(){
+  var beforeCount=allNotifs.length;
+  allNotifs=allNotifs.filter(function(n){return !readSet.has(n.id);});
+  var removed=beforeCount-allNotifs.length;
+  updateStats();
+  renderNotifs(getFiltered());
+  showToast(removed+" notificaciones eliminadas","info");
+}
+
+function filterNotifs(type,btn){
+  currentFilter=type;
+  document.querySelectorAll(".ftab").forEach(function(t){t.classList.remove("active");});
+  btn.classList.add("active");
+  renderNotifs(getFiltered());
+}
+
+function saveRead(){
+  localStorage.setItem("lh_notif_read",JSON.stringify(Array.from(readSet)));
+}
+
+function fmtTime(d){
+  if(!d)return "--";
+  var diff=Date.now()-new Date(d).getTime();
+  var mins=Math.floor(diff/60000);
+  var hrs=Math.floor(mins/60);
+  var days=Math.floor(hrs/24);
+  if(days>0)return "hace "+days+" dia"+(days>1?"s":"");
+  if(hrs>0)return "hace "+hrs+" hora"+(hrs>1?"s":"");
+  if(mins>0)return "hace "+mins+" minuto"+(mins>1?"s":"");
+  return "hace un momento";
+}
+
+function escHtml(s){
+  if(!s)return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+// ===== TOAST SYSTEM =====
+function showToast(msg,type){
+  var icons={success:"✅",error:"❌",info:"ℹ️",default:"🔔"};
+  var tc=document.getElementById("toast-container");
+  var t=document.createElement("div");
+  t.className="toast "+(type||"default");
+  t.innerHTML=(icons[type]||icons.default)+" "+escHtml(msg);
+  tc.appendChild(t);
+  setTimeout(function(){
+    t.classList.add("hiding");
+    setTimeout(function(){if(t.parentNode)tc.removeChild(t);},300);
+  },3500);
+}
+window.showToast=showToast;
+
+// ===== BACK TO TOP =====
+window.addEventListener("scroll",function(){
+  var btn=document.getElementById("back-top");
+  if(window.scrollY>300)btn.classList.add("visible");
+  else btn.classList.remove("visible");
+});
+
+// ===== LOGOUT =====
+document.getElementById("logout-btn").addEventListener("click",async function(){
+  if(sb){await sb.auth.signOut();}
+  window.location.href="login.html";
+});
+
+// ===== INIT =====
+checkAuth();
+</script>
+</body>
+</html>
