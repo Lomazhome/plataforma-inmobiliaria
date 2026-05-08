@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Comparador | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+.logo{font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.logo span{color:#c9a484}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn-top{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;text-decoration:none;transition:all .2s;font-family:Montserrat,sans-serif}
+.btn-top:hover{background:rgba(201,164,132,.12);border-color:rgba(201,164,132,.3);color:#c9a484}
+.page{padding:76px 20px 40px;max-width:1300px;margin:0 auto}
+.page-header{text-align:center;margin-bottom:32px}
+.page-header h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+.page-header p{color:#666;font-size:.85rem}
+.slots-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.slot{background:rgba(255,255,255,.03);border:2px dashed rgba(255,255,255,.1);border-radius:14px;padding:20px;min-height:160px;transition:border-color .2s}
+.slot.filled{border-style:solid;border-color:rgba(201,164,132,.25);background:rgba(255,255,255,.04)}
+.slot-num{font-size:.7rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.slot-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:120px;color:#444}
+.slot-empty .icon{font-size:2rem}
+.slot-empty p{font-size:.78rem;text-align:center}
+.search-wrap{position:relative}
+.slot-search{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none;transition:border-color .2s}
+.slot-search:focus{border-color:rgba(201,164,132,.5)}
+.slot-search::placeholder{color:#444}
+.search-dropdown{position:absolute;top:calc(100%+4px);left:0;right:0;background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:8px;z-index:50;max-height:200px;overflow-y:auto;display:none}
+.search-dropdown.show{display:block}
+.search-item{padding:10px 12px;cursor:pointer;font-size:.8rem;border-bottom:1px solid rgba(255,255,255,.05);transition:background .15s}
+.search-item:hover{background:rgba(201,164,132,.12)}
+.search-item .s-price{font-size:.7rem;color:#c9a484;margin-top:2px}
+.search-item .s-loc{font-size:.68rem;color:#555}
+.slot-card{}
+.slot-card img{width:100%;height:110px;object-fit:cover;border-radius:8px;margin-bottom:10px}
+.slot-card .sc-placeholder{width:100%;height:110px;background:rgba(255,255,255,.05);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:10px}
+.slot-card .sc-title{font-size:.82rem;font-weight:700;color:#ddd;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slot-card .sc-price{font-size:.95rem;font-weight:700;color:#c9a484;margin-bottom:6px}
+.slot-card .sc-loc{font-size:.72rem;color:#666;margin-bottom:10px}
+.btn-remove-slot{width:100%;background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);color:#ff6060;padding:6px;border-radius:7px;cursor:pointer;font-size:.75rem;font-family:Montserrat,sans-serif;transition:all .2s}
+.btn-remove-slot:hover{background:rgba(255,60,60,.15)}
+.compare-actions{display:flex;justify-content:center;gap:12px;margin-bottom:32px}
+.btn-compare{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:12px 32px;border-radius:9px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.9rem;font-weight:700;transition:all .2s}
+.btn-compare:hover{opacity:.88;transform:translateY(-1px)}
+.btn-compare:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-print{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:12px 24px;border-radius:9px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.9rem;font-weight:600;transition:all .2s}
+.btn-print:hover{background:rgba(255,255,255,.1);color:#fff}
+.comp-table-wrap{overflow-x:auto;margin-bottom:40px}
+.comp-table{width:100%;border-collapse:collapse;min-width:600px}
+.comp-table th{background:rgba(255,255,255,.04);padding:14px 16px;text-align:left;font-size:.78rem;font-weight:700;color:#aaa;border-bottom:1px solid rgba(255,255,255,.07)}
+.comp-table th.prop-col{text-align:center;font-size:.82rem;color:#ddd}
+.comp-table td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;vertical-align:middle}
+.comp-table tr:hover td{background:rgba(255,255,255,.02)}
+.comp-table .row-label{color:#888;font-weight:600;font-size:.75rem;white-space:nowrap}
+.comp-table .cell-val{text-align:center;color:#ddd}
+.cell-best{color:#4caf50!important;font-weight:700}
+.cell-worst{color:#f44336!important}
+.cell-na{color:#444;font-style:italic}
+.section-header td{background:rgba(201,164,132,.06);color:#c9a484;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;padding:9px 16px}
+.score-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.score-num{font-size:1.4rem;font-weight:700;color:#c9a484}
+.score-bar-bg{width:80px;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;background:linear-gradient(90deg,#c9a484,#a07850);border-radius:3px;transition:width .8s ease}
+.score-lbl{font-size:.65rem;color:#666}
+#compSection{display:none}
+@media print{.topbar,.slots-row,.compare-actions{display:none}.page{padding-top:10px}#compSection{display:block!important}}
+@media(max-width:700px){.slots-row{grid-template-columns:1fr}.comp-table th,.comp-table td{padding:8px 10px;font-size:.72rem}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="logo">Lomaz <span>Home</span></a>
+  <div class="topbar-right">
+    <a href="propiedades.html" class="btn-top">🏢 Propiedades</a>
+    <a href="favoritos.html" class="btn-top">❤️ Favoritos</a>
+    <a href="dashboard.html" class="btn-top">🏠 Dashboard</a>
+  </div>
+</div>
+<div class="page">
+  <div class="page-header">
+    <h1>⚖️ Comparador de Propiedades</h1>
+    <p>Selecciona hasta 3 propiedades para comparar sus características lado a lado.</p>
+  </div>
+  <div class="slots-row">
+    <div class="slot" id="slot1">
+      <div class="slot-num">Propiedad 1</div>
+      <div id="slot1Content" class="slot-empty">
+        <div class="icon">🔍</div>
+        <p>Busca y selecciona<br/>una propiedad</p>
+        <div class="search-wrap">
+          <input type="text" class="slot-search" id="search1" placeholder="Buscar propiedad..." oninput="searchProps(1,this.value)" onfocus="showDrop(1)" />
+          <div class="search-dropdown" id="drop1"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slot" id="slot2">
+      <div class="slot-num">Propiedad 2</div>
+      <div id="slot2Content" class="slot-empty">
+        <div class="icon">🔍</div>
+        <p>Busca y selecciona<br/>una propiedad</p>
+        <div class="search-wrap">
+          <input type="text" class="slot-search" id="search2" placeholder="Buscar propiedad..." oninput="searchProps(2,this.value)" onfocus="showDrop(2)" />
+          <div class="search-dropdown" id="drop2"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slot" id="slot3">
+      <div class="slot-num">Propiedad 3</div>
+      <div id="slot3Content" class="slot-empty">
+        <div class="icon">🔍</div>
+        <p>Busca y selecciona<br/>una propiedad</p>
+        <div class="search-wrap">
+          <input type="text" class="slot-search" id="search3" placeholder="Buscar propiedad..." oninput="searchProps(3,this.value)" onfocus="showDrop(3)" />
+          <div class="search-dropdown" id="drop3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-actions">
+    <button class="btn-compare" id="btnCompare" onclick="runComparison()" disabled>⚖️ Comparar propiedades</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+  </div>
+  <div id="compSection">
+    <div class="comp-table-wrap">
+      <table class="comp-table" id="compTable">
+        <thead id="compHead"></thead>
+        <tbody id="compBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>document.addEventListener("click",function(e){if(!e.target.closest(".search-wrap")){document.querySelectorAll(".search-dropdown").forEach(d=>d.classList.remove("show"));}});</script>
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=supabase.createClient(SB_URL,SB_KEY);
+
+const slots={1:null,2:null,3:null};
+let searchTimers={};
+
+function fmtPrice(n){
+  if(!n)return "A convenir";
+  if(n>=1000000000)return "$"+(n/1000000000).toFixed(2)+"B";
+  if(n>=1000000)return "$"+(n/1000000).toFixed(0)+"M";
+  return "$"+n.toLocaleString("es-CO");
+}
+
+function fmtVal(v){
+  if(v===null||v===undefined||v==="")return null;
+  return v;
+}
+
+function showDrop(n){
+  const d=document.getElementById("drop"+n);
+  if(d.children.length>0)d.classList.add("show");
+}
+
+async function searchProps(n,q){
+  clearTimeout(searchTimers[n]);
+  const drop=document.getElementById("drop"+n);
+  if(q.length<2){drop.innerHTML="";drop.classList.remove("show");return;}
+  searchTimers[n]=setTimeout(async()=>{
+    const {data}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,ciudad,barrio,fotos").ilike("titulo",`%${q}%`).eq("estado","activa").limit(8);
+    if(!data||data.length===0){
+      drop.innerHTML=`<div class="search-item" style="color:#555">Sin resultados para "${q}"</div>`;
+      drop.classList.add("show");return;
+    }
+    drop.innerHTML=data.map(p=>`
+      <div class="search-item" onclick="selectProp(${n},${JSON.stringify(JSON.stringify(p))})">
+        <div>${p.titulo}</div>
+        <div class="s-price">${fmtPrice(p.precio)} · ${p.tipo_negocio||""}</div>
+        <div class="s-loc">📍 ${(p.ciudad||"")+(p.barrio?", "+p.barrio:"")}</div>
+      </div>`).join("");
+    drop.classList.add("show");
+  },350);
+}
+
+async function selectProp(n,jsonStr){
+  const p=JSON.parse(jsonStr);
+  document.getElementById("drop"+n).classList.remove("show");
+  // Load full property data
+  const {data:full}=await sb.from("propiedades").select("*").eq("id",p.id).single();
+  slots[n]=full||p;
+  renderSlot(n);
+  updateCompareBtn();
+  // Auto-run if 2+ slots filled
+  if(Object.values(slots).filter(Boolean).length>=2)runComparison();
+}
+
+function renderSlot(n){
+  const p=slots[n];
+  const slot=document.getElementById("slot"+n);
+  slot.classList.add("filled");
+  const img=p.fotos&&p.fotos.length>0
+    ?`<img src="${p.fotos[0]}" alt="${p.titulo}" onerror="this.style.display='none'">`
+    :`<div class="sc-placeholder">🏠</div>`;
+  document.getElementById("slot"+n+"Content").className="slot-card";
+  document.getElementById("slot"+n+"Content").innerHTML=`
+    ${img}
+    <div class="sc-title">${p.titulo||"Sin título"}</div>
+    <div class="sc-price">${fmtPrice(p.precio)}</div>
+    <div class="sc-loc">📍 ${(p.ciudad||"")+(p.barrio?", "+p.barrio:"")}</div>
+    <button class="btn-remove-slot" onclick="removeSlot(${n})">✕ Quitar</button>`;
+}
+
+function removeSlot(n){
+  slots[n]=null;
+  const slot=document.getElementById("slot"+n);
+  slot.classList.remove("filled");
+  document.getElementById("slot"+n+"Content").className="slot-empty";
+  document.getElementById("slot"+n+"Content").innerHTML=`
+    <div class="icon">🔍</div>
+    <p>Busca y selecciona<br/>una propiedad</p>
+    <div class="search-wrap">
+      <input type="text" class="slot-search" id="search${n}" placeholder="Buscar propiedad..." oninput="searchProps(${n},this.value)" onfocus="showDrop(${n})" />
+      <div class="search-dropdown" id="drop${n}"></div>
+    </div>`;
+  updateCompareBtn();
+  document.getElementById("compSection").style.display="none";
+}
+
+function updateCompareBtn(){
+  const count=Object.values(slots).filter(Boolean).length;
+  const btn=document.getElementById("btnCompare");
+  btn.disabled=count<2;
+  btn.textContent=count<2?"⚖️ Selecciona al menos 2 propiedades":`⚖️ Comparar ${count} propiedad${count>1?"es":""}`;
+}
+
+function runComparison(){
+  const props=Object.values(slots).filter(Boolean);
+  if(props.length<2)return;
+  const section=document.getElementById("compSection");
+  section.style.display="block";
+  section.scrollIntoView({behavior:"smooth",block:"start"});
+  // Build header
+  const head=document.getElementById("compHead");
+  head.innerHTML=`<tr><th style="width:180px">Característica</th>${props.map(p=>`<th class="prop-col"><a href="propiedad.html?id=${p.id}" style="color:#c9a484;text-decoration:none">${p.titulo||"Propiedad"}</a></th>`).join("")}</tr>`;
+  // Build body
+  const body=document.getElementById("compBody");
+  const rows=[];
+  // Section: Precio
+  rows.push({section:"💰 Precio y Tipo"});
+  rows.push({label:"Precio",key:"precio",type:"price",best:"min"});
+  rows.push({label:"Tipo de negocio",key:"tipo_negocio",type:"text"});
+  rows.push({label:"Precio/m² construido",key:"_precio_m2c",type:"calc",best:"min"});
+  rows.push({label:"Precio/m² total",key:"_precio_m2t",type:"calc",best:"min"});
+  // Section: Inmueble
+  rows.push({section:"🏠 Características del Inmueble"});
+  rows.push({label:"Tipo de inmueble",key:"tipo_inmueble",type:"text"});
+  rows.push({label:"Área construida",key:"area_construida",type:"num",unit:"m²",best:"max"});
+  rows.push({label:"Área total/lote",key:"area_total",type:"num",unit:"m²",best:"max"});
+  rows.push({label:"Habitaciones",key:"habitaciones",type:"num",best:"max"});
+  rows.push({label:"Baños",key:"banos",type:"num",best:"max"});
+  rows.push({label:"Parqueaderos",key:"parqueaderos",type:"num",best:"max"});
+  rows.push({label:"Piso/Nivel",key:"piso",type:"num"});
+  rows.push({label:"Estrato",key:"estrato",type:"num",best:"max"});
+  rows.push({label:"Antigüedad (años)",key:"antiguedad",type:"num",best:"min"});
+  // Section: Ubicacion
+  rows.push({section:"📍 Ubicación"});
+  rows.push({label:"Ciudad",key:"ciudad",type:"text"});
+  rows.push({label:"Barrio/Sector",key:"barrio",type:"text"});
+  rows.push({label:"Dirección",key:"direccion",type:"text"});
+  // Section: Admin
+  rows.push({section:"🏢 Administración"});
+  rows.push({label:"Administración",key:"administracion",type:"price",best:"min"});
+  rows.push({label:"Incluye admin",key:"incluye_admin",type:"bool"});
+  // Section: Amenidades
+  rows.push({section:"⭐ Amenidades"});
+  rows.push({label:"Piscina",key:"piscina",type:"bool"});
+  rows.push({label:"Gimnasio",key:"gimnasio",type:"bool"});
+  rows.push({label:"Salón comunal",key:"salon_comunal",type:"bool"});
+  rows.push({label:"Ascensor",key:"ascensor",type:"bool"});
+  rows.push({label:"Vigilancia",key:"vigilancia",type:"bool"});
+  rows.push({label:"Garaje cubierto",key:"garaje_cubierto",type:"bool"});
+  // Score section
+  rows.push({section:"🏆 Puntuación Total"});
+  rows.push({label:"Score general",key:"_score",type:"score"});
+  // Pre-compute derived values
+  props.forEach(p=>{
+    p._precio_m2c=p.precio&&p.area_construida?Math.round(p.precio/p.area_construida):null;
+    p._precio_m2t=p.precio&&p.area_total?Math.round(p.precio/p.area_total):null;
+    // Score: 0-100
+    let sc=50;
+    if(p.habitaciones)sc+=p.habitaciones*4;
+    if(p.banos)sc+=p.banos*3;
+    if(p.parqueaderos)sc+=p.parqueaderos*5;
+    if(p.area_construida)sc+=Math.min(p.area_construida/10,15);
+    if(p.estrato)sc+=p.estrato*2;
+    if(p.piscina)sc+=5;
+    if(p.gimnasio)sc+=4;
+    if(p.ascensor)sc+=3;
+    if(p.vigilancia)sc+=4;
+    if(p.antiguedad)sc-=Math.min(p.antiguedad/5,10);
+    p._score=Math.min(100,Math.max(0,Math.round(sc)));
+  });
+  // Build rows HTML
+  body.innerHTML=rows.map(row=>{
+    if(row.section){
+      return `<tr class="section-header"><td colspan="${props.length+1}">${row.section}</td></tr>`;
+    }
+    // Get values for each prop
+    const vals=props.map(p=>p[row.key]);
+    // Find best/worst for numeric comparisons
+    let bestIdx=-1,worstIdx=-1;
+    if(row.best&&props.length>1){
+      const nums=vals.map(v=>typeof v==="number"?v:null);
+      const valid=nums.filter(v=>v!==null);
+      if(valid.length>1){
+        const bestVal=row.best==="min"?Math.min(...valid):Math.max(...valid);
+        const worstVal=row.best==="min"?Math.max(...valid):Math.min(...valid);
+        bestIdx=nums.indexOf(bestVal);
+        worstIdx=nums.lastIndexOf(worstVal);
+        if(bestIdx===worstIdx)worstIdx=-1;
+      }
+    }
+    const cells=vals.map((v,i)=>{
+      if(v===null||v===undefined){return `<td class="cell-val cell-na">—</td>`;}
+      let display="";
+      if(row.type==="price")display=fmtPrice(v);
+      else if(row.type==="num")display=v+(row.unit?" "+row.unit:"");
+      else if(row.type==="bool")display=v?"✅ Sí":"❌ No";
+      else if(row.type==="calc")display=fmtPrice(v)+"/m²";
+      else if(row.type==="score"){
+        display=`<div class="score-wrap"><div class="score-num">${v}/100</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:${v}%"></div></div><div class="score-lbl">${v>=80?"Excelente":v>=60?"Bueno":v>=40?"Regular":"Básico"}</div></div>`;
+      }
+      else display=String(v);
+      const cls=i===bestIdx?"cell-best":i===worstIdx?"cell-worst":"";
+      const prefix=i===bestIdx?"👑 ":i===worstIdx?"":"";
+      return `<td class="cell-val ${cls}">${prefix}${display}</td>`;
+    }).join("");
+    return `<tr><td class="row-label">${row.label}</td>${cells}</tr>`;
+  }).join("");
+}
+
+// Auto-load from URL params: ?id1=xxx&id2=yyy&id3=zzz
+async function loadFromURL(){
+  const p=new URLSearchParams(window.location.search);
+  const ids=["id1","id2","id3"].map(k=>p.get(k)).filter(Boolean);
+  if(ids.length===0)return;
+  const {data}=await sb.from("propiedades").select("*").in("id",ids);
+  if(!data)return;
+  ids.forEach((id,i)=>{
+    const prop=data.find(p=>p.id===id);
+    if(prop){slots[i+1]=prop;renderSlot(i+1);}
+  });
+  updateCompareBtn();
+  if(ids.length>=2)runComparison();
+}
+
+loadFromURL();
+</script>
+</body>
+</html>
