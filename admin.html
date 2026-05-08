@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Lomaz Home</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#f0f2f5;color:#1a1a2e}
+.admin-wrap{display:flex;min-height:100vh}
+/* SIDEBAR */
+.sidebar{width:260px;background:linear-gradient(160deg,#1a1a2e,#16213e);color:#fff;display:flex;flex-direction:column;position:fixed;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:12px}
+.sidebar-logo .logo-icon{width:40px;height:40px;background:#e4a853;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#1a1a2e}
+.sidebar-logo .logo-text{font-size:18px;font-weight:700;color:#e4a853}
+.sidebar-logo .logo-sub{font-size:11px;color:rgba(255,255,255,0.5)}
+.sidebar-user{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:12px}
+.user-avatar{width:38px;height:38px;background:#e4a853;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#1a1a2e;font-size:15px}
+.user-info .u-name{font-size:13px;font-weight:600}
+.user-info .u-role{font-size:11px;color:#e4a853;background:rgba(228,168,83,0.15);padding:2px 8px;border-radius:20px;display:inline-block;margin-top:2px}
+.sidebar-nav{flex:1;padding:12px 0}
+.nav-section{padding:8px 20px 4px;font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all 0.2s;font-size:14px;color:rgba(255,255,255,0.75);text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{background:rgba(228,168,83,0.12);color:#e4a853;border-left-color:#e4a853}
+.nav-item .nav-icon{font-size:16px;width:20px;text-align:center}
+.nav-item .badge{margin-left:auto;background:#e74c3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700}
+/* MAIN CONTENT */
+.main{margin-left:260px;flex:1;display:flex;flex-direction:column}
+.topbar{background:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,0.08);position:sticky;top:0;z-index:50}
+.topbar-title{font-size:20px;font-weight:700;color:#1a1a2e}
+.topbar-title span{color:#e4a853}
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.btn{padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s}
+.btn-primary{background:#e4a853;color:#1a1a2e}
+.btn-primary:hover{background:#d4923f}
+.btn-danger{background:#e74c3c;color:#fff}
+.btn-danger:hover{background:#c0392b}
+.btn-outline{background:transparent;border:1.5px solid #e4a853;color:#e4a853}
+.btn-outline:hover{background:#e4a853;color:#1a1a2e}
+.content{padding:24px 28px}
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:14px;padding:20px 24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;align-items:center;gap:16px;transition:transform 0.2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.stat-icon.gold{background:#fff8ec;color:#e4a853}
+.stat-icon.blue{background:#e8f4fd;color:#3498db}
+.stat-icon.green{background:#e8f8f0;color:#27ae60}
+.stat-icon.red{background:#fdecea;color:#e74c3c}
+.stat-icon.purple{background:#f3eafd;color:#9b59b6}
+.stat-val{font-size:26px;font-weight:800;color:#1a1a2e;line-height:1}
+.stat-label{font-size:12px;color:#888;margin-top:4px}
+.stat-change{font-size:11px;margin-top:6px;font-weight:600}
+.stat-change.up{color:#27ae60} .stat-change.down{color:#e74c3c}
+/* SECTIONS */
+.section{background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:24px;overflow:hidden}
+.section-header{padding:18px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:16px;font-weight:700;color:#1a1a2e;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#e4a853}
+.section-body{padding:20px 24px}
+/* TABS */
+.tabs{display:flex;gap:4px;background:#f5f6fa;border-radius:10px;padding:4px;margin-bottom:20px}
+.tab{padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#888;transition:all 0.2s;border:none;background:transparent}
+.tab.active{background:#fff;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f8f9fa;padding:10px 14px;text-align:left;font-weight:700;color:#555;border-bottom:2px solid #eee}
+td{padding:10px 14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+tr:hover td{background:#fafbfc}
+.badge-status{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-status.active{background:#e8f8f0;color:#27ae60}
+.badge-status.inactive{background:#fdecea;color:#e74c3c}
+.badge-status.pending{background:#fff8ec;color:#e4a853}
+.badge-status.published{background:#e8f4fd;color:#3498db}
+/* SEARCH BAR */
+.search-bar{display:flex;gap:10px;margin-bottom:16px}
+.search-input{flex:1;padding:9px 14px;border:1.5px solid #e8e8e8;border-radius:8px;font-size:13px;outline:none;transition:border 0.2s}
+.search-input:focus{border-color:#e4a853}
+.filter-select{padding:9px 12px;border:1.5px solid #e8e8e8;border-radius:8px;font-size:13px;outline:none;background:#fff;cursor:pointer}
+.filter-select:focus{border-color:#e4a853}
+/* MINI CHART */
+.chart-bar{display:flex;align-items:flex-end;gap:6px;height:80px;padding:8px 0}
+.bar-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{width:100%;background:linear-gradient(180deg,#e4a853,#d4923f);border-radius:4px 4px 0 0;min-height:4px;transition:height 0.5s}
+.bar-label{font-size:9px;color:#888}
+/* ALERT */
+.alert{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.alert.info{background:#e8f4fd;color:#2980b9;border-left:4px solid #3498db}
+.alert.warn{background:#fff8ec;color:#e67e22;border-left:4px solid #e4a853}
+/* AVATAR */
+.av{width:32px;height:32px;border-radius:50%;background:#e4a853;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#1a1a2e;font-size:12px}
+/* TOGGLE */
+.toggle{width:38px;height:20px;background:#ccc;border-radius:10px;position:relative;cursor:pointer;transition:background 0.3s;border:none}
+.toggle.on{background:#27ae60}
+.toggle::after{content:"";width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.3s}
+.toggle.on::after{transform:translateX(18px)}
+/* PROGRESS */
+.progress-bar{background:#f0f0f0;border-radius:10px;height:8px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#e4a853,#d4923f);transition:width 0.6s}
+/* FORM */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.form-input{width:100%;padding:9px 12px;border:1.5px solid #e8e8e8;border-radius:8px;font-size:13px;outline:none;transition:border 0.2s}
+.form-input:focus{border-color:#e4a853}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:20px;color:#1a1a2e}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#f0f2f5}
+::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
+/* LOADING */
+#loading-screen{position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px}
+.loading-spinner{width:48px;height:48px;border:4px solid rgba(228,168,83,0.3);border-top-color:#e4a853;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn 0.4s ease forwards}
+</style>
+</head>
+<body>
+<div id="loading-screen"><div class="loading-spinner"></div><div style="color:#e4a853;font-size:16px;font-weight:600">Verificando acceso admin...</div></div>
+<div class="admin-wrap" id="app" style="display:none">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<div class="sidebar-logo">
+<div class="logo-icon">L</div>
+<div><div class="logo-text">Lomaz Home</div><div class="logo-sub">Panel de Administracion</div></div>
+</div>
+<div class="sidebar-user">
+<div class="user-avatar" id="user-av">A</div>
+<div class="user-info"><div class="u-name" id="user-name">Administrador</div><div class="u-role">ADMIN</div></div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">Principal</div>
+<a class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span>Vista General</a>
+<a class="nav-item" data-tab="propiedades"><span class="nav-icon">🏠</span>Propiedades<span class="badge" id="b-prop">0</span></a>
+<a class="nav-item" data-tab="asesores"><span class="nav-icon">👤</span>Asesores<span class="badge" id="b-ases">0</span></a>
+<a class="nav-item" data-tab="leads"><span class="nav-icon">📩</span>Leads<span class="badge" id="b-leads">0</span></a>
+<a class="nav-item" data-tab="clientes"><span class="nav-icon">🤝</span>Clientes</a>
+<div class="nav-section">Contenido</div>
+<a class="nav-item" data-tab="blog"><span class="nav-icon">📝</span>Blog</a>
+<div class="nav-section">Plataforma</div>
+<a class="nav-item" href="dashboard.html"><span class="nav-icon">🏡</span>Volver al Dashboard</a>
+<a class="nav-item" id="logout-btn"><span class="nav-icon">🚪</span>Cerrar Sesion</a>
+</nav>
+<div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.35)">
+Lomaz Home v2.0 &bull; <span id="today-date"></span>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="main">
+<div class="topbar">
+<div class="topbar-title">Panel de <span>Administracion</span></div>
+<div class="topbar-actions">
+<button class="btn btn-outline" onclick="loadAllData()">↺ Actualizar</button>
+<button class="btn btn-primary" onclick="showTab('propiedades')">+ Nueva Propiedad</button>
+</div>
+</div>
+<div class="content">
+<!-- ===== OVERVIEW TAB ===== -->
+<div id="tab-overview" class="tab-content fade-in">
+<div class="alert info">📌 Solo los administradores autorizados pueden acceder a este panel.</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-icon gold">🏠</div><div><div class="stat-val" id="s-props">--</div><div class="stat-label">Total Propiedades</div><div class="stat-change up" id="s-props-pub">-- publicadas</div></div></div>
+<div class="stat-card"><div class="stat-icon blue">👤</div><div><div class="stat-val" id="s-ases">--</div><div class="stat-label">Asesores Activos</div><div class="stat-change up">Registrados en plataforma</div></div></div>
+<div class="stat-card"><div class="stat-icon green">📩</div><div><div class="stat-val" id="s-leads">--</div><div class="stat-label">Leads Total</div><div class="stat-change up" id="s-leads-new">-- nuevos</div></div></div>
+<div class="stat-card"><div class="stat-icon purple">🤝</div><div><div class="stat-val" id="s-clientes">--</div><div class="stat-label">Clientes</div><div class="stat-change up">En CRM</div></div></div>
+<div class="stat-card"><div class="stat-icon red">📝</div><div><div class="stat-val" id="s-blog">--</div><div class="stat-label">Articulos Blog</div><div class="stat-change up">Publicados</div></div></div>
+</div>
+<!-- CHARTS ROW -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+<div class="section"><div class="section-header"><div class="section-title"><span class="icon">📈</span>Propiedades por Tipo</div></div>
+<div class="section-body"><div id="chart-tipos" class="chart-bar"></div></div></div>
+<div class="section"><div class="section-header"><div class="section-title"><span class="icon">💰</span>Propiedades por Negocio</div></div>
+<div class="section-body"><div id="chart-negocios" class="chart-bar"></div></div></div>
+</div>
+<!-- RECENT ACTIVITY -->
+<div class="section">
+<div class="section-header"><div class="section-title"><span class="icon">⏰</span>Actividad Reciente</div></div>
+<div class="section-body">
+<div class="tbl-wrap"><table>
+<thead><tr><th>Tipo</th><th>Descripcion</th><th>Fecha</th><th>Estado</th></tr></thead>
+<tbody id="activity-list"><tr><td colspan="4" style="text-align:center;padding:24px;color:#aaa">Cargando...</td></tr></tbody>
+</table></div>
+</div></div>
+</div>
+<!-- ===== PROPIEDADES TAB ===== -->
+<div id="tab-propiedades" class="tab-content" style="display:none">
+<div class="section">
+<div class="section-header"><div class="section-title"><span class="icon">🏠</span>Gestion de Propiedades</div>
+<a href="agregar-propiedad.html" class="btn btn-primary">+ Agregar</a></div>
+<div class="section-body">
+<div class="search-bar">
+<input class="search-input" id="prop-search" placeholder="Buscar por titulo, ciudad, barrio..." oninput="filterTable('prop')">
+<select class="filter-select" id="prop-filter-tipo" onchange="filterTable('prop')">
+<option value="">Todos los tipos</option>
+<option value="Casa">Casa</option>
+<option value="Apartamento">Apartamento</option>
+<option value="Local">Local</option>
+<option value="Oficina">Oficina</option>
+<option value="Bodega">Bodega</option>
+<option value="Lote">Lote</option>
+</select>
+<select class="filter-select" id="prop-filter-estado" onchange="filterTable('prop')">
+<option value="">Todos los estados</option>
+<option value="publicado">Publicado</option>
+<option value="borrador">Borrador</option>
+<option value="vendido">Vendido</option>
+<option value="arrendado">Arrendado</option>
+</select>
+</div>
+<div class="tbl-wrap"><table>
+<thead><tr><th>ID</th><th>Titulo</th><th>Tipo</th><th>Negocio</th><th>Precio</th><th>Ciudad</th><th>Estado</th><th>Asesor</th><th>Fecha</th><th>Acciones</th></tr></thead>
+<tbody id="prop-table"><tr><td colspan="10" style="text-align:center;padding:24px;color:#aaa">Cargando propiedades...</td></tr></tbody>
+</table></div>
+<div id="prop-pagination" style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"></div>
+</div></div>
+</div>
+<!-- ===== ASESORES TAB ===== -->
+<div id="tab-asesores" class="tab-content" style="display:none">
+<div class="section">
+<div class="section-header"><div class="section-title"><span class="icon">👤</span>Gestion de Asesores</div></div>
+<div class="section-body">
+<div class="search-bar">
+<input class="search-input" id="ases-search" placeholder="Buscar asesor por nombre o email..." oninput="filterTable('ases')">
+<select class="filter-select" id="ases-filter-estado" onchange="filterTable('ases')">
+<option value="">Todos</option>
+<option value="activo">Activo</option>
+<option value="inactivo">Inactivo</option>
+</select>
+</div>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Asesor</th><th>Email</th><th>Telefono</th><th>Propiedades</th><th>Leads</th><th>Estado</th><th>Miembro desde</th><th>Acciones</th></tr></thead>
+<tbody id="ases-table"><tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">Cargando asesores...</td></tr></tbody>
+</table></div>
+</div></div>
+</div>
+<!-- ===== LEADS TAB ===== -->
+<div id="tab-leads" class="tab-content" style="display:none">
+<div class="section">
+<div class="section-header"><div class="section-title"><span class="icon">📩</span>Todos los Leads</div></div>
+<div class="section-body">
+<div class="search-bar">
+<input class="search-input" id="leads-search" placeholder="Buscar lead por nombre, email o telefono..." oninput="filterTable('leads')">
+<select class="filter-select" id="leads-filter-estado" onchange="filterTable('leads')">
+<option value="">Todos los estados</option>
+<option value="nuevo">Nuevo</option>
+<option value="contactado">Contactado</option>
+<option value="calificado">Calificado</option>
+<option value="cerrado">Cerrado</option>
+<option value="perdido">Perdido</option>
+</select>
+</div>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Nombre</th><th>Email</th><th>Telefono</th><th>Mensaje</th><th>Propiedad</th><th>Asesor</th><th>Estado</th><th>Fecha</th></tr></thead>
+<tbody id="leads-table"><tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">Cargando leads...</td></tr></tbody>
+</table></div>
+</div></div>
+</div>
+<!-- ===== CLIENTES TAB ===== -->
+<div id="tab-clientes" class="tab-content" style="display:none">
+<div class="section">
+<div class="section-header"><div class="section-title"><span class="icon">🤝</span>Base de Clientes</div></div>
+<div class="section-body">
+<div class="search-bar">
+<input class="search-input" id="cli-search" placeholder="Buscar cliente por nombre o email..." oninput="filterTable('cli')">
+<select class="filter-select" id="cli-filter-tipo" onchange="filterTable('cli')">
+<option value="">Todos los tipos</option>
+<option value="comprador">Comprador</option>
+<option value="arrendatario">Arrendatario</option>
+<option value="vendedor">Vendedor</option>
+<option value="propietario">Propietario</option>
+<option value="inversor">Inversor</option>
+</select>
+</div>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Cliente</th><th>Email</th><th>Telefono</th><th>Tipo</th><th>Ciudad</th><th>Presupuesto</th><th>Asesor</th><th>Fecha</th></tr></thead>
+<tbody id="cli-table"><tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">Cargando clientes...</td></tr></tbody>
+</table></div>
+</div></div>
+</div>
+<!-- ===== BLOG TAB ===== -->
+<div id="tab-blog" class="tab-content" style="display:none">
+<div class="alert warn">✏️ Gestion completa de articulos del blog. Puedes crear, publicar o despublicar articulos.</div>
+<div class="section">
+<div class="section-header"><div class="section-title"><span class="icon">📝</span>Articulos del Blog</div>
+<a href="blog.html" target="_blank" class="btn btn-outline">Ver Blog</a>
+</div>
+<div class="section-body">
+<div class="search-bar">
+<input class="search-input" id="blog-search" placeholder="Buscar articulo por titulo o categoria..." oninput="filterTable('blog')">
+</div>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Titulo</th><th>Categoria</th><th>Autor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+<tbody id="blog-table">
+<tr><td colspan="6" style="text-align:center;padding:24px;color:#aaa">Cargando articulos...</td></tr>
+</tbody>
+</table></div>
+</div></div>
+</div>
+<!-- Modal confirm delete -->
+<div class="modal-overlay" id="modal-confirm">
+<div class="modal">
+<div class="modal-title">⚠️ Confirmar Accion</div>
+<p id="modal-msg" style="color:#555;font-size:14px"></p>
+<div class="modal-actions">
+<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+<button class="btn btn-danger" id="modal-confirm-btn">Confirmar</button>
+</div>
+</div>
+</div>
+</div><!-- end content -->
+</main>
+</div><!-- end admin-wrap -->
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const ADMIN_EMAILS=["admin@lomazhome.com","lomazhome@gmail.com"];
+var sb=null;
+var allData={props:[],asesores:[],leads:[],clientes:[],blog:[]};
+var modalAction=null;
+
+async function initSupabase(){
+  const script=document.createElement("script");
+  script.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+  document.head.appendChild(script);
+  await new Promise(r=>script.onload=r);
+  sb=supabase.createClient(SB_URL,SB_KEY);
+}
+
+async function checkAuth(){
+  await initSupabase();
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  const email=session.user.email;
+  document.getElementById("user-name").textContent=email.split("@")[0];
+  document.getElementById("user-av").textContent=email[0].toUpperCase();
+  document.getElementById("loading-screen").style.display="none";
+  document.getElementById("app").style.display="flex";
+  document.getElementById("today-date").textContent=new Date().toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"});
+  loadAllData();
+}
+
+async function loadAllData(){
+  await Promise.all([loadProps(),loadAsesores(),loadLeads(),loadClientes()]);
+  renderOverview();
+  renderBlogTable();
+}
+
+async function loadProps(){
+  const {data}=await sb.from("propiedades").select("*").order("created_at",{ascending:false});
+  allData.props=data||[];
+  document.getElementById("b-prop").textContent=allData.props.length;
+  document.getElementById("s-props").textContent=allData.props.length;
+  var pub=allData.props.filter(p=>p.estado==="publicado").length;
+  document.getElementById("s-props-pub").textContent=pub+" publicadas";
+  renderPropTable(allData.props);
+}
+
+async function loadAsesores(){
+  const {data}=await sb.from("perfiles").select("*").order("created_at",{ascending:false});
+  allData.asesores=data||[];
+  document.getElementById("b-ases").textContent=allData.asesores.length;
+  document.getElementById("s-ases").textContent=allData.asesores.length;
+  renderAsesTable(allData.asesores);
+}
+
+async function loadLeads(){
+  const {data}=await sb.from("leads").select("*").order("created_at",{ascending:false});
+  allData.leads=data||[];
+  document.getElementById("b-leads").textContent=allData.leads.length;
+  document.getElementById("s-leads").textContent=allData.leads.length;
+  var nw=allData.leads.filter(l=>l.estado==="nuevo").length;
+  document.getElementById("s-leads-new").textContent=nw+" nuevos";
+  renderLeadsTable(allData.leads);
+}
+
+async function loadClientes(){
+  const {data}=await sb.from("clientes").select("*").order("created_at",{ascending:false});
+  allData.clientes=data||[];
+  document.getElementById("s-clientes").textContent=allData.clientes.length;
+  renderCliTable(allData.clientes);
+}
+
+function renderOverview(){
+  // charts tipos
+  var tipos={};
+  allData.props.forEach(p=>{tipos[p.tipo]=(tipos[p.tipo]||0)+1;});
+  renderBarChart("chart-tipos",tipos);
+  // charts negocio
+  var negs={};
+  allData.props.forEach(p=>{negs[p.tipo_negocio]=(negs[p.tipo_negocio]||0)+1;});
+  renderBarChart("chart-negocios",negs);
+  // blog count
+  document.getElementById("s-blog").textContent=allData.blog.length||"N/A";
+  // activity
+  var acts=[];
+  var recentProps=allData.props.slice(0,5);
+  recentProps.forEach(p=>{acts.push({tipo:"Propiedad",desc:p.titulo||"Sin titulo",fecha:p.created_at,estado:p.estado||"borrador"});});
+  var recentLeads=allData.leads.slice(0,5);
+  recentLeads.forEach(l=>{acts.push({tipo:"Lead",desc:(l.nombre||"Lead")+" - "+(l.email||""),fecha:l.created_at,estado:l.estado||"nuevo"});});
+  acts.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});
+  acts=acts.slice(0,8);
+  var tbody=document.getElementById("activity-list");
+  if(!acts.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:24px;color:#aaa">Sin actividad reciente</td></tr>';return;}
+  tbody.innerHTML=acts.map(function(a){
+    return '<tr><td style="font-weight:700">'+a.tipo+'</td><td>'+a.desc+'</td><td>'+fmtDate(a.fecha)+'</td><td>'+statusBadge(a.estado)+'</td></tr>';
+  }).join("");
+}
+
+function renderBarChart(id,dataObj){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var keys=Object.keys(dataObj);
+  var vals=keys.map(function(k){return dataObj[k];});
+  var max=Math.max.apply(null,vals)||1;
+  el.innerHTML=keys.map(function(k,i){
+    var h=Math.round((vals[i]/max)*64);
+    return '<div class="bar-item"><div class="bar-fill" style="height:'+h+'px"></div><div class="bar-label">'+k.substring(0,6)+'</div></div>';
+  }).join("");
+}
+
+function renderPropTable(arr){
+  var tbody=document.getElementById("prop-table");
+  if(!arr||!arr.length){tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:24px;color:#aaa">No hay propiedades</td></tr>';return;}
+  tbody.innerHTML=arr.map(function(p){
+    var precio=p.precio?formatMoney(p.precio):"--";
+    return '<tr>'+
+      '<td style="font-size:11px;color:#aaa">'+p.id.substring(0,8)+'...</td>'+
+      '<td style="font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escHtml(p.titulo||"Sin titulo")+'</td>'+
+      '<td>'+escHtml(p.tipo||"--")+'</td>'+
+      '<td>'+escHtml(p.tipo_negocio||"--")+'</td>'+
+      '<td style="color:#e4a853;font-weight:700">'+precio+'</td>'+
+      '<td>'+escHtml(p.ciudad||"--")+'</td>'+
+      '<td>'+statusBadge(p.estado||"borrador")+'</td>'+
+      '<td><span style="font-size:12px">'+escHtml((p.asesor_id||"").substring(0,8))+'...</span></td>'+
+      '<td>'+fmtDate(p.created_at)+'</td>'+
+      '<td><a href="propiedad.html?id='+p.id+'" target="_blank" style="color:#3498db;font-size:12px;margin-right:8px">Ver</a>'+
+      '<button onclick="confirmDelete(\'prop\',\''+p.id+'\')" style="color:#e74c3c;background:none;border:none;cursor:pointer;font-size:12px">Eliminar</button></td>'+
+      '</tr>';
+  }).join("");
+}
+
+function renderAsesTable(arr){
+  var tbody=document.getElementById("ases-table");
+  if(!arr||!arr.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">No hay asesores registrados</td></tr>';return;}
+  var propCount={};
+  allData.props.forEach(function(p){propCount[p.asesor_id]=(propCount[p.asesor_id]||0)+1;});
+  var leadCount={};
+  allData.leads.forEach(function(l){leadCount[l.asesor_id]=(leadCount[l.asesor_id]||0)+1;});
+  tbody.innerHTML=arr.map(function(a){
+    var ini=(a.nombre_completo||a.email||"?")[0].toUpperCase();
+    var pCount=propCount[a.id]||0;
+    var lCount=leadCount[a.id]||0;
+    return '<tr>'+
+      '<td><div style="display:flex;align-items:center;gap:10px"><span class="av">'+ini+'</span><div><div style="font-weight:600">'+escHtml(a.nombre_completo||"Sin nombre")+'</div><div style="font-size:11px;color:#aaa">'+escHtml(a.agencia||"")+'</div></div></div></td>'+
+      '<td>'+escHtml(a.email||"--")+'</td>'+
+      '<td>'+escHtml(a.telefono||"--")+'</td>'+
+      '<td><span style="font-weight:700;color:#e4a853">'+pCount+'</span></td>'+
+      '<td><span style="font-weight:700;color:#3498db">'+lCount+'</span></td>'+
+      '<td>'+statusBadge("activo")+'</td>'+
+      '<td>'+fmtDate(a.created_at)+'</td>'+
+      '<td><a href="perfil-asesor.html" style="color:#3498db;font-size:12px">Ver perfil</a></td>'+
+      '</tr>';
+  }).join("");
+}
+
+function renderLeadsTable(arr){
+  var tbody=document.getElementById("leads-table");
+  if(!arr||!arr.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">No hay leads</td></tr>';return;}
+  tbody.innerHTML=arr.map(function(l){
+    var msg=l.mensaje?l.mensaje.substring(0,40)+"...":"--";
+    return '<tr>'+
+      '<td style="font-weight:600">'+escHtml(l.nombre||"Anonimo")+'</td>'+
+      '<td>'+escHtml(l.email||"--")+'</td>'+
+      '<td>'+escHtml(l.telefono||"--")+'</td>'+
+      '<td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#666">'+escHtml(msg)+'</td>'+
+      '<td style="font-size:12px">'+escHtml((l.propiedad_id||"--").substring(0,8))+'</td>'+
+      '<td style="font-size:12px">'+escHtml((l.asesor_id||"--").substring(0,8))+'</td>'+
+      '<td>'+statusBadge(l.estado||"nuevo")+'</td>'+
+      '<td>'+fmtDate(l.created_at)+'</td>'+
+      '</tr>';
+  }).join("");
+}
+
+function renderCliTable(arr){
+  var tbody=document.getElementById("cli-table");
+  if(!arr||!arr.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">No hay clientes</td></tr>';return;}
+  tbody.innerHTML=arr.map(function(c){
+    var ini=(c.nombre_completo||c.email||"?")[0].toUpperCase();
+    var budget=c.presupuesto_max?formatMoney(c.presupuesto_max):"--";
+    return '<tr>'+
+      '<td><div style="display:flex;align-items:center;gap:8px"><span class="av">'+ini+'</span><span style="font-weight:600">'+escHtml(c.nombre_completo||"Sin nombre")+'</span></div></td>'+
+      '<td>'+escHtml(c.email||"--")+'</td>'+
+      '<td>'+escHtml(c.telefono||"--")+'</td>'+
+      '<td><span class="badge-status pending">'+escHtml(c.tipo_cliente||"--")+'</span></td>'+
+      '<td>'+escHtml(c.ciudad||"--")+'</td>'+
+      '<td style="color:#e4a853;font-weight:700">'+budget+'</td>'+
+      '<td style="font-size:12px">'+escHtml((c.asesor_id||"--").substring(0,8))+'</td>'+
+      '<td>'+fmtDate(c.created_at)+'</td>'+
+      '</tr>';
+  }).join("");
+}
+
+function renderBlogTable(){
+  var tbody=document.getElementById("blog-table");
+  var seedBlog=[
+    {titulo:"Guia para comprar tu primer apartamento",cat:"Compra",fecha:"2024-01-15",estado:"publicado"},
+    {titulo:"Como calcular la rentabilidad de una propiedad",cat:"Inversion",fecha:"2024-02-01",estado:"publicado"},
+    {titulo:"Errores al arrendar un inmueble",cat:"Arriendo",fecha:"2024-02-20",estado:"publicado"},
+    {titulo:"Tendencias del mercado inmobiliario 2025",cat:"Mercado",fecha:"2024-03-05",estado:"publicado"},
+    {titulo:"Documentos para comprar casa en Colombia",cat:"Legal",fecha:"2024-03-18",estado:"publicado"},
+    {titulo:"Mantenimiento del hogar: lista esencial",cat:"Consejos",fecha:"2024-04-02",estado:"publicado"}
+  ];
+  allData.blog=seedBlog;
+  document.getElementById("s-blog").textContent=seedBlog.length;
+  tbody.innerHTML=seedBlog.map(function(a,i){
+    return '<tr>'+
+      '<td style="font-weight:600">'+escHtml(a.titulo)+'</td>'+
+      '<td><span class="badge-status pending">'+escHtml(a.cat)+'</span></td>'+
+      '<td>Admin</td>'+
+      '<td>'+a.fecha+'</td>'+
+      '<td>'+statusBadge(a.estado)+'</td>'+
+      '<td><a href="blog.html" style="color:#3498db;font-size:12px;margin-right:8px">Ver</a></td>'+
+      '</tr>';
+  }).join("");
+}
+
+function filterTable(type){
+  if(type==="prop"){
+    var q=(document.getElementById("prop-search").value||"").toLowerCase();
+    var t=(document.getElementById("prop-filter-tipo").value||"").toLowerCase();
+    var e=(document.getElementById("prop-filter-estado").value||"").toLowerCase();
+    var filtered=allData.props.filter(function(p){
+      var matchQ=!q||(p.titulo||"").toLowerCase().includes(q)||(p.ciudad||"").toLowerCase().includes(q)||(p.barrio||"").toLowerCase().includes(q);
+      var matchT=!t||(p.tipo||"").toLowerCase()===t;
+      var matchE=!e||(p.estado||"").toLowerCase()===e;
+      return matchQ&&matchT&&matchE;
+    });
+    renderPropTable(filtered);
+  } else if(type==="ases"){
+    var q=(document.getElementById("ases-search").value||"").toLowerCase();
+    var e=(document.getElementById("ases-filter-estado").value||"").toLowerCase();
+    var filtered=allData.asesores.filter(function(a){
+      var matchQ=!q||(a.nombre_completo||"").toLowerCase().includes(q)||(a.email||"").toLowerCase().includes(q);
+      return matchQ;
+    });
+    renderAsesTable(filtered);
+  } else if(type==="leads"){
+    var q=(document.getElementById("leads-search").value||"").toLowerCase();
+    var e=(document.getElementById("leads-filter-estado").value||"").toLowerCase();
+    var filtered=allData.leads.filter(function(l){
+      var matchQ=!q||(l.nombre||"").toLowerCase().includes(q)||(l.email||"").toLowerCase().includes(q)||(l.telefono||"").toLowerCase().includes(q);
+      var matchE=!e||(l.estado||"").toLowerCase()===e;
+      return matchQ&&matchE;
+    });
+    renderLeadsTable(filtered);
+  } else if(type==="cli"){
+    var q=(document.getElementById("cli-search").value||"").toLowerCase();
+    var t=(document.getElementById("cli-filter-tipo").value||"").toLowerCase();
+    var filtered=allData.clientes.filter(function(c){
+      var matchQ=!q||(c.nombre_completo||"").toLowerCase().includes(q)||(c.email||"").toLowerCase().includes(q);
+      var matchT=!t||(c.tipo_cliente||"").toLowerCase()===t;
+      return matchQ&&matchT;
+    });
+    renderCliTable(filtered);
+  } else if(type==="blog"){
+    var q=(document.getElementById("blog-search").value||"").toLowerCase();
+    var filtered=allData.blog.filter(function(a){
+      return !q||(a.titulo||"").toLowerCase().includes(q)||(a.cat||"").toLowerCase().includes(q);
+    });
+    renderBlogFromArr(filtered);
+  }
+}
+
+function renderBlogFromArr(arr){
+  var tbody=document.getElementById("blog-table");
+  if(!arr||!arr.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:24px;color:#aaa">Sin resultados</td></tr>';return;}
+  tbody.innerHTML=arr.map(function(a){
+    return '<tr><td style="font-weight:600">'+escHtml(a.titulo)+'</td><td><span class="badge-status pending">'+escHtml(a.cat)+'</span></td><td>Admin</td><td>'+a.fecha+'</td><td>'+statusBadge(a.estado)+'</td><td><a href="blog.html" style="color:#3498db;font-size:12px">Ver</a></td></tr>';
+  }).join("");
+}
+
+function showTab(name){
+  document.querySelectorAll(".tab-content").forEach(function(el){el.style.display="none";});
+  var el=document.getElementById("tab-"+name);
+  if(el){el.style.display="block"; el.classList.add("fade-in");}
+  document.querySelectorAll(".nav-item").forEach(function(el){el.classList.remove("active");});
+  var nav=document.querySelector("[data-tab="+name+"]");
+  if(nav)nav.classList.add("active");
+}
+
+function confirmDelete(type,id){
+  modalAction={type:type,id:id};
+  document.getElementById("modal-msg").textContent="Esta accion es permanente. Deseas continuar?";
+  document.getElementById("modal-confirm").classList.add("open");
+}
+
+function closeModal(){
+  document.getElementById("modal-confirm").classList.remove("open");
+  modalAction=null;
+}
+
+async function executeDelete(){
+  if(!modalAction)return;
+  var {type,id}=modalAction;
+  if(type==="prop"){
+    await sb.from("propiedades").delete().eq("id",id);
+    await loadProps();
+  }
+  closeModal();
+}
+
+function fmtDate(d){
+  if(!d)return "--";
+  try{return new Date(d).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"});}
+  catch(e){return d;}
+}
+
+function formatMoney(n){
+  if(!n)return "--";
+  return "$"+Number(n).toLocaleString("es-CO");
+}
+
+function statusBadge(s){
+  var cls="pending";
+  if(s==="publicado"||s==="activo"||s==="cerrado")cls="active";
+  else if(s==="borrador"||s==="inactivo"||s==="perdido")cls="inactive";
+  else if(s==="publicado"||s==="contactado")cls="published";
+  return '<span class="badge-status '+cls+'">'+escHtml(s)+'</span>';
+}
+
+function escHtml(str){
+  if(!str)return "";
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// NAV event listeners
+document.querySelectorAll(".nav-item[data-tab]").forEach(function(el){
+  el.addEventListener("click",function(e){
+    e.preventDefault();
+    showTab(this.getAttribute("data-tab"));
+  });
+});
+
+document.getElementById("logout-btn").addEventListener("click",async function(){
+  await sb.auth.signOut();
+  window.location.href="login.html";
+});
+
+document.getElementById("modal-confirm-btn").addEventListener("click",executeDelete);
+
+// INIT
+checkAuth();
+</script>
+</body>
+</html>
