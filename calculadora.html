@@ -17,7 +17,7 @@ body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:
 .tab{padding:1rem 1.5rem;cursor:pointer;font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#888;border-bottom:3px solid transparent;white-space:nowrap;transition:.3s}
 .tab.active{color:#c9a484;border-bottom-color:#c9a484}
 .tab:hover{color:#c9a484}
-.tab-content{display:none;padding:2rem 1rem;max-width:900px;margin:0 auto}
+.tab-content{display:none;padding:2rem 1rem;max-width:960px;margin:0 auto}
 .tab-content.active{display:block}
 .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
 .card{background:#111;border:1px solid #222;border-radius:12px;padding:1.5rem}
@@ -39,11 +39,13 @@ select option{background:#1a1a1a}
 .result-header p{color:#888;font-size:.85rem;margin-top:.3rem}
 .result-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
 .result-col h4{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #222}
-.cost-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid #1a1a1a;font-size:.85rem}
+.cost-item{display:flex;justify-content:space-between;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid #1a1a1a;font-size:.85rem;gap:.5rem}
 .cost-item:last-child{border-bottom:none}
-.cost-label{color:#ccc}
-.cost-value{color:#c9a484;font-weight:700}
-.cost-note{font-size:.7rem;color:#666;margin-top:.15rem}
+.cost-label{color:#ccc;flex:1}
+.cost-value{color:#c9a484;font-weight:700;white-space:nowrap}
+.cost-note{font-size:.7rem;color:#666;margin-top:.15rem;line-height:1.4}
+.cost-exento{color:#5dd879!important}
+.cost-na{color:#555!important}
 .total-row{display:flex;justify-content:space-between;padding:1rem;background:rgba(201,164,132,.08);border:1px solid rgba(201,164,132,.3);border-radius:8px;margin-top:1rem;font-weight:800}
 .total-row span:last-child{color:#c9a484;font-size:1.1rem}
 .grand-total{background:rgba(201,164,132,.15);border:2px solid #c9a484;border-radius:8px;padding:1.2rem;text-align:center;margin-top:1.5rem}
@@ -51,74 +53,91 @@ select option{background:#1a1a1a}
 .grand-total .amount{font-size:1.8rem;font-weight:900;color:#c9a484}
 .note-box{background:rgba(255,193,7,.05);border:1px solid rgba(255,193,7,.2);border-radius:8px;padding:1rem;margin-top:1rem;font-size:.8rem;color:#aaa;line-height:1.6}
 .note-box strong{color:#ffc107}
-.separator{border:none;border-top:1px solid #222;margin:1.5rem 0}
+.alert-rf{background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.3);border-radius:8px;padding:.8rem 1rem;margin-top:.5rem;font-size:.78rem;color:#ff9999;line-height:1.5}
+.separator{border:none;border-top:1px solid #222;margin:1.2rem 0}
 .hipoteca-section{background:rgba(13,110,253,.05);border:1px solid rgba(13,110,253,.2);border-radius:8px;padding:1rem;margin-top:1rem}
 .hipoteca-section h4{color:#6ea8fe;font-size:.85rem;font-weight:700;margin-bottom:.8rem}
 .badge{display:inline-block;font-size:.7rem;padding:.2rem .6rem;border-radius:4px;font-weight:700;margin-left:.5rem}
 .badge.vendedor{background:rgba(220,53,69,.15);color:#ff6b7a}
 .badge.comprador{background:rgba(40,167,69,.15);color:#5dd879}
-.badge.ambos{background:rgba(255,193,7,.15);color:#ffc107}
+.rf-box{background:rgba(220,53,69,.06);border:1px solid rgba(220,53,69,.25);border-radius:8px;padding:1rem;margin:.8rem 0}
+.rf-box h5{color:#ff8888;font-size:.82rem;font-weight:700;margin-bottom:.6rem}
+.rf-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.rf-table th{text-align:left;color:#888;padding:.3rem .5rem;border-bottom:1px solid #333}
+.rf-table td{padding:.35rem .5rem;border-bottom:1px solid #1a1a1a;color:#ccc}
+.rf-table tr:last-child td{border-bottom:none}
 @media(max-width:650px){.calc-grid{grid-template-columns:1fr}.result-cols{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="topbar"><div class="logo">LOMAZ HOME</div><a href="/" style="color:#aaa;font-size:.85rem;text-decoration:none">← Inicio</a></div>
+<div class="topbar"><div class="logo">LOMAZ HOME</div><a href="/" style="color:#aaa;font-size:.85rem;text-decoration:none">&#8592; Inicio</a></div>
 <div class="hero"><h1>Calculadora <span>Inmobiliaria</span></h1><p>Calcula tu cuota hipotecaria y todos los gastos notariales de tu compraventa segun la ley colombiana vigente</p></div>
 <div class="tabs">
-<div class="tab active" onclick="showTab('hipotecaria',this)">🏦 Cuota Hipotecaria</div>
-<div class="tab" onclick="showTab('notarial',this)">📜 Gastos Notariales</div>
+  <div class="tab active" onclick="showTab('hipotecaria',this)">&#127970; Cuota Hipotecaria</div>
+  <div class="tab" onclick="showTab('notarial',this)">&#128220; Gastos Notariales</div>
 </div>
 <div class="tab-content active" id="tab-hipotecaria">
 <div class="calc-grid">
-<div class="card"><h3>🏠 Datos del credito</h3>
+<div class="card"><h3>&#127968; Datos del credito</h3>
 <div class="form-group"><label>VALOR DEL INMUEBLE (COP)</label><input type="number" id="h-valor" placeholder="Ej: 300000000" oninput="calcHipotecaria()"/></div>
 <div class="form-group"><label>PORCENTAJE FINANCIADO (%)</label><select id="h-pct" onchange="calcHipotecaria()"><option value="50">50%</option><option value="60">60%</option><option value="70" selected>70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100% (VIS/VIP)</option></select></div>
 <div class="form-group"><label>TASA DE INTERES ANUAL (%)</label><input type="number" id="h-tasa" value="12.5" step="0.1" min="1" max="40" oninput="calcHipotecaria()"/></div>
 <div class="form-group"><label>PLAZO (ANOS)</label><select id="h-plazo" onchange="calcHipotecaria()"><option value="5">5 anos</option><option value="10">10 anos</option><option value="15" selected>15 anos</option><option value="20">20 anos</option><option value="30">30 anos</option></select></div>
-<div class="form-group"><label>TIPO DE CREDITO</label><select id="h-tipo" onchange="calcHipotecaria()"><option value="pesos">Pesos (tasa fija)</option><option value="uvr">UVR (tasa mixta)</option></select></div>
+<div class="form-group"><label>TIPO DE CREDITO</label><select id="h-tipo" onchange="calcHipotecaria()"><option value="pesos">Pesos (tasa fija)</option><option value="uvr">UVR (tasa mixta - sigue inflacion)</option></select></div>
 </div>
-<div class="card"><h3>📊 Resultados</h3><div id="hipotecaria-result"><p style="color:#888;font-size:.9rem;text-align:center;padding:2rem">Ingresa los datos para ver el calculo</p></div></div>
+<div class="card"><h3>&#128202; Resultados</h3><div id="hipotecaria-result"><p style="color:#888;font-size:.9rem;text-align:center;padding:2rem">Ingresa los datos para ver el calculo</p></div></div>
 </div>
 </div>
 <div class="tab-content" id="tab-notarial">
 <div class="calc-grid">
-<div class="card"><h3>📋 Datos de la escritura</h3>
+<div class="card"><h3>&#128203; Datos de la escritura</h3>
 <div class="form-group"><label>VALOR COMERCIAL DEL INMUEBLE (COP) *</label><input type="number" id="n-valor" placeholder="Ej: 450000000"/></div>
 <div class="form-group"><label>TIPO DE NEGOCIO</label><select id="n-tipo"><option value="compraventa">Compraventa</option><option value="permuta">Permuta</option></select></div>
 <div class="form-group"><label>DEPARTAMENTO</label><select id="n-depto"><option value="bogota">Bogota D.C.</option><option value="antioquia">Antioquia</option><option value="valle">Valle del Cauca</option><option value="atlantico">Atlantico</option><option value="otro">Otro departamento</option></select></div>
+<div class="form-group"><label>CONDICION DEL VENDEDOR</label><select id="n-declarante"><option value="no_declarante">Persona natural NO declarante de renta</option><option value="declarante">Persona natural declarante de renta</option><option value="juridica">Persona juridica (empresa)</option></select></div>
 <hr class="separator"/>
 <div class="form-group"><label>TRAMITES ADICIONALES</label>
 <div class="checkbox-group">
-<label class="chk-item"><input type="checkbox" id="n-hipoteca"/>Con hipoteca (credito bancario)</label>
-<label class="chk-item"><input type="checkbox" id="n-cancelacion"/>Con cancelacion de hipoteca previa</label>
-<label class="chk-item"><input type="checkbox" id="n-afectacion"/>Con afectacion familiar (vivienda familiar)</label>
-<label class="chk-item"><input type="checkbox" id="n-levantar_af"/>Levantar afectacion familiar previa</label>
-<label class="chk-item"><input type="checkbox" id="n-patrimonio"/>Declaracion bien de familia</label>
-<label class="chk-item"><input type="checkbox" id="n-poder"/>Con poder especial notarial</label>
-<label class="chk-item"><input type="checkbox" id="n-vis"/>Inmueble VIS/VIP (descuento impuesto)</label>
+<label class="chk-item"><input type="checkbox" id="n-hipoteca"/> Con hipoteca (credito bancario)</label>
+<label class="chk-item"><input type="checkbox" id="n-cancelacion"/> Con cancelacion de hipoteca previa</label>
+<label class="chk-item"><input type="checkbox" id="n-afectacion"/> Con afectacion familiar (vivienda familiar)</label>
+<label class="chk-item"><input type="checkbox" id="n-levantar_af"/> Levantar afectacion familiar previa</label>
+<label class="chk-item"><input type="checkbox" id="n-patrimonio"/> Declaracion bien de familia</label>
+<label class="chk-item"><input type="checkbox" id="n-poder"/> Con poder especial notarial</label>
+<label class="chk-item"><input type="checkbox" id="n-vis"/> Inmueble VIS/VIP</label>
+<label class="chk-item"><input type="checkbox" id="n-vivienda"/> Es vivienda de habitacion (primera vivienda)</label>
 </div></div>
 <div class="form-group" id="n-hipoteca-val-group" style="display:none"><label>VALOR DE LA HIPOTECA (COP)</label><input type="number" id="n-hipoteca-val" placeholder="Ej: 315000000"/></div>
-<button class="btn-calc" onclick="calcNotarial()">📜 Calcular Gastos Notariales</button>
+<button class="btn-calc" onclick="calcNotarial()">&#128220; Calcular Gastos Notariales</button>
 </div>
-<div class="card"><h3>ℹ️ Informacion legal vigente</h3>
-<div style="font-size:.82rem;color:#888;line-height:1.8">
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Impuesto de registro (Ley 223/95):</strong><br/>1.67% a 1.8% sobre el valor - paga el comprador</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Derechos notariales (Decreto 188/2013):</strong><br/>0.3% + IVA sobre el valor - 50% vendedor / 50% comprador</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Retencion en la fuente (Art. 401 ET):</strong><br/>1% sobre el precio si mayor a 27.000 UVT</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">GMF (4x1000):</strong><br/>0.4% sobre valor transaccion - segun banco</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Impuesto predial dia de escritura:</strong><br/>Vendedor debe acreditar paz y salvo</p>
-<p><strong style="color:#c9a484">UVT 2025:</strong> $49.799 COP</p>
+<div class="card"><h3>&#8505;&#65039; Informacion legal vigente 2025</h3>
+<div style="font-size:.8rem;color:#888;line-height:1.9">
+<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Impuesto de registro (Ley 223/95):</strong><br/>1.67% a 1.8% segun depto - paga el COMPRADOR. Exento en VIS/VIP.</p>
+<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Derechos notariales (Decreto 188/2013):</strong><br/>0.27% sobre el valor + IVA 19% - 50% vendedor / 50% comprador</p>
+<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Retencion en la fuente - VENDEDOR (Art. 398 ET):</strong><br/>Si valor &gt; 27.000 UVT ($1.344.573.000): 1% NO declarante / 2.5% declarante / 2.5% persona juridica. Exento VIS/VIP.</p>
+<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Ganancia ocasional (Art. 307 ET):</strong><br/>10% sobre la utilidad si vendedor declara renta. Si primera vivienda exenta hasta 7.500 UVT de ganancia.</p>
+<p style="margin-bottom:.8rem"><strong style="color:#c9a484">GMF 4x1000:</strong><br/>0.4% aplica segun canal de pago - a cargo del que use el banco</p>
+<p><strong style="color:#c9a484">UVT 2025:</strong> $49.799 COP<br/><strong style="color:#c9a484">Limite RteFuente:</strong> 27.000 UVT = $1.344.573.000</p>
 </div></div>
 </div>
 <div class="result-section" id="notarial-result">
-<div class="result-header"><h3>📜 Desglose de Gastos Notariales</h3><p id="res-titulo">Compraventa - Colombia</p></div>
+<div class="result-header"><h3>&#128220; Desglose de Gastos Notariales</h3><p id="res-titulo">Compraventa - Colombia</p></div>
 <div class="result-cols">
-<div class="result-col" id="col-vendedor"><h4>VENDEDOR <span class="badge vendedor">paga</span></h4><div id="items-vendedor"></div><div class="total-row"><span>Total Vendedor</span><span id="total-vendedor">$0</span></div></div>
-<div class="result-col" id="col-comprador"><h4>COMPRADOR <span class="badge comprador">paga</span></h4><div id="items-comprador"></div><div class="total-row"><span>Total Comprador</span><span id="total-comprador">$0</span></div></div>
+<div class="result-col" id="col-vendedor">
+<h4>VENDEDOR <span class="badge vendedor">paga</span></h4>
+<div id="items-vendedor"></div>
+<div id="rf-detalle-box" style="display:none"></div>
+<div class="total-row"><span>Total Vendedor</span><span id="total-vendedor">$0</span></div>
 </div>
-<div id="section-hipoteca" style="display:none"><hr class="separator"/><div class="hipoteca-section"><h4>🏦 Gastos adicionales por hipoteca</h4><div id="items-hipoteca"></div></div></div>
-<div class="grand-total"><h4>TOTAL GASTOS ESCRITURACION</h4><div class="amount" id="grand-total-amount">$0</div><p style="color:#888;font-size:.8rem;margin-top:.4rem" id="grand-total-pct"></p></div>
-<div class="note-box" id="notas-legales"><strong>⚠️ Notas importantes:</strong><ul id="lista-notas" style="margin-top:.5rem;padding-left:1.2rem;line-height:1.8"></ul></div>
+<div class="result-col" id="col-comprador">
+<h4>COMPRADOR <span class="badge comprador">paga</span></h4>
+<div id="items-comprador"></div>
+<div class="total-row"><span>Total Comprador</span><span id="total-comprador">$0</span></div>
+</div>
+</div>
+<div id="section-hipoteca" style="display:none"><hr class="separator"/><div class="hipoteca-section"><h4>&#127970; Gastos adicionales por hipoteca</h4><div id="items-hipoteca"></div></div></div>
+<div class="grand-total"><h4>TOTAL GASTOS ESCRITURACION (Vendedor + Comprador)</h4><div class="amount" id="grand-total-amount">$0</div><p style="color:#888;font-size:.8rem;margin-top:.4rem" id="grand-total-pct"></p></div>
+<div class="note-box" id="notas-legales"><strong>&#9888;&#65039; Notas importantes:</strong><ul id="lista-notas" style="margin-top:.5rem;padding-left:1.2rem;line-height:1.9"></ul></div>
 </div>
 </div>
 <script>
@@ -128,15 +147,11 @@ function showTab(id,el){
   document.getElementById("tab-"+id).classList.add("active");
   el.classList.add("active");
 }
-
-// Toggle hipoteca value field
 document.getElementById("n-hipoteca").addEventListener("change",function(){
   document.getElementById("n-hipoteca-val-group").style.display=this.checked?"block":"none";
 });
-
 function fmt(n){return "$"+Math.round(n).toLocaleString("es-CO");}
-
-// CALCULADORA HIPOTECARIA
+function fmtPct(n){return (n*100).toFixed(2)+"%";}
 function calcHipotecaria(){
   const valor=parseFloat(document.getElementById("h-valor").value)||0;
   if(!valor)return;
@@ -148,7 +163,7 @@ function calcHipotecaria(){
   const cuota=calcCuota(monto,tasaAnual,plazoAnos);
   const totalPagar=cuota*plazoAnos*12;
   const totalIntereses=totalPagar-monto;
-  const cuotaSeguro=monto*0.0003; // seguro vida ~0.03% mensual aprox
+  const cuotaSeguro=monto*0.0003;
   const cuotaTotal=cuota+cuotaSeguro;
   const div=document.getElementById("hipotecaria-result");
   div.innerHTML=`
@@ -164,22 +179,21 @@ function calcHipotecaria(){
     <div class="cost-item"><span class="cost-label">Total a pagar</span><span class="cost-value">${fmt(totalPagar)}</span></div>
     <div class="cost-item"><span class="cost-label">Total intereses</span><span class="cost-value">${fmt(totalIntereses)}</span></div>
     <div class="cost-item"><span class="cost-label">Tasa mensual efectiva</span><span class="cost-value">${((Math.pow(1+tasaAnual/100,1/12)-1)*100).toFixed(3)}%</span></div>
-    <div class="note-box" style="margin-top:1rem"><strong>ℹ️</strong> Calculo con sistema frances (cuota fija). ${tipo==="uvr"?"UVR: la cuota puede variar segun inflacion.":"Tasa fija en pesos."}</div>
+    <div class="note-box" style="margin-top:1rem"><strong>Info:</strong> Sistema frances (cuota fija). ${tipo==="uvr"?"UVR: cuota puede variar con la inflacion.":"Tasa fija en pesos."}</div>
   `;
 }
-
 function calcCuota(P,tasaAnual,anos){
   const r=Math.pow(1+tasaAnual/100,1/12)-1;
   const n=anos*12;
   if(r===0)return P/n;
   return P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
 }
-
 function calcNotarial(){
   const valor=parseFloat(document.getElementById("n-valor").value)||0;
   if(!valor||valor<1000000){alert("Ingresa el valor comercial del inmueble");return;}
   const tipo=document.getElementById("n-tipo").value;
   const depto=document.getElementById("n-depto").value;
+  const declarante=document.getElementById("n-declarante").value;
   const conHipoteca=document.getElementById("n-hipoteca").checked;
   const conCancelacion=document.getElementById("n-cancelacion").checked;
   const conAfectacion=document.getElementById("n-afectacion").checked;
@@ -187,152 +201,182 @@ function calcNotarial(){
   const conPatrimonio=document.getElementById("n-patrimonio").checked;
   const conPoder=document.getElementById("n-poder").checked;
   const esVIS=document.getElementById("n-vis").checked;
-  const valorHipoteca=parseFloat(document.getElementById("n-hipoteca-val").value)||valor*0.7;
-  
-  const UVT=49799; // UVT 2025
+  const esVivienda=document.getElementById("n-vivienda").checked;
+  const valorHipoteca=parseFloat(document.getElementById("n-hipoteca-val").value)||(valor*0.7);
+  const UVT=49799;
   const IVA=0.19;
-  
-  // ---- VENDEDOR ----
+  // Limites legales 2025
+  const limiteRF=27000*UVT; // $1.344.573.000 - umbral retencion fuente Art.398 ET
+  const limiteGO=7500*UVT;  // $373.492.500 - exencion ganancia ocasional primera vivienda Art.311-1 ET
   let itemsV=[];
   let totalV=0;
-  
-  // 1. Derechos notariales 50% vendedor (Decreto 188/2013: 0.3%)
-  const derechosNotariales=valor*0.003;
+  const derechosNotariales=valor*0.0027; // 0.27% base segun Decreto 188/2013 actualizado
   const derechosV=derechosNotariales*0.5*(1+IVA);
-  itemsV.push({label:"Derechos notariales (50%)",value:derechosV,note:"0.3% del valor + IVA 19% - Decreto 188/2013"});
+  itemsV.push({label:"Derechos notariales (50%)",value:derechosV,note:"0.27% del valor + IVA 19% - Decreto 188/2013 - mitad del vendedor"});
   totalV+=derechosV;
-  
-  // 2. Retencion en la fuente (Art. 401 ET - 1% si valor > 27.000 UVT)
-  const limiteRF=27000*UVT;
+  // === RETENCION EN LA FUENTE - Art. 398 ET ===
+  // La RteFuente la practica el COMPRADOR sobre el precio de venta
+  // Se descuenta del precio que recibe el VENDEDOR - es un costo efectivo del vendedor
   let retefuente=0;
-  if(valor>limiteRF&&!esVIS){
-    retefuente=valor*0.01;
-    itemsV.push({label:"Retencion en la fuente",value:retefuente,note:"1% del precio - Art. 401 ET (valor > 27.000 UVT)"});
-    totalV+=retefuente;
-  } else if(esVIS){
-    itemsV.push({label:"Retencion en la fuente",value:0,note:"Exento - Inmueble VIS/VIP (Ley 1537/2012)"});
+  let rfTarifa=0;
+  let rfNota="";
+  let rfExento=false;
+  let rfMotivo="";
+  if(esVIS){
+    rfExento=true;
+    rfMotivo="Exento - Inmueble VIS/VIP (Art. 44 Ley 1537/2012)";
+  } else if(valor<=limiteRF){
+    rfExento=true;
+    rfMotivo="No aplica - Precio ("+fmt(valor)+") es menor o igual a 27.000 UVT ("+fmt(limiteRF)+") - Art. 398 ET";
   } else {
-    itemsV.push({label:"Retencion en la fuente",value:0,note:"No aplica - valor < 27.000 UVT ("+fmt(limiteRF)+")"});
+    // Valor supera 27.000 UVT - aplica retencion segun tipo de vendedor
+    if(declarante==="no_declarante"){
+      rfTarifa=0.01; // 1% para persona natural NO declarante de renta - Art. 398 ET
+      rfNota="1% s/precio venta - Persona nat. NO declarante - Art. 398 ET parag. 1";
+    } else if(declarante==="declarante"){
+      rfTarifa=0.025; // 2.5% para declarante de renta - Decreto 1512/85 y Art. 398 ET
+      rfNota="2.5% s/precio venta - Persona nat. declarante de renta - Art. 398 ET";
+    } else {
+      rfTarifa=0.025; // 2.5% persona juridica
+      rfNota="2.5% s/precio venta - Persona juridica - Art. 398 ET";
+    }
+    retefuente=valor*rfTarifa;
+    rfMotivo=rfNota+" | Practica el comprador al momento del pago";
   }
-  
-  // 3. Paz y salvo predial (estimado $50.000 - $150.000)
+  if(rfExento){
+    itemsV.push({label:"Retencion en la fuente",value:0,note:rfMotivo,exento:true});
+  } else {
+    itemsV.push({label:"Retencion en la fuente ("+(rfTarifa*100)+"% s/precio)",value:retefuente,note:rfMotivo,esRF:true});
+    totalV+=retefuente;
+  }
+  // Ganancia ocasional - solo informativo pues depende del costo fiscal
+  if(!esVIS&&declarante!=="no_declarante"){
+    let goNota="10% sobre la UTILIDAD (precio venta - costo fiscal ajustado). Exenta hasta "+fmt(limiteGO)+" si es vivienda habitual (Art. 311-1 ET). Debe liquidarse en declaracion de renta.";
+    if(esVivienda)goNota="Si es primera vivienda: utilidad exenta hasta "+fmt(limiteGO)+" (7.500 UVT - Art. 311-1 ET). El exceso tributa al 10%.";
+    itemsV.push({label:"Ganancia ocasional",value:null,note:goNota,informativo:true});
+  }
   const pazSalvo=80000;
-  itemsV.push({label:"Paz y salvo predial",value:pazSalvo,note:"Certificado alcaldia municipal - estimado"});
+  itemsV.push({label:"Paz y salvo predial",value:pazSalvo,note:"Certificado alcaldia municipal - estimado (puede variar)"});
   totalV+=pazSalvo;
-  
-  // 4. Paz y salvo valorización (si aplica Bogotá/Medellin)
   if(depto==="bogota"||depto==="antioquia"){
     const psVal=60000;
-    itemsV.push({label:"Paz y salvo valorizacion",value:psVal,note:"IDU / municipio - estimado"});
+    itemsV.push({label:"Paz y salvo valorizacion",value:psVal,note:"IDU (Bogota) / municipio - estimado"});
     totalV+=psVal;
   }
-  
-  // 5. Cancelacion de hipoteca previa
   if(conCancelacion){
-    const cancHip=valor*0.001+180000; // 0.1% notaria + estudio
-    itemsV.push({label:"Cancelacion hipoteca previa",value:cancHip,note:"Escritura cancelacion: ~0.1% + registro $180.000"});
+    const cancHip=valor*0.001+180000;
+    itemsV.push({label:"Cancelacion hipoteca previa",value:cancHip,note:"Escritura cancelacion: ~0.1% + registro ORIP ~$180.000"});
     totalV+=cancHip;
   }
-  
-  // 6. Levantar afectacion familiar previa
   if(levantarAF){
     const levAF=valor*0.0005+150000;
-    itemsV.push({label:"Levantamiento afectacion familiar",value:levAF,note:"Escritura + registro - ambos conyuges deben comparecer"});
+    itemsV.push({label:"Levantamiento afectacion familiar",value:levAF,note:"Escritura + registro ORIP - ambos conyuges deben comparecer - Ley 258/1996"});
     totalV+=levAF;
   }
-  
-  // ---- COMPRADOR ----
   let itemsC=[];
   let totalC=0;
-  
-  // 1. Impuesto de registro (Ley 223/95 - Gobernacion)
-  let tasaReg=0.0167; // 1.67% base
+  let tasaReg=0.0167;
   if(depto==="bogota")tasaReg=0.0175;
   else if(depto==="antioquia")tasaReg=0.018;
   else if(depto==="valle")tasaReg=0.0167;
   const impReg=esVIS?0:valor*tasaReg;
-  itemsC.push({label:"Impuesto de registro"+(esVIS?" (exento VIS)":""),value:impReg,note:"Tasa "+Math.round(tasaReg*1000)/10+"% - Gobernacion (Ley 223/1995)"});
+  itemsC.push({label:"Impuesto de registro"+(esVIS?" (EXENTO VIS)":""),value:impReg,note:"Tasa "+(tasaReg*100).toFixed(2)+"% - Gobernacion departamental (Ley 223/1995)"+(esVIS?" - Exento por VIS/VIP":""),exento:esVIS&&impReg===0});
   totalC+=impReg;
-  
-  // 2. Derechos notariales 50% comprador
   const derechosC=derechosNotariales*0.5*(1+IVA);
-  itemsC.push({label:"Derechos notariales (50%)",value:derechosC,note:"0.3% del valor + IVA 19% - Decreto 188/2013"});
+  itemsC.push({label:"Derechos notariales (50%)",value:derechosC,note:"0.27% del valor + IVA 19% - Decreto 188/2013 - mitad del comprador"});
   totalC+=derechosC;
-  
-  // 3. Derechos de registro ORIP
-  const regORIP=valor*0.005; // ~0.5% ORIP
-  itemsC.push({label:"Registro ORIP (inscripcion)",value:regORIP,note:"~0.5% del valor - Oficina de Registro"});
+  const regORIP=valor*0.005;
+  itemsC.push({label:"Registro ORIP (inscripcion)",value:regORIP,note:"~0.5% del valor - Oficina de Registro de Instrumentos Publicos"});
   totalC+=regORIP;
-  
-  // 4. Estudio de titulos y certificados
   const estudio=350000;
-  itemsC.push({label:"Estudio de titulos y certificados",value:estudio,note:"Certificado tradicion + estudio juridico - estimado"});
+  itemsC.push({label:"Estudio de titulos y certificados",value:estudio,note:"Certificado de tradicion + estudio juridico - estimado"});
   totalC+=estudio;
-  
-  // 5. Gastos bancarios/desembolso (si credito)
   if(conHipoteca){
-    const gastosBco=valorHipoteca*0.01+500000; // 1% comision + avaluo
-    itemsC.push({label:"Comision bancaria + avaluo",value:gastosBco,note:"~1% monto credito + avaluo comercial"});
+    const gastosBco=valorHipoteca*0.01+500000;
+    itemsC.push({label:"Comision bancaria + avaluo",value:gastosBco,note:"~1% monto credito + avaluo comercial - varia segun banco"});
     totalC+=gastosBco;
   }
-  
-  // 6. Afectacion familiar (nueva)
   if(conAfectacion){
     const nuevaAF=valor*0.0003+120000;
-    itemsC.push({label:"Escritura afectacion familiar",value:nuevaAF,note:"Ambos conyuges - Ley 258/1996"});
+    itemsC.push({label:"Escritura afectacion familiar",value:nuevaAF,note:"Ambos conyuges - Ley 258/1996 - derechos notariales + registro"});
     totalC+=nuevaAF;
   }
-  
-  // 7. Bien de familia
   if(conPatrimonio){
     const bienFam=valor*0.0002+100000;
-    itemsC.push({label:"Declaracion bien de familia",value:bienFam,note:"Notaria + ORIP - proteccion Ley 70/1931"});
+    itemsC.push({label:"Declaracion bien de familia",value:bienFam,note:"Notaria + ORIP - proteccion patrimonial Ley 70/1931"});
     totalC+=bienFam;
   }
-  
-  // 8. Poder especial
   if(conPoder){
     const poder=250000;
-    itemsC.push({label:"Poder especial notarial",value:poder,note:"Autenticacion poder + derechos notariales"});
+    itemsC.push({label:"Poder especial notarial",value:poder,note:"Autenticacion de poder + derechos notariales - estimado"});
     totalC+=poder;
   }
-  
-  // ---- HIPOTECA ADICIONAL ----
   let itemsH=[];
   if(conHipoteca){
     const dnHip=valorHipoteca*0.003*(1+IVA);
     const regHip=valorHipoteca*0.005;
-    const segVida=valorHipoteca*0.006; // anual aproximado
+    const segVida=valorHipoteca*0.006;
     const segIncendio=valorHipoteca*0.003;
-    itemsH.push({label:"Escritura hipoteca - derechos notariales",value:dnHip,note:"0.3% valor hipoteca + IVA"});
-    itemsH.push({label:"Registro hipoteca ORIP",value:regHip,note:"~0.5% valor hipoteca"});
-    itemsH.push({label:"Seguro de vida deudores (primer ano)",value:segVida,note:"~0.6% anual del saldo - varia segun banco y edad"});
-    itemsH.push({label:"Seguro de incendio/terremoto (primer ano)",value:segIncendio,note:"~0.3% anual - obligatorio con credito hipotecario"});
+    itemsH.push({label:"Escritura hipoteca - derechos notariales",value:dnHip,note:"0.3% valor hipoteca + IVA 19%"});
+    itemsH.push({label:"Registro hipoteca ORIP",value:regHip,note:"~0.5% valor hipoteca - ORIP"});
+    itemsH.push({label:"Seguro de vida (primer ano aprox.)",value:segVida,note:"~0.6% anual del saldo - varia segun banco y edad del deudor"});
+    itemsH.push({label:"Seguro incendio/terremoto (primer ano)",value:segIncendio,note:"~0.3% anual - obligatorio con credito hipotecario"});
     totalC+=dnHip+regHip;
   }
-  
-  // Notas legales
   const notas=[];
-  notas.push("Los valores son estimados. Los derechos notariales exactos los liquida el notario segun tarifa vigente.");
-  notas.push("El impuesto de registro se paga en la Gobernacion o banco autorizado antes de radicar en el ORIP.");
-  if(conHipoteca)notas.push("Con credito hipotecario el banco generalmente asume parte de los gastos de escrituracion de la hipoteca.");
-  if(esVIS)notas.push("Inmuebles VIS/VIP: exentos de impuesto de registro y retencion en la fuente segun Ley 1537/2012.");
-  if(conAfectacion)notas.push("La afectacion familiar requiere la comparecencia de ambos conyuges o companero permanente.");
-  notas.push("UVT 2025: $49.799. El limite para retencion en la fuente es $"+fmt(27000*UVT)+" (27.000 UVT).");
-  
-  // Renderizar
-  const totalGlobal=totalV+totalC;
-  document.getElementById("res-titulo").textContent=tipo.charAt(0).toUpperCase()+tipo.slice(1)+" - "+document.getElementById("n-depto").options[document.getElementById("n-depto").selectedIndex].text+" | Valor: "+fmt(valor);
-  document.getElementById("items-vendedor").innerHTML=itemsV.map(i=>`<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value">${fmt(i.value)}</span></div>`).join("");
-  document.getElementById("items-comprador").innerHTML=itemsC.map(i=>`<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value">${fmt(i.value)}</span></div>`).join("");
+  notas.push("Los valores son ESTIMADOS. Los derechos notariales exactos los liquida el notario segun tarifa oficial vigente.");
+  notas.push("El impuesto de registro se paga en la Gobernacion departamental o banco autorizado antes de radicar en el ORIP.");
+  if(!rfExento)notas.push("La retencion en la fuente (Art. 398 ET) la PRACTICA el comprador: descuenta del precio y la consigna a la DIAN. El vendedor recibe el precio menos la retencion.");
+  if(!rfExento&&declarante!=="no_declarante")notas.push("Adicionalmente, el vendedor puede tener GANANCIA OCASIONAL (10% sobre la utilidad) si declara renta. Consulta tu contador.");
+  if(conHipoteca)notas.push("Con credito hipotecario: el banco generalmente asume parte de los gastos de escrituracion de la hipoteca. Verifica con tu banco.");
+  if(esVIS)notas.push("VIS/VIP: exentos de impuesto de registro y retencion en la fuente (Art. 44 Ley 1537/2012 y Art. 398 ET).");
+  if(conAfectacion)notas.push("La afectacion familiar requiere comparecencia de ambos conyuges o companero permanente en la notaria.");
+  notas.push("UVT 2025: $49.799. Limite retencion en la fuente: 27.000 UVT = "+fmt(27000*UVT)+".");
+  if(esVivienda&&!rfExento&&declarante!=="no_declarante")notas.push("Primera vivienda: la ganancia ocasional puede estar exenta hasta 7.500 UVT ("+fmt(7500*UVT)+"). Art. 311-1 ET.");
+  function renderItem(i){
+    if(i.informativo){
+      return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note" style="color:#888">${i.note}</div></div><span class="cost-value" style="color:#888;font-size:.75rem">Ver nota</span></div>`;
+    }
+    if(i.exento){
+      return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value cost-exento">EXENTO</span></div>`;
+    }
+    if(i.value===0&&!i.exento){
+      return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value cost-na">No aplica</span></div>`;
+    }
+    return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value">${fmt(i.value)}</span></div>`;
+  }
+  const deptoText=document.getElementById("n-depto").options[document.getElementById("n-depto").selectedIndex].text;
+  document.getElementById("res-titulo").textContent=
+    tipo.charAt(0).toUpperCase()+tipo.slice(1)+" - "+deptoText+" | Valor: "+fmt(valor);
+  document.getElementById("items-vendedor").innerHTML=itemsV.map(renderItem).join("");
+  document.getElementById("items-comprador").innerHTML=itemsC.map(renderItem).join("");
+  const rfBox=document.getElementById("rf-detalle-box");
+  if(!rfExento&&retefuente>0){
+    rfBox.style.display="block";
+    rfBox.innerHTML=`<div class="rf-box">
+      <h5>Como funciona la Retencion en la Fuente (Art. 398 ET)</h5>
+      <table class="rf-table">
+        <tr><th>Concepto</th><th>Valor</th></tr>
+        <tr><td>Precio de venta pactado</td><td>${fmt(valor)}</td></tr>
+        <tr><td>Retencion practica comprador (${(rfTarifa*100)}%)</td><td style="color:#ff8888">- ${fmt(retefuente)}</td></tr>
+        <tr><td><strong>Neto que recibe el vendedor</strong></td><td style="color:#5dd879"><strong>${fmt(valor-retefuente)}</strong></td></tr>
+      </table>
+      <p style="margin-top:.5rem;font-size:.72rem;color:#888">El comprador consigna la retencion directamente a la DIAN mediante formulario 350. El vendedor la puede descontar en su declaracion de renta.</p>
+    </div>`;
+  } else {
+    rfBox.style.display="none";
+  }
   document.getElementById("total-vendedor").textContent=fmt(totalV);
   document.getElementById("total-comprador").textContent=fmt(totalC);
+  const totalGlobal=totalV+totalC;
   document.getElementById("grand-total-amount").textContent=fmt(totalGlobal);
   document.getElementById("grand-total-pct").textContent="("+((totalGlobal/valor)*100).toFixed(2)+"% del valor del inmueble)";
   if(conHipoteca&&itemsH.length){
     document.getElementById("section-hipoteca").style.display="block";
-    document.getElementById("items-hipoteca").innerHTML=itemsH.map(i=>`<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value">${fmt(i.value)}</span></div>`).join("");
-  } else document.getElementById("section-hipoteca").style.display="none";
+    document.getElementById("items-hipoteca").innerHTML=itemsH.map(renderItem).join("");
+  } else {
+    document.getElementById("section-hipoteca").style.display="none";
+  }
   const ul=document.getElementById("lista-notas");
   ul.innerHTML=notas.map(n=>`<li>${n}</li>`).join("");
   const rs=document.getElementById("notarial-result");
@@ -341,4 +385,4 @@ function calcNotarial(){
 }
 </script>
 </body>
-  </html>
+                          </html>
