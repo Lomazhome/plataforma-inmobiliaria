@@ -3,55 +3,204 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Lomaz Home | Plataforma Inmobiliaria</title>
-<meta name="description" content="Lomaz Home - Plataforma inmobiliaria colombiana. Encuentra casas, apartamentos y locales para comprar o arrendar. CRM, blog y calculadora hipotecaria."/>
-<meta name="keywords" content="inmobiliaria Colombia, casas en venta, apartamentos arriendo, finca raiz, Bogota, Medellin, Lomaz Home"/>
+<title>Lomaz Home | Plataforma Inmobiliaria Colombia</title>
+<meta name="description" content="Lomaz Home - Plataforma inmobiliaria colombiana. Encuentra casas, apartamentos y locales para comprar o arrendar."/>
+<meta name="keywords" content="inmobiliaria Colombia, casas en venta, apartamentos arriendo, finca raiz, Lomaz Home"/>
 <meta name="author" content="Lomaz Home"/>
 <meta name="robots" content="index, follow"/>
-<link rel="canonical" href="https://plataforma-inmobiliaria-two.vercel.app/"/>
-<!-- Open Graph / Facebook -->
+<link rel="canonical" href="https://www.lomazhome.com/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://plataforma-inmobiliaria-two.vercel.app/"/>
+<meta property="og:url" content="https://www.lomazhome.com/"/>
 <meta property="og:title" content="Lomaz Home | Plataforma Inmobiliaria Colombia"/>
 <meta property="og:description" content="Encuentra tu propiedad ideal en Colombia. Compra, vende o arrienda con Lomaz Home."/>
-<meta property="og:image" content="https://plataforma-inmobiliaria-two.vercel.app/og-image.jpg"/>
-<meta property="og:locale" content="es_CO"/>
-<meta property="og:site_name" content="Lomaz Home"/>
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Lomaz Home | Plataforma Inmobiliaria"/>
-<meta name="twitter:description" content="Encuentra tu propiedad ideal en Colombia con Lomaz Home."/>
-<meta name="twitter:image" content="https://plataforma-inmobiliaria-two.vercel.app/og-image.jpg"/>
-<!-- Structured Data JSON-LD -->
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"RealEstateAgent","name":"Lomaz Home","url":"https://plataforma-inmobiliaria-two.vercel.app","description":"Plataforma inmobiliaria colombiana de compra, venta y arriendo de propiedades","address":{"@type":"PostalAddress","addressCountry":"CO"},"areaServed":"Colombia","sameAs":[]}</script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff}
-nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,164,132,.2);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:1.5rem;font-weight:900;color:#fff;text-decoration:none}
-.logo span{color:#c9a484}
-.nl{display:flex;gap:2rem;list-style:none}
-.nl a{color:#ccc;text-decoration:none;font-size:.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.nl a:hover{color:#c9a484}
-.ncta{background:#c9a484;color:#000;padding:.6rem 1.5rem;border-radius:4px;font-weight:700;font-size:.8rem;text-decoration:none}
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a0a,#1a1208,#0a0a0a);position:relative}
-.hbg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(201,164,132,.08),transparent 70%)}
-.hc{position:relative;z-index:1;text-align:center;padding:8rem 2rem 2rem;max-width:900px}
-.badge{display:inline-block;background:rgba(201,164,132,.15);border:1px solid rgba(201,164,132,.3);color:#c9a484;padding:.4rem 1.2rem;border-radius:50px;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem}
-.hc h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem}
-.hc h1 span{color:#c9a484}
-.hc > p{font-size:1.1rem;color:#888;margin-bottom:3rem;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto}
-.sbox{background:rgba(255,255,255,.05);border:1px solid rgba(201,164,132,.3);border-radius:12px;padding:1.5rem}
-.stabs{display:flex;gap:.5rem;margin-bottom:1.2rem}
-.stab{padding:.5rem 1.5rem;border-radius:6px;border:1px solid rgba(201,164,132,.3);background:transparent;color:#888;font-family:Montserrat,sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .3s}
-.stab.on,.stab:hover{background:#c9a484;color:#000;border-color:#c9a484}
-.sf-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:.8rem;align-items:end}
-.sf label{display:block;font-size:.7rem;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem}
-.sf select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.75rem 1rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none}
-.sf select:focus{border-color:#c9a484}
-.sf select option{background:#1a1a1a}
-.sbtn{background:#c9a484;color:#000;border:none;border-radius:6px;padding:.75rem 1.5rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap;letter-spacing:1px;text-transform:uppercase}
-.stats{padding:4rem 2rem;text-align:center;background:rgba(201,164,132,.03)}
+body{background:#0a0a0a;color:#fff;font-family:Montserrat,sans-serif;min-height:100vh}
+a{text-decoration:none;color:inherit}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(0,0,0,.9);position:fixed;top:0;left:0;right:0;z-index:1000;border-bottom:1px solid rgba(201,164,132,.2)}
+.nav-logo{font-size:1.4rem;font-weight:800;letter-spacing:2px;color:#c9a484}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.85rem;letter-spacing:1px;text-transform:uppercase;color:#ccc;transition:.3s}
+.nav-links a:hover{color:#c9a484}
+.nav-cta{background:#c9a484;color:#000;padding:.5rem 1.2rem;border-radius:4px;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;background:linear-gradient(135deg,#0a0a0a 0%,#1a1209 50%,#0a0a0a 100%);position:relative}
+.hero h1{font-size:clamp(2rem,6vw,4.5rem);font-weight:900;letter-spacing:3px;text-transform:uppercase;line-height:1.1;margin-bottom:1.5rem}
+.hero h1 span{color:#c9a484}
+.hero p{font-size:clamp(.9rem,2vw,1.2rem);color:#999;max-width:600px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:#c9a484;color:#000;padding:.9rem 2.5rem;border-radius:4px;font-weight:800;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;transition:.3s}
+.btn-primary:hover{background:#b8956d;transform:translateY(-2px)}
+.btn-secondary{border:1px solid #c9a484;color:#c9a484;padding:.9rem 2.5rem;border-radius:4px;font-weight:700;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;transition:.3s}
+.btn-secondary:hover{background:rgba(201,164,132,.1)}
+.search-bar{background:rgba(255,255,255,.05);border:1px solid rgba(201,164,132,.3);border-radius:8px;padding:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;justify-content:center;max-width:800px;width:100%;margin-top:2rem}
+.sf select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.75rem 1rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none;cursor:pointer}
+.sf select option{background:#1a1a1a;color:#fff}
+.sbtn{background:#c9a484;color:#000;border:none;border-radius:6px;padding:.75rem 1.5rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:.3s}
+.sbtn:hover{background:#b8956d}
+.section{padding:5rem 2rem;max-width:1200px;margin:0 auto}
+.section-title{text-align:center;font-size:2rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.section-sub{text-align:center;color:#888;margin-bottom:3rem;font-size:.95rem}
+.props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem}
+.prop-card{background:#111;border:1px solid #222;border-radius:12px;overflow:hidden;transition:.3s;cursor:pointer}
+.prop-card:hover{transform:translateY(-4px);border-color:#c9a484}
+.prop-img{height:200px;background:linear-gradient(135deg,#1a1209,#2a1f0f);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative}
+.prop-badge{position:absolute;top:1rem;left:1rem;background:#c9a484;color:#000;font-size:.7rem;font-weight:700;padding:.3rem .7rem;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+.prop-info{padding:1.2rem}
+.prop-price{color:#c9a484;font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
+.prop-title{font-size:1rem;font-weight:600;margin-bottom:.4rem;color:#eee}
+.prop-loc{color:#888;font-size:.8rem;margin-bottom:.8rem}
+.prop-features{display:flex;gap:1rem;font-size:.8rem;color:#aaa}
+.stats-section{background:rgba(201,164,132,.05);padding:4rem 2rem;text-align:center}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;max-width:900px;margin:0 auto}
+.stat-item h3{font-size:2.5rem;font-weight:900;color:#c9a484}
+.stat-item p{color:#888;font-size:.85rem;margin-top:.3rem;letter-spacing:1px;text-transform:uppercase}
+.services{padding:5rem 2rem;max-width:1200px;margin:0 auto}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem}
+.service-card{background:#111;border:1px solid #222;border-radius:12px;padding:2rem;text-align:center;transition:.3s}
+.service-card:hover{border-color:#c9a484;transform:translateY(-3px)}
+.service-icon{font-size:2.5rem;margin-bottom:1rem}
+.service-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.8rem;color:#c9a484}
+.service-card p{color:#888;font-size:.85rem;line-height:1.6}
+.cta-section{background:linear-gradient(135deg,#1a1209,#0a0a0a);padding:5rem 2rem;text-align:center}
+.cta-section h2{font-size:2.5rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}
+.cta-section p{color:#999;max-width:500px;margin:0 auto 2rem;line-height:1.7}
+.footer{background:#050505;border-top:1px solid #1a1a1a;padding:3rem 2rem 1.5rem;max-width:100%}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:1200px;margin:0 auto 2rem}
+.footer-brand p{color:#888;font-size:.85rem;margin-top:.8rem;line-height:1.7}
+.footer-col h4{color:#c9a484;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.5rem}
+.footer-col ul li a{color:#888;font-size:.85rem;transition:.3s}
+.footer-col ul li a:hover{color:#c9a484}
+.footer-bottom{border-top:1px solid #1a1a1a;padding-top:1.5rem;text-align:center;color:#555;font-size:.8rem;max-width:1200px;margin:0 auto}
+.aria-fab{position:fixed;bottom:2rem;right:2rem;width:60px;height:60px;border-radius:50%;background:#c9a484;color:#000;font-size:1.5rem;border:none;cursor:pointer;z-index:9999;font-weight:700;box-shadow:0 4px 20px rgba(201,164,132,.4);transition:.3s}
+.aria-fab:hover{transform:scale(1.1)}
+.aria-chat{position:fixed;bottom:7rem;right:2rem;width:320px;background:#111;border:1px solid #c9a484;border-radius:12px;z-index:9998;display:none;flex-direction:column;height:420px}
+.aria-chat.open{display:flex}
+.aria-header{background:#c9a484;color:#000;padding:.8rem 1rem;border-radius:12px 12px 0 0;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.aria-msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.8rem}
+.msg{max-width:85%;padding:.7rem 1rem;border-radius:12px;font-size:.85rem;line-height:1.5}
+.msg.bot{background:#1a1a1a;color:#eee;align-self:flex-start}
+.msg.user{background:#c9a484;color:#000;align-self:flex-end;font-weight:600}
+.aria-input-row{padding:.8rem;border-top:1px solid #222;display:flex;gap:.5rem}
+.aria-input-row input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:6px;padding:.6rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none}
+.aria-input-row button{background:#c9a484;color:#000;border:none;border-radius:6px;padding:.6rem 1rem;font-weight:700;cursor:pointer;font-size:.8rem}
+@media(max-width:768px){.nav-links{display:none}.hero h1{font-size:2rem}.props-grid{grid-template-columns:1fr}.search-bar{flex-direction:column}}
+</style>
+</head>
+<body>
+<nav class="nav">
+<a href="/" class="nav-logo">LOMAZ HOME</a>
+<ul class="nav-links">
+<li><a href="/propiedades.html">Propiedades</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/calculadora.html">Calculadora</a></li>
+<li><a href="/dashboard.html">Mi Cuenta</a></li>
+</ul>
+<a href="/login.html" class="nav-cta">Ingresar</a>
+</nav>
+<section class="hero">
+<h1>Tu <span>Propiedad Ideal</span><br/>en Colombia</h1>
+<p>Compra, vende o arrienda con los mejores asesores inmobiliarios. Tecnologia de punta al servicio de tu hogar.</p>
+<div class="hero-btns">
+<a href="/propiedades.html" class="btn-primary">Ver Propiedades</a>
+<a href="/login.html" class="btn-secondary">Soy Asesor</a>
+</div>
+<div class="search-bar">
+<div class="sf"><select id="tipo"><option value="">Tipo de negocio</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option></select></div>
+<div class="sf"><select id="prop"><option value="">Tipo de propiedad</option><option value="casa">Casa</option><option value="apartamento">Apartamento</option><option value="local">Local</option></select></div>
+<div class="sf"><select id="ciudad"><option value="">Ciudad</option><option value="bogota">Bogota</option><option value="medellin">Medellin</option><option value="cali">Cali</option><option value="barranquilla">Barranquilla</option></select></div>
+<button class="sbtn" onclick="buscar()">Buscar</button>
+</div>
+</section>
+<div class="stats-section">
+<div class="stats-grid">
+<div class="stat-item"><h3 id="stat-props">500+</h3><p>Propiedades activas</p></div>
+<div class="stat-item"><h3>150+</h3><p>Asesores expertos</p></div>
+<div class="stat-item"><h3>10+</h3><p>Ciudades en Colombia</p></div>
+<div class="stat-item"><h3>98%</h3><p>Clientes satisfechos</p></div>
+</div>
+</div>
+<div class="section">
+<h2 class="section-title">Propiedades <span style="color:#c9a484">Destacadas</span></h2>
+<p class="section-sub">Seleccion exclusiva de las mejores propiedades en Colombia</p>
+<div class="props-grid" id="props-grid">
+<div class="prop-card"><div class="prop-img">🏠<span class="prop-badge">Venta</span></div><div class="prop-info"><div class="prop-price">$450,000,000</div><div class="prop-title">Casa moderna en Chapinero</div><div class="prop-loc">📍 Bogota, Cundinamarca</div><div class="prop-features"><span>🛏 4 hab</span><span>🚿 3 ban</span><span>📐 180m2</span></div></div></div>
+<div class="prop-card"><div class="prop-img">🏢<span class="prop-badge">Arriendo</span></div><div class="prop-info"><div class="prop-price">$2,800,000/mes</div><div class="prop-title">Apartamento en El Poblado</div><div class="prop-loc">📍 Medellin, Antioquia</div><div class="prop-features"><span>🛏 2 hab</span><span>🚿 2 ban</span><span>📐 75m2</span></div></div></div>
+<div class="prop-card"><div class="prop-img">🏡<span class="prop-badge">Venta</span></div><div class="prop-info"><div class="prop-price">$320,000,000</div><div class="prop-title">Apartamento en Ciudad Jardin</div><div class="prop-loc">📍 Cali, Valle del Cauca</div><div class="prop-features"><span>🛏 3 hab</span><span>🚿 2 ban</span><span>📐 95m2</span></div></div></div>
+</div>
+<div style="text-align:center;margin-top:3rem"><a href="/propiedades.html" class="btn-primary">Ver todas las propiedades</a></div>
+</div>
+<div class="services">
+<h2 class="section-title">Nuestros <span style="color:#c9a484">Servicios</span></h2>
+<p class="section-sub">Todo lo que necesitas en un solo lugar</p>
+<div class="services-grid">
+<div class="service-card"><div class="service-icon">🏠</div><h3>Compra y Venta</h3><p>Encuentra la propiedad de tus suenos o vende la tuya con el mejor precio del mercado.</p></div>
+<div class="service-card"><div class="service-icon">🔑</div><h3>Arrendamientos</h3><p>Gestiona tus arriendos con contratos digitales, seguimiento de pagos y soporte 24/7.</p></div>
+<div class="service-card"><div class="service-icon">📊</div><h3>CRM Inmobiliario</h3><p>Plataforma profesional para asesores con gestion de leads, clientes y pipeline de ventas.</p></div>
+<div class="service-card"><div class="service-icon">🤖</div><h3>ARIA - Tu Asistente</h3><p>Chatbot inteligente que te ayuda a encontrar propiedades y responde tus preguntas 24/7.</p></div>
+<div class="service-card"><div class="service-icon">🧮</div><h3>Calculadora Hipotecaria</h3><p>Calcula tu cuota mensual, intereses y viabilidad financiera antes de comprar.</p></div>
+<div class="service-card"><div class="service-icon">📱</div><h3>Portales Integrados</h3><p>Publica automaticamente en Metrocuadrado, Finca Raiz y Proppit desde un solo lugar.</p></div>
+</div>
+</div>
+<div class="cta-section">
+<h2>Empieza <span style="color:#c9a484">Hoy</span></h2>
+<p>Unete a la red de asesores y clientes mas grande de Colombia. Registro gratuito.</p>
+<div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+<a href="/login.html" class="btn-primary">Crear Cuenta Gratis</a>
+<a href="/propiedades.html" class="btn-secondary">Explorar Propiedades</a>
+</div>
+</div>
+<footer class="footer">
+<div class="footer-grid">
+<div class="footer-brand"><div style="font-size:1.2rem;font-weight:800;letter-spacing:2px;color:#c9a484">LOMAZ HOME</div><p>La plataforma inmobiliaria de confianza en Colombia.</p></div>
+<div class="footer-col"><h4>Explorar</h4><ul><li><a href="/propiedades.html">Propiedades</a></li><li><a href="/blog.html">Blog</a></li><li><a href="/calculadora.html">Calculadora</a></li></ul></div>
+<div class="footer-col"><h4>Asesores</h4><ul><li><a href="/login.html">Iniciar Sesion</a></li><li><a href="/dashboard.html">Dashboard</a></li><li><a href="/agregar-propiedad.html">Publicar</a></li></ul></div>
+<div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacidad</a></li><li><a href="#">Terminos</a></li><li><a href="#">Contacto</a></li></ul></div>
+</div>
+<div class="footer-bottom">© 2025 Lomaz Home. Todos los derechos reservados.</div>
+</footer>
+<button class="aria-fab" onclick="toggleAria()" title="ARIA - Tu asistente">A</button>
+<div class="aria-chat" id="ariaChat">
+<div class="aria-header"><span>ARIA - Asistente</span><button onclick="toggleAria()" style="background:none;border:none;cursor:pointer;font-size:1.2rem">×</button></div>
+<div class="aria-msgs" id="ariaMsgs"><div class="msg bot">Hola! Soy ARIA, tu asistente inmobiliaria. Como puedo ayudarte hoy?</div></div>
+<div class="aria-input-row"><input id="ariaInput" type="text" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')sendAria()"/><button onclick="sendAria()">Enviar</button></div>
+</div>
+<script>
+const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=window.supabase.createClient(SURL,SKEY);
+function buscar(){const t=document.getElementById("tipo").value;const p=document.getElementById("prop").value;const c=document.getElementById("ciudad").value;let url="/propiedades.html?";if(t)url+="tipo="+t+"&";if(p)url+="propiedad="+p+"&";if(c)url+="ciudad="+c;window.location.href=url;}
+function toggleAria(){document.getElementById("ariaChat").classList.toggle("open");}
+async function sendAria(){
+const inp=document.getElementById("ariaInput");
+const msg=inp.value.trim();
+if(!msg)return;
+const msgs=document.getElementById("ariaMsgs");
+msgs.innerHTML+=`<div class="msg user">${msg}</div>`;
+inp.value="";
+const ml=msg.toLowerCase();
+let resp="";
+if(ml.includes("precio")||ml.includes("valor")||ml.includes("costo"))resp="Los precios varian segun la ciudad y tipo de propiedad. En Bogota las casas parten desde $200M. Te ayudo a buscar en tu rango?";
+else if(ml.includes("arriend"))resp="Tenemos apartamentos desde $1.5M/mes y casas desde $2M/mes. Que ciudad te interesa?";
+else if(ml.includes("venta")||ml.includes("compr"))resp="Contamos con propiedades en venta en Bogota, Medellin, Cali y mas ciudades. Cual te interesa?";
+else if(ml.includes("calcul")||ml.includes("credito")||ml.includes("hipotec"))resp="Usa nuestra calculadora hipotecaria en /calculadora.html para calcular tu cuota mensual.";
+else if(ml.includes("asesor")||ml.includes("agente"))resp="Tenemos +150 asesores expertos. Puedes registrarte en /login.html y contactar al asesor de tu zona.";
+else if(ml.includes("bogot"))resp="En Bogota tenemos propiedades en Chapinero, Usaquen, Suba, Kennedy y mas sectores. Que tipo buscas?";
+else if(ml.includes("medellin"))resp="En Medellin tenemos propiedades en El Poblado, Laureles, Envigado y mas. Que tipo buscas?";
+else resp="Entiendo tu consulta sobre: "+msg+". Te recomiendo explorar nuestras propiedades en /propiedades.html o contactar a un asesor.";
+setTimeout(()=>{msgs.innerHTML+=`<div class="msg bot">${resp}</div>`;msgs.scrollTop=msgs.scrollHeight;},400);
+}
+async function loadProps(){
+try{
+const{data}=await sb.from("propiedades").select("*").eq("estado","activa").eq("destacada",true).limit(3);
+if(!data||data.length===0)return;
+const g=document.getElementById("props-grid");
+g.innerHTML=data.map(p=>`<div class="prop-card" onclick="window.location='/propiedades.html?id=${p.id}'"><div class="prop-img">🏠<span class="prop-badge">${p.tipo_negocio||"Venta"}</span></div><div class="prop-info"><div class="prop-price">$${Number(p.precio||0).toLocaleString("es-CO")}</div><div class="prop-title">${p.titulo||"Propiedad"}</div><div class="prop-loc">📍 ${p.ciudad||""}</div><div class="prop-features"><span>🛏 ${p.habitaciones||0}</span><span>🚿 ${p.banos||0}</span><span>📐 ${p.area||0}m2</span></div></div></div>`).join("");
+}catch(e){console.log("Props fallback",e);}
+}
+loadProps();
+</script>
+</body>
+  </html>
