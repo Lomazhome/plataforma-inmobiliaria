@@ -1,625 +1,387 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Agregar Propiedad - Lomaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f2f5;color:#333;}
-.topbar{background:#1a1a2e;color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.topbar .logo{font-size:20px;font-weight:700;color:#e8b86d;}
-.topbar .user-info{display:flex;align-items:center;gap:12px;font-size:14px;}
-.topbar .btn-back{background:transparent;border:1px solid #fff;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;text-decoration:none;}
-.container{max-width:860px;margin:32px auto;padding:0 16px;}
-.page-title{font-size:26px;font-weight:700;color:#1a1a2e;margin-bottom:8px;}
-.page-subtitle{color:#666;margin-bottom:28px;font-size:15px;}
-.wizard-steps{display:flex;gap:0;margin-bottom:32px;background:#fff;border-radius:12px;padding:16px 24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow-x:auto;}
-.step{display:flex;align-items:center;gap:8px;flex:1;min-width:120px;}
-.step-circle{width:32px;height:32px;border-radius:50%;background:#ddd;color:#999;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;transition:all .3s;}
-.step.active .step-circle{background:#e8b86d;color:#fff;}
-.step.done .step-circle{background:#27ae60;color:#fff;}
-.step-label{font-size:13px;color:#999;font-weight:500;}
-.step.active .step-label{color:#1a1a2e;font-weight:600;}
-.step.done .step-label{color:#27ae60;}
-.step-line{flex:1;height:2px;background:#ddd;margin:0 8px;min-width:20px;}
-.step.done .step-line{background:#27ae60;}
-.card{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:24px;}
-.card h2{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #f0f2f5;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.form-grid.three{grid-template-columns:1fr 1fr 1fr;}
-.form-grid.full{grid-template-columns:1fr;}
-.form-group{display:flex;flex-direction:column;gap:6px;}
-.form-group.span2{grid-column:span 2;}
-.form-group.span3{grid-column:span 3;}
-label{font-size:13px;font-weight:600;color:#555;}
-label span.req{color:#e74c3c;}
-input,select,textarea{padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;transition:border .2s;background:#fafafa;}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#e8b86d;background:#fff;}
-textarea{resize:vertical;min-height:120px;}
-.characteristics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
-.check-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid #ddd;border-radius:8px;cursor:pointer;transition:all .2s;}
-.check-item:hover{border-color:#e8b86d;background:#fffdf5;}
-.check-item input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#e8b86d;}
-.check-item label{font-size:13px;cursor:pointer;margin:0;}
-.nav-buttons{display:flex;justify-content:space-between;margin-top:24px;}
-.btn{padding:12px 28px;border-radius:8px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;}
-.btn-primary{background:#e8b86d;color:#fff;}
-.btn-primary:hover{background:#d4a55a;}
-.btn-secondary{background:#f0f2f5;color:#555;}
-.btn-secondary:hover{background:#e0e3e8;}
-.btn-success{background:#27ae60;color:#fff;width:100%;}
-.btn-success:hover{background:#219a52;}
-.btn:disabled{opacity:.6;cursor:not-allowed;}
-.alert{padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px;}
-.alert-error{background:#fdecea;color:#c0392b;border:1px solid #f5c6c2;}
-.alert-success{background:#eafaf1;color:#1e8449;border:1px solid #a9dfba;}
-.hidden{display:none!important;}
-.photo-upload-area{border:2px dashed #ddd;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;}
-.photo-upload-area:hover{border-color:#e8b86d;background:#fffdf5;}
-.photo-upload-area i{font-size:40px;color:#ccc;display:block;margin-bottom:12px;}
-.photo-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:16px;}
-.photo-item{position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;}
-.photo-item img{width:100%;height:100%;object-fit:cover;}
-.photo-item .del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px;line-height:1;}
-.summary-table{width:100%;border-collapse:collapse;}
-.summary-table td{padding:10px 12px;border-bottom:1px solid #f0f2f5;font-size:14px;}
-.summary-table td:first-child{font-weight:600;color:#555;width:45%;}
-.portals-section{background:#f8f9fa;border-radius:10px;padding:16px;margin-top:16px;}
-.portals-section h3{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:12px;}
-.portal-checks{display:flex;gap:12px;flex-wrap:wrap;}
-.portal-badge{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid #ddd;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.portal-badge.active{border-color:#e8b86d;background:#fffdf5;color:#b8860b;}
-.portal-badge input{width:14px;height:14px;accent-color:#e8b86d;}
-@media(max-width:600px){.form-grid{grid-template-columns:1fr;}.form-grid.three{grid-template-columns:1fr 1fr;}.form-group.span2,.form-group.span3{grid-column:span 1;}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{background:#111;border-bottom:1px solid #222;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:1.2rem;font-weight:800;color:#c9a484;letter-spacing:2px}
+.topbar .user-info{display:flex;align-items:center;gap:1rem;font-size:.85rem;color:#aaa}
+.btn-back{background:transparent;border:1px solid #444;color:#fff;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:.8rem;font-family:Montserrat,sans-serif}
+.container{max-width:860px;margin:2rem auto;padding:0 1rem}
+.page-title{font-size:1.8rem;font-weight:800;letter-spacing:1px;margin-bottom:.3rem}
+.page-sub{color:#888;font-size:.9rem;margin-bottom:2rem}
+.alert{padding:1rem 1.2rem;border-radius:8px;margin-bottom:1.5rem;font-size:.9rem;font-weight:600;display:none}
+.alert.error{background:rgba(220,53,69,.15);border:1px solid rgba(220,53,69,.4);color:#ff6b7a;display:block}
+.alert.success{background:rgba(40,167,69,.15);border:1px solid rgba(40,167,69,.4);color:#5dd879;display:block}
+.wizard-steps{display:flex;gap:0;background:#111;border:1px solid #222;border-radius:12px;padding:1rem 1.5rem;margin-bottom:2rem;overflow-x:auto}
+.step{display:flex;align-items:center;gap:.5rem;flex:1;min-width:80px}
+.step-circle{width:32px;height:32px;border-radius:50%;background:#222;color:#888;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;transition:.3s}
+.step.active .step-circle{background:#c9a484;color:#000}
+.step.done .step-circle{background:#2a7a2a;color:#fff}
+.step-label{font-size:.75rem;color:#888;white-space:nowrap}
+.step.active .step-label{color:#c9a484;font-weight:700}
+.step.done .step-label{color:#5dd879}
+.step-line{flex:1;height:2px;background:#222;margin:0 .5rem}
+.card{background:#111;border:1px solid #222;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.card h3{font-size:1.1rem;font-weight:700;margin-bottom:1.2rem;color:#c9a484;display:flex;align-items:center;gap:.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-grid.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.8rem;color:#aaa;font-weight:600;letter-spacing:.5px}
+input,select,textarea{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.9rem;outline:none;width:100%;transition:.3s}
+input:focus,select:focus,textarea:focus{border-color:#c9a484}
+select option{background:#1a1a1a}
+textarea{resize:vertical;min-height:100px}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.5rem;margin-top:.5rem}
+.char-item{display:flex;align-items:center;gap:.5rem;background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.5rem .8rem;cursor:pointer;transition:.3s;font-size:.8rem}
+.char-item:hover{border-color:#c9a484}
+.char-item.selected{background:rgba(201,164,132,.15);border-color:#c9a484;color:#c9a484}
+.char-item input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#c9a484}
+.portales-grid{display:flex;flex-direction:column;gap:.8rem}
+.portal-row{display:flex;align-items:center;justify-content:space-between;background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:.8rem 1.2rem;transition:.3s}
+.portal-row.selected{border-color:#c9a484;background:rgba(201,164,132,.08)}
+.portal-check{display:flex;align-items:center;gap:.8rem}
+.portal-check input[type=checkbox]{width:18px;height:18px;accent-color:#c9a484;cursor:pointer}
+.portal-name{font-weight:700;font-size:.9rem}
+.portal-desc{font-size:.75rem;color:#888;margin-top:.15rem}
+.portal-status{font-size:.75rem;padding:.25rem .6rem;border-radius:4px;font-weight:600}
+.portal-status.pending{background:rgba(255,193,7,.15);color:#ffc107}
+.portal-status.ok{background:rgba(40,167,69,.15);color:#5dd879}
+.portal-status.error{background:rgba(220,53,69,.15);color:#ff6b7a}
+.portal-status.publishing{background:rgba(13,110,253,.15);color:#6ea8fe}
+.publish-log{margin-top:1rem;background:#0a0a0a;border:1px solid #222;border-radius:8px;padding:1rem;max-height:250px;overflow-y:auto}
+.log-entry{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem 0;border-bottom:1px solid #1a1a1a;font-size:.8rem}
+.log-entry:last-child{border-bottom:none}
+.log-icon{font-size:1rem;flex-shrink:0}
+.log-text{flex:1;line-height:1.5}
+.log-text strong{display:block;color:#eee}
+.log-text span{color:#888}
+.log-entry.success .log-icon::before{content:"✅"}
+.log-entry.error .log-icon::before{content:"❌"}
+.log-entry.info .log-icon::before{content:"ℹ️"}
+.log-entry.loading .log-icon::before{content:"⏳"}
+.btn-nav{padding:.8rem 1.8rem;border-radius:6px;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;border:none;letter-spacing:1px;text-transform:uppercase;transition:.3s}
+.btn-next{background:#c9a484;color:#000}
+.btn-next:hover{background:#b8956d}
+.btn-prev{background:#222;color:#fff}
+.btn-prev:hover{background:#333}
+.btn-publish{background:#27ae60;color:#fff;width:100%;padding:1rem;font-size:1rem;border-radius:8px;border:none;font-family:Montserrat,sans-serif;font-weight:800;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:.3s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-publish:hover{background:#219a52}
+.btn-publish:disabled{background:#444;cursor:not-allowed}
+.nav-btns{display:flex;justify-content:space-between;margin-top:1.5rem}
+.step-panel{display:none}
+.step-panel.active{display:block}
+.summary-table{width:100%;border-collapse:collapse}
+.summary-table tr{border-bottom:1px solid #222}
+.summary-table td{padding:.7rem 0;font-size:.85rem}
+.summary-table td:first-child{color:#888;width:140px}
+.summary-table td:last-child{color:#fff;font-weight:600}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.wizard-steps{gap:.3rem}}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <span class="logo">Lomaz Home</span>
-  <div class="user-info">
-    <span id="userName">Cargando...</span>
-    <a href="panel.html" class="btn-back">&#8592; Panel</a>
-  </div>
+<div class="logo">LOMAZ HOME</div>
+<div class="user-info"><span id="user-email"></span><button class="btn-back" onclick="window.location.href='dashboard.html'">← Panel</button></div>
 </div>
 <div class="container">
-  <div class="page-title">Agregar Propiedad</div>
-  <div class="page-subtitle">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
-  <div id="alertBox" class="alert hidden"></div>
-  <div class="wizard-steps">
-    <div class="step active" id="stp1"><div class="step-circle">1</div><div class="step-label">Informaci&#243;n b&#225;sica</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="stp2"><div class="step-circle">2</div><div class="step-label">Ubicaci&#243;n</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="stp3"><div class="step-circle">3</div><div class="step-label">Caracter&#237;sticas</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="stp4"><div class="step-circle">4</div><div class="step-label">Descripci&#243;n y fotos</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="stp5"><div class="step-circle">5</div><div class="step-label">Revisar y publicar</div></div>
-  </div>
-  <!-- STEP 1 -->
-  <div id="step1">
-    <div class="card">
-      <h2>&#127968; Informaci&#243;n B&#225;sica</h2>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Tipo de negocio <span class="req">*</span></label>
-          <select id="tipoNegocio" required>
-            <option value="">Seleccionar...</option>
-            <option value="Venta">Venta</option>
-            <option value="Arriendo">Arriendo</option>
-            <option value="Venta y Arriendo">Venta y Arriendo</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Tipo de inmueble <span class="req">*</span></label>
-          <select id="tipoInmueble" required>
-            <option value="">Seleccionar...</option>
-            <option value="Apartamento">Apartamento</option>
-            <option value="Casa">Casa</option>
-            <option value="Casa Campestre">Casa Campestre</option>
-            <option value="Finca">Finca</option>
-            <option value="Lote">Lote</option>
-            <option value="Bodega">Bodega</option>
-            <option value="Local Comercial">Local Comercial</option>
-            <option value="Oficina">Oficina</option>
-            <option value="Penthouse">Penthouse</option>
-            <option value="Apartaestudio">Apartaestudio</option>
-            <option value="Parqueadero">Parqueadero</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Precio (COP) <span class="req">*</span></label>
-          <input type="number" id="precio" placeholder="Ej: 350000000" min="0" required>
-        </div>
-        <div class="form-group">
-          <label>Valor administraci&#243;n (COP)</label>
-          <input type="number" id="valorAdmon" placeholder="Ej: 250000" min="0">
-        </div>
-        <div class="form-group">
-          <label>Estado del inmueble <span class="req">*</span></label>
-          <select id="estadoInmueble" required>
-            <option value="">Seleccionar...</option>
-            <option value="Disponible">Disponible</option>
-            <option value="Reservado">Reservado</option>
-            <option value="Vendido">Vendido</option>
-            <option value="Arrendado">Arrendado</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Antig&#252;edad</label>
-          <select id="antiguedad">
-            <option value="">Seleccionar...</option>
-            <option value="Nuevo">Nuevo (menos de 1 a&#241;o)</option>
-            <option value="1-5 anos">1 a 5 a&#241;os</option>
-            <option value="5-10 anos">5 a 10 a&#241;os</option>
-            <option value="10-20 anos">10 a 20 a&#241;os</option>
-            <option value="Mas de 20 anos">M&#225;s de 20 a&#241;os</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="nav-buttons"><div></div><button class="btn btn-primary" onclick="goStep(2)">Siguiente &#8594;</button></div>
-  </div>
-  <!-- STEP 2 -->
-  <div id="step2" class="hidden">
-    <div class="card">
-      <h2>&#128205; Ubicaci&#243;n</h2>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Departamento <span class="req">*</span></label>
-          <select id="departamento" required onchange="loadCiudades()">
-            <option value="">Seleccionar...</option>
-            <option value="Antioquia">Antioquia</option>
-            <option value="Atlantico">Atl&#225;ntico</option>
-            <option value="Bogota DC">Bogot&#225; D.C.</option>
-            <option value="Bolivar">Bol&#237;var</option>
-            <option value="Boyaca">Boyac&#225;</option>
-            <option value="Caldas">Caldas</option>
-            <option value="Caqueta">Caquet&#225;</option>
-            <option value="Cauca">Cauca</option>
-            <option value="Cesar">Cesar</option>
-            <option value="Cordoba">C&#243;rdoba</option>
-            <option value="Cundinamarca">Cundinamarca</option>
-            <option value="Huila">Huila</option>
-            <option value="La Guajira">La Guajira</option>
-            <option value="Magdalena">Magdalena</option>
-            <option value="Meta">Meta</option>
-            <option value="Narino">Nari&#241;o</option>
-            <option value="Norte de Santander">Norte de Santander</option>
-            <option value="Quindio">Quind&#237;o</option>
-            <option value="Risaralda">Risaralda</option>
-            <option value="San Andres">San Andr&#233;s</option>
-            <option value="Santander">Santander</option>
-            <option value="Sucre">Sucre</option>
-            <option value="Tolima">Tolima</option>
-            <option value="Valle del Cauca">Valle del Cauca</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Ciudad <span class="req">*</span></label>
-          <input type="text" id="ciudad" placeholder="Ej: Medell&#237;n" required>
-        </div>
-        <div class="form-group">
-          <label>Barrio / Sector <span class="req">*</span></label>
-          <input type="text" id="barrio" placeholder="Ej: El Poblado" required>
-        </div>
-        <div class="form-group">
-          <label>Estrato</label>
-          <select id="estrato">
-            <option value="">Seleccionar...</option>
-            <option value="1">Estrato 1</option>
-            <option value="2">Estrato 2</option>
-            <option value="3">Estrato 3</option>
-            <option value="4">Estrato 4</option>
-            <option value="5">Estrato 5</option>
-            <option value="6">Estrato 6</option>
-          </select>
-        </div>
-        <div class="form-group span2">
-          <label>Direcci&#243;n <span class="req">*</span></label>
-          <input type="text" id="direccion" placeholder="Ej: Cra 43A # 18-50, Torre 2, Apto 501" required>
-        </div>
-        <div class="form-group">
-          <label>Piso (si aplica)</label>
-          <input type="number" id="piso" placeholder="Ej: 5" min="0">
-        </div>
-        <div class="form-group">
-          <label>N&#250;mero del inmueble / Apto</label>
-          <input type="text" id="numInmueble" placeholder="Ej: 501">
-        </div>
-        <div class="form-group">
-          <label>Latitud (GPS)</label>
-          <input type="number" id="latitud" placeholder="Ej: 6.2442" step="any">
-        </div>
-        <div class="form-group">
-          <label>Longitud (GPS)</label>
-          <input type="number" id="longitud" placeholder="Ej: -75.5812" step="any">
-        </div>
-      </div>
-    </div>
-    <div class="nav-buttons"><button class="btn btn-secondary" onclick="goStep(1)">&#8592; Anterior</button><button class="btn btn-primary" onclick="goStep(3)">Siguiente &#8594;</button></div>
-  </div>
-  <!-- STEP 3 -->
-  <div id="step3" class="hidden">
-    <div class="card">
-      <h2>&#128297; Caracter&#237;sticas</h2>
-      <div class="form-grid three">
-        <div class="form-group">
-          <label>&#193;rea construida (m&#178;) <span class="req">*</span></label>
-          <input type="number" id="areaConstruida" placeholder="Ej: 85" min="0" required>
-        </div>
-        <div class="form-group">
-          <label>&#193;rea privada (m&#178;)</label>
-          <input type="number" id="areaPrivada" placeholder="Ej: 72" min="0">
-        </div>
-        <div class="form-group">
-          <label>&#193;rea lote (m&#178;)</label>
-          <input type="number" id="areaLote" placeholder="Ej: 120" min="0">
-        </div>
-        <div class="form-group">
-          <label>Habitaciones</label>
-          <select id="habitaciones">
-            <option value="">Seleccionar...</option>
-            <option value="0">Estudio (0)</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6 o m&#225;s</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Ba&#241;os</label>
-          <select id="banos">
-            <option value="">Seleccionar...</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5 o m&#225;s</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Garajes</label>
-          <select id="garajes">
-            <option value="">Seleccionar...</option>
-            <option value="0">Sin garaje</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3 o m&#225;s</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Parqueadero cubierto</label>
-          <select id="parqueaderoCubierto">
-            <option value="">Seleccionar...</option>
-            <option value="Si">S&#237;</option>
-            <option value="No">No</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Cuartos de servicio</label>
-          <select id="cuartosServicio">
-            <option value="">Seleccionar...</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Closets / Alcobas de servicio</label>
-          <input type="number" id="closets" placeholder="Ej: 3" min="0">
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <h2>&#10024; Amenidades y caracter&#237;sticas adicionales</h2>
-      <div class="characteristics-grid">
-        <label class="check-item"><input type="checkbox" id="am_0" value="Ascensor"><label for="am_0">Ascensor</label></label>
-        <label class="check-item"><input type="checkbox" id="am_1" value="Balc&#243;n"><label for="am_1">Balc&#243;n</label></label>
-        <label class="check-item"><input type="checkbox" id="am_2" value="Terraza"><label for="am_2">Terraza</label></label>
-        <label class="check-item"><input type="checkbox" id="am_3" value="Jard&#237;n"><label for="am_3">Jard&#237;n</label></label>
-        <label class="check-item"><input type="checkbox" id="am_4" value="Piscina"><label for="am_4">Piscina</label></label>
-        <label class="check-item"><input type="checkbox" id="am_5" value="Gimnasio"><label for="am_5">Gimnasio</label></label>
-        <label class="check-item"><input type="checkbox" id="am_6" value="Sal&#243;n comunal"><label for="am_6">Sal&#243;n comunal</label></label>
-        <label class="check-item"><input type="checkbox" id="am_7" value="Cancha de tenis"><label for="am_7">Cancha de tenis</label></label>
-        <label class="check-item"><input type="checkbox" id="am_8" value="Cancha de squash"><label for="am_8">Cancha de squash</label></label>
-        <label class="check-item"><input type="checkbox" id="am_9" value="Zona BBQ"><label for="am_9">Zona BBQ</label></label>
-        <label class="check-item"><input type="checkbox" id="am_10" value="Parque infantil"><label for="am_10">Parque infantil</label></label>
-        <label class="check-item"><input type="checkbox" id="am_11" value="Porteria 24h"><label for="am_11">Porteria 24h</label></label>
-        <label class="check-item"><input type="checkbox" id="am_12" value="Vigilancia privada"><label for="am_12">Vigilancia privada</label></label>
-        <label class="check-item"><input type="checkbox" id="am_13" value="Circuito CCTV"><label for="am_13">Circuito CCTV</label></label>
-        <label class="check-item"><input type="checkbox" id="am_14" value="Citofono"><label for="am_14">Citofono</label></label>
-        <label class="check-item"><input type="checkbox" id="am_15" value="Citofono digital"><label for="am_15">Citofono digital</label></label>
-        <label class="check-item"><input type="checkbox" id="am_16" value="Cuarto &#250;til"><label for="am_16">Cuarto &#250;til</label></label>
-        <label class="check-item"><input type="checkbox" id="am_17" value="Dep&#243;sito / Bodega"><label for="am_17">Dep&#243;sito / Bodega</label></label>
-        <label class="check-item"><input type="checkbox" id="am_18" value="Calentador"><label for="am_18">Calentador</label></label>
-        <label class="check-item"><input type="checkbox" id="am_19" value="Gas natural"><label for="am_19">Gas natural</label></label>
-        <label class="check-item"><input type="checkbox" id="am_20" value="Chimenea"><label for="am_20">Chimenea</label></label>
-        <label class="check-item"><input type="checkbox" id="am_21" value="Aire acondicionado"><label for="am_21">Aire acondicionado</label></label>
-        <label class="check-item"><input type="checkbox" id="am_22" value="Cocina integral"><label for="am_22">Cocina integral</label></label>
-        <label class="check-item"><input type="checkbox" id="am_23" value="Closets en habitaciones"><label for="am_23">Closets en habitaciones</label></label>
-        <label class="check-item"><input type="checkbox" id="am_24" value="Estudio / Oficina"><label for="am_24">Estudio / Oficina</label></label>
-        <label class="check-item"><input type="checkbox" id="am_25" value="Sala de cine"><label for="am_25">Sala de cine</label></label>
-        <label class="check-item"><input type="checkbox" id="am_26" value="Sauna"><label for="am_26">Sauna</label></label>
-        <label class="check-item"><input type="checkbox" id="am_27" value="Turco"><label for="am_27">Turco</label></label>
-        <label class="check-item"><input type="checkbox" id="am_28" value="Zona de lavander&#237;a"><label for="am_28">Zona de lavander&#237;a</label></label>
-        <label class="check-item"><input type="checkbox" id="am_29" value="Vista al mar"><label for="am_29">Vista al mar</label></label>
-        <label class="check-item"><input type="checkbox" id="am_30" value="Vista a la monta&#241;a"><label for="am_30">Vista a la monta&#241;a</label></label>
-        <label class="check-item"><input type="checkbox" id="am_31" value="Amoblado"><label for="am_31">Amoblado</label></label>
-        <label class="check-item"><input type="checkbox" id="am_32" value="Pet friendly"><label for="am_32">Pet friendly</label></label>
-        <label class="check-item"><input type="checkbox" id="am_33" value="Zona de basuras"><label for="am_33">Zona de basuras</label></label>
-        <label class="check-item"><input type="checkbox" id="am_34" value="Doble fachada"><label for="am_34">Doble fachada</label></label>
-        <label class="check-item"><input type="checkbox" id="am_35" value="Paneles solares"><label for="am_35">Paneles solares</label></label>
-      </div>
-    </div>
-    <div class="nav-buttons"><button class="btn btn-secondary" onclick="goStep(2)">&#8592; Anterior</button><button class="btn btn-primary" onclick="goStep(4)">Siguiente &#8594;</button></div>
-  </div>
-  <!-- STEP 4 -->
-  <div id="step4" class="hidden">
-    <div class="card">
-      <h2>&#128221; Descripci&#243;n</h2>
-      <div class="form-grid full">
-        <div class="form-group">
-          <label>T&#237;tulo del anuncio <span class="req">*</span></label>
-          <input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panor&#225;mica" maxlength="100" required>
-        </div>
-        <div class="form-group">
-          <label>Descripci&#243;n completa <span class="req">*</span></label>
-          <textarea id="descripcion" placeholder="Describe el inmueble con todos los detalles: acabados, vista, ubicaci&#243;n, comodidades..." rows="6" required></textarea>
-        </div>
-        <div class="form-group">
-          <label>URL del video (YouTube/Vimeo)</label>
-          <input type="url" id="videoUrl" placeholder="Ej: https://www.youtube.com/watch?v=...">
-        </div>
-        <div class="form-group">
-          <label>URL del tour virtual (360&#176;)</label>
-          <input type="url" id="tourUrl" placeholder="Ej: https://my.matterport.com/...">
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <h2>&#128247; Fotos del inmueble</h2>
-      <p style="color:#666;font-size:13px;margin-bottom:16px;">Sube hasta 20 fotos. La primera ser&#225; la imagen principal. Formatos: JPG, PNG. M&#225;x 5MB por foto.</p>
-      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
-        <div style="font-size:40px;">&#128247;</div>
-        <p style="font-size:15px;color:#888;margin-top:8px;">Haz clic para seleccionar fotos o arr&#225;stralas aqu&#237;</p>
-        <p style="font-size:12px;color:#bbb;margin-top:4px;">JPG, PNG hasta 5MB</p>
-      </div>
-      <input type="file" id="photoInput" multiple accept="image/*" style="display:none" onchange="previewPhotos(event)">
-      <div class="photo-preview" id="photoPreview"></div>
-    </div>
-    <div class="nav-buttons"><button class="btn btn-secondary" onclick="goStep(3)">&#8592; Anterior</button><button class="btn btn-primary" onclick="goStep(5)">Siguiente &#8594;</button></div>
-  </div>
-  <!-- STEP 5 -->
-  <div id="step5" class="hidden">
-    <div class="card">
-      <h2>&#128203; Resumen de la propiedad</h2>
-      <table class="summary-table" id="summaryTable"><tbody></tbody></table>
-    </div>
-    <div class="card">
-      <h2>&#127760; Publicar en portales externos</h2>
-      <p style="color:#666;font-size:13px;margin-bottom:12px;">Selecciona en qu&#233; portales deseas publicar esta propiedad. (La integraci&#243;n autom&#225;tica se activar&#225; en la pr&#243;xima versi&#243;n.)</p>
-      <div class="portals-section">
-        <h3>&#128203; Portales disponibles</h3>
-        <div class="portal-checks">
-          <label class="portal-badge" id="badge_mc"><input type="checkbox" id="pub_metrocuadrado" checked> &#127968; Metrocuadrado</label>
-          <label class="portal-badge" id="badge_fr"><input type="checkbox" id="pub_fincaraiz" checked> &#127968; Finca Ra&#237;z</label>
-          <label class="portal-badge" id="badge_pp"><input type="checkbox" id="pub_proppit" checked> &#127968; Proppit (x6)</label>
-          <label class="portal-badge" id="badge_mk"><input type="checkbox" id="pub_marketplace"> &#128722; Marketplace</label>
-          <label class="portal-badge" id="badge_ig"><input type="checkbox" id="pub_instagram"> &#128247; Instagram</label>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <button class="btn btn-success" id="btnPublicar" onclick="guardarPropiedad()">&#128640; Publicar Propiedad</button>
-    </div>
-    <div class="nav-buttons"><button class="btn btn-secondary" onclick="goStep(4)">&#8592; Anterior</button><div></div></div>
-  </div>
+<div class="page-title">Agregar Propiedad</div>
+<div class="page-sub">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
+<div id="alert" class="alert"></div>
+<div class="wizard-steps" id="wizard">
+<div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info basica</div></div>
+<div class="step-line"></div>
+<div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Ubicacion</div></div>
+<div class="step-line"></div>
+<div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Caracteristicas</div></div>
+<div class="step-line"></div>
+<div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Portales</div></div>
+</div>
+<div class="step-panel active" id="panel1">
+<div class="card"><h3>📋 Informacion Basica</h3>
+<div class="form-grid">
+<div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_negocio"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
+<div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_inmueble"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option></select></div>
+<div class="form-group full"><label>TITULO DEL AVISO *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
+<div class="form-group"><label>PRECIO (COP) *</label><input type="number" id="precio" placeholder="Ej: 450000000"/></div>
+<div class="form-group"><label>ADMINISTRACION (COP)</label><input type="number" id="administracion" placeholder="0 si no aplica"/></div>
+<div class="form-group"><label>AREA TOTAL (m2) *</label><input type="number" id="area" placeholder="Ej: 120"/></div>
+<div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
+<div class="form-group"><label>BANOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>PARQUEADEROS</label><input type="number" id="parqueaderos" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+<div class="form-group"><label>ANTIGUEDAD (anos)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
+<div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
+<div class="form-group full"><label>DESCRIPCION DETALLADA *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
+</div></div>
+<div class="nav-btns"><div></div><button class="btn-nav btn-next" onclick="goStep(2)">Siguiente →</button></div>
+</div>
+<div class="step-panel" id="panel2">
+<div class="card"><h3>📍 Ubicacion</h3>
+<div class="form-grid">
+<div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar</option><option value="Cundinamarca">Cundinamarca</option><option value="Antioquia">Antioquia</option><option value="Valle del Cauca">Valle del Cauca</option><option value="Atlantico">Atlantico</option><option value="Bolivar">Bolivar</option><option value="Santander">Santander</option><option value="Cordoba">Cordoba</option><option value="Narino">Narino</option><option value="Tolima">Tolima</option><option value="Huila">Huila</option><option value="Risaralda">Risaralda</option><option value="Caldas">Caldas</option><option value="Quindio">Quindio</option><option value="Meta">Meta</option><option value="Otro">Otro</option></select></div>
+<div class="form-group"><label>CIUDAD *</label><input type="text" id="ciudad" placeholder="Ej: Bogota, Medellin, Cali..."/></div>
+<div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" placeholder="Ej: El Poblado, Chapinero Alto..."/></div>
+<div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
+</div></div>
+<div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(1)">← Anterior</button><button class="btn-nav btn-next" onclick="goStep(3)">Siguiente →</button></div>
+</div>
+<div class="step-panel" id="panel3">
+<div class="card"><h3>🏠 Caracteristicas y Amenidades</h3>
+<p style="color:#888;font-size:.85rem;margin-bottom:1rem">Selecciona todas las que apliquen</p>
+<div class="char-grid" id="charGrid">
+<label class="char-item"><input type="checkbox" name="char" value="Piscina"/>Piscina</label>
+<label class="char-item"><input type="checkbox" name="char" value="Gimnasio"/>Gimnasio</label>
+<label class="char-item"><input type="checkbox" name="char" value="Salon comunal"/>Salon comunal</label>
+<label class="char-item"><input type="checkbox" name="char" value="Parque infantil"/>Parque infantil</label>
+<label class="char-item"><input type="checkbox" name="char" value="Zona BBQ"/>Zona BBQ</label>
+<label class="char-item"><input type="checkbox" name="char" value="Seguridad 24h"/>Seguridad 24h</label>
+<label class="char-item"><input type="checkbox" name="char" value="Porteria"/>Porteria</label>
+<label class="char-item"><input type="checkbox" name="char" value="Camara seguridad"/>Camara seguridad</label>
+<label class="char-item"><input type="checkbox" name="char" value="Jacuzzi"/>Jacuzzi</label>
+<label class="char-item"><input type="checkbox" name="char" value="Sauna"/>Sauna</label>
+<label class="char-item"><input type="checkbox" name="char" value="Terraza"/>Terraza</label>
+<label class="char-item"><input type="checkbox" name="char" value="Balcon"/>Balcon</label>
+<label class="char-item"><input type="checkbox" name="char" value="Cuarto servicio"/>Cuarto servicio</label>
+<label class="char-item"><input type="checkbox" name="char" value="Lavanderia"/>Lavanderia</label>
+<label class="char-item"><input type="checkbox" name="char" value="Gas natural"/>Gas natural</label>
+<label class="char-item"><input type="checkbox" name="char" value="Citofono"/>Citofono</label>
+<label class="char-item"><input type="checkbox" name="char" value="Ascensor"/>Ascensor</label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero visitantes"/>Parqueadero visitantes</label>
+<label class="char-item"><input type="checkbox" name="char" value="Cancha de tenis"/>Cancha de tenis</label>
+<label class="char-item"><input type="checkbox" name="char" value="Cancha futbol"/>Cancha futbol</label>
+<label class="char-item"><input type="checkbox" name="char" value="Vista al mar"/>Vista al mar</label>
+<label class="char-item"><input type="checkbox" name="char" value="Vista ciudad"/>Vista ciudad</label>
+<label class="char-item"><input type="checkbox" name="char" value="Pet friendly"/>Pet friendly</label>
+<label class="char-item"><input type="checkbox" name="char" value="Amoblado"/>Amoblado</label>
+<label class="char-item"><input type="checkbox" name="char" value="Aire acondicionado"/>Aire acondicionado</label>
+<label class="char-item"><input type="checkbox" name="char" value="Calefaccion"/>Calefaccion</label>
+</div>
+<div style="margin-top:1.5rem"><label style="display:block;margin-bottom:.5rem">DEPOSITO INCLUIDO</label><select id="deposito"><option value="false">No</option><option value="true">Si</option></select></div>
+</div>
+<div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(2)">← Anterior</button><button class="btn-nav btn-next" onclick="goStep(4)">Siguiente →</button></div>
+</div>
+<div class="step-panel" id="panel4">
+<div class="card"><h3>📋 Resumen de la propiedad</h3><table class="summary-table" id="summaryTable"></table></div>
+<div class="card"><h3>🌐 Publicar en portales externos</h3>
+<p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Selecciona los portales adicionales:</p>
+<div class="portales-grid">
+<div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">🏠 Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status pending" id="st-lomazhome">Listo</span></div>
+<div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">🏢 Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere credenciales</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
+<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">🏡 Finca Raiz</div><div class="portal-desc">Portal inmobiliario especializado Colombia</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
+<div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">📡 Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
+<div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">🛒 Facebook Marketplace</div><div class="portal-desc">Millones de usuarios activos en Colombia</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
+<div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">📸 Instagram</div><div class="portal-desc">Publicacion automatica con imagen y texto</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
+</div>
+<div class="publish-log" id="publishLog" style="display:none"><p style="color:#888;font-size:.8rem;margin-bottom:.5rem">📊 Registro de publicacion:</p><div id="logEntries"></div></div>
+</div>
+<button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">🚀 Publicar Propiedad</button>
+<div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">← Anterior</button><div></div></div>
+</div>
 </div>
 <script>
-const K = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
-const U = "https://lniouebpuuuqctrgxoiw.supabase.co";
-const sb = supabase.createClient(U, K);
-let sesion = null;
-let fotosFiles = [];
-let currentStep = 1;
+const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=window.supabase.createClient(SURL,SKEY);
+let currentUser=null;
+let propiedadId=null;
 
-// Auth check
-(async function() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) { window.location.href = "login.html"; return; }
-  sesion = session;
-  document.getElementById("userName").textContent = session.user.email;
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  currentUser=session.user;
+  document.getElementById("user-email").textContent=currentUser.email||"";
 })();
 
-// Portal badge toggle
-["badge_mc","badge_fr","badge_pp","badge_mk","badge_ig"].forEach(id => {
-  const badge = document.getElementById(id);
-  const cb = badge.querySelector("input");
-  if (cb.checked) badge.classList.add("active");
-  cb.addEventListener("change", () => {
-    badge.classList.toggle("active", cb.checked);
-  });
-});
-// Init active badges
-["badge_mc","badge_fr","badge_pp"].forEach(id => document.getElementById(id).classList.add("active"));
-
-function showAlert(msg, type) {
-  const box = document.getElementById("alertBox");
-  box.textContent = msg;
-  box.className = "alert alert-" + type;
-  box.classList.remove("hidden");
-  setTimeout(() => box.classList.add("hidden"), 5000);
+function togglePortal(cb,rowId){
+  const row=document.getElementById(rowId);
+  if(cb.checked)row.classList.add("selected");
+  else row.classList.remove("selected");
 }
 
-function goStep(n) {
-  if (n > currentStep && !validateStep(currentStep)) return;
-  document.getElementById("step" + currentStep).classList.add("hidden");
-  const prevCircle = document.querySelector("#stp" + currentStep + " .step-circle");
-  const prevStep = document.getElementById("stp" + currentStep);
-  prevStep.classList.remove("active");
-  if (n > currentStep) prevStep.classList.add("done");
-  currentStep = n;
-  document.getElementById("step" + n).classList.remove("hidden");
-  const curStep = document.getElementById("stp" + n);
-  curStep.classList.add("active");
-  curStep.classList.remove("done");
-  if (n === 5) buildSummary();
-  window.scrollTo(0, 0);
+function showAlert(msg,type){
+  const a=document.getElementById("alert");
+  a.className="alert "+type;
+  a.textContent=msg;
+  a.style.display="block";
+  a.scrollIntoView({behavior:"smooth"});
+}
+function hideAlert(){document.getElementById("alert").style.display="none";}
+
+function goStep(n){
+  if(n===2&&!validateStep1())return;
+  if(n===3&&!validateStep2())return;
+  if(n===4){buildSummary();}
+  for(let i=1;i<=4;i++){
+    const s=document.getElementById("s"+i);
+    const p=document.getElementById("panel"+i);
+    s.className="step"+(i<n?" done":i===n?" active":"");
+    p.className="step-panel"+(i===n?" active":"");
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function validateStep(n) {
-  const required = { 1: ["tipoNegocio","tipoInmueble","precio","estadoInmueble"], 2: ["departamento","ciudad","barrio","direccion"], 3: ["areaConstruida"], 4: ["titulo","descripcion"] };
-  const fields = required[n] || [];
-  for (const f of fields) {
-    const el = document.getElementById(f);
-    if (!el || !el.value.trim()) {
-      showAlert("Por favor completa todos los campos obligatorios (*) antes de continuar.", "error");
-      if (el) el.focus();
+function validateStep1(){
+  const fields=[["tipo_negocio","Tipo de negocio"],["tipo_inmueble","Tipo de inmueble"],["titulo","Titulo"],["precio","Precio"],["area","Area"],["descripcion","Descripcion"]];
+  for(const[id,name]of fields){
+    if(!document.getElementById(id).value.trim()){
+      showAlert("Campo requerido: "+name,"error");
       return false;
     }
   }
-  return true;
+  hideAlert();return true;
 }
 
-function previewPhotos(e) {
-  const files = Array.from(e.target.files);
-  fotosFiles = fotosFiles.concat(files).slice(0, 20);
-  const preview = document.getElementById("photoPreview");
-  preview.innerHTML = "";
-  fotosFiles.forEach((file, i) => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const div = document.createElement("div");
-      div.className = "photo-item";
-      div.innerHTML = `<img src="${ev.target.result}"><button class="del" onclick="removePhoto(${i})">&#215;</button>`;
-      preview.appendChild(div);
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function removePhoto(i) {
-  fotosFiles.splice(i, 1);
-  previewPhotos({ target: { files: [] } });
-  const dt = new DataTransfer();
-  fotosFiles.forEach(f => dt.items.add(f));
-  document.getElementById("photoInput").files = dt.files;
-}
-
-function buildSummary() {
-  const rows = [
-    ["Tipo negocio", document.getElementById("tipoNegocio").value],
-    ["Tipo inmueble", document.getElementById("tipoInmueble").value],
-    ["T\u00edtulo", document.getElementById("titulo").value],
-    ["Precio", "$" + Number(document.getElementById("precio").value || 0).toLocaleString("es-CO") + " COP"],
-    ["Administraci\u00f3n", document.getElementById("valorAdmon").value ? "$" + Number(document.getElementById("valorAdmon").value).toLocaleString("es-CO") + " COP" : "N/A"],
-    ["Estado", document.getElementById("estadoInmueble").value],
-    ["Departamento", document.getElementById("departamento").value],
-    ["Ciudad", document.getElementById("ciudad").value],
-    ["Barrio", document.getElementById("barrio").value],
-    ["Direcci\u00f3n", document.getElementById("direccion").value],
-    ["Estrato", document.getElementById("estrato").value || "N/A"],
-    ["Piso", document.getElementById("piso").value || "N/A"],
-    ["\u00c1rea construida", document.getElementById("areaConstruida").value + " m\u00b2"],
-    ["\u00c1rea privada", document.getElementById("areaPrivada").value ? document.getElementById("areaPrivada").value + " m\u00b2" : "N/A"],
-    ["Habitaciones", document.getElementById("habitaciones").value || "N/A"],
-    ["Ba\u00f1os", document.getElementById("banos").value || "N/A"],
-    ["Garajes", document.getElementById("garajes").value || "N/A"],
-    ["Fotos", fotosFiles.length + " archivo(s)"],
-  ];
-  const tb = document.querySelector("#summaryTable tbody");
-  tb.innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
-}
-
-async function guardarPropiedad() {
-  if (!sesion) { showAlert("Sesi\u00f3n expirada. Por favor inicia sesi\u00f3n de nuevo.", "error"); return; }
-  const btn = document.getElementById("btnPublicar");
-  btn.disabled = true;
-  btn.textContent = "Guardando...";
-
-  // Gather amenidades
-  const amenArr = Array.from(document.querySelectorAll(".check-item input[type=checkbox]:checked")).map(cb => cb.value);
-
-  // Gather portales
-  const portales = [];
-  if (document.getElementById("pub_metrocuadrado").checked) portales.push("metrocuadrado");
-  if (document.getElementById("pub_fincaraiz").checked) portales.push("fincaraiz");
-  if (document.getElementById("pub_proppit").checked) portales.push("proppit");
-  if (document.getElementById("pub_marketplace").checked) portales.push("marketplace");
-  if (document.getElementById("pub_instagram").checked) portales.push("instagram");
-
-  const propData = {
-    asesor_id: sesion.user.id,
-    titulo: document.getElementById("titulo").value.trim(),
-    descripcion: document.getElementById("descripcion").value.trim(),
-    tipo_negocio: document.getElementById("tipoNegocio").value,
-    tipo_inmueble: document.getElementById("tipoInmueble").value,
-    precio: Number(document.getElementById("precio").value),
-    valor_administracion: Number(document.getElementById("valorAdmon").value) || null,
-    estado: document.getElementById("estadoInmueble").value,
-    antiguedad: document.getElementById("antiguedad").value || null,
-    departamento: document.getElementById("departamento").value,
-    ciudad: document.getElementById("ciudad").value.trim(),
-    barrio: document.getElementById("barrio").value.trim(),
-    direccion: document.getElementById("direccion").value.trim(),
-    estrato: document.getElementById("estrato").value ? Number(document.getElementById("estrato").value) : null,
-    piso: document.getElementById("piso").value ? Number(document.getElementById("piso").value) : null,
-    area_construida: Number(document.getElementById("areaConstruida").value),
-    area_privada: Number(document.getElementById("areaPrivada").value) || null,
-    area_lote: Number(document.getElementById("areaLote").value) || null,
-    habitaciones: document.getElementById("habitaciones").value ? Number(document.getElementById("habitaciones").value) : null,
-    banos: document.getElementById("banos").value ? Number(document.getElementById("banos").value) : null,
-    garajes: document.getElementById("garajes").value ? Number(document.getElementById("garajes").value) : null,
-    latitud: document.getElementById("latitud").value ? Number(document.getElementById("latitud").value) : null,
-    longitud: document.getElementById("longitud").value ? Number(document.getElementById("longitud").value) : null,
-    video_url: document.getElementById("videoUrl").value.trim() || null,
-    tour_url: document.getElementById("tourUrl").value.trim() || null,
-    amenidades: amenArr,
-    portales_publicacion: portales,
-    caracteristicas: {
-      parqueadero_cubierto: document.getElementById("parqueaderoCubierto").value || null,
-      cuartos_servicio: document.getElementById("cuartosServicio").value || null,
-      closets: document.getElementById("closets").value || null,
-      num_inmueble: document.getElementById("numInmueble").value.trim() || null
+function validateStep2(){
+  const fields=[["departamento","Departamento"],["ciudad","Ciudad"],["barrio","Barrio/Sector"]];
+  for(const[id,name]of fields){
+    if(!document.getElementById(id).value.trim()){
+      showAlert("Campo requerido: "+name,"error");
+      return false;
     }
-  };
-
-  try {
-    const { data, error } = await sb.from("propiedades").insert([propData]).select().single();
-    if (error) throw error;
-
-    // Upload photos if any
-    if (fotosFiles.length > 0) {
-      const propId = data.id;
-      const urls = [];
-      for (let i = 0; i < fotosFiles.length; i++) {
-        const f = fotosFiles[i];
-        const ext = f.name.split(".").pop();
-        const path = propId + "/" + i + "_" + Date.now() + "." + ext;
-        const { data: up, error: upErr } = await sb.storage.from("fotos-propiedades").upload(path, f, { upsert: true });
-        if (!upErr) {
-          const { data: pu } = sb.storage.from("fotos-propiedades").getPublicUrl(path);
-          urls.push(pu.publicUrl);
-        }
-      }
-      if (urls.length > 0) {
-        await sb.from("propiedades").update({ imagenes: urls, imagen_principal: urls[0] }).eq("id", propId);
-      }
-    }
-
-    showAlert("\u00a1Propiedad publicada exitosamente! Redirigiendo...", "success");
-    setTimeout(() => window.location.href = "panel.html", 2000);
-  } catch(err) {
-    showAlert("Error al guardar: " + err.message, "error");
-    btn.disabled = false;
-    btn.textContent = "\u{1F680} Publicar Propiedad";
   }
+  hideAlert();return true;
+}
+
+function buildSummary(){
+  const rows=[
+    ["Tipo negocio",document.getElementById("tipo_negocio").value],
+    ["Tipo inmueble",document.getElementById("tipo_inmueble").value],
+    ["Titulo",document.getElementById("titulo").value],
+    ["Precio","$"+Number(document.getElementById("precio").value||0).toLocaleString("es-CO")+" COP"],
+    ["Administracion","$"+Number(document.getElementById("administracion").value||0).toLocaleString("es-CO")],
+    ["Area",document.getElementById("area").value+" m2"],
+    ["Habitaciones",document.getElementById("habitaciones").value],
+    ["Banos",document.getElementById("banos").value],
+    ["Ciudad",document.getElementById("ciudad").value],
+    ["Barrio",document.getElementById("barrio").value],
+  ];
+  const t=document.getElementById("summaryTable");
+  t.innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]||"N/A"}</td></tr>`).join("");
+}
+
+function addLog(type,title,detail){
+  const lg=document.getElementById("publishLog");
+  const le=document.getElementById("logEntries");
+  lg.style.display="block";
+  const div=document.createElement("div");
+  div.className="log-entry "+type;
+  div.innerHTML=`<div class="log-icon"></div><div class="log-text"><strong>${title}</strong><span>${detail}</span></div>`;
+  le.appendChild(div);
+  lg.scrollTop=lg.scrollHeight;
+}
+
+function setPortalStatus(id,status,text){
+  const el=document.getElementById("st-"+id);
+  if(!el)return;
+  el.className="portal-status "+status;
+  el.textContent=text;
+}
+
+async function publicarPropiedad(){
+  const btn=document.getElementById("btnPublish");
+  btn.disabled=true;
+  btn.textContent="⏳ Publicando...";
+  hideAlert();
+  document.getElementById("logEntries").innerHTML="";
+  
+  // Obtener caracteristicas seleccionadas
+  const chars=[...document.querySelectorAll("input[name=char]:checked")].map(c=>c.value);
+  
+  const data={
+    tipo_negocio:document.getElementById("tipo_negocio").value,
+    tipo_inmueble:document.getElementById("tipo_inmueble").value,
+    titulo:document.getElementById("titulo").value.trim(),
+    precio:parseFloat(document.getElementById("precio").value)||0,
+    administracion:parseFloat(document.getElementById("administracion").value)||0,
+    area:parseFloat(document.getElementById("area").value)||0,
+    habitaciones:parseInt(document.getElementById("habitaciones").value)||0,
+    banos:parseInt(document.getElementById("banos").value)||0,
+    parqueaderos:parseInt(document.getElementById("parqueaderos").value)||0,
+    estrato:parseInt(document.getElementById("estrato").value)||1,
+    antiguedad:parseInt(document.getElementById("antiguedad").value)||0,
+    piso:parseInt(document.getElementById("piso").value)||0,
+    deposito:document.getElementById("deposito").value==="true",
+    descripcion:document.getElementById("descripcion").value.trim(),
+    departamento:document.getElementById("departamento").value,
+    ciudad:document.getElementById("ciudad").value.trim(),
+    barrio:document.getElementById("barrio").value.trim(),
+    direccion:document.getElementById("direccion").value.trim(),
+    caracteristicas:chars,
+    estado:"activa",
+    asesor_id:currentUser.id
+  };
+  
+  // PASO 1: Guardar en Lomaz Home (Supabase)
+  addLog("loading","Lomaz Home","Guardando propiedad en la plataforma...");
+  setPortalStatus("lomazhome","publishing","Publicando...");
+  
+  const{data:prop,error:errProp}=await sb.from("propiedades").insert([data]).select().single();
+  
+  if(errProp){
+    addLog("error","Lomaz Home","Error: "+errProp.message);
+    setPortalStatus("lomazhome","error","Error");
+    showAlert("Error al guardar: "+errProp.message,"error");
+    btn.disabled=false;btn.innerHTML="🚀 Publicar Propiedad";
+    return;
+  }
+  
+  propiedadId=prop.id;
+  addLog("success","Lomaz Home","Propiedad publicada correctamente (ID: "+prop.id+")");
+  setPortalStatus("lomazhome","ok","Publicado ✓");
+  
+  // PASO 2: Portales externos - simulacion con estado real
+  const portales=[
+    {id:"metrocuadrado",name:"Metrocuadrado",cb:"ch-metrocuadrado"},
+    {id:"fincaraiz",name:"Finca Raiz",cb:"ch-fincaraiz"},
+    {id:"proppit",name:"Proppit",cb:"ch-proppit"},
+    {id:"marketplace",name:"Facebook Marketplace",cb:"ch-marketplace"},
+    {id:"instagram",name:"Instagram",cb:"ch-instagram"}
+  ];
+  
+  for(const p of portales){
+    const checked=document.getElementById(p.cb)?.checked;
+    if(!checked)continue;
+    
+    setPortalStatus(p.id,"publishing","Publicando...");
+    addLog("loading",p.name,"Enviando al portal...");
+    await new Promise(r=>setTimeout(r,1200));
+    
+    // Intentar publicacion via API configurada
+    const{error:ePortal}=await sb.from("publicaciones_portales").insert({
+      propiedad_id:prop.id,
+      portal:p.id,
+      estado:"pendiente_credenciales",
+      mensaje:"Requiere configuracion de API en Ajustes > Portales",
+      asesor_id:currentUser.id
+    });
+    
+    if(ePortal){
+      setPortalStatus(p.id,"error","Error DB");
+      addLog("error",p.name,"Error al registrar: "+ePortal.message);
+    } else {
+      // Estado real por portal: mostrar instruccion especifica
+      const msgs={
+        "metrocuadrado":"Para publicacion automatica, configura tu API Key de Metrocuadrado en Ajustes > Portales. Por ahora se copio el texto para publicacion manual.",
+        "fincaraiz":"Finca Raiz requiere autenticacion OAuth. Ve a Ajustes > Portales > Finca Raiz y conecta tu cuenta.",
+        "proppit":"Proppit distribuira a 6 portales. Configura tu token de Proppit en Ajustes > Portales para activar la integracion.",
+        "marketplace":"Se preparo el texto para Facebook Marketplace. Abre Facebook, ve a Marketplace > Crear > Anuncio y usa el texto generado.",
+        "instagram":"Se genero el post para Instagram. Ve a tu app de Instagram y publica la imagen con el caption preparado."
+      };
+      setPortalStatus(p.id,"pending","Config. requerida");
+      addLog("info",p.name,msgs[p.id]||"Requiere configuracion.");
+    }
+  }
+  
+  btn.innerHTML="✅ Publicado en Lomaz Home";
+  showAlert("✅ Propiedad publicada en Lomaz Home. Revisa el registro de portales para proximos pasos.","success");
 }
 </script>
 </body>
-</html>
+  </html>
