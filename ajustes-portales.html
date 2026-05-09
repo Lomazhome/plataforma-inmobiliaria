@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ajustes Portales - Lomaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+.topbar{background:#111;border-bottom:1px solid #222;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:1.2rem;font-weight:800;color:#c9a484;letter-spacing:2px}
+.user-info{display:flex;align-items:center;gap:1rem;font-size:.85rem;color:#aaa}
+.btn-back{background:transparent;border:1px solid #444;color:#fff;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:.8rem;font-family:Montserrat,sans-serif}
+.container{max-width:900px;margin:2rem auto;padding:0 1rem}
+.page-title{font-size:1.8rem;font-weight:800;letter-spacing:1px;margin-bottom:.3rem}
+.page-sub{color:#888;font-size:.9rem;margin-bottom:2rem}
+.alert{padding:1rem 1.2rem;border-radius:8px;margin-bottom:1.5rem;font-size:.9rem;font-weight:600}
+.alert.error{background:rgba(220,53,69,.15);border:1px solid rgba(220,53,69,.4);color:#ff6b7a}
+.alert.success{background:rgba(40,167,69,.15);border:1px solid rgba(40,167,69,.4);color:#5dd879}
+.portal-card{background:#111;border:1px solid #222;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;transition:.3s}
+.portal-card.connected{border-color:rgba(40,167,69,.4)}
+.portal-card.disconnected{border-color:#333}
+.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.portal-info{display:flex;align-items:center;gap:1rem}
+.portal-icon{font-size:2rem}
+.portal-name{font-size:1.1rem;font-weight:800}
+.portal-desc{font-size:.8rem;color:#888;margin-top:.2rem}
+.portal-status-badge{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700}
+.badge-connected{background:rgba(40,167,69,.2);color:#5dd879;border:1px solid rgba(40,167,69,.3)}
+.badge-disconnected{background:rgba(255,193,7,.1);color:#ffc107;border:1px solid rgba(255,193,7,.2)}
+.badge-unavailable{background:rgba(108,117,125,.1);color:#6c757d;border:1px solid rgba(108,117,125,.2)}
+.portal-body{display:none}
+.portal-body.open{display:block}
+.form-group{margin-bottom:1rem}
+label{display:block;font-size:.75rem;color:#aaa;font-weight:600;letter-spacing:.5px;margin-bottom:.4rem}
+.input-row{display:flex;gap:.8rem;align-items:flex-end}
+input,select{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.9rem;outline:none;transition:.3s;width:100%}
+input:focus{border-color:#c9a484}
+.btn-save{background:#c9a484;color:#000;border:none;border-radius:6px;padding:.7rem 1.4rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;letter-spacing:.5px;white-space:nowrap;transition:.3s}
+.btn-save:hover{background:#b8956d}
+.btn-test{background:transparent;border:1px solid #c9a484;color:#c9a484;border-radius:6px;padding:.7rem 1.2rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:.3s}
+.btn-test:hover{background:rgba(201,164,132,.1)}
+.btn-toggle{background:transparent;border:none;color:#888;cursor:pointer;font-size:.82rem;font-family:Montserrat,sans-serif;padding:.4rem .8rem;border-radius:4px;transition:.3s}
+.btn-toggle:hover{color:#c9a484}
+.btn-disconnect{background:transparent;border:1px solid rgba(220,53,69,.4);color:#ff6b7a;border-radius:6px;padding:.5rem 1rem;font-family:Montserrat,sans-serif;font-weight:600;font-size:.78rem;cursor:pointer;transition:.3s}
+.btn-disconnect:hover{background:rgba(220,53,69,.1)}
+.info-box{background:rgba(13,110,253,.06);border:1px solid rgba(13,110,253,.2);border-radius:8px;padding:1rem;font-size:.8rem;color:#aaa;line-height:1.7;margin-top:.8rem}
+.info-box a{color:#6ea8fe;text-decoration:none}
+.info-box a:hover{text-decoration:underline}
+.info-box strong{color:#6ea8fe}
+.test-result{padding:.6rem .9rem;border-radius:6px;font-size:.82rem;margin-top:.6rem;display:none}
+.test-result.ok{background:rgba(40,167,69,.1);border:1px solid rgba(40,167,69,.3);color:#5dd879}
+.test-result.fail{background:rgba(220,53,69,.1);border:1px solid rgba(220,53,69,.3);color:#ff6b7a}
+.section-title{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #1a1a1a}
+.access-denied{text-align:center;padding:4rem 1rem;display:none}
+.access-denied h2{color:#ff6b7a;font-size:1.5rem;margin-bottom:.8rem}
+.access-denied p{color:#888;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">LOMAZ HOME</div>
+  <div class="user-info"><span id="user-email"></span><button class="btn-back" onclick="window.location.href='dashboard.html'">&#8592; Panel</button></div>
+</div>
+<div class="access-denied" id="access-denied">
+  <h2>&#128274; Acceso Denegado</h2>
+  <p>Solo el administrador puede configurar los portales de publicacion.</p>
+</div>
+<div class="container" id="main-content" style="display:none">
+  <div class="page-title">&#127759; Ajustes de Portales</div>
+  <div class="page-sub">Configura las credenciales de cada portal para activar la publicacion automatica de propiedades.</div>
+  <div id="alert" class="alert" style="display:none"></div>
+  <div class="portal-card" id="card-metrocuadrado">
+    <div class="portal-header">
+      <div class="portal-info">
+        <div class="portal-icon">&#127970;</div>
+        <div>
+          <div class="portal-name">Metrocuadrado</div>
+          <div class="portal-desc">Portal #1 de Colombia - El Tiempo / Portafolio</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span class="portal-status-badge badge-disconnected" id="badge-metrocuadrado">Sin configurar</span>
+        <button class="btn-toggle" onclick="togglePortal('metrocuadrado')">Configurar &#9660;</button>
+      </div>
+    </div>
+    <div class="portal-body" id="body-metrocuadrado">
+      <div class="section-title">Credenciales de acceso</div>
+      <div class="form-group"><label>API KEY (clave de integracion)</label>
+        <div class="input-row">
+          <input type="password" id="metro-apikey" placeholder="Pega aqui tu API Key de Metrocuadrado" autocomplete="off"/>
+          <button class="btn-save" onclick="savePortal('metrocuadrado')">Guardar</button>
+          <button class="btn-test" onclick="testPortal('metrocuadrado')">Probar</button>
+        </div>
+      </div>
+      <div class="form-group"><label>ID DE CUENTA (opcional)</label><input type="text" id="metro-accountid" placeholder="Tu ID de cuenta en Metrocuadrado"/></div>
+      <div class="test-result" id="test-metrocuadrado"></div>
+      <div class="info-box">
+        <strong>Como obtener tu API Key:</strong><br/>
+        1. Ingresa a <a href="https://www.metrocuadrado.com" target="_blank">metrocuadrado.com</a> con tu cuenta de inmobiliaria<br/>
+        2. Ve a Mi Cuenta &gt; Configuracion &gt; Integraciones &gt; API<br/>
+        3. Genera una nueva API Key y copia el valor<br/>
+        4. Pega la key aqui y guarda. La integracion se activara automaticamente.<br/><br/>
+        <strong>Nota:</strong> Metrocuadrado requiere cuenta de inmobiliaria verificada (plan de pago). <a href="https://www.metrocuadrado.com/inmobiliarias" target="_blank">Ver planes &rarr;</a>
+      </div>
+    </div>
+  </div>
+  <div class="portal-card" id="card-fincaraiz">
+    <div class="portal-header">
+      <div class="portal-info">
+        <div class="portal-icon">&#127969;</div>
+        <div>
+          <div class="portal-name">Finca Raiz</div>
+          <div class="portal-desc">Portal inmobiliario especializado de Colombia</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span class="portal-status-badge badge-disconnected" id="badge-fincaraiz">Sin configurar</span>
+        <button class="btn-toggle" onclick="togglePortal('fincaraiz')">Configurar &#9660;</button>
+      </div>
+    </div>
+    <div class="portal-body" id="body-fincaraiz">
+      <div class="section-title">Credenciales OAuth</div>
+      <div class="form-group"><label>TOKEN DE ACCESO</label>
+        <div class="input-row">
+          <input type="password" id="fincaraiz-token" placeholder="Token OAuth de Finca Raiz" autocomplete="off"/>
+          <button class="btn-save" onclick="savePortal('fincaraiz')">Guardar</button>
+          <button class="btn-test" onclick="testPortal('fincaraiz')">Probar</button>
+        </div>
+      </div>
+      <div class="form-group"><label>CLIENT ID</label><input type="text" id="fincaraiz-clientid" placeholder="Client ID de tu aplicacion Finca Raiz"/></div>
+      <div class="test-result" id="test-fincaraiz"></div>
+      <div class="info-box">
+        <strong>Integracion via API REST:</strong><br/>
+        1. Registra tu inmobiliaria en <a href="https://www.fincaraiz.com.co" target="_blank">fincaraiz.com.co</a><br/>
+        2. Solicita acceso a la API en: Cuenta &gt; Configuracion &gt; API Integracion<br/>
+        3. Finca Raiz entregara un Client ID y generaras tokens OAuth<br/>
+        4. Pega el token de acceso aqui. Se renueva automaticamente.<br/><br/>
+        <strong>Nota:</strong> Requiere plan de publicacion activo en Finca Raiz.
+      </div>
+    </div>
+  </div>
+  <div class="portal-card" id="card-proppit">
+    <div class="portal-header">
+      <div class="portal-info">
+        <div class="portal-icon">&#128225;</div>
+        <div>
+          <div class="portal-name">Proppit (x6 portales)</div>
+          <div class="portal-desc">Publica simultaneamente en Metrocuadrado, Finca Raiz, Properati, Lamudi, Vivendo y mas</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span class="portal-status-badge badge-disconnected" id="badge-proppit">Sin configurar</span>
+        <button class="btn-toggle" onclick="togglePortal('proppit')">Configurar &#9660;</button>
+      </div>
+    </div>
+    <div class="portal-body" id="body-proppit">
+      <div class="section-title">Token de integracion Proppit</div>
+      <div class="form-group"><label>API TOKEN</label>
+        <div class="input-row">
+          <input type="password" id="proppit-token" placeholder="Tu API Token de Proppit" autocomplete="off"/>
+          <button class="btn-save" onclick="savePortal('proppit')">Guardar</button>
+          <button class="btn-test" onclick="testPortal('proppit')">Probar</button>
+        </div>
+      </div>
+      <div class="form-group"><label>USUARIO PROPPIT</label><input type="text" id="proppit-usuario" placeholder="Tu usuario o email en Proppit"/></div>
+      <div class="test-result" id="test-proppit"></div>
+      <div class="info-box">
+        <strong>&#127775; Con un solo token publicas en 6 portales:</strong><br/>
+        Metrocuadrado, Finca Raiz, Properati, Lamudi, Vivendo, Icasas<br/><br/>
+        <strong>Como obtenerlo:</strong><br/>
+        1. Crea cuenta en <a href="https://www.proppit.com" target="_blank">proppit.com</a> como inmobiliaria<br/>
+        2. Ve a Configuracion &gt; Integraciones &gt; API Token<br/>
+        3. Genera y copia tu token de acceso<br/>
+        4. Pega aqui - todas tus propiedades se distribuiran automaticamente.
+      </div>
+    </div>
+  </div>
+  <div class="portal-card" id="card-marketplace">
+    <div class="portal-header">
+      <div class="portal-info">
+        <div class="portal-icon">&#128722;</div>
+        <div>
+          <div class="portal-name">Facebook Marketplace</div>
+          <div class="portal-desc">Publicacion via Graph API - requiere pagina de Facebook</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span class="portal-status-badge badge-disconnected" id="badge-marketplace">Sin configurar</span>
+        <button class="btn-toggle" onclick="togglePortal('marketplace')">Configurar &#9660;</button>
+      </div>
+    </div>
+    <div class="portal-body" id="body-marketplace">
+      <div class="section-title">Credenciales Graph API</div>
+      <div class="form-group"><label>PAGE ACCESS TOKEN (token de pagina de Facebook)</label>
+        <div class="input-row">
+          <input type="password" id="fb-token" placeholder="EAAxxxxxx..." autocomplete="off"/>
+          <button class="btn-save" onclick="savePortal('marketplace')">Guardar</button>
+          <button class="btn-test" onclick="testPortal('marketplace')">Probar</button>
+        </div>
+      </div>
+      <div class="form-group"><label>PAGE ID (ID de tu pagina de Facebook)</label><input type="text" id="fb-pageid" placeholder="Ej: 123456789012345"/></div>
+      <div class="test-result" id="test-marketplace"></div>
+      <div class="info-box">
+        <strong>Requisitos Facebook Marketplace API:</strong><br/>
+        1. Debes tener una Pagina de Facebook verificada como negocio<br/>
+        2. Solicita acceso a la API de Marketplace en: <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a><br/>
+        3. Crea una app, obtiene permisos pages_manage_posts y catalog_management<br/>
+        4. Genera un Page Access Token de larga duracion (60 dias)<br/><br/>
+        <strong>Importante:</strong> Meta (Facebook) requiere aprobacion de la app para publicar en Marketplace de forma automatica. El proceso puede tomar 2-4 semanas.
+      </div>
+    </div>
+  </div>
+  <div class="portal-card" id="card-instagram">
+    <div class="portal-header">
+      <div class="portal-info">
+        <div class="portal-icon">&#128247;</div>
+        <div>
+          <div class="portal-name">Instagram</div>
+          <div class="portal-desc">Publicacion automatica via Instagram Graph API</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span class="portal-status-badge badge-disconnected" id="badge-instagram">Sin configurar</span>
+        <button class="btn-toggle" onclick="togglePortal('instagram')">Configurar &#9660;</button>
+      </div>
+    </div>
+    <div class="portal-body" id="body-instagram">
+      <div class="section-title">Credenciales Instagram Graph API</div>
+      <div class="form-group"><label>ACCESS TOKEN (desde Facebook Developer)</label>
+        <div class="input-row">
+          <input type="password" id="ig-token" placeholder="Token de acceso Instagram" autocomplete="off"/>
+          <button class="btn-save" onclick="savePortal('instagram')">Guardar</button>
+          <button class="btn-test" onclick="testPortal('instagram')">Probar</button>
+        </div>
+      </div>
+      <div class="form-group"><label>INSTAGRAM BUSINESS ACCOUNT ID</label><input type="text" id="ig-accountid" placeholder="Ej: 17841400000000000"/></div>
+      <div class="form-group"><label>HASHTAGS AUTOMATICOS (separados por espacio)</label><input type="text" id="ig-hashtags" placeholder="#inmuebles #colombia #apartamento #casas"/></div>
+      <div class="test-result" id="test-instagram"></div>
+      <div class="info-box">
+        <strong>Requisitos Instagram Graph API:</strong><br/>
+        1. Cuenta de Instagram debe ser Business o Creator<br/>
+        2. Vincula la cuenta de Instagram a tu Pagina de Facebook<br/>
+        3. En <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a> crea app con permiso instagram_content_publish<br/>
+        4. Genera un token de larga duracion (60 dias renovable)<br/><br/>
+        <strong>Funcionamiento:</strong> Al publicar una propiedad, se crea automaticamente un post con la primera imagen y caption optimizado con hashtags.
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=window.supabase.createClient(SURL,SKEY);
+let currentUser=null;
+let isAdmin=false;
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  currentUser=session.user;
+  document.getElementById("user-email").textContent=currentUser.email||"";
+  // Check admin role
+  const{data:perfil}=await sb.from("perfiles_usuarios").select("roles(nombre)").eq("user_id",currentUser.id).single();
+  const rol=(perfil?.roles?.nombre)||"";
+  if(rol!=="admin"){
+    document.getElementById("access-denied").style.display="block";
+    return;
+  }
+  isAdmin=true;
+  document.getElementById("main-content").style.display="block";
+  await loadCredentials();
+})();
+function togglePortal(id){
+  const body=document.getElementById("body-"+id);
+  body.classList.toggle("open");
+}
+function showAlert(msg,type){
+  const a=document.getElementById("alert");
+  a.className="alert "+type;
+  a.textContent=msg;
+  a.style.display="block";
+  setTimeout(()=>a.style.display="none",5000);
+}
+const FIELDS={
+  metrocuadrado:{key:"metro-apikey",secondary:"metro-accountid",keyName:"api_key",secName:"account_id"},
+  fincaraiz:{key:"fincaraiz-token",secondary:"fincaraiz-clientid",keyName:"access_token",secName:"client_id"},
+  proppit:{key:"proppit-token",secondary:"proppit-usuario",keyName:"api_token",secName:"usuario"},
+  marketplace:{key:"fb-token",secondary:"fb-pageid",keyName:"page_access_token",secName:"page_id"},
+  instagram:{key:"ig-token",secondary:"ig-accountid",keyName:"access_token",secName:"account_id"}
+};
+async function loadCredentials(){
+  const{data:creds}=await sb.from("configuracion_portales").select("*");
+  if(!creds)return;
+  for(const c of creds){
+    const f=FIELDS[c.portal];
+    if(!f)continue;
+    const badge=document.getElementById("badge-"+c.portal);
+    const card=document.getElementById("card-"+c.portal);
+    if(c.activo&&c[f.keyName]){
+      if(badge){badge.className="portal-status-badge badge-connected";badge.textContent="Conectado";}
+      if(card)card.classList.add("connected");
+    }
+    // Show masked key
+    const el=document.getElementById(f.key);
+    if(el&&c[f.keyName])el.placeholder="**** guardado (escribe para cambiar)";
+    if(f.secondary&&c[f.secName]){
+      const el2=document.getElementById(f.secondary);
+      if(el2)el2.value=c[f.secName];
+    }
+  }
+}
+async function savePortal(portal){
+  const f=FIELDS[portal];
+  if(!f)return;
+  const keyVal=document.getElementById(f.key)?.value?.trim();
+  const secVal=f.secondary?document.getElementById(f.secondary)?.value?.trim():"";
+  if(!keyVal){showAlert("Ingresa la credencial principal para guardar","error");return;}
+  const record={
+    portal:portal,
+    admin_id:currentUser.id,
+    activo:true,
+    updated_at:new Date().toISOString()
+  };
+  record[f.keyName]=keyVal;
+  if(f.secondary&&secVal)record[f.secName]=secVal;
+  const{error}=await sb.from("configuracion_portales").upsert(record,{onConflict:"portal"});
+  if(error){showAlert("Error al guardar: "+error.message,"error");return;}
+  const badge=document.getElementById("badge-"+portal);
+  const card=document.getElementById("card-"+portal);
+  if(badge){badge.className="portal-status-badge badge-connected";badge.textContent="Conectado";}
+  if(card)card.classList.add("connected");
+  const el=document.getElementById(f.key);
+  if(el){el.value="";el.placeholder="**** guardado (escribe para cambiar)";}
+  showAlert("Credenciales de "+portal+" guardadas exitosamente","success");
+}
+async function testPortal(portal){
+  const resultEl=document.getElementById("test-"+portal);
+  if(!resultEl)return;
+  resultEl.style.display="block";
+  resultEl.className="test-result";
+  resultEl.textContent="Probando conexion con "+portal+"...";
+  // Verify we have credentials saved
+  const{data:cred}=await sb.from("configuracion_portales").select("*").eq("portal",portal).single();
+  if(!cred||!cred.activo){
+    resultEl.className="test-result fail";
+    resultEl.textContent="No hay credenciales guardadas para "+portal+". Guarda primero.";
+    return;
+  }
+  // Simulate API test (real API calls require backend/Edge Function)
+  await new Promise(r=>setTimeout(r,1500));
+  const msgs={
+    metrocuadrado:"Credenciales guardadas. La validacion en vivo requiere activar la Edge Function de Metrocuadrado.",
+    fincaraiz:"Credenciales guardadas. La validacion en vivo requiere activar la Edge Function de Finca Raiz.",
+    proppit:"Credenciales guardadas. La validacion en vivo requiere activar la Edge Function de Proppit.",
+    marketplace:"Credenciales guardadas. La validacion en vivo requiere activar la Edge Function de Facebook.",
+    instagram:"Credenciales guardadas. La validacion en vivo requiere activar la Edge Function de Instagram."
+  };
+  resultEl.className="test-result ok";
+  resultEl.textContent=msgs[portal]||"Credenciales guardadas correctamente.";
+}
+</script>
+</body>
+</html>
