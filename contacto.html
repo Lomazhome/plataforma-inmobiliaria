@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contacto | Agente Inmobiliario Bogotá | LoMaz Home</title>
+<meta name="description" content="Contacta a LoMaz Home, tu inmobiliaria boutique en Bogotá. Asesoría gratuita para arrendar, comprar o vender propiedades en Bogotá, Colombia."/>
+<meta property="og:title" content="Contacto | LoMaz Home Bogotá"/>
+<meta property="og:description" content="Habla con nuestros asesores inmobiliarios en Bogotá. Atención personalizada."/>
+<meta property="og:image" content="https://plataforma-inmobiliaria-two.vercel.app/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="canonical" href="https://www.lomazhome.com/contacto.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#0D1B2E;--gold:#C4992A;--cream:#F4E5C2;--white:#fff;--text:#1a1a1a;--muted:#6b7280;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:"Inter",sans-serif;background:var(--white);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}img{max-width:100%;display:block;}
+nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:"Playfair Display",serif;font-size:1.4rem;color:var(--white);letter-spacing:.02em;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center;}
+.nav-links a{color:rgba(255,255,255,.85);font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .25s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-cta{background:transparent;border:1px solid var(--gold);color:var(--cream);padding:.5rem 1.2rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .25s;}
+.nav-cta:hover{background:var(--gold);color:var(--navy);}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.5rem;}
+.nav-ham span{display:block;width:22px;height:2px;background:var(--white);}
+.contact-hero{background:var(--navy);padding:7rem 2rem 4rem;text-align:center;}
+.contact-hero .eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.contact-hero h1{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);line-height:1.15;margin-bottom:1rem;}
+.contact-hero h1 em{color:var(--gold);font-style:italic;}
+.contact-hero p{font-size:1rem;color:rgba(255,255,255,.65);max-width:500px;margin:0 auto;line-height:1.7;}
+.gold-div{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.contact-section{max-width:1200px;margin:5rem auto;padding:0 2rem 5rem;display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;}
+.contact-info{}
+.section-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.section-title{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,3vw,2rem);color:var(--navy);margin-bottom:1.5rem;}
+.info-items{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:2.5rem;}
+.info-item{display:flex;gap:1rem;align-items:flex-start;}
+.info-icon{width:44px;height:44px;background:var(--navy);border:1px solid rgba(196,153,42,.3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.info-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
+.info-value{font-size:.9rem;color:var(--navy);font-weight:500;}
+.info-value a{color:var(--navy);transition:color .2s;}
+.info-value a:hover{color:var(--gold);}
+.wa-big{display:flex;align-items:center;gap:1rem;background:#25D366;color:#fff;padding:1rem 1.5rem;transition:all .25s;margin-bottom:2rem;}
+.wa-big:hover{background:#1fa855;}
+.wa-big .wa-icon{font-size:1.5rem;}
+.wa-big .wa-text{display:flex;flex-direction:column;}
+.wa-big .wa-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8;}
+.wa-big .wa-num{font-size:1rem;font-weight:700;}
+.horario-box{border:1px solid rgba(196,153,42,.2);padding:1.5rem;background:#faf8f3;}
+.horario-title{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.horario-row{display:flex;justify-content:space-between;font-size:.82rem;padding:.3rem 0;border-bottom:1px solid rgba(196,153,42,.1);}
+.horario-row:last-child{border:none;}
+.horario-days{color:var(--navy);font-weight:500;}
+.horario-time{color:var(--muted);}
+.contact-form-wrap{}
+.form-title{font-family:"Playfair Display",serif;font-size:1.5rem;color:var(--navy);margin-bottom:.5rem;}
+.form-sub{font-size:.85rem;color:var(--muted);margin-bottom:2rem;line-height:1.6;}
+.cf{display:flex;flex-direction:column;gap:1.2rem;}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.cf-field{display:flex;flex-direction:column;gap:.4rem;}
+.cf-label{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);}
+.cf-input,.cf-select,.cf-textarea{border:1px solid rgba(196,153,42,.35);padding:.8rem 1rem;font-size:.88rem;font-family:"Inter",sans-serif;color:var(--navy);outline:none;background:var(--white);transition:border-color .2s;}
+.cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:var(--navy);}
+.cf-textarea{resize:vertical;min-height:120px;}
+.cf-submit{background:var(--navy);border:1px solid var(--navy);color:var(--cream);padding:1rem 2rem;font-size:.8rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s;width:100%;}
+.cf-submit:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+.cf-success{display:none;background:#f0fdf4;border:1px solid #86efac;padding:1.2rem;text-align:center;color:#166534;font-size:.88rem;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.aria-fab{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;background:var(--navy);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;box-shadow:0 4px 20px rgba(13,27,46,.35);transition:all .25s;}
+.aria-fab:hover{background:var(--gold);transform:scale(1.08);}
+.aria-fab span{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--cream);}
+.aria-fab:hover span{color:var(--navy);}
+.aria-panel{position:fixed;right:-430px;top:0;width:420px;height:100vh;background:var(--white);z-index:1000;display:flex;flex-direction:column;transition:right .4s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 30px rgba(13,27,46,.2);}
+.aria-panel.open{right:0;}
+.aria-header{background:var(--navy);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-shrink:0;}
+.aria-avatar{width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:1rem;flex-shrink:0;}
+.aria-info{flex:1;}.aria-name{color:var(--white);font-weight:600;font-size:.9rem;}.aria-sub{color:rgba(255,255,255,.5);font-size:.7rem;}
+.aria-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:1.3rem;cursor:pointer;padding:.2rem;line-height:1;}.aria-close:hover{color:var(--white);}
+.aria-messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.aria-msg{max-width:85%;padding:.8rem 1rem;font-size:.85rem;line-height:1.5;}
+.aria-msg.bot{background:var(--cream);border:1px solid rgba(196,153,42,.3);align-self:flex-start;color:var(--navy);}
+.aria-msg.user{background:var(--navy);color:var(--cream);align-self:flex-end;}
+.aria-msg.typing{background:var(--cream);border:1px solid rgba(196,153,42,.3);align-self:flex-start;}
+.typing-dots span{display:inline-block;width:6px;height:6px;background:var(--gold);border-radius:50%;margin:0 2px;animation:bounce .8s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.15s}.typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.aria-wa-btn{display:inline-flex;align-items:center;gap:.5rem;background:#25D366;color:#fff;padding:.5rem 1rem;font-size:.78rem;font-weight:600;border-radius:2px;margin-top:.5rem;text-decoration:none;}
+.aria-quick{padding:.8rem 1.5rem;display:flex;flex-wrap:wrap;gap:.5rem;border-top:1px solid rgba(196,153,42,.15);flex-shrink:0;}
+.quick-btn{font-size:.72rem;padding:.4rem .8rem;border:1px solid rgba(196,153,42,.4);background:transparent;color:var(--navy);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.quick-btn:hover{background:var(--navy);color:var(--cream);border-color:var(--navy);}
+.aria-input-row{padding:1rem 1.5rem;border-top:1px solid rgba(196,153,42,.2);display:flex;gap:.6rem;flex-shrink:0;}
+.aria-input{flex:1;border:1px solid var(--gold);padding:.7rem 1rem;font-size:.85rem;font-family:"Inter",sans-serif;outline:none;color:var(--navy);}
+.aria-input:focus{border-color:var(--navy);}
+.aria-send{background:var(--gold);border:none;color:var(--navy);width:40px;height:40px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0;}
+.aria-send:hover{background:var(--navy);color:var(--cream);}
+.aria-overlay{position:fixed;inset:0;background:rgba(13,27,46,.4);z-index:999;display:none;}
+.aria-overlay.open{display:block;}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:4rem 2rem 2rem;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand .brand-name{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--white);margin-bottom:.3rem;}.footer-brand .brand-name span{color:var(--gold);}
+.footer-tagline{font-size:.75rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;}
+.footer-desc{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.55);margin-bottom:1.5rem;}
+.footer-social{display:flex;gap:.8rem;}
+.social-link{width:34px;height:34px;border:1px solid rgba(196,153,42,.3);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:rgba(255,255,255,.6);transition:all .25s;}
+.social-link:hover{border-color:var(--gold);color:var(--gold);}
+.footer-col h4{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+.footer-col ul{list-style:none;}.footer-col ul li{margin-bottom:.7rem;}
+.footer-col ul li a{color:rgba(255,255,255,.55);font-size:.82rem;transition:color .2s;}.footer-col ul li a:hover{color:var(--cream);}
+.footer-bottom{border-top:1px solid rgba(196,153,42,.2);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-copy{font-size:.75rem;color:rgba(255,255,255,.35);}.footer-city{font-family:"Playfair Display",serif;font-size:.85rem;color:rgba(255,255,255,.3);letter-spacing:.05em;}
+.footer-admin-link{font-size:.72rem;color:rgba(255,255,255,.4);text-decoration:none;}.footer-admin-link:hover{color:rgba(255,255,255,.7);}
+@media(max-width:900px){.nav-links{display:none;}.nav-ham{display:flex;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--navy);padding:5rem 2rem 2rem;z-index:300;}.contact-section{grid-template-columns:1fr;gap:3rem;}.cf-row{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}}
+@media(max-width:600px){.footer-grid{grid-template-columns:1fr;}.aria-panel{width:100%;right:-100%;}.aria-panel.open{right:0;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="propiedades.html">Propiedades</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="sobre-nosotros.html">Nosotros</a></li>
+    <li><a href="contacto.html" class="active">Contacto</a></li>
+    <li><a href="contacto.html" class="nav-cta">Asesoría</a></li>
+  </ul>
+  <div class="nav-ham" onclick="document.getElementById('nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<section class="contact-hero">
+  <p class="eyebrow">Contacto</p>
+  <h1>Hablemos sobre<br><em>tu propiedad ideal</em></h1>
+  <p>Nuestros asesores están disponibles para acompañarte desde el primer mensaje hasta la firma del contrato. Sin compromisos.</p>
+</section>
+<div class="gold-div"></div>
+<section class="contact-section reveal">
+  <div class="contact-info">
+    <p class="section-eyebrow">N&deg;01 &mdash; Infórmanos</p>
+    <h2 class="section-title">Cómo contactarnos</h2>
+    <div class="info-items">
+      <div class="info-item"><div class="info-icon" style="color:var(--gold)">&#128222;</div><div><p class="info-label">Teléfono / WhatsApp</p><p class="info-value"><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></p></div></div>
+      <div class="info-item"><div class="info-icon" style="color:var(--gold)">&#9993;</div><div><p class="info-label">Correo electrónico</p><p class="info-value"><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></p></div></div>
+      <div class="info-item"><div class="info-icon" style="color:var(--gold)">&#9679;</div><div><p class="info-label">Ciudad</p><p class="info-value">Bogotá, Colombia</p></div></div>
+    </div>
+    <a href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20me%20interesa%20una%20propiedad" target="_blank" rel="noopener" class="wa-big">
+      <span class="wa-icon">&#128172;</span>
+      <span class="wa-text"><span class="wa-label">Chat directo</span><span class="wa-num">Escribir por WhatsApp</span></span>
+    </a>
+    <div class="horario-box">
+      <p class="horario-title">Horario de atención</p>
+      <div class="horario-row"><span class="horario-days">Lunes &mdash; Viernes</span><span class="horario-time">8:00 am &mdash; 6:00 pm</span></div>
+      <div class="horario-row"><span class="horario-days">Sábados</span><span class="horario-time">9:00 am &mdash; 2:00 pm</span></div>
+      <div class="horario-row"><span class="horario-days">Domingos</span><span class="horario-time">Previa cita</span></div>
+    </div>
+  </div>
+  <div class="contact-form-wrap">
+    <h3 class="form-title">Envíanos un mensaje</h3>
+    <p class="form-sub">Cuéntanos qué buscas y uno de nuestros asesores te contactará en menos de 24 horas.</p>
+    <form class="cf" id="contact-form" onsubmit="handleForm(event)">
+      <div class="cf-row">
+        <div class="cf-field"><label class="cf-label">Nombre</label><input type="text" class="cf-input" name="nombre" placeholder="Tu nombre completo" required/></div>
+        <div class="cf-field"><label class="cf-label">Teléfono</label><input type="tel" class="cf-input" name="telefono" placeholder="+57 300 000 0000"/></div>
+      </div>
+      <div class="cf-field"><label class="cf-label">Correo electrónico</label><input type="email" class="cf-input" name="email" placeholder="tu@correo.com" required/></div>
+      <div class="cf-field"><label class="cf-label">Tipo de consulta</label>
+        <select class="cf-select" name="tipo_consulta" required>
+          <option value="">Selecciona una opción...</option>
+          <option value="arriendo">Quiero arrendar una propiedad</option>
+          <option value="compra">Quiero comprar una propiedad</option>
+          <option value="venta">Quiero vender mi propiedad</option>
+          <option value="inversion">Asesoría de inversión</option>
+          <option value="otro">Otra consulta</option>
+        </select>
+      </div>
+      <div class="cf-row">
+        <div class="cf-field"><label class="cf-label">Presupuesto aprox.</label>
+          <select class="cf-select" name="presupuesto">
+            <option value="">Sin especificar</option>
+            <option value="menos1M">Menos de $1.000.000</option>
+            <option value="1M-2M">$1.000.000 &mdash; $2.000.000</option>
+            <option value="2M-5M">$2.000.000 &mdash; $5.000.000</option>
+            <option value="5M-10M">$5.000.000 &mdash; $10.000.000</option>
+            <option value="mas10M">Más de $10.000.000</option>
+          </select>
+        </div>
+        <div class="cf-field"><label class="cf-label">Zona de interés</label>
+          <select class="cf-select" name="zona">
+            <option value="">Cualquier zona</option>
+            <option value="chapinero">Chapinero</option>
+            <option value="usaquen">Usaquén</option>
+            <option value="chico">Chicó</option>
+            <option value="santa-barbara">Santa Bárbara</option>
+            <option value="cedritos">Cedritos</option>
+            <option value="salitre">Salitre</option>
+            <option value="rosales">Rosales</option>
+            <option value="otra">Otra zona</option>
+          </select>
+        </div>
+      </div>
+      <div class="cf-field"><label class="cf-label">Mensaje</label><textarea class="cf-textarea" name="mensaje" placeholder="Cuéntanos más sobre lo que buscas…"></textarea></div>
+      <button type="submit" class="cf-submit">Enviar mensaje &rarr;</button>
+      <div class="cf-success" id="cf-success">&#10003; Mensaje enviado. Te contactaremos pronto.</div>
+    </form>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="brand-name">LoMaz <span>Home</span></div><p class="footer-tagline">Inmobiliaria boutique</p><p class="footer-desc">Conectamos personas con propiedades excepcionales en Bogotá. Asesoría personalizada, transparencia total y resultados reales.</p><div class="footer-social"><a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">&#128222;</a><a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email">&#9993;</a><a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a></div></div>
+      <div class="footer-col"><h4>Propiedades</h4><ul><li><a href="propiedades.html?tipo=arriendo">Arriendo</a></li><li><a href="propiedades.html?tipo=venta">Venta</a></li><li><a href="propiedades.html?barrio=Chapinero">Chapinero</a></li><li><a href="propiedades.html?barrio=Usaquén">Usaquén</a></li></ul></div>
+      <div class="footer-col"><h4>LoMaz Home</h4><ul><li><a href="sobre-nosotros.html">Sobre nosotros</a></li><li><a href="blog.html">Blog</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="contacto.html">Bogotá, Colombia</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</span><span class="footer-city">Bogotá &middot; Desde 2024</span><a href="/admin/login.html" class="footer-admin-link">Acceso asesores</a></div>
+  </div>
+</footer>
+<div class="aria-overlay" id="aria-overlay" onclick="closeAria()"></div>
+<div class="aria-panel" id="aria-panel">
+  <div class="aria-header"><div class="aria-avatar">A</div><div class="aria-info"><div class="aria-name">ARIA</div><div class="aria-sub">Asesora virtual LoMaz Home</div></div><button class="aria-close" onclick="closeAria()">&times;</button></div>
+  <div class="aria-messages" id="aria-messages"></div>
+  <div class="aria-quick"><button class="quick-btn" onclick="sendQuick('Quiero arrendar')">Quiero arrendar</button><button class="quick-btn" onclick="sendQuick('Quiero comprar')">Quiero comprar</button><button class="quick-btn" onclick="sendQuick('Habla con un asesor')">Habla con asesor</button><button class="quick-btn" onclick="sendQuick('Ver propiedades disponibles')">Ver propiedades</button></div>
+  <div class="aria-input-row"><input type="text" class="aria-input" id="aria-input" placeholder="Pregúntame por una propiedad…" onkeydown="if(event.key==='Enter')sendMsg()"/><button class="aria-send" onclick="sendMsg()">&#8594;</button></div>
+</div>
+<button class="aria-fab" onclick="openAria()" aria-label="Abrir chat ARIA"><span>A</span></button>
+<script>
+const _sUrl="https://lniouebpuuuqctrgxoiw.supabase.co";
+const _sKey=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=supabase.createClient(_sUrl,_sKey);
+async function handleForm(e){
+  e.preventDefault();
+  const fd=new FormData(e.target);
+  const data={
+    nombre:fd.get("nombre"),
+    telefono:fd.get("telefono")||null,
+    email:fd.get("email"),
+    tipo_consulta:fd.get("tipo_consulta"),
+    presupuesto:fd.get("presupuesto")||null,
+    zona:fd.get("zona")||null,
+    mensaje:fd.get("mensaje")||null,
+    origen:"contacto_web"
+  };
+  const btn=e.target.querySelector(".cf-submit");
+  btn.textContent="Enviando...";btn.disabled=true;
+  try{
+    await sb.from("clientes").insert([{
+      nombre_completo:data.nombre,
+      telefono:data.telefono,
+      email:data.email,
+      notas:(data.tipo_consulta||"")+" | "+(data.presupuesto||"")+" | zona:"+(data.zona||"")+" | "+(data.mensaje||""),
+      origen:"contacto_web"
+    }]);
+  }catch(err){}
+  e.target.reset();
+  btn.textContent="Enviar mensaje →";btn.disabled=false;
+  document.getElementById("cf-success").style.display="block";
+  setTimeout(()=>{document.getElementById("cf-success").style.display="none";},5000);
+}
+const ARIA_KEY="lomaz_aria_ct";
+let ariaHistory=JSON.parse(localStorage.getItem(ARIA_KEY)||"[]");
+function openAria(){document.getElementById("aria-panel").classList.add("open");document.getElementById("aria-overlay").classList.add("open");if(ariaHistory.length===0)addBotMsg("&#161;Hola! Soy ARIA. &#191;Puedo ayudarte a encontrar una propiedad en Bogotá?");else renderHistory();setTimeout(()=>document.getElementById("aria-input").focus(),300);}
+function closeAria(){document.getElementById("aria-panel").classList.remove("open");document.getElementById("aria-overlay").classList.remove("open");}
+function renderHistory(){const msgs=document.getElementById("aria-messages");msgs.innerHTML="";ariaHistory.forEach(m=>addMsgEl(m.role,m.content));msgs.scrollTop=msgs.scrollHeight;}
+function addBotMsg(txt){ariaHistory.push({role:"bot",content:txt});localStorage.setItem(ARIA_KEY,JSON.stringify(ariaHistory));addMsgEl("bot",txt);}
+function addMsgEl(role,content){const msgs=document.getElementById("aria-messages");const div=document.createElement("div");div.className="aria-msg "+role;div.innerHTML=content;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function sendQuick(txt){document.getElementById("aria-input").value=txt;sendMsg();}
+function sendMsg(){const input=document.getElementById("aria-input");const txt=input.value.trim();if(!txt)return;input.value="";ariaHistory.push({role:"user",content:txt});localStorage.setItem(ARIA_KEY,JSON.stringify(ariaHistory));addMsgEl("user",txt);showTyping();setTimeout(()=>processAria(txt),900);}
+function showTyping(){const msgs=document.getElementById("aria-messages");const div=document.createElement("div");div.className="aria-msg typing";div.id="typing-ind";div.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function removeTyping(){const t=document.getElementById("typing-ind");if(t)t.remove();}
+function processAria(txt){removeTyping();const t=txt.toLowerCase();if(t.includes("asesor")||t.includes("humano")){addBotMsg("Puedes contactarnos directamente aquí mismo en el formulario, o:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'>&#128222; WhatsApp</a>");return;}if(t.includes("arrendar")||t.includes("arriendo")){addBotMsg("Perfecto. Ver propiedades en arriendo: <a href='propiedades.html?tipo=arriendo' style='color:var(--gold)'>Catálogo arriendo</a>. O usa el formulario para que un asesor te contacte.");return;}if(t.includes("comprar")||t.includes("venta")){addBotMsg("Excelente. Ver propiedades en venta: <a href='propiedades.html?tipo=venta' style='color:var(--gold)'>Catálogo venta</a>.");return;}addBotMsg("¿Qué tipo de propiedad buscas y en qué zona de Bogotá?");}
+const revObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("visible"),i*80);revObs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll(".reveal").forEach(el=>revObs.observe(el));
+const sc=document.createElement("script");sc.type="application/ld+json";sc.text=JSON.stringify({"@context":"https://schema.org","@type":"ContactPage","name":"Contacto LoMaz Home","url":"https://www.lomazhome.com/contacto.html","description":"Página de contacto de LoMaz Home, inmobiliaria boutique en Bogotá","mainEntity":{"@type":"RealEstateAgent","name":"LoMaz Home","telephone":"+573003300343","email":"lomazhome@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}}});document.head.appendChild(sc);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>
