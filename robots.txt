@@ -1,30 +1,33 @@
-# Lomaz Home - robots.txt
-# Generated: 2026-05-08
+# robots.txt - LoMaz Home
+# https://www.lomazhome.com
 
-# Allow all search engine crawlers
+# Allow all public pages
 User-agent: *
 Allow: /
 
-# Block private/admin pages from indexing
-Disallow: /dashboard.html
+# Block admin / private CRM area
+Disallow: /admin/
+Disallow: /admin.html
+Disallow: /admin-usuarios.html
 Disallow: /agregar-propiedad.html
-Disallow: /mis-propiedades.html
+Disallow: /ajustes-portales.html
 Disallow: /clientes.html
+Disallow: /comparador.html
+Disallow: /config.js
+Disallow: /dashboard.html
+Disallow: /favoritos.html
 Disallow: /leads.html
-Disallow: /pipeline.html
+Disallow: /login.html
+Disallow: /mis-propiedades.html
+Disallow: /notificaciones.html
 Disallow: /perfil-asesor.html
+Disallow: /pipeline.html
+Disallow: /portales.html
+Disallow: /propiedad.html
+Disallow: /schema-fix.sql
 
-# Allow public pages
-Allow: /index.html
-Allow: /propiedades.html
-Allow: /propiedad.html
-Allow: /blog.html
-Allow: /calculadora.html
-Allow: /comparador.html
-Allow: /favoritos.html
+# Crawl-delay for politeness
+Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://plataforma-inmobiliaria-two.vercel.app/sitemap.xml
-
-# Crawl delay (be nice to server)
-Crawl-delay: 1
+Sitemap: https://www.lomazhome.com/sitemap.xml
