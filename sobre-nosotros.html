@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sobre Nosotros | Inmobiliaria LoMaz Home Bogotá</title>
+<meta name="description" content="Somos LoMaz Home, inmobiliaria boutique en Bogotá. Asesoría personalizada en arriendo y venta de propiedades. Conoce nuestro equipo y nuestra historia."/>
+<meta property="og:title" content="Sobre LoMaz Home | Inmobiliaria en Bogotá"/>
+<meta property="og:description" content="Inmobiliaria boutique en Bogotá especializada en propiedades de calidad. Nuestro equipo y valores."/>
+<meta property="og:image" content="https://plataforma-inmobiliaria-two.vercel.app/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="canonical" href="https://www.lomazhome.com/sobre-nosotros.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#0D1B2E;--gold:#C4992A;--cream:#F4E5C2;--white:#fff;--text:#1a1a1a;--muted:#6b7280;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:"Inter",sans-serif;background:var(--white);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}img{max-width:100%;display:block;}
+nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:"Playfair Display",serif;font-size:1.4rem;color:var(--white);letter-spacing:.02em;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center;}
+.nav-links a{color:rgba(255,255,255,.85);font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .25s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-cta{background:transparent;border:1px solid var(--gold);color:var(--cream);padding:.5rem 1.2rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .25s;}
+.nav-cta:hover{background:var(--gold);color:var(--navy);}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.5rem;}
+.nav-ham span{display:block;width:22px;height:2px;background:var(--white);}
+.hero{background:var(--navy);padding:7rem 2rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;align-items:center;}
+.hero-text .eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+.hero-text h1{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);line-height:1.15;margin-bottom:1.5rem;}
+.hero-text h1 em{color:var(--gold);font-style:italic;}
+.hero-text p{font-size:1rem;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:2rem;}
+.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);border:1px solid var(--gold);padding:.75rem 1.5rem;transition:all .25s;}
+.hero-cta:hover{background:var(--gold);color:var(--navy);}
+.hero-img{position:relative;}
+.hero-img img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:brightness(.9);}
+.hero-img::after{content:"";position:absolute;inset:0;border:1px solid rgba(196,153,42,.3);}
+.hero-img .hero-stat{position:absolute;bottom:-2rem;left:-2rem;background:var(--gold);padding:1.5rem;text-align:center;}
+.hero-stat .stat-num{font-family:"Playfair Display",serif;font-size:2rem;color:var(--navy);font-weight:700;display:block;}
+.hero-stat .stat-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);}
+.gold-div{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.section{max-width:1200px;margin:5rem auto;padding:0 2rem;}
+.section-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.section-title{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--navy);margin-bottom:1.5rem;}
+.section-body{font-size:.95rem;line-height:1.85;color:#444;max-width:700px;}
+.section-body p{margin-bottom:1.2rem;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.two-col.reverse{direction:rtl;}.two-col.reverse>*{direction:ltr;}
+.col-img{position:relative;}
+.col-img img{width:100%;aspect-ratio:3/4;object-fit:cover;}
+.col-img::before{content:"";position:absolute;top:1.5rem;left:1.5rem;right:-1.5rem;bottom:-1.5rem;border:1px solid rgba(196,153,42,.2);z-index:-1;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem;}
+.value-card{padding:2rem;border:1px solid rgba(196,153,42,.15);transition:box-shadow .3s;}
+.value-card:hover{box-shadow:0 10px 30px rgba(13,27,46,.08);}
+.value-icon{font-size:1.8rem;margin-bottom:1rem;}
+.value-title{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem;}
+.value-text{font-size:.83rem;color:var(--muted);line-height:1.6;}
+.stats-band{background:var(--navy);padding:4rem 2rem;}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;}
+.stat-item .num{font-family:"Playfair Display",serif;font-size:2.5rem;color:var(--gold);font-weight:700;display:block;}
+.stat-item .lbl{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:.3rem;}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem;}
+.team-card{text-align:center;}
+.team-photo{width:100%;aspect-ratio:3/4;object-fit:cover;margin-bottom:1.5rem;filter:grayscale(20%);}
+.team-name{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--navy);margin-bottom:.3rem;}
+.team-role{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.team-bio{font-size:.82rem;color:var(--muted);line-height:1.6;}
+.cta-section{background:#f5f0e8;padding:5rem 2rem;text-align:center;}
+.cta-inner{max-width:600px;margin:0 auto;}
+.cta-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;}
+.cta-title{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--navy);margin-bottom:1rem;}
+.cta-sub{font-size:.9rem;color:var(--muted);margin-bottom:2rem;line-height:1.7;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--navy);border:1px solid var(--navy);color:var(--cream);padding:.8rem 2rem;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .25s;}
+.btn-primary:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+.btn-outline{background:transparent;border:1px solid var(--navy);color:var(--navy);padding:.8rem 2rem;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .25s;}
+.btn-outline:hover{background:var(--navy);color:var(--cream);}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.aria-fab{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;background:var(--navy);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;box-shadow:0 4px 20px rgba(13,27,46,.35);transition:all .25s;}
+.aria-fab:hover{background:var(--gold);transform:scale(1.08);}
+.aria-fab span{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--cream);}
+.aria-fab:hover span{color:var(--navy);}
+.aria-panel{position:fixed;right:-430px;top:0;width:420px;height:100vh;background:var(--white);z-index:1000;display:flex;flex-direction:column;transition:right .4s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 30px rgba(13,27,46,.2);}
+.aria-panel.open{right:0;}
+.aria-header{background:var(--navy);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-shrink:0;}
+.aria-avatar{width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:1rem;flex-shrink:0;}
+.aria-info{flex:1;}
+.aria-name{color:var(--white);font-weight:600;font-size:.9rem;}
+.aria-sub{color:rgba(255,255,255,.5);font-size:.7rem;}
+.aria-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:1.3rem;cursor:pointer;padding:.2rem;line-height:1;transition:color .2s;}
+.aria-close:hover{color:var(--white);}
+.aria-messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.aria-msg{max-width:85%;padding:.8rem 1rem;font-size:.85rem;line-height:1.5;}
+.aria-msg.bot{background:var(--cream);border:1px solid rgba(196,153,42,.3);align-self:flex-start;color:var(--navy);}
+.aria-msg.user{background:var(--navy);color:var(--cream);align-self:flex-end;}
+.aria-msg.typing{background:var(--cream);border:1px solid rgba(196,153,42,.3);align-self:flex-start;}
+.typing-dots span{display:inline-block;width:6px;height:6px;background:var(--gold);border-radius:50%;margin:0 2px;animation:bounce .8s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.15s}.typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.aria-wa-btn{display:inline-flex;align-items:center;gap:.5rem;background:#25D366;color:#fff;padding:.5rem 1rem;font-size:.78rem;font-weight:600;border-radius:2px;margin-top:.5rem;text-decoration:none;}
+.aria-quick{padding:.8rem 1.5rem;display:flex;flex-wrap:wrap;gap:.5rem;border-top:1px solid rgba(196,153,42,.15);flex-shrink:0;}
+.quick-btn{font-size:.72rem;padding:.4rem .8rem;border:1px solid rgba(196,153,42,.4);background:transparent;color:var(--navy);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.quick-btn:hover{background:var(--navy);color:var(--cream);border-color:var(--navy);}
+.aria-input-row{padding:1rem 1.5rem;border-top:1px solid rgba(196,153,42,.2);display:flex;gap:.6rem;flex-shrink:0;}
+.aria-input{flex:1;border:1px solid var(--gold);padding:.7rem 1rem;font-size:.85rem;font-family:"Inter",sans-serif;outline:none;color:var(--navy);}
+.aria-input:focus{border-color:var(--navy);}
+.aria-send{background:var(--gold);border:none;color:var(--navy);width:40px;height:40px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0;}
+.aria-send:hover{background:var(--navy);color:var(--cream);}
+.aria-overlay{position:fixed;inset:0;background:rgba(13,27,46,.4);z-index:999;display:none;}
+.aria-overlay.open{display:block;}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:4rem 2rem 2rem;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand .brand-name{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--white);margin-bottom:.3rem;}
+.footer-brand .brand-name span{color:var(--gold);}
+.footer-tagline{font-size:.75rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;}
+.footer-desc{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.55);margin-bottom:1.5rem;}
+.footer-social{display:flex;gap:.8rem;}
+.social-link{width:34px;height:34px;border:1px solid rgba(196,153,42,.3);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:rgba(255,255,255,.6);transition:all .25s;}
+.social-link:hover{border-color:var(--gold);color:var(--gold);}
+.footer-col h4{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:.7rem;}
+.footer-col ul li a{color:rgba(255,255,255,.55);font-size:.82rem;transition:color .2s;}
+.footer-col ul li a:hover{color:var(--cream);}
+.footer-bottom{border-top:1px solid rgba(196,153,42,.2);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-copy{font-size:.75rem;color:rgba(255,255,255,.35);}
+.footer-city{font-family:"Playfair Display",serif;font-size:.85rem;color:rgba(255,255,255,.3);letter-spacing:.05em;}
+.footer-admin-link{font-size:.72rem;color:rgba(255,255,255,.4);text-decoration:none;}
+.footer-admin-link:hover{color:rgba(255,255,255,.7);}
+@media(max-width:900px){.nav-links{display:none;}.nav-ham{display:flex;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--navy);padding:5rem 2rem 2rem;z-index:300;}.hero{grid-template-columns:1fr;padding-top:6rem;}.two-col,.two-col.reverse{grid-template-columns:1fr;direction:ltr;gap:2.5rem;}.values-grid{grid-template-columns:1fr 1fr;}.team-grid{grid-template-columns:1fr 1fr;}.stats-inner{grid-template-columns:repeat(2,1fr);}.footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}}
+@media(max-width:600px){.values-grid{grid-template-columns:1fr;}.team-grid{grid-template-columns:1fr;}.stats-inner{grid-template-columns:1fr 1fr;}.aria-panel{width:100%;right:-100%;}.aria-panel.open{right:0;}.footer-grid{grid-template-columns:1fr;}.cta-btns{flex-direction:column;}.hero-img{display:none;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="propiedades.html">Propiedades</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="sobre-nosotros.html" class="active">Nosotros</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+    <li><a href="contacto.html" class="nav-cta">Asesoría</a></li>
+  </ul>
+  <div class="nav-ham" onclick="document.getElementById('nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div style="background:var(--navy);padding-top:70px;">
+<div class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Sobre LoMaz Home</p>
+    <h1>Una inmobiliaria<br>nacida del<br><em>amor por Bogotá</em></h1>
+    <p>Somos una inmobiliaria boutique en Bogotá fundada con una única misión: conectar a las personas con propiedades que verdaderamente les representen. No somos una plataforma genérica. Somos asesores reales con conocimiento profundo de cada barrio, cada zona y cada mercado de la ciudad.</p>
+    <a href="contacto.html" class="hero-cta">Hablar con un asesor &rarr;</a>
+  </div>
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80&auto=format" alt="Equipo LoMaz Home oficina Bogotá"/>
+    <div class="hero-stat"><span class="stat-num">2024</span><span class="stat-label">Fundación</span></div>
+  </div>
+</div>
+</div>
+<div class="gold-div"></div>
+<section class="section reveal">
+  <div class="two-col">
+    <div>
+      <p class="section-eyebrow">N&deg;01 &mdash; Nuestra historia</p>
+      <h2 class="section-title">De la pasión al propósito</h2>
+      <div class="section-body">
+        <p>LoMaz Home nació en Bogotá en 2024 con una visión clara: demostrar que el sector inmobiliario puede operar con la misma elegancia, precisión y cuidado que una revista de arquitectura de lujo. Creíamos que los colombianos merecían una experiencia de búsqueda de propiedad a la altura de su ambición.</p>
+        <p>Comenzamos en el norte de Bogotá, en los barrios de Usaquén, Chicó y Santa Bárbara, donde la demanda de propiedades de calidad choca con la escasez de asesoría verdaderamente personalizada. Hoy operamos en toda la ciudad, con un equipo comprometido con cada cliente.</p>
+        <p>Nuestro nombre refleja nuestra filosofía: buscamos lo mejor de lo mejor &mdash; en propiedades, en servicio y en resultados. Cada transacción es una historia de vida que tomamos muy en serio.</p>
+      </div>
+    </div>
+    <div class="col-img">
+      <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80&auto=format" alt="Propiedad boutique Bogotá LoMaz Home" loading="lazy"/>
+    </div>
+  </div>
+</section>
+<div class="gold-div" style="margin:0 2rem;"></div>
+<section class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item"><span class="num" data-target="120">0</span><span class="lbl">Propiedades gestionadas</span></div>
+    <div class="stat-item"><span class="num" data-target="95">0</span><span class="lbl">Clientes satisfechos</span></div>
+    <div class="stat-item"><span class="num" data-target="8">0</span><span class="lbl">Zonas en Bogotá</span></div>
+    <div class="stat-item"><span class="num" data-target="2">0</span><span class="lbl">Años de experiencia</span></div>
+  </div>
+</section>
+<section class="section reveal">
+  <p class="section-eyebrow">N&deg;02 &mdash; Nuestros valores</p>
+  <h2 class="section-title">Lo que nos define</h2>
+  <div class="values-grid">
+    <div class="value-card"><div class="value-icon">&#10022;</div><h3 class="value-title">Excelencia</h3><p class="value-text">Cada propiedad que gestionamos pasa por un proceso riguroso de verificación, valuación y presentación editorial antes de ser publicada.</p></div>
+    <div class="value-card"><div class="value-icon">&#9681;</div><h3 class="value-title">Transparencia</h3><p class="value-text">Sin letra pequeña, sin sorpresas. Nuestros clientes conocen todos los detalles antes de firmar cualquier documento.</p></div>
+    <div class="value-card"><div class="value-icon">&#10025;</div><h3 class="value-title">Personalización</h3><p class="value-text">No creemos en soluciones genéricas. Cada cliente tiene necesidades únicas y merece un asesor dedicado que las comprenda a fondo.</p></div>
+    <div class="value-card"><div class="value-icon">&#9670;</div><h3 class="value-title">Conocimiento local</h3><p class="value-text">Conocemos Bogotá barrio a barrio. Sabemos dónde vive mejor una familia joven, dónde crece el valor del metro cuadrado, dónde conviene invertir.</p></div>
+    <div class="value-card"><div class="value-icon">&#9671;</div><h3 class="value-title">Agilidad</h3><p class="value-text">El mercado inmobiliario no espera. Respondemos rápido, actuamos con precisión y cerramos oportunidades antes de que desaparezcan.</p></div>
+    <div class="value-card"><div class="value-icon">&#9663;</div><h3 class="value-title">Confianza a largo plazo</h3><p class="value-text">No buscamos hacer una transacción. Buscamos acompañarte en cada etapa de tu vida, desde tu primer arriendo hasta tu última inversión.</p></div>
+  </div>
+</section>
+<div class="gold-div" style="margin:0 2rem;"></div>
+<section class="section reveal">
+  <div class="two-col reverse">
+    <div class="col-img">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80&auto=format" alt="Vista nocturna Bogotá propiedad luxury" loading="lazy"/>
+    </div>
+    <div>
+      <p class="section-eyebrow">N&deg;03 &mdash; Nuestra misión</p>
+      <h2 class="section-title">Cada propiedad cuenta una historia</h2>
+      <div class="section-body">
+        <p>Creemos que la propiedad ideal no es solo cuadrada, luminosa o bien ubicada. Es la que encaja perfectamente con el capítulo de vida que estás viviendo. Por eso preguntamos, escuchamos y buscamos con paciencia.</p>
+        <p>Nuestra misión es ser la inmobiliaria en la que Bogotá confía para las decisiones más importantes: el primer apartamento, la casa familiar, la inversión que generará patrimonio.</p>
+      </div>
+      <blockquote style="border-left:3px solid var(--gold);padding:.8rem 1.5rem;margin-top:1.5rem;background:#f9f5ed;">
+        <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--navy);line-height:1.5;">&ldquo;Una propiedad bien elegida no es un gasto. Es la mejor decisión de tu vida.&rdquo;</p>
+        <footer style="font-size:.72rem;color:var(--gold);margin-top:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Equipo LoMaz Home</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+<section class="cta-section reveal">
+  <div class="cta-inner">
+    <p class="cta-eyebrow">N&deg;04 &mdash; Trabajemos juntos</p>
+    <h2 class="cta-title">Lista para encontrar tu propiedad ideal?</h2>
+    <p class="cta-sub">Nuestros asesores están disponibles para acompañarte desde el primer chat hasta la firma del contrato. Sin compromisos.</p>
+    <div class="cta-btns">
+      <a href="propiedades.html" class="btn-primary">Ver propiedades</a>
+      <a href="contacto.html" class="btn-outline">Contactar un asesor</a>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="brand-name">LoMaz <span>Home</span></div><p class="footer-tagline">Inmobiliaria boutique</p><p class="footer-desc">Conectamos personas con propiedades excepcionales en Bogotá. Asesoría personalizada, transparencia total y resultados reales.</p><div class="footer-social"><a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">&#128222;</a><a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email">&#9993;</a><a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a></div></div>
+      <div class="footer-col"><h4>Propiedades</h4><ul><li><a href="propiedades.html?tipo=arriendo">Arriendo</a></li><li><a href="propiedades.html?tipo=venta">Venta</a></li><li><a href="propiedades.html?barrio=Chapinero">Chapinero</a></li><li><a href="propiedades.html?barrio=Usaquén">Usaquén</a></li></ul></div>
+      <div class="footer-col"><h4>LoMaz Home</h4><ul><li><a href="sobre-nosotros.html">Sobre nosotros</a></li><li><a href="blog.html">Blog</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="contacto.html">Bogotá, Colombia</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</span><span class="footer-city">Bogotá &middot; Desde 2024</span><a href="/admin/login.html" class="footer-admin-link">Acceso asesores</a></div>
+  </div>
+</footer>
+<div class="aria-overlay" id="aria-overlay" onclick="closeAria()"></div>
+<div class="aria-panel" id="aria-panel">
+  <div class="aria-header"><div class="aria-avatar">A</div><div class="aria-info"><div class="aria-name">ARIA</div><div class="aria-sub">Asesora virtual LoMaz Home</div></div><button class="aria-close" onclick="closeAria()">&times;</button></div>
+  <div class="aria-messages" id="aria-messages"></div>
+  <div class="aria-quick"><button class="quick-btn" onclick="sendQuick('Quiero arrendar')">Quiero arrendar</button><button class="quick-btn" onclick="sendQuick('Quiero comprar')">Quiero comprar</button><button class="quick-btn" onclick="sendQuick('Habla con un asesor')">Habla con asesor</button><button class="quick-btn" onclick="sendQuick('Ver propiedades disponibles')">Ver propiedades</button></div>
+  <div class="aria-input-row"><input type="text" class="aria-input" id="aria-input" placeholder="Pregúntame por una propiedad…" onkeydown="if(event.key==='Enter')sendMsg()"/><button class="aria-send" onclick="sendMsg()">&#8594;</button></div>
+</div>
+<button class="aria-fab" onclick="openAria()" aria-label="Abrir chat ARIA"><span>A</span></button>
+<script>
+const ARIA_KEY="lomaz_aria_sn";
+let ariaHistory=JSON.parse(localStorage.getItem(ARIA_KEY)||"[]");
+function openAria(){document.getElementById("aria-panel").classList.add("open");document.getElementById("aria-overlay").classList.add("open");if(ariaHistory.length===0)addBotMsg("&#161;Hola! Soy ARIA. &#191;Puedo ayudarte a encontrar una propiedad en Bogotá?");else renderHistory();setTimeout(()=>document.getElementById("aria-input").focus(),300);}
+function closeAria(){document.getElementById("aria-panel").classList.remove("open");document.getElementById("aria-overlay").classList.remove("open");}
+function renderHistory(){const msgs=document.getElementById("aria-messages");msgs.innerHTML="";ariaHistory.forEach(m=>addMsgEl(m.role,m.content));msgs.scrollTop=msgs.scrollHeight;}
+function addBotMsg(txt){ariaHistory.push({role:"bot",content:txt});localStorage.setItem(ARIA_KEY,JSON.stringify(ariaHistory));addMsgEl("bot",txt);}
+function addMsgEl(role,content){const msgs=document.getElementById("aria-messages");const div=document.createElement("div");div.className="aria-msg "+role;div.innerHTML=content;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function sendQuick(txt){document.getElementById("aria-input").value=txt;sendMsg();}
+function sendMsg(){const input=document.getElementById("aria-input");const txt=input.value.trim();if(!txt)return;input.value="";ariaHistory.push({role:"user",content:txt});localStorage.setItem(ARIA_KEY,JSON.stringify(ariaHistory));addMsgEl("user",txt);showTyping();setTimeout(()=>processAria(txt),900);}
+function showTyping(){const msgs=document.getElementById("aria-messages");const div=document.createElement("div");div.className="aria-msg typing";div.id="typing-ind";div.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function removeTyping(){const t=document.getElementById("typing-ind");if(t)t.remove();}
+function processAria(txt){removeTyping();const t=txt.toLowerCase();if(t.includes("asesor")||t.includes("humano")){addBotMsg("Con gusto:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'>&#128222; Hablar por WhatsApp</a>");return;}if(t.includes("arrendar")||t.includes("arriendo")){addBotMsg("Ver propiedades en arriendo: <a href='propiedades.html?tipo=arriendo' style='color:var(--gold)'>Catálogo arriendo</a>");return;}if(t.includes("comprar")||t.includes("venta")){addBotMsg("Ver propiedades en venta: <a href='propiedades.html?tipo=venta' style='color:var(--gold)'>Catálogo venta</a>");return;}addBotMsg("¿Estás buscando arrendar o comprar en Bogotá? ¿Tienes alguna zona preferida?");}
+const statObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll("[data-target]").forEach(el=>{const target=+el.dataset.target;let count=0;const inc=Math.ceil(target/50);const t=setInterval(()=>{count+=inc;if(count>=target){el.textContent=target+"+";clearInterval(t);}else{el.textContent=count;}},30);});statObs.unobserve(e.target);}});},{threshold:.5});
+document.querySelectorAll(".stats-inner").forEach(el=>statObs.observe(el));
+const revObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("visible"),i*80);revObs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll(".reveal").forEach(el=>revObs.observe(el));
+const sc=document.createElement("script");sc.type="application/ld+json";sc.text=JSON.stringify({"@context":"https://schema.org","@type":"RealEstateAgent","name":"LoMaz Home","url":"https://www.lomazhome.com","logo":"https://www.lomazhome.com/logo.png","description":"Inmobiliaria boutique en Bogotá especializada en propiedades en arriendo y venta","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"},"telephone":"+573003300343","email":"lomazhome@gmail.com","foundingDate":"2024","areaServed":"Bogotá, Colombia"});document.head.appendChild(sc);
+</script>
+</body>
+</html>
