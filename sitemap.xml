@@ -1,54 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app</loc>
-    <lastmod>2026-05-08</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://www.lomazhome.com/</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app/propiedades.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <loc>https://www.lomazhome.com/propiedades.html</loc>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app/blog.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <loc>https://www.lomazhome.com/blog.html</loc>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app/calculadora.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <loc>https://www.lomazhome.com/sobre-nosotros.html</loc>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app/comparador.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <loc>https://www.lomazhome.com/contacto.html</loc>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app/favoritos.html</loc>
-    <lastmod>2026-05-08</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://www.lomazhome.com/calculadora.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
   <url>
-    <loc>https://plataforma-inmobiliaria-two.vercel.app/login.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <loc>https://www.lomazhome.com/blog/como-arrendar-apartamento-bogota.html</loc>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
-
+  <url>
+    <loc>https://www.lomazhome.com/blog/requisitos-comprar-vivienda-colombia.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/credito-hipotecario-colombia.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/gastos-notariales-compraventa-colombia.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/subsidio-mi-casa-ya-2026.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/documentos-para-vender-propiedad.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/metro-cuadrado-bogota-por-barrio.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/mejores-barrios-para-vivir-bogota.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/impuesto-predial-bogota.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/blog/arriendo-seguro-bogota.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/chapinero.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/usaquen.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/chico.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/santa-barbara.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/cedritos.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/salitre.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/rosales.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/zonas/locales-comerciales.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
