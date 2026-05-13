@@ -3,386 +3,533 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Calculadora Inmobiliaria - Lomaz Home</title>
+<title>Suite Calculadoras Inmobiliarias | LoMaz Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
+:root{--navy:#0A192F;--gold:#C5A02E;--gold2:rgba(197,160,46,.15);--cream:#F4E5C2;--muted:#4a6fa5;--border:#1a3050;--card:#061120;--input:#0d2240;--green:#27ae60;--red:#e74c3c;--text:#e8eaf0}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
-.topbar{background:#111;border-bottom:1px solid #222;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.logo{font-size:1.2rem;font-weight:800;color:#c9a484;letter-spacing:2px}
-.hero{background:linear-gradient(135deg,#1a1209,#0a0a0a);padding:3rem 1rem 2rem;text-align:center}
-.hero h1{font-size:2rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
-.hero h1 span{color:#c9a484}
-.hero p{color:#888;font-size:.9rem;max-width:550px;margin:0 auto}
-.tabs{display:flex;background:#111;border-bottom:1px solid #222;overflow-x:auto}
-.tab{padding:1rem 1.5rem;cursor:pointer;font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#888;border-bottom:3px solid transparent;white-space:nowrap;transition:.3s}
-.tab.active{color:#c9a484;border-bottom-color:#c9a484}
-.tab:hover{color:#c9a484}
-.tab-content{display:none;padding:2rem 1rem;max-width:960px;margin:0 auto}
-.tab-content.active{display:block}
-.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
-.card{background:#111;border:1px solid #222;border-radius:12px;padding:1.5rem}
-.card h3{font-size:1rem;font-weight:700;color:#c9a484;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
-.form-group{margin-bottom:1rem}
-label{display:block;font-size:.75rem;color:#aaa;font-weight:600;letter-spacing:.5px;margin-bottom:.4rem}
-input,select{width:100%;background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.9rem;outline:none;transition:.3s}
-input:focus,select:focus{border-color:#c9a484}
-select option{background:#1a1a1a}
-.checkbox-group{display:flex;flex-direction:column;gap:.6rem}
-.chk-item{display:flex;align-items:center;gap:.6rem;font-size:.85rem;cursor:pointer}
-.chk-item input[type=checkbox]{width:16px;height:16px;accent-color:#c9a484;cursor:pointer}
-.btn-calc{background:#c9a484;color:#000;border:none;border-radius:8px;padding:1rem 2rem;font-family:Montserrat,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;width:100%;transition:.3s;margin-top:.5rem}
-.btn-calc:hover{background:#b8956d}
-.result-section{background:#0d0d0d;border:1px solid #333;border-radius:12px;padding:1.5rem;margin-top:1.5rem;display:none}
-.result-section.show{display:block}
-.result-header{text-align:center;margin-bottom:1.5rem}
-.result-header h3{font-size:1.3rem;font-weight:800;color:#c9a484}
-.result-header p{color:#888;font-size:.85rem;margin-top:.3rem}
-.result-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.result-col h4{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #222}
-.cost-item{display:flex;justify-content:space-between;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid #1a1a1a;font-size:.85rem;gap:.5rem}
-.cost-item:last-child{border-bottom:none}
-.cost-label{color:#ccc;flex:1}
-.cost-value{color:#c9a484;font-weight:700;white-space:nowrap}
-.cost-note{font-size:.7rem;color:#666;margin-top:.15rem;line-height:1.4}
-.cost-exento{color:#5dd879!important}
-.cost-na{color:#555!important}
-.total-row{display:flex;justify-content:space-between;padding:1rem;background:rgba(201,164,132,.08);border:1px solid rgba(201,164,132,.3);border-radius:8px;margin-top:1rem;font-weight:800}
-.total-row span:last-child{color:#c9a484;font-size:1.1rem}
-.grand-total{background:rgba(201,164,132,.15);border:2px solid #c9a484;border-radius:8px;padding:1.2rem;text-align:center;margin-top:1.5rem}
-.grand-total h4{color:#888;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem}
-.grand-total .amount{font-size:1.8rem;font-weight:900;color:#c9a484}
-.note-box{background:rgba(255,193,7,.05);border:1px solid rgba(255,193,7,.2);border-radius:8px;padding:1rem;margin-top:1rem;font-size:.8rem;color:#aaa;line-height:1.6}
-.note-box strong{color:#ffc107}
-.alert-rf{background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.3);border-radius:8px;padding:.8rem 1rem;margin-top:.5rem;font-size:.78rem;color:#ff9999;line-height:1.5}
-.separator{border:none;border-top:1px solid #222;margin:1.2rem 0}
-.hipoteca-section{background:rgba(13,110,253,.05);border:1px solid rgba(13,110,253,.2);border-radius:8px;padding:1rem;margin-top:1rem}
-.hipoteca-section h4{color:#6ea8fe;font-size:.85rem;font-weight:700;margin-bottom:.8rem}
-.badge{display:inline-block;font-size:.7rem;padding:.2rem .6rem;border-radius:4px;font-weight:700;margin-left:.5rem}
-.badge.vendedor{background:rgba(220,53,69,.15);color:#ff6b7a}
-.badge.comprador{background:rgba(40,167,69,.15);color:#5dd879}
-.rf-box{background:rgba(220,53,69,.06);border:1px solid rgba(220,53,69,.25);border-radius:8px;padding:1rem;margin:.8rem 0}
-.rf-box h5{color:#ff8888;font-size:.82rem;font-weight:700;margin-bottom:.6rem}
-.rf-table{width:100%;border-collapse:collapse;font-size:.78rem}
-.rf-table th{text-align:left;color:#888;padding:.3rem .5rem;border-bottom:1px solid #333}
-.rf-table td{padding:.35rem .5rem;border-bottom:1px solid #1a1a1a;color:#ccc}
-.rf-table tr:last-child td{border-bottom:none}
-@media(max-width:650px){.calc-grid{grid-template-columns:1fr}.result-cols{grid-template-columns:1fr}}
+body{font-family:Montserrat,sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.topnav{background:rgba(6,17,32,.97);border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.nav-logo{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--cream);text-decoration:none;letter-spacing:2px}
+.nav-logo span{color:var(--gold)}
+.nav-back{border:1px solid var(--border);color:var(--muted);padding:.4rem .9rem;border-radius:5px;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:.3s}
+.nav-back:hover{border-color:var(--gold);color:var(--gold)}
+.layout{display:flex;flex:1;min-height:calc(100vh - 56px)}
+.sidebar{width:260px;background:var(--card);border-right:1px solid var(--border);padding:1.5rem 0;flex-shrink:0}
+.sidebar-title{font-size:.63rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:.5rem 1.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:.5rem}
+.sb-item{display:flex;align-items:flex-start;gap:.8rem;padding:.75rem 1.5rem;cursor:pointer;border-left:3px solid transparent;transition:.2s;text-decoration:none}
+.sb-item:hover,.sb-item.active{background:var(--gold2);border-left-color:var(--gold)}
+.sb-num{font-size:.63rem;color:var(--gold);font-weight:700;margin-top:.1rem;flex-shrink:0}
+.sb-text strong{display:block;font-size:.78rem;color:var(--cream);font-weight:600}
+.sb-text small{font-size:.63rem;color:var(--muted)}
+.main-content{flex:1;padding:2rem;overflow-y:auto}
+.module{display:none}.module.active{display:block}
+.mod-header{margin-bottom:2rem}
+.mod-header h1{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--cream);margin-bottom:.4rem}
+.mod-header p{color:var(--muted);font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem}
+.card-title{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+input,select{background:var(--input);border:1px solid var(--border);border-radius:6px;padding:.65rem .9rem;color:var(--text);font-family:Montserrat,sans-serif;font-size:.88rem;outline:none;width:100%;transition:.3s}
+input:focus,select:focus{border-color:var(--gold)}
+select option{background:var(--input)}
+.toggle-grp{display:flex;align-items:center;gap:.8rem;background:var(--input);border:1px solid var(--border);border-radius:6px;padding:.65rem .9rem}
+.toggle-grp label{font-size:.82rem;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;margin:0}
+.toggle-grp input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;flex-shrink:0}
+.btn-calc{background:var(--gold);color:#000;border:none;padding:.85rem 2rem;border-radius:6px;font-family:Montserrat,sans-serif;font-weight:700;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.3s;margin-top:.5rem}
+.btn-calc:hover{background:#a8881e}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.rg.c3{grid-template-columns:1fr 1fr 1fr}
+.rg.c4{grid-template-columns:1fr 1fr 1fr 1fr}
+.rc{background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem}
+.rc.hi{border-color:var(--gold);background:rgba(197,160,46,.08)}
+.rc.dng{border-color:var(--red);background:rgba(231,76,60,.08)}
+.rc.ok{border-color:var(--green);background:rgba(39,174,96,.08)}
+.rl{font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.rv{font-size:1.15rem;font-weight:700;color:var(--cream)}
+.rv.g{color:var(--gold)}.rv.gr{color:var(--green)}.rv.rd{color:var(--red)}
+.rs{font-size:.65rem;color:var(--muted);margin-top:.15rem}
+.bt{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:1rem}
+.bt th{text-align:left;padding:.6rem .8rem;font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)}
+.bt td{padding:.55rem .8rem;border-bottom:1px solid var(--border)}
+.bt td:nth-child(2),.bt td:last-child{text-align:right;color:var(--cream)}
+.bt tr.tr-tot td{font-weight:700;color:var(--gold);border-top:2px solid var(--border)}
+.al{padding:1rem 1.2rem;border-radius:8px;font-size:.82rem;margin:.5rem 0}
+.al.warn{background:rgba(255,193,7,.1);border:1px solid rgba(255,193,7,.4);color:#ffc107}
+.al.info{background:rgba(74,111,165,.1);border:1px solid rgba(74,111,165,.4);color:var(--muted)}
+.cmpw{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+.cmpc{background:var(--navy);border:1px solid var(--border);border-radius:10px;padding:1.2rem}
+.cmpc h4{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.cmpr{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.8rem}
+.cmpr:last-child{border-bottom:none;font-weight:700;color:var(--cream);font-size:.88rem}
+@media(max-width:768px){.layout{flex-direction:column}.sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border)}.form-grid,.rg,.rg.c3,.rg.c4,.cmpw{grid-template-columns:1fr}.main-content{padding:1.2rem}}
 </style>
-</head>
-<body>
-<div class="topbar"><div class="logo">LOMAZ HOME</div><a href="/" style="color:#aaa;font-size:.85rem;text-decoration:none">&#8592; Inicio</a></div>
-<div class="hero"><h1>Calculadora <span>Inmobiliaria</span></h1><p>Calcula tu cuota hipotecaria y todos los gastos notariales de tu compraventa segun la ley colombiana vigente</p></div>
-<div class="tabs">
-  <div class="tab active" onclick="showTab('hipotecaria',this)">&#127970; Cuota Hipotecaria</div>
-  <div class="tab" onclick="showTab('notarial',this)">&#128220; Gastos Notariales</div>
+</head><body>
+<nav class="topnav">
+  <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
+  <a href="index.html" class="nav-back">&#8592; Inicio</a>
+</nav>
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-title">Suite Calculadoras</div>
+  <a class="sb-item active" href="#" onclick="showMod('mod1',this);return false"><span class="sb-num">01</span><span class="sb-text"><strong>Gastos Notariales</strong><small>Escrituración y cierre</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod2',this);return false"><span class="sb-num">02</span><span class="sb-text"><strong>Crédito Hipotecario</strong><small>Cuota y amortización</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod3',this);return false"><span class="sb-num">03</span><span class="sb-text"><strong>Rentabilidad</strong><small>Cap Rate e inversión</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod4',this);return false"><span class="sb-num">04</span><span class="sb-text"><strong>Ganancia Ocasional</strong><small>Impuesto al vender</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod5',this);return false"><span class="sb-num">05</span><span class="sb-text"><strong>Capacidad Endeudamiento</strong><small>VIS / No VIS</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod6',this);return false"><span class="sb-num">06</span><span class="sb-text"><strong>Tradicional vs Airbnb</strong><small>Comparador de modelo</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod7',this);return false"><span class="sb-num">07</span><span class="sb-text"><strong>Vacancia y Reserva</strong><small>Costos ocultos</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('mod8',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
+</nav>
+<main class="main-content">
+
+<div class="module active" id="mod1">
+<div class="mod-header"><h1>&#128220; Gastos Notariales y de Escrituración</h1><p>Calcula el desglose exacto de costos de cierre entre comprador y vendedor según la normativa notarial colombiana vigente.</p></div>
+<div class="card">
+  <div class="card-title">Datos de la Transacción</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Valor de Venta (COP)</label><input type="text" id="m1_vv" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Tipo de Vendedor</label><select id="m1_ej"><option value="0">Persona Natural</option><option value="1">Persona Jurídica (Empresa)</option></select></div>
+    <div class="form-group full"><div class="toggle-grp"><input type="checkbox" id="m1_th" onchange="document.getElementById('m1_hg').style.display=this.checked?'block':'none'"/><label for="m1_th">¿Incluye crédito hipotecario?</label></div></div>
+    <div class="form-group full" id="m1_hg" style="display:none"><label>Valor del Crédito Hipotecario (COP)</label><input type="text" id="m1_vh" placeholder="$315.000.000" oninput="fmtF(this)"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM1()">&#9654; Calcular Gastos</button>
 </div>
-<div class="tab-content active" id="tab-hipotecaria">
-<div class="calc-grid">
-<div class="card"><h3>&#127968; Datos del credito</h3>
-<div class="form-group"><label>VALOR DEL INMUEBLE (COP)</label><input type="number" id="h-valor" placeholder="Ej: 300000000" oninput="calcHipotecaria()"/></div>
-<div class="form-group"><label>PORCENTAJE FINANCIADO (%)</label><select id="h-pct" onchange="calcHipotecaria()"><option value="50">50%</option><option value="60">60%</option><option value="70" selected>70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100% (VIS/VIP)</option></select></div>
-<div class="form-group"><label>TASA DE INTERES ANUAL (%)</label><input type="number" id="h-tasa" value="12.5" step="0.1" min="1" max="40" oninput="calcHipotecaria()"/></div>
-<div class="form-group"><label>PLAZO (ANOS)</label><select id="h-plazo" onchange="calcHipotecaria()"><option value="5">5 anos</option><option value="10">10 anos</option><option value="15" selected>15 anos</option><option value="20">20 anos</option><option value="30">30 anos</option></select></div>
-<div class="form-group"><label>TIPO DE CREDITO</label><select id="h-tipo" onchange="calcHipotecaria()"><option value="pesos">Pesos (tasa fija)</option><option value="uvr">UVR (tasa mixta - sigue inflacion)</option></select></div>
-</div>
-<div class="card"><h3>&#128202; Resultados</h3><div id="hipotecaria-result"><p style="color:#888;font-size:.9rem;text-align:center;padding:2rem">Ingresa los datos para ver el calculo</p></div></div>
-</div>
-</div>
-<div class="tab-content" id="tab-notarial">
-<div class="calc-grid">
-<div class="card"><h3>&#128203; Datos de la escritura</h3>
-<div class="form-group"><label>VALOR COMERCIAL DEL INMUEBLE (COP) *</label><input type="number" id="n-valor" placeholder="Ej: 450000000"/></div>
-<div class="form-group"><label>TIPO DE NEGOCIO</label><select id="n-tipo"><option value="compraventa">Compraventa</option><option value="permuta">Permuta</option></select></div>
-<div class="form-group"><label>DEPARTAMENTO</label><select id="n-depto"><option value="bogota">Bogota D.C.</option><option value="antioquia">Antioquia</option><option value="valle">Valle del Cauca</option><option value="atlantico">Atlantico</option><option value="otro">Otro departamento</option></select></div>
-<div class="form-group"><label>CONDICION DEL VENDEDOR</label><select id="n-declarante"><option value="no_declarante">Persona natural NO declarante de renta</option><option value="declarante">Persona natural declarante de renta</option><option value="juridica">Persona juridica (empresa)</option></select></div>
-<hr class="separator"/>
-<div class="form-group"><label>TRAMITES ADICIONALES</label>
-<div class="checkbox-group">
-<label class="chk-item"><input type="checkbox" id="n-hipoteca"/> Con hipoteca (credito bancario)</label>
-<label class="chk-item"><input type="checkbox" id="n-cancelacion"/> Con cancelacion de hipoteca previa</label>
-<label class="chk-item"><input type="checkbox" id="n-afectacion"/> Con afectacion familiar (vivienda familiar)</label>
-<label class="chk-item"><input type="checkbox" id="n-levantar_af"/> Levantar afectacion familiar previa</label>
-<label class="chk-item"><input type="checkbox" id="n-patrimonio"/> Declaracion bien de familia</label>
-<label class="chk-item"><input type="checkbox" id="n-poder"/> Con poder especial notarial</label>
-<label class="chk-item"><input type="checkbox" id="n-vis"/> Inmueble VIS/VIP</label>
-<label class="chk-item"><input type="checkbox" id="n-vivienda"/> Es vivienda de habitacion (primera vivienda)</label>
-</div></div>
-<div class="form-group" id="n-hipoteca-val-group" style="display:none"><label>VALOR DE LA HIPOTECA (COP)</label><input type="number" id="n-hipoteca-val" placeholder="Ej: 315000000"/></div>
-<button class="btn-calc" onclick="calcNotarial()">&#128220; Calcular Gastos Notariales</button>
-</div>
-<div class="card"><h3>&#8505;&#65039; Informacion legal vigente 2025</h3>
-<div style="font-size:.8rem;color:#888;line-height:1.9">
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Impuesto de registro (Ley 223/95):</strong><br/>1.67% a 1.8% segun depto - paga el COMPRADOR. Exento en VIS/VIP.</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Derechos notariales (Decreto 188/2013):</strong><br/>0.27% sobre el valor + IVA 19% - 50% vendedor / 50% comprador</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Retencion en la fuente - VENDEDOR (Art. 398 ET):</strong><br/>Si valor &gt; 27.000 UVT ($1.344.573.000): 1% NO declarante / 2.5% declarante / 2.5% persona juridica. Exento VIS/VIP.</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">Ganancia ocasional (Art. 307 ET):</strong><br/>10% sobre la utilidad si vendedor declara renta. Si primera vivienda exenta hasta 7.500 UVT de ganancia.</p>
-<p style="margin-bottom:.8rem"><strong style="color:#c9a484">GMF 4x1000:</strong><br/>0.4% aplica segun canal de pago - a cargo del que use el banco</p>
-<p><strong style="color:#c9a484">UVT 2025:</strong> $49.799 COP<br/><strong style="color:#c9a484">Limite RteFuente:</strong> 27.000 UVT = $1.344.573.000</p>
-</div></div>
-</div>
-<div class="result-section" id="notarial-result">
-<div class="result-header"><h3>&#128220; Desglose de Gastos Notariales</h3><p id="res-titulo">Compraventa - Colombia</p></div>
-<div class="result-cols">
-<div class="result-col" id="col-vendedor">
-<h4>VENDEDOR <span class="badge vendedor">paga</span></h4>
-<div id="items-vendedor"></div>
-<div id="rf-detalle-box" style="display:none"></div>
-<div class="total-row"><span>Total Vendedor</span><span id="total-vendedor">$0</span></div>
-</div>
-<div class="result-col" id="col-comprador">
-<h4>COMPRADOR <span class="badge comprador">paga</span></h4>
-<div id="items-comprador"></div>
-<div class="total-row"><span>Total Comprador</span><span id="total-comprador">$0</span></div>
+<div id="m1_r" style="display:none">
+  <div class="rg">
+    <div class="rc hi"><div class="rl">Total Comprador Paga</div><div class="rv g" id="m1_tc">—</div></div>
+    <div class="rc"><div class="rl">Total Vendedor Paga</div><div class="rv" id="m1_tv">—</div></div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-title">Desglose Detallado</div>
+    <table class="bt"><thead><tr><th>Concepto</th><th>Monto</th><th>Quién Paga</th></tr></thead>
+    <tbody id="m1_tb"></tbody>
+    <tfoot><tr class="tr-tot"><td>TOTAL TRANSACCIÓN</td><td id="m1_gt">—</td><td></td></tr></tfoot></table>
+  </div>
+  <div class="al info">&#128161; Estimaciones basadas en tarifas notariales vigentes. El notario puede ajustar según municipio. No incluye estudio de títulos ni avalúo.</div>
 </div>
 </div>
-<div id="section-hipoteca" style="display:none"><hr class="separator"/><div class="hipoteca-section"><h4>&#127970; Gastos adicionales por hipoteca</h4><div id="items-hipoteca"></div></div></div>
-<div class="grand-total"><h4>TOTAL GASTOS ESCRITURACION (Vendedor + Comprador)</h4><div class="amount" id="grand-total-amount">$0</div><p style="color:#888;font-size:.8rem;margin-top:.4rem" id="grand-total-pct"></p></div>
-<div class="note-box" id="notas-legales"><strong>&#9888;&#65039; Notas importantes:</strong><ul id="lista-notas" style="margin-top:.5rem;padding-left:1.2rem;line-height:1.9"></ul></div>
+
+<div class="module" id="mod2">
+<div class="mod-header"><h1>&#127968; Crédito Hipotecario y Amortización</h1><p>Simula tu cuota mensual, tabla de amortización y el impacto de abonos extraordinarios a capital.</p></div>
+<div class="card">
+  <div class="card-title">Datos del Crédito</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Valor del Inmueble (COP)</label><input type="text" id="m2_vi" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Cuota Inicial (%)</label><input type="number" id="m2_pci" value="30" min="10" max="90"/></div>
+    <div class="form-group"><label>Tasa de Interés EA (%)</label><input type="number" id="m2_ea" value="12" min="1" max="30" step="0.1"/></div>
+    <div class="form-group"><label>Plazo (años)</label><input type="number" id="m2_pl" value="20" min="1" max="30"/></div>
+    <div class="form-group full"><label>Abono Extra Mensual a Capital — Opcional (COP)</label><input type="text" id="m2_ae" placeholder="$0" oninput="fmtF(this)"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM2()">&#9654; Calcular Crédito</button>
+</div>
+<div id="m2_r" style="display:none">
+  <div class="rg c4">
+    <div class="rc"><div class="rl">Monto del Crédito</div><div class="rv" id="m2_mo">—</div></div>
+    <div class="rc hi"><div class="rl">Cuota Mensual Base</div><div class="rv g" id="m2_cu">—</div></div>
+    <div class="rc dng"><div class="rl">Total Intereses Sin Abono</div><div class="rv rd" id="m2_is">—</div></div>
+    <div class="rc ok"><div class="rl">Total Intereses Con Abono</div><div class="rv gr" id="m2_ic">—</div><div class="rs" id="m2_ma"></div></div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-title">Primeros 24 meses de amortización</div>
+    <div style="overflow-x:auto"><table class="bt"><thead><tr><th>#</th><th>Cuota</th><th>Interés</th><th>Capital</th><th>Saldo</th></tr></thead><tbody id="m2_ab"></tbody></table></div>
+  </div>
 </div>
 </div>
-<script>
-function showTab(id,el){
-  document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.getElementById("tab-"+id).classList.add("active");
-  el.classList.add("active");
+
+<div class="module" id="mod3">
+<div class="mod-header"><h1>&#128200; Rentabilidad de Inversión (Cap Rate)</h1><p>Evalúa si una propiedad es un activo financiero viable con flujo de caja neto y tasa de capitalización.</p></div>
+<div class="card">
+  <div class="card-title">Datos del Inmueble y Operación</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Valor del Inmueble (COP)</label><input type="text" id="m3_v" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Gastos de Adquisición / Cierre (COP)</label><input type="text" id="m3_ga" placeholder="$18.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Canon de Arriendo Mensual (COP)</label><input type="text" id="m3_ca" placeholder="$2.500.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Cuota Hipotecaria Mensual (COP)</label><input type="text" id="m3_ch" placeholder="$0 si no aplica" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Administración Mensual (COP)</label><input type="text" id="m3_adm" placeholder="$350.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Impuesto Predial Anual (COP)</label><input type="text" id="m3_pr" placeholder="$1.200.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Seguro de Arrendamiento Mensual (COP)</label><input type="text" id="m3_sg" placeholder="$120.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Vacancia Estimada Anual (%)</label><input type="number" id="m3_vc" value="5" min="0" max="50"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM3()">&#9654; Calcular Rentabilidad</button>
+</div>
+<div id="m3_r" style="display:none">
+  <div class="rg c4">
+    <div class="rc"><div class="rl">Inversión Total</div><div class="rv" id="m3_it">—</div></div>
+    <div class="rc hi"><div class="rl">Cap Rate Neto</div><div class="rv g" id="m3_cr">—</div></div>
+    <div class="rc"><div class="rl">NOI Anual</div><div class="rv" id="m3_noi">—</div></div>
+    <div class="rc" id="m3_fcc"><div class="rl">Flujo de Caja / Mes</div><div class="rv" id="m3_fc">—</div></div>
+  </div>
+</div>
+</div>
+
+<div class="module" id="mod4">
+<div class="mod-header"><h1>&#128181; Impuesto a la Ganancia Ocasional</h1><p>Calcula el impuesto real al liquidar una propiedad según la reforma tributaria colombiana vigente (Tarifa: 15%).</p></div>
+<div class="card">
+  <div class="card-title">Datos de la Compraventa</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Precio de Compra Original (COP)</label><input type="text" id="m4_pc" placeholder="$200.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Precio de Venta Actual (COP)</label><input type="text" id="m4_pv" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Años de Posesión</label><input type="number" id="m4_an" value="5" min="0" max="50"/></div>
+    <div class="form-group"><label>Mejoras Declaradas (COP)</label><input type="text" id="m4_mj" placeholder="$0" oninput="fmtF(this)"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM4()">&#9654; Calcular Impuesto</button>
+</div>
+<div id="m4_r" style="display:none">
+  <div id="m4_w" class="al warn" style="display:none">&#9888; <strong>Atención:</strong> Menos de 2 años de posesión. La utilidad tributa como <strong>Renta Líquida Ordinaria</strong> según tarifas progresivas de renta. Consulte con su contador.</div>
+  <div class="rg c3">
+    <div class="rc"><div class="rl">Utilidad Bruta</div><div class="rv" id="m4_ub">—</div></div>
+    <div class="rc"><div class="rl">Costo Fiscal Total</div><div class="rv" id="m4_cf">—</div></div>
+    <div class="rc dng"><div class="rl">Impuesto G.O. (15%)</div><div class="rv rd" id="m4_imp">—</div></div>
+  </div>
+  <div class="rg" style="margin-top:1rem">
+    <div class="rc ok"><div class="rl">Utilidad Gravable Neta</div><div class="rv gr" id="m4_ug">—</div></div>
+    <div class="rc hi"><div class="rl">Dinero Neto Después de Impuestos</div><div class="rv g" id="m4_net">—</div></div>
+  </div>
+</div>
+</div>
+<div class="module" id="mod5">
+<div class="mod-header"><h1>&#127968; Capacidad de Endeudamiento VIS / No VIS</h1><p>Determina el valor máximo del inmueble que puedes adquirir según la Ley de Vivienda colombiana y tu ingreso familiar.</p></div>
+<div class="card">
+  <div class="card-title">Perfil Financiero del Hogar</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Ingresos Mensuales Totales del Hogar (COP)</label><input type="text" id="m5_ing" placeholder="$8.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Obligaciones Financieras Actuales / Mes (COP)</label><input type="text" id="m5_obl" placeholder="$500.000" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Tipo de Vivienda</label><select id="m5_tip"><option value="vis">VIS — Vivienda de Interés Social (límite 40% ingresos)</option><option value="novis">NO VIS — Vivienda Estándar (límite 30% ingresos)</option></select></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM5()">&#9654; Calcular Capacidad</button>
+</div>
+<div id="m5_r" style="display:none">
+  <div class="rg c3">
+    <div class="rc"><div class="rl">Cuota Máxima Permitida / Mes</div><div class="rv" id="m5_cm">—</div></div>
+    <div class="rc hi"><div class="rl">Crédito Máximo Estimado</div><div class="rv g" id="m5_cr">—</div></div>
+    <div class="rc ok"><div class="rl">Valor Máximo del Inmueble</div><div class="rv gr" id="m5_vm">—</div></div>
+  </div>
+  <div class="al info" style="margin-top:1rem">&#128161; Cálculo con tasa EA del 12% y plazo de 240 meses. El banco realiza su propio análisis. Este resultado es una guía orientativa.</div>
+</div>
+</div>
+
+<div class="module" id="mod6">
+<div class="mod-header"><h1>&#127968; Arriendo Tradicional vs. Vacacional (Airbnb)</h1><p>Compara cuál modelo de negocio genera mayor rentabilidad neta para tu inmueble.</p></div>
+<div class="card">
+  <div class="card-title">Modelo Vacacional</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Tarifa por Noche (COP)</label><input type="text" id="m6_tn" placeholder="$250.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Ocupación Mensual Estimada (%)</label><input type="number" id="m6_oc" value="60" min="0" max="100"/></div>
+    <div class="form-group full"><label>Gastos Operacionales Mensuales — limpieza, check-in, lavandería (COP)</label><input type="text" id="m6_go" placeholder="$800.000" oninput="fmtF(this)"/></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">Modelo Tradicional</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Canon de Arriendo Mensual (COP)</label><input type="text" id="m6_ct" placeholder="$2.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Gastos Asociados Mensuales — Admin, Seguros (COP)</label><input type="text" id="m6_gt" placeholder="$350.000" oninput="fmtF(this)"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM6()">&#9654; Comparar Modelos</button>
+</div>
+<div id="m6_r" style="display:none">
+  <div class="cmpw">
+    <div class="cmpc"><h4>&#9729; Modelo Vacacional</h4>
+      <div class="cmpr"><span>Ingreso Bruto</span><span id="m6_ba">—</span></div>
+      <div class="cmpr"><span>Comisión Plataforma (5%)</span><span id="m6_com">—</span></div>
+      <div class="cmpr"><span>Gastos Operación</span><span id="m6_ga">—</span></div>
+      <div class="cmpr"><span>INGRESO NETO / MES</span><span id="m6_na">—</span></div>
+    </div>
+    <div class="cmpc"><h4>&#128203; Modelo Tradicional</h4>
+      <div class="cmpr"><span>Canon de Arriendo</span><span id="m6_ca">—</span></div>
+      <div class="cmpr"><span>Gastos Asociados</span><span id="m6_gta">—</span></div>
+      <div class="cmpr" style="min-height:1.8rem"></div>
+      <div class="cmpr"><span>INGRESO NETO / MES</span><span id="m6_nt">—</span></div>
+    </div>
+  </div>
+  <div class="rg" style="margin-top:1.5rem">
+    <div class="rc hi"><div class="rl">Diferencia Mensual</div><div class="rv g" id="m6_dif">—</div><div class="rs" id="m6_gan"></div></div>
+    <div class="rc"><div class="rl">Diferencia Anual Estimada</div><div class="rv" id="m6_difa">—</div></div>
+  </div>
+  <div class="al warn" style="margin-top:1rem">&#9888; El modelo vacacional requiere gestión activa continua. Considere el costo de un co-host externo (15-25% del ingreso bruto).</div>
+</div>
+</div>
+
+<div class="module" id="mod7">
+<div class="mod-header"><h1>&#127981; Vacancia y Fondo de Reserva</h1><p>Calcula los costos ocultos que erosionan la rentabilidad: mantenimiento estructural y períodos sin arrendar.</p></div>
+<div class="card">
+  <div class="card-title">Datos del Inmueble</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Valor del Inmueble (COP)</label><input type="text" id="m7_v" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Canon de Arriendo Mensual (COP)</label><input type="text" id="m7_c" placeholder="$2.500.000" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Antigüedad del Inmueble</label><select id="m7_e"><option value="nuevo">Nuevo (reserva 0.5% anual del valor)</option><option value="1-10">1 a 10 años (reserva 1.0% anual)</option><option value="mas10">Más de 10 años (reserva 1.5% anual)</option></select></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM7()">&#9654; Calcular Costos Ocultos</button>
+</div>
+<div id="m7_r" style="display:none">
+  <div class="rg c3">
+    <div class="rc hi"><div class="rl">Fondo de Mantenimiento / Mes</div><div class="rv g" id="m7_fm">—</div><div class="rs">Reserva recomendada para imprevistos estructurales</div></div>
+    <div class="rc dng"><div class="rl">Costo de Vacancia Anual</div><div class="rv rd" id="m7_cv">—</div><div class="rs">1.5 meses de canon sin ingreso (promedio Colombia)</div></div>
+    <div class="rc"><div class="rl">Pérdida Oculta Total / Año</div><div class="rv" id="m7_pt">—</div><div class="rs">Fondo anual + costo vacancia</div></div>
+  </div>
+  <div class="al info" style="margin-top:1rem">&#128161; Descuenta estos costos del ingreso bruto para calcular la rentabilidad real. Un propietario puede perder entre 8-15% del ingreso potencial en estos rubros.</div>
+</div>
+</div>
+
+<div class="module" id="mod8">
+<div class="mod-header"><h1>&#128260; Compra de Cartera / Refinanciación</h1><p>Simula cuánto ahorrarías si trasladas tu crédito hipotecario a un banco con menor tasa de interés.</p></div>
+<div class="card">
+  <div class="card-title">Datos de tu Crédito Actual</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Saldo Actual de la Deuda (COP)</label><input type="text" id="m8_s" placeholder="$280.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Plazo Restante (meses)</label><input type="number" id="m8_pl" value="180" min="12" max="360"/></div>
+    <div class="form-group"><label>Tasa Actual EA (%)</label><input type="number" id="m8_ta" value="14" min="1" max="30" step="0.1"/></div>
+    <div class="form-group"><label>Tasa Nueva Oferta EA (%)</label><input type="number" id="m8_tn" value="11" min="1" max="30" step="0.1"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM8()">&#9654; Calcular Ahorro</button>
+</div>
+<div id="m8_r" style="display:none">
+  <div class="rg c4">
+    <div class="rc dng"><div class="rl">Cuota Actual / Mes</div><div class="rv rd" id="m8_ca">—</div></div>
+    <div class="rc ok"><div class="rl">Cuota Nueva / Mes</div><div class="rv gr" id="m8_cn">—</div></div>
+    <div class="rc hi"><div class="rl">Ahorro Mensual</div><div class="rv g" id="m8_am">—</div></div>
+    <div class="rc ok"><div class="rl">Ahorro Neto Total de Vida</div><div class="rv gr" id="m8_at">—</div><div class="rs">Restando $600.000 de gastos de trámite</div></div>
+  </div>
+</div>
+</div>
+
+</main>
+</div><script>
+// UTILIDADES
+function pCOP(s){return parseInt(String(s||'').replace(/[^0-9]/g,''),10)||0;}
+function fmtF(el){var v=pCOP(el.value);el.value=v?'$'+v.toLocaleString('es-CO'):'';}
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-CO');}
+function pct(n){return n.toFixed(2)+'%';}
+function eaMv(ea){return Math.pow(1+ea/100,1/12)-1;}
+function PMT(p,tm,n){if(tm===0)return p/n;return p*(tm*Math.pow(1+tm,n))/(Math.pow(1+tm,n)-1);}
+
+// M1 GASTOS NOTARIALES
+function calcM1(){
+  var vv=pCOP(document.getElementById('m1_vv').value);
+  if(!vv){alert('Ingresa el valor de venta');return;}
+  var th=document.getElementById('m1_th').checked;
+  var vh=pCOP(document.getElementById('m1_vh').value);
+  var ej=document.getElementById('m1_ej').value==='1';
+  var T=0.0054,TR=0.0167,TB=0.0100,PAP=150000,LIM=685000000;
+  var nCV=Math.round(vv*T);
+  var nHP=th?Math.round(vh*T):0;
+  var ret=ej?0:(vv<LIM?Math.round(vv*0.01):Math.round(vv*0.025));
+  var ireg=Math.round(vv*TR),iben=Math.round(vv*TB);
+  var cEsc=Math.round(nCV*0.5),vEsc=Math.round(nCV*0.5);
+  var tc=cEsc+nHP+ireg+iben+PAP,tv=vEsc+ret;
+  document.getElementById('m1_tc').textContent=fmt(tc);
+  document.getElementById('m1_tv').textContent=fmt(tv);
+  document.getElementById('m1_gt').textContent=fmt(tc+tv);
+  var rows=[
+    ['Escritura compraventa 0.54% ÷ 2','Comprador',cEsc],
+    ['Escritura compraventa 0.54% ÷ 2','Vendedor',vEsc],
+  ];
+  if(th)rows.push(['Escritura hipoteca 0.54% s/crédito','Comprador',nHP]);
+  rows.push(['Retención en la Fuente'+(ej?' (Jurídico: exento)':''),ej?'Exento':'Vendedor',ret]);
+  rows.push(['Impuesto de Registro 1.67%','Comprador',ireg]);
+  rows.push(['Beneficencia 1.00%','Comprador',iben]);
+  rows.push(['Papel, copias y biometría (estimado)','Comprador',PAP]);
+  document.getElementById('m1_tb').innerHTML=rows.map(function(r){return'<tr><td>'+r[0]+'</td><td>'+fmt(r[2])+'</td><td>'+r[1]+'</td></tr>';}).join('');
+  document.getElementById('m1_r').style.display='block';
+  // pasar gastos a M3
+  document.getElementById('m3_ga').value=fmt(tc);
 }
-document.getElementById("n-hipoteca").addEventListener("change",function(){
-  document.getElementById("n-hipoteca-val-group").style.display=this.checked?"block":"none";
+
+// M2 CREDITO HIPOTECARIO
+function calcM2(){
+  var vi=pCOP(document.getElementById('m2_vi').value);
+  if(!vi){alert('Ingresa el valor del inmueble');return;}
+  var pci=parseFloat(document.getElementById('m2_pci').value)||30;
+  var ea=parseFloat(document.getElementById('m2_ea').value)||12;
+  var pl=parseInt(document.getElementById('m2_pl').value)||20;
+  var ae=pCOP(document.getElementById('m2_ae').value);
+  var monto=Math.round(vi*(1-pci/100));
+  var n=pl*12,tm=eaMv(ea);
+  var cb=PMT(monto,tm,n);
+  // sin abono
+  var bal=monto,intTot=0,filas=[];
+  for(var i=1;i<=n;i++){
+    var intM=Math.round(bal*tm);
+    var capM=Math.round(cb-intM);
+    if(capM>bal)capM=bal;
+    bal=Math.max(0,bal-capM);
+    intTot+=intM;
+    if(i<=24)filas.push([i,Math.round(cb),intM,capM,bal]);
+    if(bal===0)break;
+  }
+  // con abono
+  var bal2=monto,intTot2=0,mes2=0;
+  for(var j=1;j<=n*2;j++){
+    var intM2=Math.round(bal2*tm);
+    var capM2=Math.round(cb-intM2)+ae;
+    if(capM2>bal2)capM2=bal2;
+    bal2=Math.max(0,bal2-capM2);
+    intTot2+=intM2;
+    mes2++;
+    if(bal2===0)break;
+  }
+  document.getElementById('m2_mo').textContent=fmt(monto);
+  document.getElementById('m2_cu').textContent=fmt(Math.round(cb));
+  document.getElementById('m2_is').textContent=fmt(intTot);
+  document.getElementById('m2_ic').textContent=fmt(intTot2);
+  document.getElementById('m2_ma').textContent=ae>0?'Ahorras '+(n-mes2)+' meses':'Sin abono extra';
+  document.getElementById('m2_ab').innerHTML=filas.map(function(r){return'<tr><td>'+r[0]+'</td><td>'+fmt(r[1])+'</td><td>'+fmt(r[2])+'</td><td>'+fmt(r[3])+'</td><td>'+fmt(r[4])+'</td></tr>';}).join('');
+  document.getElementById('m2_r').style.display='block';
+  document.getElementById('m3_ch').value=fmt(Math.round(cb));
+}
+
+// M3 RENTABILIDAD
+function calcM3(){
+  var v=pCOP(document.getElementById('m3_v').value);
+  if(!v){alert('Ingresa el valor del inmueble');return;}
+  var ga=pCOP(document.getElementById('m3_ga').value);
+  var ca=pCOP(document.getElementById('m3_ca').value);
+  var ch=pCOP(document.getElementById('m3_ch').value);
+  var adm=pCOP(document.getElementById('m3_adm').value);
+  var pr=pCOP(document.getElementById('m3_pr').value);
+  var sg=pCOP(document.getElementById('m3_sg').value);
+  var vc=parseFloat(document.getElementById('m3_vc').value)||5;
+  var invT=v+ga;
+  var ingA=Math.round(ca*12*(1-vc/100));
+  var opex=Math.round(adm*12+pr+sg*12);
+  var noi=ingA-opex;
+  var cr=(noi/invT)*100;
+  var fcm=Math.round(noi/12)-ch;
+  document.getElementById('m3_it').textContent=fmt(invT);
+  document.getElementById('m3_cr').textContent=pct(cr);
+  document.getElementById('m3_noi').textContent=fmt(noi);
+  var fcEl=document.getElementById('m3_fc');
+  fcEl.textContent=fmt(fcm);
+  fcEl.className='rv '+(fcm>=0?'gr':'rd');
+  document.getElementById('m3_fcc').className='rc '+(fcm>=0?'ok':'dng');
+  document.getElementById('m3_r').style.display='block';
+}
+
+// M4 GANANCIA OCASIONAL
+function calcM4(){
+  var pc=pCOP(document.getElementById('m4_pc').value);
+  var pv=pCOP(document.getElementById('m4_pv').value);
+  if(!pc||!pv){alert('Ingresa precio de compra y venta');return;}
+  var an=parseInt(document.getElementById('m4_an').value)||0;
+  var mj=pCOP(document.getElementById('m4_mj').value);
+  var costoF=pc+mj;
+  var utilB=pv-pc;
+  var utilG=Math.max(0,pv-costoF);
+  var imp=an>=2?Math.round(utilG*0.15):null;
+  var neto=imp!==null?pv-imp:null;
+  document.getElementById('m4_w').style.display=an<2?'block':'none';
+  document.getElementById('m4_ub').textContent=fmt(utilB);
+  document.getElementById('m4_cf').textContent=fmt(costoF);
+  document.getElementById('m4_ug').textContent=fmt(utilG);
+  document.getElementById('m4_imp').textContent=imp!==null?fmt(imp):'Ver renta ordinaria';
+  document.getElementById('m4_net').textContent=neto!==null?fmt(neto):'Consulte contador';
+  document.getElementById('m4_r').style.display='block';
+}
+
+// M5 CAPACIDAD
+function calcM5(){
+  var ing=pCOP(document.getElementById('m5_ing').value);
+  if(!ing){alert('Ingresa tus ingresos');return;}
+  var obl=pCOP(document.getElementById('m5_obl').value);
+  var tip=document.getElementById('m5_tip').value;
+  var lim=tip==='vis'?0.40:0.30;
+  var cmax=Math.max(0,Math.round(ing*lim-obl));
+  var tm=eaMv(12),n=240;
+  var crmax=Math.round(cmax*(1-Math.pow(1+tm,-n))/tm);
+  var vmax=Math.round(crmax/0.70);
+  document.getElementById('m5_cm').textContent=fmt(cmax);
+  document.getElementById('m5_cr').textContent=fmt(crmax);
+  document.getElementById('m5_vm').textContent=fmt(vmax);
+  document.getElementById('m5_r').style.display='block';
+}
+
+// M6 COMPARADOR
+function calcM6(){
+  var tn=pCOP(document.getElementById('m6_tn').value);
+  if(!tn){alert('Ingresa tarifa por noche');return;}
+  var oc=parseFloat(document.getElementById('m6_oc').value)||60;
+  var go=pCOP(document.getElementById('m6_go').value);
+  var ct=pCOP(document.getElementById('m6_ct').value);
+  var gt=pCOP(document.getElementById('m6_gt').value);
+  var bruto=Math.round(tn*(30*oc/100));
+  var com=Math.round(bruto*0.05);
+  var netA=bruto-com-go;
+  var netT=ct-gt;
+  var dif=netA-netT;
+  document.getElementById('m6_ba').textContent=fmt(bruto);
+  document.getElementById('m6_com').textContent=fmt(com);
+  document.getElementById('m6_ga').textContent=fmt(go);
+  document.getElementById('m6_na').textContent=fmt(netA);
+  document.getElementById('m6_ca').textContent=fmt(ct);
+  document.getElementById('m6_gta').textContent=fmt(gt);
+  document.getElementById('m6_nt').textContent=fmt(netT);
+  var difEl=document.getElementById('m6_dif');
+  difEl.textContent=fmt(Math.abs(dif));
+  difEl.className='rv '+(dif>=0?'g':'rd');
+  document.getElementById('m6_gan').textContent=dif>0?'El modelo vacacional genera más':dif<0?'El modelo tradicional genera más':'Empate';
+  document.getElementById('m6_difa').textContent=fmt(Math.abs(dif)*12);
+  document.getElementById('m6_r').style.display='block';
+}
+
+// M7 VACANCIA Y RESERVA
+function calcM7(){
+  var v=pCOP(document.getElementById('m7_v').value);
+  var c=pCOP(document.getElementById('m7_c').value);
+  if(!v||!c){alert('Ingresa valor e inmueble y canon');return;}
+  var e=document.getElementById('m7_e').value;
+  var pcts={nuevo:0.005,'1-10':0.010,mas10:0.015};
+  var pa=pcts[e]||0.010;
+  var fm=Math.round(v*pa/12);
+  var cv=Math.round(c*1.5);
+  var pt=fm*12+cv;
+  document.getElementById('m7_fm').textContent=fmt(fm);
+  document.getElementById('m7_cv').textContent=fmt(cv);
+  document.getElementById('m7_pt').textContent=fmt(pt);
+  document.getElementById('m7_r').style.display='block';
+}
+
+// M8 COMPRA DE CARTERA
+function calcM8(){
+  var s=pCOP(document.getElementById('m8_s').value);
+  if(!s){alert('Ingresa el saldo de la deuda');return;}
+  var pl=parseInt(document.getElementById('m8_pl').value)||180;
+  var ta=parseFloat(document.getElementById('m8_ta').value)||14;
+  var tn=parseFloat(document.getElementById('m8_tn').value)||11;
+  var tmA=eaMv(ta),tmN=eaMv(tn);
+  var cuA=Math.round(PMT(s,tmA,pl));
+  var cuN=Math.round(PMT(s,tmN,pl));
+  var ahM=cuA-cuN;
+  var ahT=ahM*pl-600000;
+  document.getElementById('m8_ca').textContent=fmt(cuA);
+  document.getElementById('m8_cn').textContent=fmt(cuN);
+  document.getElementById('m8_am').textContent=fmt(ahM);
+  var atEl=document.getElementById('m8_at');
+  atEl.textContent=fmt(ahT);
+  atEl.className='rv '+(ahT>=0?'gr':'rd');
+  document.getElementById('m8_r').style.display='block';
+}
+
+// NAVEGACIÓN
+function showMod(id,el){
+  document.querySelectorAll('.module').forEach(function(m){m.classList.remove('active');});
+  document.querySelectorAll('.sb-item').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+window.addEventListener('DOMContentLoaded',function(){
+  var h=location.hash;
+  var map={'#tab-hipotecaria':'mod2','#tab-notarial':'mod1','#mod1':'mod1','#mod2':'mod2','#mod3':'mod3','#mod4':'mod4','#mod5':'mod5','#mod6':'mod6','#mod7':'mod7','#mod8':'mod8'};
+  if(map[h]){
+    var t=map[h];
+    var idx=['mod1','mod2','mod3','mod4','mod5','mod6','mod7','mod8'].indexOf(t);
+    showMod(t,document.querySelectorAll('.sb-item')[idx]||null);
+  }
 });
-function fmt(n){return "$"+Math.round(n).toLocaleString("es-CO");}
-function fmtPct(n){return (n*100).toFixed(2)+"%";}
-function calcHipotecaria(){
-  const valor=parseFloat(document.getElementById("h-valor").value)||0;
-  if(!valor)return;
-  const pct=parseFloat(document.getElementById("h-pct").value)/100;
-  const tasaAnual=parseFloat(document.getElementById("h-tasa").value)||12.5;
-  const plazoAnos=parseInt(document.getElementById("h-plazo").value)||15;
-  const tipo=document.getElementById("h-tipo").value;
-  const monto=valor*pct;
-  const cuota=calcCuota(monto,tasaAnual,plazoAnos);
-  const totalPagar=cuota*plazoAnos*12;
-  const totalIntereses=totalPagar-monto;
-  const cuotaSeguro=monto*0.0003;
-  const cuotaTotal=cuota+cuotaSeguro;
-  const div=document.getElementById("hipotecaria-result");
-  div.innerHTML=`
-    <div class="cost-item"><span class="cost-label">Valor inmueble</span><span class="cost-value">${fmt(valor)}</span></div>
-    <div class="cost-item"><span class="cost-label">Monto financiado (${Math.round(pct*100)}%)</span><span class="cost-value">${fmt(monto)}</span></div>
-    <div class="cost-item"><span class="cost-label">Cuota inicial (${100-Math.round(pct*100)}%)</span><span class="cost-value">${fmt(valor-monto)}</span></div>
-    <hr class="separator"/>
-    <div class="cost-item" style="padding:.8rem 0"><span class="cost-label">CUOTA MENSUAL CAPITAL+INT</span><span class="cost-value" style="font-size:1.2rem">${fmt(cuota)}</span></div>
-    <div class="cost-item"><span class="cost-label">+ Seguro vida aprox.</span><span class="cost-value">${fmt(cuotaSeguro)}</span></div>
-    <div class="cost-item"><span class="cost-label"><strong>CUOTA TOTAL ESTIMADA</strong></span><span class="cost-value" style="color:#fff;font-size:1.1rem">${fmt(cuotaTotal)}</span></div>
-    <hr class="separator"/>
-    <div class="cost-item"><span class="cost-label">Plazo total</span><span class="cost-value">${plazoAnos} anos (${plazoAnos*12} cuotas)</span></div>
-    <div class="cost-item"><span class="cost-label">Total a pagar</span><span class="cost-value">${fmt(totalPagar)}</span></div>
-    <div class="cost-item"><span class="cost-label">Total intereses</span><span class="cost-value">${fmt(totalIntereses)}</span></div>
-    <div class="cost-item"><span class="cost-label">Tasa mensual efectiva</span><span class="cost-value">${((Math.pow(1+tasaAnual/100,1/12)-1)*100).toFixed(3)}%</span></div>
-    <div class="note-box" style="margin-top:1rem"><strong>Info:</strong> Sistema frances (cuota fija). ${tipo==="uvr"?"UVR: cuota puede variar con la inflacion.":"Tasa fija en pesos."}</div>
-  `;
-}
-function calcCuota(P,tasaAnual,anos){
-  const r=Math.pow(1+tasaAnual/100,1/12)-1;
-  const n=anos*12;
-  if(r===0)return P/n;
-  return P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
-}
-function calcNotarial(){
-  const valor=parseFloat(document.getElementById("n-valor").value)||0;
-  if(!valor||valor<1000000){alert("Ingresa el valor comercial del inmueble");return;}
-  const tipo=document.getElementById("n-tipo").value;
-  const depto=document.getElementById("n-depto").value;
-  const declarante=document.getElementById("n-declarante").value;
-  const conHipoteca=document.getElementById("n-hipoteca").checked;
-  const conCancelacion=document.getElementById("n-cancelacion").checked;
-  const conAfectacion=document.getElementById("n-afectacion").checked;
-  const levantarAF=document.getElementById("n-levantar_af").checked;
-  const conPatrimonio=document.getElementById("n-patrimonio").checked;
-  const conPoder=document.getElementById("n-poder").checked;
-  const esVIS=document.getElementById("n-vis").checked;
-  const esVivienda=document.getElementById("n-vivienda").checked;
-  const valorHipoteca=parseFloat(document.getElementById("n-hipoteca-val").value)||(valor*0.7);
-  const UVT=49799;
-  const IVA=0.19;
-  // Limites legales 2025
-  const limiteRF=27000*UVT; // $1.344.573.000 - umbral retencion fuente Art.398 ET
-  const limiteGO=7500*UVT;  // $373.492.500 - exencion ganancia ocasional primera vivienda Art.311-1 ET
-  let itemsV=[];
-  let totalV=0;
-  const derechosNotariales=valor*0.0027; // 0.27% base segun Decreto 188/2013 actualizado
-  const derechosV=derechosNotariales*0.5*(1+IVA);
-  itemsV.push({label:"Derechos notariales (50%)",value:derechosV,note:"0.27% del valor + IVA 19% - Decreto 188/2013 - mitad del vendedor"});
-  totalV+=derechosV;
-  // === RETENCION EN LA FUENTE - Art. 398 ET ===
-  // La RteFuente la practica el COMPRADOR sobre el precio de venta
-  // Se descuenta del precio que recibe el VENDEDOR - es un costo efectivo del vendedor
-  let retefuente=0;
-  let rfTarifa=0;
-  let rfNota="";
-  let rfExento=false;
-  let rfMotivo="";
-  if(esVIS){
-    rfExento=true;
-    rfMotivo="Exento - Inmueble VIS/VIP (Art. 44 Ley 1537/2012)";
-  } else if(valor<=limiteRF){
-    rfExento=true;
-    rfMotivo="No aplica - Precio ("+fmt(valor)+") es menor o igual a 27.000 UVT ("+fmt(limiteRF)+") - Art. 398 ET";
-  } else {
-    // Valor supera 27.000 UVT - aplica retencion segun tipo de vendedor
-    if(declarante==="no_declarante"){
-      rfTarifa=0.01; // 1% para persona natural NO declarante de renta - Art. 398 ET
-      rfNota="1% s/precio venta - Persona nat. NO declarante - Art. 398 ET parag. 1";
-    } else if(declarante==="declarante"){
-      rfTarifa=0.025; // 2.5% para declarante de renta - Decreto 1512/85 y Art. 398 ET
-      rfNota="2.5% s/precio venta - Persona nat. declarante de renta - Art. 398 ET";
-    } else {
-      rfTarifa=0.025; // 2.5% persona juridica
-      rfNota="2.5% s/precio venta - Persona juridica - Art. 398 ET";
-    }
-    retefuente=valor*rfTarifa;
-    rfMotivo=rfNota+" | Practica el comprador al momento del pago";
-  }
-  if(rfExento){
-    itemsV.push({label:"Retencion en la fuente",value:0,note:rfMotivo,exento:true});
-  } else {
-    itemsV.push({label:"Retencion en la fuente ("+(rfTarifa*100)+"% s/precio)",value:retefuente,note:rfMotivo,esRF:true});
-    totalV+=retefuente;
-  }
-  // Ganancia ocasional - solo informativo pues depende del costo fiscal
-  if(!esVIS&&declarante!=="no_declarante"){
-    let goNota="10% sobre la UTILIDAD (precio venta - costo fiscal ajustado). Exenta hasta "+fmt(limiteGO)+" si es vivienda habitual (Art. 311-1 ET). Debe liquidarse en declaracion de renta.";
-    if(esVivienda)goNota="Si es primera vivienda: utilidad exenta hasta "+fmt(limiteGO)+" (7.500 UVT - Art. 311-1 ET). El exceso tributa al 10%.";
-    itemsV.push({label:"Ganancia ocasional",value:null,note:goNota,informativo:true});
-  }
-  const pazSalvo=80000;
-  itemsV.push({label:"Paz y salvo predial",value:pazSalvo,note:"Certificado alcaldia municipal - estimado (puede variar)"});
-  totalV+=pazSalvo;
-  if(depto==="bogota"||depto==="antioquia"){
-    const psVal=60000;
-    itemsV.push({label:"Paz y salvo valorizacion",value:psVal,note:"IDU (Bogota) / municipio - estimado"});
-    totalV+=psVal;
-  }
-  if(conCancelacion){
-    const cancHip=valor*0.001+180000;
-    itemsV.push({label:"Cancelacion hipoteca previa",value:cancHip,note:"Escritura cancelacion: ~0.1% + registro ORIP ~$180.000"});
-    totalV+=cancHip;
-  }
-  if(levantarAF){
-    const levAF=valor*0.0005+150000;
-    itemsV.push({label:"Levantamiento afectacion familiar",value:levAF,note:"Escritura + registro ORIP - ambos conyuges deben comparecer - Ley 258/1996"});
-    totalV+=levAF;
-  }
-  let itemsC=[];
-  let totalC=0;
-  let tasaReg=0.0167;
-  if(depto==="bogota")tasaReg=0.0175;
-  else if(depto==="antioquia")tasaReg=0.018;
-  else if(depto==="valle")tasaReg=0.0167;
-  const impReg=esVIS?0:valor*tasaReg;
-  itemsC.push({label:"Impuesto de registro"+(esVIS?" (EXENTO VIS)":""),value:impReg,note:"Tasa "+(tasaReg*100).toFixed(2)+"% - Gobernacion departamental (Ley 223/1995)"+(esVIS?" - Exento por VIS/VIP":""),exento:esVIS&&impReg===0});
-  totalC+=impReg;
-  const derechosC=derechosNotariales*0.5*(1+IVA);
-  itemsC.push({label:"Derechos notariales (50%)",value:derechosC,note:"0.27% del valor + IVA 19% - Decreto 188/2013 - mitad del comprador"});
-  totalC+=derechosC;
-  const regORIP=valor*0.005;
-  itemsC.push({label:"Registro ORIP (inscripcion)",value:regORIP,note:"~0.5% del valor - Oficina de Registro de Instrumentos Publicos"});
-  totalC+=regORIP;
-  const estudio=350000;
-  itemsC.push({label:"Estudio de titulos y certificados",value:estudio,note:"Certificado de tradicion + estudio juridico - estimado"});
-  totalC+=estudio;
-  if(conHipoteca){
-    const gastosBco=valorHipoteca*0.01+500000;
-    itemsC.push({label:"Comision bancaria + avaluo",value:gastosBco,note:"~1% monto credito + avaluo comercial - varia segun banco"});
-    totalC+=gastosBco;
-  }
-  if(conAfectacion){
-    const nuevaAF=valor*0.0003+120000;
-    itemsC.push({label:"Escritura afectacion familiar",value:nuevaAF,note:"Ambos conyuges - Ley 258/1996 - derechos notariales + registro"});
-    totalC+=nuevaAF;
-  }
-  if(conPatrimonio){
-    const bienFam=valor*0.0002+100000;
-    itemsC.push({label:"Declaracion bien de familia",value:bienFam,note:"Notaria + ORIP - proteccion patrimonial Ley 70/1931"});
-    totalC+=bienFam;
-  }
-  if(conPoder){
-    const poder=250000;
-    itemsC.push({label:"Poder especial notarial",value:poder,note:"Autenticacion de poder + derechos notariales - estimado"});
-    totalC+=poder;
-  }
-  let itemsH=[];
-  if(conHipoteca){
-    const dnHip=valorHipoteca*0.003*(1+IVA);
-    const regHip=valorHipoteca*0.005;
-    const segVida=valorHipoteca*0.006;
-    const segIncendio=valorHipoteca*0.003;
-    itemsH.push({label:"Escritura hipoteca - derechos notariales",value:dnHip,note:"0.3% valor hipoteca + IVA 19%"});
-    itemsH.push({label:"Registro hipoteca ORIP",value:regHip,note:"~0.5% valor hipoteca - ORIP"});
-    itemsH.push({label:"Seguro de vida (primer ano aprox.)",value:segVida,note:"~0.6% anual del saldo - varia segun banco y edad del deudor"});
-    itemsH.push({label:"Seguro incendio/terremoto (primer ano)",value:segIncendio,note:"~0.3% anual - obligatorio con credito hipotecario"});
-    totalC+=dnHip+regHip;
-  }
-  const notas=[];
-  notas.push("Los valores son ESTIMADOS. Los derechos notariales exactos los liquida el notario segun tarifa oficial vigente.");
-  notas.push("El impuesto de registro se paga en la Gobernacion departamental o banco autorizado antes de radicar en el ORIP.");
-  if(!rfExento)notas.push("La retencion en la fuente (Art. 398 ET) la PRACTICA el comprador: descuenta del precio y la consigna a la DIAN. El vendedor recibe el precio menos la retencion.");
-  if(!rfExento&&declarante!=="no_declarante")notas.push("Adicionalmente, el vendedor puede tener GANANCIA OCASIONAL (10% sobre la utilidad) si declara renta. Consulta tu contador.");
-  if(conHipoteca)notas.push("Con credito hipotecario: el banco generalmente asume parte de los gastos de escrituracion de la hipoteca. Verifica con tu banco.");
-  if(esVIS)notas.push("VIS/VIP: exentos de impuesto de registro y retencion en la fuente (Art. 44 Ley 1537/2012 y Art. 398 ET).");
-  if(conAfectacion)notas.push("La afectacion familiar requiere comparecencia de ambos conyuges o companero permanente en la notaria.");
-  notas.push("UVT 2025: $49.799. Limite retencion en la fuente: 27.000 UVT = "+fmt(27000*UVT)+".");
-  if(esVivienda&&!rfExento&&declarante!=="no_declarante")notas.push("Primera vivienda: la ganancia ocasional puede estar exenta hasta 7.500 UVT ("+fmt(7500*UVT)+"). Art. 311-1 ET.");
-  function renderItem(i){
-    if(i.informativo){
-      return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note" style="color:#888">${i.note}</div></div><span class="cost-value" style="color:#888;font-size:.75rem">Ver nota</span></div>`;
-    }
-    if(i.exento){
-      return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value cost-exento">EXENTO</span></div>`;
-    }
-    if(i.value===0&&!i.exento){
-      return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value cost-na">No aplica</span></div>`;
-    }
-    return `<div class="cost-item"><div><span class="cost-label">${i.label}</span><div class="cost-note">${i.note}</div></div><span class="cost-value">${fmt(i.value)}</span></div>`;
-  }
-  const deptoText=document.getElementById("n-depto").options[document.getElementById("n-depto").selectedIndex].text;
-  document.getElementById("res-titulo").textContent=
-    tipo.charAt(0).toUpperCase()+tipo.slice(1)+" - "+deptoText+" | Valor: "+fmt(valor);
-  document.getElementById("items-vendedor").innerHTML=itemsV.map(renderItem).join("");
-  document.getElementById("items-comprador").innerHTML=itemsC.map(renderItem).join("");
-  const rfBox=document.getElementById("rf-detalle-box");
-  if(!rfExento&&retefuente>0){
-    rfBox.style.display="block";
-    rfBox.innerHTML=`<div class="rf-box">
-      <h5>Como funciona la Retencion en la Fuente (Art. 398 ET)</h5>
-      <table class="rf-table">
-        <tr><th>Concepto</th><th>Valor</th></tr>
-        <tr><td>Precio de venta pactado</td><td>${fmt(valor)}</td></tr>
-        <tr><td>Retencion practica comprador (${(rfTarifa*100)}%)</td><td style="color:#ff8888">- ${fmt(retefuente)}</td></tr>
-        <tr><td><strong>Neto que recibe el vendedor</strong></td><td style="color:#5dd879"><strong>${fmt(valor-retefuente)}</strong></td></tr>
-      </table>
-      <p style="margin-top:.5rem;font-size:.72rem;color:#888">El comprador consigna la retencion directamente a la DIAN mediante formulario 350. El vendedor la puede descontar en su declaracion de renta.</p>
-    </div>`;
-  } else {
-    rfBox.style.display="none";
-  }
-  document.getElementById("total-vendedor").textContent=fmt(totalV);
-  document.getElementById("total-comprador").textContent=fmt(totalC);
-  const totalGlobal=totalV+totalC;
-  document.getElementById("grand-total-amount").textContent=fmt(totalGlobal);
-  document.getElementById("grand-total-pct").textContent="("+((totalGlobal/valor)*100).toFixed(2)+"% del valor del inmueble)";
-  if(conHipoteca&&itemsH.length){
-    document.getElementById("section-hipoteca").style.display="block";
-    document.getElementById("items-hipoteca").innerHTML=itemsH.map(renderItem).join("");
-  } else {
-    document.getElementById("section-hipoteca").style.display="none";
-  }
-  const ul=document.getElementById("lista-notas");
-  ul.innerHTML=notas.map(n=>`<li>${n}</li>`).join("");
-  const rs=document.getElementById("notarial-result");
-  rs.classList.add("show");
-  rs.scrollIntoView({behavior:"smooth"});
-}
 </script>
 </body>
-                          </html>
+</html>
