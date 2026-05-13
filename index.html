@@ -154,21 +154,68 @@ img{display:block;max-width:100%}
 @media(max-width:1024px){.editorial-grid{grid-template-columns:1fr}.prop-card-main .prop-img-wrap{height:380px}.footer-top{grid-template-columns:1fr 1fr}}
 @media(max-width:768px){.nav{padding:1rem 1.5rem}.nav.scrolled{padding:.9rem 1.5rem}.nav-links{display:none}.stats-inner{grid-template-columns:1fr 1fr;gap:1.5rem}.services-grid{grid-template-columns:1fr}.editorial-grid{grid-template-columns:1fr}.prop-card-sm{grid-column:auto;grid-template-columns:1fr}.props-section{padding:4rem 1.5rem}.services-section{padding:4rem 1.5rem}.quote-section{padding:4rem 1.5rem}.cta-section{padding:4rem 1.5rem}.footer{padding:3rem 1.5rem 2rem}.footer-top{grid-template-columns:1fr;gap:2rem}.aria-panel{width:100%;right:-100%}}
 @media(max-width:480px){.hero{padding:7rem 1.2rem 3rem}.hero h1{font-size:2.4rem}.hero-btns{flex-direction:column;align-items:center}.hero-search{flex-direction:column;padding:1rem}.stats-inner{grid-template-columns:1fr 1fr}}
+
+/* ===== DROPDOWN NAV - GOLDEN SCROLL REVEAL ===== */
+.has-dropdown{position:relative}
+.nav-parent{display:flex;align-items:center;gap:.35rem;cursor:pointer}
+.nav-arrow{transition:transform .3s;opacity:.7;flex-shrink:0}
+.has-dropdown:hover .nav-arrow{transform:rotate(180deg);opacity:1}
+.nav-dropdown{position:absolute;top:calc(100% + 1rem);left:50%;transform:translateX(-50%) translateY(-8px);min-width:260px;background:rgba(13,27,46,.97);border:1px solid var(--gold-40);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:2px solid var(--gold);opacity:0;visibility:hidden;transition:opacity .25s ease,transform .25s ease,visibility .25s;z-index:2000;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.has-dropdown:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.dropdown-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1.2rem;border-bottom:1px solid rgba(196,153,42,.12);text-decoration:none;transition:background .2s,padding-left .2s;color:var(--cream)}
+.dropdown-item:last-child{border-bottom:none}
+.dropdown-item:hover{background:var(--gold-20);padding-left:1.5rem}
+.dropdown-item .di-icon{font-size:1.1rem;width:24px;text-align:center;flex-shrink:0}
+.dropdown-item span:last-child{display:flex;flex-direction:column;gap:.1rem}
+.dropdown-item strong{font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--cream);font-weight:600}
+.dropdown-item small{font-size:.68rem;color:rgba(244,229,194,.5);letter-spacing:.5px;font-weight:400}
 </style>
 </head>
 <body>
 <!-- NAV -->
 <nav class="nav" id="mainNav">
-  <a href="/" class="nav-logo">LoMaz <span>Home</span></a>
+  <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
   <ul class="nav-links">
-    <li><a href="/propiedades.html">Propiedades</a></li>
-    <li><a href="/zonas/chapinero.html">Zonas</a></li>
-    <li><a href="/blog.html">Blog</a></li>
-    <li><a href="/calculadora.html">Calculadora</a></li>
-    <li><a href="/sobre-nosotros.html">Nosotros</a></li>
-    <li><a href="/contacto.html">Contacto</a></li>
+    <li class="has-dropdown">
+      <a href="propiedades.html" class="nav-parent">Propiedades <svg class="nav-arrow" viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#127968;</span><span><strong>Todas las propiedades</strong><small>Ver cat&#225;logo completo</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#128273;</span><span><strong>En venta</strong><small>Apartamentos y casas</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#128203;</span><span><strong>En arriendo</strong><small>Mensual y temporal</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#127807;</span><span><strong>Fincas y rurales</strong><small>Descanso y campo</small></span></a>
+      </div>
+    </li>
+    <li class="has-dropdown">
+      <a href="propiedades.html" class="nav-parent">Zonas <svg class="nav-arrow" viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="zonas/chapinero.html" class="dropdown-item"><span class="di-icon">&#128205;</span><span><strong>Chapinero</strong><small>Bohemio y moderno</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#128205;</span><span><strong>Usaqu&#233;n</strong><small>Exclusivo y residencial</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#128205;</span><span><strong>Rosales</strong><small>Premium y tranquilo</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#128205;</span><span><strong>El Chic&#243;</strong><small>Elegante y central</small></span></a>
+        <a href="propiedades.html" class="dropdown-item"><span class="di-icon">&#128205;</span><span><strong>Cedritos</strong><small>Familiar y seguro</small></span></a>
+      </div>
+    </li>
+    <li class="has-dropdown">
+      <a href="blog.html" class="nav-parent">Blog <svg class="nav-arrow" viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="blog/como-arrendar-apartamento-bogota.html" class="dropdown-item"><span class="di-icon">&#128218;</span><span><strong>C&#243;mo arrendar en Bogot&#225;</strong><small>Gu&#237;a paso a paso</small></span></a>
+        <a href="blog/mejores-barrios-vivir-bogota.html" class="dropdown-item"><span class="di-icon">&#127964;</span><span><strong>Mejores barrios</strong><small>Para vivir en Bogot&#225;</small></span></a>
+        <a href="blog/gastos-notariales-compraventa-colombia.html" class="dropdown-item"><span class="di-icon">&#9878;</span><span><strong>Gastos notariales</strong><small>Compraventa Colombia</small></span></a>
+        <a href="blog.html" class="dropdown-item"><span class="di-icon">&#128218;</span><span><strong>Ver todos los art&#237;culos</strong><small>Gu&#237;as e insights</small></span></a>
+      </div>
+    </li>
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li class="has-dropdown">
+      <a href="sobre-nosotros.html" class="nav-parent">Nosotros <svg class="nav-arrow" viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="sobre-nosotros.html" class="dropdown-item"><span class="di-icon">&#127970;</span><span><strong>Qui&#233;nes somos</strong><small>Historia y misi&#243;n</small></span></a>
+        <a href="sobre-nosotros.html" class="dropdown-item"><span class="di-icon">&#128101;</span><span><strong>Nuestro equipo</strong><small>Asesores expertos</small></span></a>
+        <a href="contacto.html" class="dropdown-item"><span class="di-icon">&#128222;</span><span><strong>Contacto</strong><small>Hablemos hoy</small></span></a>
+      </div>
+    </li>
+    <li><a href="contacto.html">Contacto</a></li>
   </ul>
-  <a href="/login.html" class="nav-cta">Acceso Asesores</a>
+  <a href="login.html" class="nav-cta">Acceso Asesores</a>
 </nav>
 <!-- HERO -->
 <section class="hero">
@@ -176,8 +223,8 @@ img{display:block;max-width:100%}
   <h1 class="font-serif">Encuentra tu <span class="italic">lugar</span><br/>en Bogot&aacute;</h1>
   <p class="hero-lead">Apartamentos y casas en venta y arriendo en los mejores barrios de la ciudad. Asesor&iacute;a personalizada, tecnolog&iacute;a de punta y la confianza que mereces.</p>
   <div class="hero-btns">
-    <a href="/propiedades.html" class="btn-primary">Explorar Propiedades</a>
-    <a href="/contacto.html" class="btn-outline">Hablar con un Asesor</a>
+    <a href="propiedades.html" class="btn-primary">Explorar Propiedades</a>
+    <a href="contacto.html" class="btn-outline">Hablar con un Asesor</a>
   </div>
   <div class="hero-search">
     <select id="tipo" aria-label="Tipo de negocio"><option value="">Tipo de negocio</option><option value="venta">Comprar</option><option value="arriendo">Arrendar</option></select>
@@ -204,24 +251,24 @@ img{display:block;max-width:100%}
       <h2 class="section-heading font-serif">Propiedades <span class="italic">Destacadas</span></h2>
       <p class="section-lead">Una curadur&iacute;a exclusiva de los inmuebles m&aacute;s notables del mercado bogotano.</p>
     </div>
-    <a href="/propiedades.html" class="btn-outline" style="white-space:nowrap;flex-shrink:0">Ver todo el cat&aacute;logo</a>
+    <a href="propiedades.html" class="btn-outline" style="white-space:nowrap;flex-shrink:0">Ver todo el cat&aacute;logo</a>
   </div>
   <!-- grid editorial -->
   <div class="editorial-grid" id="editorial-grid">
-    <div class="prop-card-main reveal" data-href="/propiedades.html" onclick="goTo(this)">
+    <div class="prop-card-main reveal" data-href="propiedades.html" onclick="goTo(this)">
       <div class="prop-img-wrap"><div class="prop-img-placeholder">&#127968;</div><span class="prop-badge-pill">En Venta</span></div>
       <div class="prop-card-body"><div class="prop-price-tag font-serif">$650.000.000</div><div class="prop-name font-serif">Penthouse en Chic&oacute; Norte</div><div class="prop-location">Bogot&aacute; &middot; Chapinero</div><div class="prop-icons"><span class="prop-icon-item">&#127968; 4 hab</span><span class="prop-icon-item">&#128699; 3 ba&ntilde;</span><span class="prop-icon-item">&#9632; 220 m&sup2;</span></div></div>
     </div>
-    <div class="prop-card-side reveal reveal-delay-1" data-href="/propiedades.html" onclick="goTo(this)">
+    <div class="prop-card-side reveal reveal-delay-1" data-href="propiedades.html" onclick="goTo(this)">
       <div class="prop-img-wrap"><div class="prop-img-placeholder">&#127970;</div><span class="prop-badge-pill">En Arriendo</span></div>
       <div class="prop-card-body"><div class="prop-price-tag font-serif">$4.500.000/mes</div><div class="prop-name font-serif">Apartamento en Santa B&aacute;rbara</div><div class="prop-location">Bogot&aacute; &middot; Usaqu&eacute;n</div><div class="prop-icons"><span class="prop-icon-item">&#127968; 3 hab</span><span class="prop-icon-item">&#128699; 2 ba&ntilde;</span><span class="prop-icon-item">&#9632; 130 m&sup2;</span></div></div>
     </div>
     <div class="prop-card-sm reveal reveal-delay-2">
-      <div class="prop-card-small" data-href="/propiedades.html" onclick="goTo(this)">
+      <div class="prop-card-small" data-href="propiedades.html" onclick="goTo(this)">
         <div class="prop-img-wrap"><div class="prop-img-placeholder" style="font-size:2.5rem">&#127969;</div><span class="prop-badge-pill">En Venta</span></div>
         <div class="prop-card-body"><div class="prop-price-tag font-serif">$320.000.000</div><div class="prop-name font-serif">Casa en Cedritos</div><div class="prop-location">Bogot&aacute; &middot; Usaqu&eacute;n Norte</div><div class="prop-icons"><span class="prop-icon-item">&#127968; 3 hab</span><span class="prop-icon-item">&#9632; 180 m&sup2;</span></div></div>
       </div>
-      <div class="prop-card-small" data-href="/propiedades.html" onclick="goTo(this)">
+      <div class="prop-card-small" data-href="propiedades.html" onclick="goTo(this)">
         <div class="prop-img-wrap"><div class="prop-img-placeholder" style="font-size:2.5rem">&#127959;</div><span class="prop-badge-pill">En Arriendo</span></div>
         <div class="prop-card-body"><div class="prop-price-tag font-serif">$2.800.000/mes</div><div class="prop-name font-serif">Apartaestudio en Chapinero</div><div class="prop-location">Bogot&aacute; &middot; Chapinero Alto</div><div class="prop-icons"><span class="prop-icon-item">&#127968; 1 hab</span><span class="prop-icon-item">&#9632; 45 m&sup2;</span></div></div>
       </div>
@@ -264,20 +311,20 @@ img{display:block;max-width:100%}
     <h2 class="section-heading font-serif">Gu&iacute;as e <span class="italic">Insights</span> Inmobiliarios</h2>
   </div>
   <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:1.5rem;margin-top:2.5rem" id="blog-preview">
-    <a href="/blog/como-arrendar-apartamento-bogota.html" class="reveal" style="display:block;border:1px solid rgba(196,153,42,.12);overflow:hidden;transition:.3s" onmouseover="this.style.borderColor='rgba(196,153,42,.4)'" onmouseout="this.style.borderColor='rgba(196,153,42,.12)'">
+    <a href="blog/como-arrendar-apartamento-bogota.html" class="reveal" style="display:block;border:1px solid rgba(196,153,42,.12);overflow:hidden;transition:.3s" onmouseover="this.style.borderColor='rgba(196,153,42,.4)'" onmouseout="this.style.borderColor='rgba(196,153,42,.12)'">
       <div style="height:200px;background:linear-gradient(135deg,#0d1b2e,#1a2d4a);display:flex;align-items:center;justify-content:center;font-size:3rem">&#128196;</div>
       <div style="padding:1.5rem"><span style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)">Guía</span><h3 class="font-serif" style="font-size:1.1rem;color:var(--cream);margin:.5rem 0 .7rem;line-height:1.3">Cómo arrendar un apartamento en Bogotá en 2026</h3><p style="font-size:.82rem;color:rgba(244,229,194,.45);line-height:1.6;font-weight:300">Todo lo que necesitas saber: documentos, garantías, contratos y consejos para encontrar el arrendamiento ideal.</p></div>
     </a>
-    <a href="/blog/mejores-barrios-vivir-bogota.html" class="reveal reveal-delay-1" style="display:block;border:1px solid rgba(196,153,42,.12);overflow:hidden;transition:.3s" onmouseover="this.style.borderColor='rgba(196,153,42,.4)'" onmouseout="this.style.borderColor='rgba(196,153,42,.12)'">
+    <a href="blog/mejores-barrios-vivir-bogota.html" class="reveal reveal-delay-1" style="display:block;border:1px solid rgba(196,153,42,.12);overflow:hidden;transition:.3s" onmouseover="this.style.borderColor='rgba(196,153,42,.4)'" onmouseout="this.style.borderColor='rgba(196,153,42,.12)'">
       <div style="height:200px;background:linear-gradient(135deg,#0d1b2e,#1a3a2a);display:flex;align-items:center;justify-content:center;font-size:3rem">&#127970;</div>
       <div style="padding:1.5rem"><span style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)">Zonas</span><h3 class="font-serif" style="font-size:1rem;color:var(--cream);margin:.5rem 0 .7rem;line-height:1.3">Los mejores barrios para vivir en Bogotá en 2026</h3><p style="font-size:.82rem;color:rgba(244,229,194,.45);line-height:1.6;font-weight:300">Usaquén, Chicó, Santa Bárbara, Chapinero: análisis completo de cada zona.</p></div>
     </a>
-    <a href="/blog/gastos-notariales-compraventa-colombia.html" class="reveal reveal-delay-2" style="display:block;border:1px solid rgba(196,153,42,.12);overflow:hidden;transition:.3s" onmouseover="this.style.borderColor='rgba(196,153,42,.4)'" onmouseout="this.style.borderColor='rgba(196,153,42,.12)'">
+    <a href="blog/gastos-notariales-compraventa-colombia.html" class="reveal reveal-delay-2" style="display:block;border:1px solid rgba(196,153,42,.12);overflow:hidden;transition:.3s" onmouseover="this.style.borderColor='rgba(196,153,42,.4)'" onmouseout="this.style.borderColor='rgba(196,153,42,.12)'">
       <div style="height:200px;background:linear-gradient(135deg,#0d1b2e,#2a1a1a);display:flex;align-items:center;justify-content:center;font-size:3rem">&#128220;</div>
       <div style="padding:1.5rem"><span style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)">Legal</span><h3 class="font-serif" style="font-size:1rem;color:var(--cream);margin:.5rem 0 .7rem;line-height:1.3">Gastos notariales en una compraventa en Colombia</h3><p style="font-size:.82rem;color:rgba(244,229,194,.45);line-height:1.6;font-weight:300">Guía completa de impuestos, retencion en la fuente y derechos notariales para 2026.</p></div>
     </a>
   </div>
-  <div style="text-align:center;margin-top:2.5rem"><a href="/blog.html" class="btn-outline">Ver todos los artículos</a></div>
+  <div style="text-align:center;margin-top:2.5rem"><a href="blog.html" class="btn-outline">Ver todos los artículos</a></div>
 </section>
 <div class="gold-divider" style="margin:0 auto"></div>
 <!-- CTA FINAL -->
@@ -286,8 +333,8 @@ img{display:block;max-width:100%}
   <h2 class="cta-heading font-serif">Tu propiedad ideal<br/><em>te está esperando</em></h2>
   <p class="cta-sub">Explora nuestro catálogo o habíanos de lo que buscas. Nuestros asesores responden en menos de 2 horas.</p>
   <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
-    <a href="/propiedades.html" class="btn-primary">Ver propiedades en arriendo en Bogotá</a>
-    <a href="/contacto.html" class="btn-outline">Contactar un asesor</a>
+    <a href="propiedades.html" class="btn-primary">Ver propiedades en arriendo en Bogotá</a>
+    <a href="contacto.html" class="btn-outline">Contactar un asesor</a>
   </div>
 </section>
 <!-- FOOTER -->
@@ -299,14 +346,14 @@ img{display:block;max-width:100%}
         <span class="footer-brand-tagline">Bogot&aacute; &bull; Desde 2024</span>
         <p class="footer-brand-desc">Inmobiliaria boutique en Bogot&aacute;. Apartamentos y casas en venta y arriendo en los mejores barrios de la ciudad, con asesores expertos y tecnología de primera.</p>
       </div>
-      <div><p class="footer-col-title">Explorar</p><ul class="footer-col-links"><li><a href="/propiedades.html">Propiedades</a></li><li><a href="/zonas/chapinero.html">Zonas de Bogotá</a></li><li><a href="/blog.html">Blog inmobiliario</a></li><li><a href="/calculadora.html">Calculadora</a></li></ul></div>
-      <div><p class="footer-col-title">Empresa</p><ul class="footer-col-links"><li><a href="/sobre-nosotros.html">Sobre LoMaz</a></li><li><a href="/contacto.html">Contacto</a></li><li><a href="#">Política de privacidad</a></li><li><a href="#">Términos de uso</a></li></ul></div>
-      <div><p class="footer-col-title">Contacto</p><ul class="footer-col-links"><li><a href="https://wa.me/573003300343">WhatsApp 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="/blog/como-arrendar-apartamento-bogota.html">Cómo arrendar</a></li><li><a href="/blog/requisitos-comprar-vivienda-colombia.html">Comprar vivienda</a></li></ul></div>
+      <div><p class="footer-col-title">Explorar</p><ul class="footer-col-links"><li><a href="propiedades.html">Propiedades</a></li><li><a href="zonas/chapinero.html">Zonas de Bogotá</a></li><li><a href="blog.html">Blog inmobiliario</a></li><li><a href="calculadora.html">Calculadora</a></li></ul></div>
+      <div><p class="footer-col-title">Empresa</p><ul class="footer-col-links"><li><a href="sobre-nosotros.html">Sobre LoMaz</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="#">Política de privacidad</a></li><li><a href="#">Términos de uso</a></li></ul></div>
+      <div><p class="footer-col-title">Contacto</p><ul class="footer-col-links"><li><a href="https://wa.me/573003300343">WhatsApp 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="blog/como-arrendar-apartamento-bogota.html">Cómo arrendar</a></li><li><a href="blog/requisitos-comprar-vivienda-colombia.html">Comprar vivienda</a></li></ul></div>
     </div>
     <div class="footer-gold-line"></div>
     <div class="footer-bottom">
       <span>&copy; 2025 LoMaz Home &mdash; Todos los derechos reservados &mdash; Bogot&aacute;, Colombia</span>
-      <a href="/login.html" class="footer-admin-link">Acceso asesores</a>
+      <a href="login.html" class="footer-admin-link">Acceso asesores</a>
     </div>
   </div>
 </footer>
@@ -382,12 +429,12 @@ function goTo(el){window.location.href=el.dataset.href||"/propiedades.html";}
     const main=data[0];
     const cards=[data[1],data[2],data[3]].filter(Boolean);
     g.innerHTML=
-      `<div class="prop-card-main reveal visible" data-href="/propiedades.html?id=${main.id}" onclick="goTo(this)">
+      `<div class="prop-card-main reveal visible" data-href="propiedades.html?id=${main.id}" onclick="goTo(this)">
         <div class="prop-img-wrap"><div class="prop-img-placeholder">&#127968;</div><span class="prop-badge-pill">${main.tipo_operacion||"Venta"}</span></div>
         <div class="prop-card-body"><div class="prop-price-tag font-serif">${fmt(main.precio)}</div><div class="prop-name font-serif">${main.titulo||"Propiedad"}</div><div class="prop-location">${main.ciudad||"Bogota"} &middot; ${main.barrio||""}</div><div class="prop-icons"><span>${main.habitaciones||0} hab</span><span>${main.banos||0} ban</span><span>${main.m2_construccion||0} m&sup2;</span></div></div>
       </div>` +
-      (cards[0]?`<div class="prop-card-side reveal visible" data-href="/propiedades.html?id=${cards[0].id}" onclick="goTo(this)"><div class="prop-img-wrap"><div class="prop-img-placeholder">&#127970;</div><span class="prop-badge-pill">${cards[0].tipo_operacion||"Venta"}</span></div><div class="prop-card-body"><div class="prop-price-tag font-serif">${fmt(cards[0].precio)}</div><div class="prop-name font-serif">${cards[0].titulo||"Propiedad"}</div><div class="prop-location">${cards[0].ciudad||""} &middot; ${cards[0].barrio||""}</div></div></div>`:"") +
-      `<div class="prop-card-sm reveal visible">${cards.slice(1).map(c=>`<div class="prop-card-small" data-href="/propiedades.html?id=${c.id}" onclick="goTo(this)"><div class="prop-img-wrap"><div class="prop-img-placeholder" style="font-size:2rem">&#127969;</div><span class="prop-badge-pill">${c.tipo_operacion||""}</span></div><div class="prop-card-body"><div class="prop-price-tag font-serif">${fmt(c.precio)}</div><div class="prop-name font-serif">${c.titulo||""}</div></div></div>`).join("")}</div>`;
+      (cards[0]?`<div class="prop-card-side reveal visible" data-href="propiedades.html?id=${cards[0].id}" onclick="goTo(this)"><div class="prop-img-wrap"><div class="prop-img-placeholder">&#127970;</div><span class="prop-badge-pill">${cards[0].tipo_operacion||"Venta"}</span></div><div class="prop-card-body"><div class="prop-price-tag font-serif">${fmt(cards[0].precio)}</div><div class="prop-name font-serif">${cards[0].titulo||"Propiedad"}</div><div class="prop-location">${cards[0].ciudad||""} &middot; ${cards[0].barrio||""}</div></div></div>`:"") +
+      `<div class="prop-card-sm reveal visible">${cards.slice(1).map(c=>`<div class="prop-card-small" data-href="propiedades.html?id=${c.id}" onclick="goTo(this)"><div class="prop-img-wrap"><div class="prop-img-placeholder" style="font-size:2rem">&#127969;</div><span class="prop-badge-pill">${c.tipo_operacion||""}</span></div><div class="prop-card-body"><div class="prop-price-tag font-serif">${fmt(c.precio)}</div><div class="prop-name font-serif">${c.titulo||""}</div></div></div>`).join("")}</div>`;
   }catch(e){console.log("Props OK – using defaults");}
 })();
 let ariaOpen=false;
