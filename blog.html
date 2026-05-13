@@ -165,22 +165,39 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 .aria-panel.open{right:0;}
 .featured-body{padding:1.5rem;}
 }
+
+/* === NAV DROPDOWN BLOG === */
+.has-dropdown{position:relative}
+.has-dropdown:hover .nav-arrow{transform:rotate(180deg)}
+.has-dropdown:hover .nav-dropdown{opacity:1!important;visibility:visible!important;transform:translateX(-50%) translateY(0)!important}
+.nav-dropdown .dropdown-item:hover{background:rgba(196,153,42,.15)!important}
 </style>
 </head>
 <body>
-<nav id="main-nav">
-  <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="index.html">Inicio</a></li>
-    <li><a href="propiedades.html">Propiedades</a></li>
-    <li><a href="blog.html" class="active">Blog</a></li>
-    <li><a href="sobre-nosotros.html">Nosotros</a></li>
-    <li><a href="contacto.html">Contacto</a></li>
-    <li><a href="contacto.html" class="nav-cta">Asesoría</a></li>
+<nav id="main-nav" class="nav" style="position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,46,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(196,153,42,0.2)">
+  <a href="index.html" class="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;color:#F4E5C2;text-decoration:none">LoMaz <span style="color:#C4992A">Home</span></a>
+  <ul class="nav-links" id="nav-links" style="display:flex;gap:2rem;list-style:none;align-items:center;margin:0;padding:0">
+    <li><a href="index.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Inicio</a></li>
+    <li class="has-dropdown">
+      <a href="propiedades.html" class="nav-parent" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none;display:flex;align-items:center;gap:.3rem">Propiedades <svg class="nav-arrow" viewBox="0 0 10 6" width="9" height="9" style="transition:transform .3s"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <div class="nav-dropdown" style="position:absolute;top:calc(100% + .8rem);left:50%;transform:translateX(-50%) translateY(-8px);min-width:240px;background:rgba(13,27,46,.97);border:1px solid rgba(196,153,42,.4);border-top:2px solid #C4992A;backdrop-filter:blur(16px);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s;z-index:2000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+        <a href="propiedades.html" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(196,153,42,.12);text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#127968; Todas las propiedades</a>
+        <a href="propiedades.html?tipo=venta" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(196,153,42,.12);text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#128273; En venta</a>
+        <a href="propiedades.html?tipo=arriendo" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#128203; En arriendo</a>
+      </div>
+    </li>
+    <li><a href="blog.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:#C4992A;text-decoration:none;font-weight:700">Blog</a></li>
+    <li class="has-dropdown">
+      <a href="calculadora.html" class="nav-parent" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none;display:flex;align-items:center;gap:.3rem">Calculadora <svg class="nav-arrow" viewBox="0 0 10 6" width="9" height="9" style="transition:transform .3s"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <div class="nav-dropdown" style="position:absolute;top:calc(100% + .8rem);left:50%;transform:translateX(-50%) translateY(-8px);min-width:240px;background:rgba(13,27,46,.97);border:1px solid rgba(196,153,42,.4);border-top:2px solid #C4992A;backdrop-filter:blur(16px);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s;z-index:2000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+        <a href="calculadora.html#tab-hipotecaria" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(196,153,42,.12);text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#127968; Cuota Hipotecaria</a>
+        <a href="calculadora.html#tab-notarial" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#128220; Gastos Notariales</a>
+      </div>
+    </li>
+    <li><a href="sobre-nosotros.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Nosotros</a></li>
+    <li><a href="contacto.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Contacto</a></li>
   </ul>
-  <div class="nav-ham" id="nav-ham" onclick="document.getElementById('nav-links').classList.toggle('open')">
-    <span></span><span></span><span></span>
-  </div>
+  <a href="login.html" style="border:1px solid #C4992A;color:#F4E5C2;padding:.5rem 1.2rem;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .3s">Acceso Asesores</a>
 </nav>
 <section class="blog-hero">
   <p class="blog-hero-eyebrow">Blog Inmobiliario</p>
@@ -203,7 +220,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 <section class="featured-section reveal">
   <p class="section-eyebrow">N&deg;01 &mdash; Destacado</p>
   <h2 class="section-title">Artículo de la semana</h2>
-  <a href="blog/como-arrendar-apartamento-bogota.html" class="featured-card" data-cat="Arrendamiento">
+  <a href="blog.html" class="featured-card" data-cat="Arrendamiento">
     <div class="featured-img">
       <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80&auto=format" alt="Cómo arrendar un apartamento en Bogotá paso a paso" loading="lazy"/>
       <span class="feat-badge">Arrendamiento</span>
@@ -235,7 +252,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Documentos, capacidad de endeudamiento, subsidios y todo lo que debes preparar antes de iniciar la búsqueda de tu casa o apartamento.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Abril 2026 &middot; 7 min</span>
-          <a href="blog/requisitos-comprar-vivienda-colombia.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -249,7 +266,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Comparamos las tasas de los principales bancos colombianos y te explicamos paso a paso cómo solicitar un crédito para vivienda.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Abril 2026 &middot; 9 min</span>
-          <a href="blog/credito-hipotecario-colombia.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -263,7 +280,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Escritura, registro, retensión en la fuente, IVA notarial: desglosamos cada rubro y quién paga qué en una transacción inmobiliaria.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Marzo 2026 &middot; 6 min</span>
-          <a href="blog/gastos-notariales-compraventa-colombia.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -277,7 +294,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">El programa gubernamental de subsidios para vivienda nueva en Colombia. Todo lo que necesitas saber para acceder al beneficio este año.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Marzo 2026 &middot; 8 min</span>
-          <a href="blog/subsidio-mi-casa-ya-2026.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -291,7 +308,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Certificado de tradición, paz y salvo predial, promesa de compraventa y más. La lista completa para vendedores en 2026.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Febrero 2026 &middot; 5 min</span>
-          <a href="blog/documentos-para-vender-propiedad.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -305,7 +322,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Análisis por zona: Chapinero, Usaquén, Chicó, Suba, Kennedy y más. Comparativa de precios para tomar decisiones informadas.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Febrero 2026 &middot; 7 min</span>
-          <a href="blog/metro-cuadrado-bogota-por-barrio.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -319,7 +336,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Seguridad, accesibilidad, restaurantes, parques y calidad de vida: evaluamos los 8 barrios preferidos por familias y profesionales en Bogotá.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Enero 2026 &middot; 10 min</span>
-          <a href="blog/mejores-barrios-para-vivir-bogota.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -333,7 +350,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Fechas límite, descuentos por pronto pago y el paso a paso para liquidar tu impuesto predial en Bogotá este año sin contratiempos.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Enero 2026 &middot; 5 min</span>
-          <a href="blog/impuesto-predial-bogota.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -347,7 +364,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
         <p class="blog-card-excerpt">Póliza de arrendamiento, contratos legales, cláusulas clave y derechos y deberes de ambas partes según la ley colombiana vigente.</p>
         <div class="blog-card-footer">
           <span class="blog-card-date">Diciembre 2025 &middot; 8 min</span>
-          <a href="blog/arriendo-seguro-bogota.html" class="blog-card-link">Leer &rarr;</a>
+          <a href="blog.html" class="blog-card-link">Leer &rarr;</a>
         </div>
       </div>
     </article>
@@ -398,10 +415,10 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
       <div class="footer-col">
         <h4>Blog</h4>
         <ul>
-          <li><a href="blog/como-arrendar-apartamento-bogota.html">Cómo arrendar</a></li>
-          <li><a href="blog/credito-hipotecario-colombia.html">Crédito hipotecario</a></li>
-          <li><a href="blog/mejores-barrios-para-vivir-bogota.html">Mejores barrios</a></li>
-          <li><a href="blog/subsidio-mi-casa-ya-2026.html">Mi Casa Ya</a></li>
+          <li><a href="blog.html">Cómo arrendar</a></li>
+          <li><a href="blog.html">Crédito hipotecario</a></li>
+          <li><a href="blog.html">Mejores barrios</a></li>
+          <li><a href="blog.html">Mi Casa Ya</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -416,7 +433,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
     <div class="footer-bottom">
       <span class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</span>
       <span class="footer-city">Bogotá &middot; Desde 2024</span>
-      <a href="/admin/login.html" class="footer-admin-link">Acceso asesores</a>
+      <a href="login.html" class="footer-admin-link">Acceso asesores</a>
     </div>
   </div>
 </footer>
