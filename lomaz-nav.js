@@ -7,11 +7,6 @@
 (function() {
 'use strict';
 
-// ============================================================
-// VARIABLES DE MARCA LOMAZ
-// Navy: #0D1B2E | Gold: #c9a96e | Cream: #f5f0e8 | Ink: #1c1917
-// ============================================================
-
 const LOMAZ_STYLES = `
 /* ======= LOMAZ NAV UNIVERSAL ======= */
 :root {
@@ -34,24 +29,17 @@ const LOMAZ_STYLES = `
   --lm-shadow-gold: 0 4px 20px rgba(201, 169, 110, 0.25);
 }
 
-/* Hide WhatsApp float buttons from index.html and other pages */
+/* Hide WhatsApp float buttons */
+.wa-float,
 .aria-wa-btn,
 .whatsapp-float,
-a[href*="wa.me"][class*="float"],
-a[href*="wa.me"][style*="position:fixed"],
-a[href*="wa.me"][style*="position: fixed"],
-[class*="whatsapp"][style*="position:fixed"],
-[class*="whatsapp"][style*="position: fixed"] {
+.float-wa,
+.wa-btn-float,
+a.wa-float,
+[class*="wa-float"],
+[class*="whatsapp-float"] {
   display: none !important;
   visibility: hidden !important;
-}
-
-/* Fix black CTA buttons — replace pure black with navy */
-.hero__btn[href]:not(.hero__btn--outline):not([style]),
-.btn-primary-black,
-button.nav__btn-cta:not(.outline) {
-  background-color: var(--lm-navy) !important;
-  border-color: var(--lm-navy) !important;
 }
 
 /* ===== PROGRESS BAR ===== */
@@ -291,7 +279,7 @@ button.nav__btn-cta:not(.outline) {
 }
 #lm-nav.lm-dark .lm-hamburger span { background: var(--lm-white); }
 
-/* ===== ARIA FLOATING CHAT BUTTON ===== */
+/* ===== ARIA FLOATING ORB BUTTON ===== */
 #lm-aria-fab {
   position: fixed;
   bottom: 28px;
@@ -303,14 +291,13 @@ button.nav__btn-cta:not(.outline) {
   justify-content: center;
 }
 
-/* Orb container */
 .lm-fab-orb {
   position: relative;
   width: 52px;
   height: 52px;
 }
 
-/* Outer glow ring */
+/* Pulsing rings around orb */
 .lm-fab-ring {
   position: absolute;
   inset: -6px;
@@ -325,13 +312,12 @@ button.nav__btn-cta:not(.outline) {
   border: 1px solid rgba(201, 169, 110, 0.12);
   animation: lm-fab-ring-pulse 3s ease-in-out infinite 0.8s;
 }
-
 @keyframes lm-fab-ring-pulse {
   0%, 100% { opacity: 0; transform: scale(0.9); }
   50% { opacity: 1; transform: scale(1); }
 }
 
-/* Main circle */
+/* Main orb circle */
 .lm-fab-circle {
   position: relative;
   width: 52px;
@@ -350,7 +336,6 @@ button.nav__btn-cta:not(.outline) {
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow: visible;
 }
-
 #lm-aria-fab:hover .lm-fab-circle {
   transform: scale(1.08);
   border-color: rgba(201, 169, 110, 0.7);
@@ -361,7 +346,6 @@ button.nav__btn-cta:not(.outline) {
     inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-/* The A letter */
 .lm-fab-letter {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
   font-size: 1.4rem;
@@ -375,7 +359,6 @@ button.nav__btn-cta:not(.outline) {
   text-shadow: 0 0 12px rgba(201, 169, 110, 0.5);
 }
 
-/* Online dot */
 .lm-fab-status {
   position: absolute;
   bottom: 2px;
@@ -390,7 +373,7 @@ button.nav__btn-cta:not(.outline) {
   z-index: 3;
 }
 
-/* Tooltip on hover */
+/* Tooltip */
 .lm-fab-tooltip {
   position: absolute;
   bottom: calc(100% + 10px);
@@ -456,7 +439,6 @@ button.nav__btn-cta:not(.outline) {
   pointer-events: all;
 }
 
-/* Chat header */
 .lm-chat-header {
   display: flex;
   align-items: center;
@@ -467,8 +449,7 @@ button.nav__btn-cta:not(.outline) {
   flex-shrink: 0;
 }
 .lm-chat-avatar {
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   background: radial-gradient(135deg, #1e3a5f, #0D1B2E);
   border: 1px solid rgba(201,169,110,0.5);
@@ -484,84 +465,42 @@ button.nav__btn-cta:not(.outline) {
 }
 .lm-chat-info { flex: 1; min-width: 0; }
 .lm-chat-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.02em;
-  margin: 0;
+  font-size: 0.88rem; font-weight: 600;
+  color: #fff; letter-spacing: 0.02em; margin: 0;
 }
 .lm-chat-status {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.5);
-  margin-top: 1px;
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.68rem; color: rgba(255,255,255,0.5); margin-top: 1px;
 }
 .lm-chat-status-dot {
-  width: 5px;
-  height: 5px;
-  background: #4ade80;
-  border-radius: 50%;
+  width: 5px; height: 5px;
+  background: #4ade80; border-radius: 50%;
   box-shadow: 0 0 6px rgba(74,222,128,0.7);
   animation: lm-pulse 2s infinite;
 }
-.lm-chat-actions {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-.lm-chat-action-btn {
-  width: 28px;
-  height: 28px;
-  background: rgba(255,255,255,0.07);
-  border: none;
-  border-radius: 6px;
-  color: rgba(255,255,255,0.5);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  transition: all 0.15s;
+.lm-chat-actions { display: flex; gap: 4px; align-items: center; }
+.lm-chat-action-btn, .lm-chat-close-btn {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.07); border: none; border-radius: 6px;
+  color: rgba(255,255,255,0.5); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; transition: all 0.15s;
 }
 .lm-chat-action-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
-.lm-chat-close-btn {
-  width: 28px;
-  height: 28px;
-  background: rgba(255,255,255,0.07);
-  border: none;
-  border-radius: 6px;
-  color: rgba(255,255,255,0.5);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  transition: all 0.15s;
-}
+.lm-chat-close-btn { font-size: 1.1rem; }
 .lm-chat-close-btn:hover { background: rgba(220,50,50,0.2); color: #ff6b6b; }
 
-/* Chat messages area */
 .lm-chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: #0a1019;
-  scroll-behavior: smooth;
+  flex: 1; overflow-y: auto;
+  padding: 16px; display: flex;
+  flex-direction: column; gap: 12px;
+  background: #0a1019; scroll-behavior: smooth;
 }
 .lm-chat-messages::-webkit-scrollbar { width: 3px; }
-.lm-chat-messages::-webkit-scrollbar-track { background: transparent; }
 .lm-chat-messages::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 2px; }
 
-/* Messages */
 .lm-msg {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
+  display: flex; gap: 8px; align-items: flex-end;
   animation: lm-msg-in 0.25s ease-out;
 }
 @keyframes lm-msg-in {
@@ -571,12 +510,8 @@ button.nav__btn-cta:not(.outline) {
 .lm-msg.lm-msg-user { flex-direction: row-reverse; }
 
 .lm-msg-bubble {
-  max-width: 82%;
-  padding: 10px 13px;
-  border-radius: 14px;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  word-break: break-word;
+  max-width: 82%; padding: 10px 13px; border-radius: 14px;
+  font-size: 0.82rem; line-height: 1.55; word-break: break-word;
 }
 .lm-msg-aria .lm-msg-bubble {
   background: rgba(13,27,46,0.7);
@@ -586,47 +521,28 @@ button.nav__btn-cta:not(.outline) {
 }
 .lm-msg-user .lm-msg-bubble {
   background: linear-gradient(135deg, #c9a96e, #a07840);
-  color: #0D1B2E;
-  font-weight: 500;
+  color: #0D1B2E; font-weight: 500;
   border-radius: 14px 14px 4px 14px;
 }
 .lm-msg-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  width: 24px; height: 24px; border-radius: 50%;
   background: radial-gradient(135deg, #1e3a5f, #0D1B2E);
   border: 1px solid rgba(201,169,110,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--lm-font-serif);
-  font-style: italic;
-  font-size: 0.7rem;
-  color: var(--lm-gold);
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--lm-font-serif); font-style: italic;
+  font-size: 0.7rem; color: var(--lm-gold); flex-shrink: 0;
 }
 
-/* Typing indicator */
-.lm-typing {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  animation: lm-msg-in 0.25s ease-out;
-}
+.lm-typing { display: flex; gap: 8px; align-items: flex-end; animation: lm-msg-in 0.25s ease-out; }
 .lm-typing-bubble {
   background: rgba(13,27,46,0.7);
   border: 1px solid rgba(201,169,110,0.12);
   border-radius: 4px 14px 14px 14px;
-  padding: 12px 16px;
-  display: flex;
-  gap: 4px;
-  align-items: center;
+  padding: 12px 16px; display: flex; gap: 4px; align-items: center;
 }
 .lm-typing-dot {
-  width: 5px;
-  height: 5px;
-  background: rgba(201,169,110,0.6);
-  border-radius: 50%;
+  width: 5px; height: 5px;
+  background: rgba(201,169,110,0.6); border-radius: 50%;
   animation: lm-typing-bounce 1.2s infinite ease-in-out;
 }
 .lm-typing-dot:nth-child(2) { animation-delay: 0.15s; }
@@ -636,148 +552,89 @@ button.nav__btn-cta:not(.outline) {
   30% { transform: translateY(-5px); }
 }
 
-/* Welcome state */
 .lm-chat-welcome {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 1.5rem;
-  gap: 12px;
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 1.5rem; gap: 12px;
 }
 .lm-chat-welcome-logo {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
+  width: 52px; height: 52px; border-radius: 50%;
   background: radial-gradient(135deg, #1e3a5f, #0D1B2E);
   border: 1px solid rgba(201,169,110,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--lm-font-serif);
-  font-style: italic;
-  font-size: 1.6rem;
-  color: var(--lm-gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--lm-font-serif); font-style: italic;
+  font-size: 1.6rem; color: var(--lm-gold);
   text-shadow: 0 0 16px rgba(201,169,110,0.5);
   box-shadow: 0 0 24px rgba(201,169,110,0.12);
   margin-bottom: 4px;
 }
 .lm-chat-welcome h3 {
-  font-family: var(--lm-font-serif);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0;
-  letter-spacing: 0.02em;
+  font-family: var(--lm-font-serif); font-size: 1.1rem;
+  font-weight: 600; color: #fff; margin: 0; letter-spacing: 0.02em;
 }
 .lm-chat-welcome p {
-  font-size: 0.77rem;
-  color: rgba(255,255,255,0.45);
-  margin: 0;
-  line-height: 1.5;
+  font-size: 0.77rem; color: rgba(255,255,255,0.45); margin: 0; line-height: 1.5;
 }
 
-/* Quick suggestions */
 .lm-chat-suggestions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-  margin-top: 4px;
+  display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 4px;
 }
 .lm-suggestion-chip {
   background: rgba(201,169,110,0.07);
   border: 1px solid rgba(201,169,110,0.18);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 0.75rem;
-  color: rgba(201,169,110,0.85);
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.15s;
-  font-family: var(--lm-font-sans);
-  width: 100%;
+  border-radius: 8px; padding: 8px 12px;
+  font-size: 0.75rem; color: rgba(201,169,110,0.85);
+  cursor: pointer; text-align: left; transition: all 0.15s;
+  font-family: var(--lm-font-sans); width: 100%;
 }
 .lm-suggestion-chip:hover {
   background: rgba(201,169,110,0.12);
-  border-color: rgba(201,169,110,0.35);
-  color: var(--lm-gold);
+  border-color: rgba(201,169,110,0.35); color: var(--lm-gold);
 }
 
-/* Chat input */
 .lm-chat-input-area {
-  padding: 12px;
-  background: #0c1420;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  flex-shrink: 0;
+  padding: 12px; background: #0c1420;
+  border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
 }
 .lm-chat-input-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
+  display: flex; align-items: flex-end; gap: 8px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 8px 10px;
-  transition: border-color 0.2s;
+  border-radius: 12px; padding: 8px 10px; transition: border-color 0.2s;
 }
 .lm-chat-input-row:focus-within {
   border-color: rgba(201,169,110,0.35);
   box-shadow: 0 0 0 3px rgba(201,169,110,0.06);
 }
 .lm-chat-textarea {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: rgba(255,255,255,0.9);
-  font-family: var(--lm-font-sans);
-  font-size: 0.82rem;
-  line-height: 1.5;
-  resize: none;
-  max-height: 100px;
-  min-height: 20px;
+  flex: 1; background: none; border: none; outline: none;
+  color: rgba(255,255,255,0.9); font-family: var(--lm-font-sans);
+  font-size: 0.82rem; line-height: 1.5; resize: none;
+  max-height: 100px; min-height: 20px;
 }
 .lm-chat-textarea::placeholder { color: rgba(255,255,255,0.2); }
 .lm-chat-send-btn {
-  width: 30px;
-  height: 30px;
+  width: 30px; height: 30px;
   background: linear-gradient(135deg, #c9a96e, #a07840);
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.2s;
+  border: none; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; transition: all 0.2s;
   color: var(--lm-navy);
 }
 .lm-chat-send-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(201,169,110,0.3); }
 .lm-chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 .lm-chat-footer-note {
-  text-align: center;
-  font-size: 0.62rem;
-  color: rgba(255,255,255,0.15);
-  margin-top: 6px;
-  letter-spacing: 0.02em;
+  text-align: center; font-size: 0.62rem;
+  color: rgba(255,255,255,0.15); margin-top: 6px; letter-spacing: 0.02em;
 }
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .lm-menu, .lm-nav-right { display: none; }
   .lm-hamburger { display: flex; }
-  
   #lm-chat-widget {
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: 70vh;
-    border-radius: 20px 20px 0 0;
-    border-bottom: none;
+    bottom: 0; right: 0; left: 0; width: 100%; height: 70vh;
+    border-radius: 20px 20px 0 0; border-bottom: none;
     transform-origin: bottom center;
   }
   #lm-aria-fab { bottom: 20px; right: 20px; }
@@ -786,31 +643,22 @@ button.nav__btn-cta:not(.outline) {
 /* ===== MOBILE OVERLAY MENU ===== */
 #lm-mobile-menu {
   display: none;
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(13,27,46,0.98);
   z-index: 9998;
   flex-direction: column;
-  padding: 80px 2rem 2rem;
-  overflow-y: auto;
+  padding: 80px 2rem 2rem; overflow-y: auto;
 }
 #lm-mobile-menu.lm-open { display: flex; }
 .lm-mob-link {
-  display: block;
-  padding: 1rem 0;
+  display: block; padding: 1rem 0;
   border-bottom: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.8);
-  font-size: 1.2rem;
-  text-decoration: none;
-  font-family: var(--lm-font-serif);
-  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.8); font-size: 1.2rem;
+  text-decoration: none; font-family: var(--lm-font-serif); letter-spacing: 0.02em;
 }
 .lm-mob-link:hover { color: var(--lm-gold); }
 `;
 
-// ============================================================
-// NAV CONFIG — dropdown menus
-// ============================================================
 const NAV_ITEMS = [
   {
     label: 'Propiedades',
@@ -877,15 +725,10 @@ const NAV_ITEMS = [
   }
 ];
 
-// SVG chevron
 const CHEVRON = '<svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>';
 
-// ============================================================
-// BUILD NAV HTML
-// ============================================================
 function buildNav() {
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  
   const menuItems = NAV_ITEMS.map(item => {
     const isActive = currentPage === item.href || currentPage.includes(item.href.split('.')[0]);
     const dropdownLinks = item.items.map(dd =>
@@ -897,7 +740,6 @@ function buildNav() {
         '</span>' +
       '</a>'
     ).join('');
-    
     return '<li class="lm-item">' +
       '<a class="lm-link' + (isActive ? ' lm-active' : '') + '" href="' + item.href + '">' +
         item.label + ' ' + CHEVRON +
@@ -905,7 +747,6 @@ function buildNav() {
       '<div class="lm-dropdown">' + dropdownLinks + '</div>' +
     '</li>';
   }).join('');
-  
   return '<nav id="lm-nav" class="lm-transparent">' +
     '<div id="lm-progress"></div>' +
     '<div class="lm-nav-inner">' +
@@ -924,9 +765,6 @@ function buildNav() {
   '</nav>';
 }
 
-// ============================================================
-// BUILD ARIA FAB HTML
-// ============================================================
 function buildFAB() {
   return '<div id="lm-aria-fab" role="button" aria-label="Habla con ARIA" tabindex="0">' +
     '<div class="lm-fab-orb">' +
@@ -937,23 +775,17 @@ function buildFAB() {
         '<span class="lm-fab-status"></span>' +
       '</div>' +
     '</div>' +
-    '<div class="lm-fab-tooltip">Habla con ARIA · IA inmobiliaria</div>' +
+    '<div class="lm-fab-tooltip">ARIA · Asesora IA inmobiliaria</div>' +
   '</div>';
 }
 
-// ============================================================
-// BUILD CHAT WIDGET HTML
-// ============================================================
 function buildChatWidget() {
   return '<div id="lm-chat-widget">' +
     '<div class="lm-chat-header">' +
       '<div class="lm-chat-avatar">A</div>' +
       '<div class="lm-chat-info">' +
         '<p class="lm-chat-name">ARIA</p>' +
-        '<div class="lm-chat-status">' +
-          '<span class="lm-chat-status-dot"></span>' +
-          '<span>Asesora IA · En línea</span>' +
-        '</div>' +
+        '<div class="lm-chat-status"><span class="lm-chat-status-dot"></span><span>Asesora IA · En línea</span></div>' +
       '</div>' +
       '<div class="lm-chat-actions">' +
         '<button class="lm-chat-action-btn" id="lm-chat-expand" title="Abrir chat completo">⤢</button>' +
@@ -984,9 +816,6 @@ function buildChatWidget() {
   '</div>';
 }
 
-// ============================================================
-// BUILD MOBILE MENU
-// ============================================================
 function buildMobileMenu() {
   const links = NAV_ITEMS.map(item =>
     '<a class="lm-mob-link" href="' + item.href + '">' + item.label + '</a>'
@@ -998,9 +827,6 @@ function buildMobileMenu() {
   '</div>';
 }
 
-// ============================================================
-// ARIA CHAT — AI RESPONSES
-// ============================================================
 const ARIA_KNOWLEDGE = {
   propiedades: 'Tenemos un portafolio selecto de propiedades en los mejores barrios de Bogotá: Usaquén, Chapinero, La Cabrera, Rosales y Santa Bárbara. Contamos con apartamentos, casas y espacios comerciales. ¿Te gustaría filtrar por zona o tipo de inmueble?',
   usaquen: 'Usaquén es uno de los barrios más exclusivos de Bogotá, al norte de la ciudad. Ofrecemos apartamentos y casas con precios desde $450M COP. Es ideal por su ambiente tranquilo, gastronomía y cercanía a centros empresariales.',
@@ -1017,14 +843,13 @@ function getAriaResponse(msg) {
   if (m.includes('usaquén') || m.includes('usaquen')) return ARIA_KNOWLEDGE.usaquen;
   if (m.includes('chapinero')) return ARIA_KNOWLEDGE.chapinero;
   if (m.includes('propiedad') || m.includes('apartamento') || m.includes('casa') || m.includes('portafolio')) return ARIA_KNOWLEDGE.propiedades;
-  if (m.includes('compra') || m.includes('proceso') || m.includes('escritura') || m.includes('escriturar')) return ARIA_KNOWLEDGE.compra;
+  if (m.includes('compra') || m.includes('proceso') || m.includes('escritura')) return ARIA_KNOWLEDGE.compra;
   if (m.includes('notarial') || m.includes('gastos') || m.includes('notaría')) return ARIA_KNOWLEDGE.notariales;
   if (m.includes('crédito') || m.includes('credito') || m.includes('hipotecario') || m.includes('banco')) return ARIA_KNOWLEDGE.credito;
   if (m.includes('contacto') || m.includes('teléfono') || m.includes('email') || m.includes('asesor')) return ARIA_KNOWLEDGE.contacto;
   return ARIA_KNOWLEDGE.default;
 }
 
-// State
 let lmChatOpen = false;
 let lmMessages = [];
 let lmTyping = false;
@@ -1033,7 +858,6 @@ function lmAddMessage(text, role) {
   const msgs = document.getElementById('lm-chat-msgs');
   const welcome = document.getElementById('lm-chat-welcome');
   if (welcome) welcome.remove();
-  
   const div = document.createElement('div');
   div.className = 'lm-msg lm-msg-' + role;
   if (role === 'aria') {
@@ -1044,7 +868,6 @@ function lmAddMessage(text, role) {
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
   lmMessages.push({role, text});
-  return div;
 }
 
 function lmShowTyping() {
@@ -1066,7 +889,6 @@ async function lmStreamMessage(text) {
   const msgs = document.getElementById('lm-chat-msgs');
   const welcome = document.getElementById('lm-chat-welcome');
   if (welcome) welcome.remove();
-  
   const div = document.createElement('div');
   div.className = 'lm-msg lm-msg-aria';
   const bubble = document.createElement('div');
@@ -1075,16 +897,14 @@ async function lmStreamMessage(text) {
   div.innerHTML = '<div class="lm-msg-avatar">A</div>';
   div.appendChild(bubble);
   msgs.appendChild(div);
-  
   let i = 0;
-  const speed = 18;
   return new Promise(resolve => {
     function typeChar() {
       if (i < text.length) {
         bubble.textContent += text[i];
         msgs.scrollTop = msgs.scrollHeight;
         i++;
-        setTimeout(typeChar, speed);
+        setTimeout(typeChar, 16);
       } else {
         lmMessages.push({role: 'aria', text});
         resolve();
@@ -1097,26 +917,17 @@ async function lmStreamMessage(text) {
 async function lmSendMessage(text) {
   if (!text.trim() || lmTyping) return;
   lmTyping = true;
-  
   const sendBtn = document.getElementById('lm-chat-send');
   const input = document.getElementById('lm-chat-input');
   if (sendBtn) sendBtn.disabled = true;
   if (input) { input.value = ''; input.style.height = 'auto'; }
-  
   lmAddMessage(text, 'user');
-  
-  // Show typing indicator
   await new Promise(r => setTimeout(r, 300));
   lmShowTyping();
-  
-  // Get response
   const response = getAriaResponse(text);
-  const delay = 800 + Math.random() * 600;
-  
-  await new Promise(r => setTimeout(r, delay));
+  await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
   lmHideTyping();
   await lmStreamMessage(response);
-  
   lmTyping = false;
   if (sendBtn) sendBtn.disabled = false;
   if (input) input.focus();
@@ -1128,84 +939,74 @@ function lmToggleChat() {
   if (widget) {
     if (lmChatOpen) {
       widget.classList.add('lm-chat-open');
-      setTimeout(() => {
-        const input = document.getElementById('lm-chat-input');
-        if (input) input.focus();
-      }, 350);
+      setTimeout(() => { const input = document.getElementById('lm-chat-input'); if (input) input.focus(); }, 350);
     } else {
       widget.classList.remove('lm-chat-open');
     }
   }
 }
 
-// ============================================================
-// INIT
-// ============================================================
 function lmInit() {
-  // 1. Inject styles
+  // Inject styles
   const style = document.createElement('style');
   style.textContent = LOMAZ_STYLES;
   document.head.appendChild(style);
   
-  // 2. Remove old nav elements to avoid duplicates
-  document.querySelectorAll('.nav, #nav, nav.main-nav, header.site-header').forEach(el => {
-    if (!el.id || el.id !== 'lm-nav') el.style.display = 'none';
-  });
-  
-  // 3. Inject nav
+  // Inject nav
   const navEl = document.createElement('div');
   navEl.innerHTML = buildNav();
   document.body.prepend(navEl.firstChild);
   
-  // 4. Inject FAB
+  // Inject FAB
   const fabEl = document.createElement('div');
   fabEl.innerHTML = buildFAB();
   document.body.appendChild(fabEl.firstChild);
   
-  // 5. Inject chat widget
+  // Inject chat widget
   const chatEl = document.createElement('div');
   chatEl.innerHTML = buildChatWidget();
   document.body.appendChild(chatEl.firstChild);
   
-  // 6. Inject mobile menu
+  // Inject mobile menu
   const mobEl = document.createElement('div');
   mobEl.innerHTML = buildMobileMenu();
   document.body.appendChild(mobEl.firstChild);
   
-  // 7. Add body padding for fixed nav
-  document.body.style.paddingTop = document.body.style.paddingTop || '64px';
+  // Add body padding
+  if (!document.body.style.paddingTop) document.body.style.paddingTop = '64px';
   
-  // 8. Hide WhatsApp elements
+  // Hide WhatsApp float buttons — target .wa-float specifically
   const hideWA = () => {
-    document.querySelectorAll('[href*="wa.me"]').forEach(el => {
-      const style = window.getComputedStyle(el);
-      if (style.position === 'fixed' || el.closest('[style*="position:fixed"]') || el.closest('[style*="position: fixed"]')) {
-        el.style.display = 'none';
-      }
+    // Target by class name
+    const waSelectors = ['.wa-float', '.whatsapp-float', '.float-wa', '.wa-btn-float', '[class*="wa-float"]'];
+    waSelectors.forEach(sel => {
+      try {
+        document.querySelectorAll(sel).forEach(el => { el.style.cssText += 'display:none!important;visibility:hidden!important;'; });
+      } catch(e) {}
     });
-    // Also target by class patterns
-    document.querySelectorAll('.wa-float, .whatsapp-float, .float-wa, [class*="whatsapp-btn"]').forEach(el => {
-      if (['fixed','sticky'].includes(window.getComputedStyle(el).position)) {
-        el.style.display = 'none';
+    // Target wa.me links that are fixed position
+    document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+      const s = window.getComputedStyle(el);
+      if (s.position === 'fixed' || s.position === 'sticky') {
+        el.style.cssText += 'display:none!important;visibility:hidden!important;';
       }
     });
   };
   hideWA();
-  setTimeout(hideWA, 500);
-  setTimeout(hideWA, 1500);
+  setTimeout(hideWA, 200);
+  setTimeout(hideWA, 800);
+  setTimeout(hideWA, 2000);
   
-  // 9. Scroll behavior for nav
+  // Scroll behavior
   const nav = document.getElementById('lm-nav');
   const progressBar = document.getElementById('lm-progress');
-  const isDarkPage = ['calculadora.html','panel.html','admin.html','clientes.html','leads.html'].some(p => 
+  const isDarkPage = ['calculadora.html','panel.html','admin.html','clientes.html','leads.html'].some(p =>
     window.location.pathname.includes(p)
   );
-  
   if (isDarkPage) {
     nav.classList.remove('lm-transparent');
     nav.classList.add('lm-dark');
   }
-  
   window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
     if (!isDarkPage) {
@@ -1217,63 +1018,53 @@ function lmInit() {
         nav.classList.add('lm-transparent');
       }
     }
-    // Progress bar
     const docH = document.documentElement.scrollHeight - window.innerHeight;
-    if (progressBar && docH > 0) {
-      progressBar.style.width = (scrolled / docH * 100) + '%';
-    }
+    if (progressBar && docH > 0) progressBar.style.width = (scrolled / docH * 100) + '%';
   }, { passive: true });
   
-  // 10. FAB click — toggle chat widget
-  document.getElementById('lm-aria-fab').addEventListener('click', lmToggleChat);
-  document.getElementById('lm-aria-fab').addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') lmToggleChat();
-  });
+  // FAB toggle chat
+  const fab = document.getElementById('lm-aria-fab');
+  fab.addEventListener('click', lmToggleChat);
+  fab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') lmToggleChat(); });
   
-  // 11. Close chat
+  // Close chat
   document.getElementById('lm-chat-close').addEventListener('click', () => {
-    lmChatOpen = true; lmToggleChat();
+    if (lmChatOpen) { lmChatOpen = true; lmToggleChat(); }
   });
   
-  // 12. Expand to full chat
+  // Expand to full chat page
   document.getElementById('lm-chat-expand').addEventListener('click', () => {
     window.location.href = 'aria.html';
   });
   
-  // 13. Nav ARIA button — open chat widget
+  // Nav ARIA button
   document.getElementById('lm-aria-nav-trigger').addEventListener('click', () => {
     if (!lmChatOpen) lmToggleChat();
+    else { lmChatOpen = true; lmToggleChat(); }
   });
   
-  // 14. Chat input
+  // Chat input
   const chatInput = document.getElementById('lm-chat-input');
   const sendBtn = document.getElementById('lm-chat-send');
-  
   chatInput.addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = Math.min(this.scrollHeight, 100) + 'px';
     sendBtn.disabled = !this.value.trim();
   });
-  
   chatInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       if (!sendBtn.disabled) lmSendMessage(this.value.trim());
     }
   });
+  sendBtn.addEventListener('click', () => lmSendMessage(chatInput.value.trim()));
   
-  sendBtn.addEventListener('click', () => {
-    lmSendMessage(chatInput.value.trim());
-  });
-  
-  // 15. Quick suggestion chips
+  // Suggestion chips
   document.querySelectorAll('.lm-suggestion-chip').forEach(chip => {
-    chip.addEventListener('click', function() {
-      lmSendMessage(this.dataset.msg);
-    });
+    chip.addEventListener('click', function() { lmSendMessage(this.dataset.msg); });
   });
   
-  // 16. Hamburger / mobile menu
+  // Hamburger
   document.getElementById('lm-ham').addEventListener('click', () => {
     document.getElementById('lm-mobile-menu').classList.add('lm-open');
   });
@@ -1281,7 +1072,7 @@ function lmInit() {
     document.getElementById('lm-mobile-menu').classList.remove('lm-open');
   });
   
-  // 17. Escape key closes chat and mobile menu
+  // Escape key
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       if (lmChatOpen) { lmChatOpen = true; lmToggleChat(); }
@@ -1289,24 +1080,23 @@ function lmInit() {
     }
   });
   
-  // 18. Click outside chat to close
+  // Click outside to close chat
   document.addEventListener('click', e => {
     if (lmChatOpen) {
       const widget = document.getElementById('lm-chat-widget');
-      const fab = document.getElementById('lm-aria-fab');
+      const fab2 = document.getElementById('lm-aria-fab');
       const navBtn = document.getElementById('lm-aria-nav-trigger');
-      if (!widget.contains(e.target) && !fab.contains(e.target) && !navBtn.contains(e.target)) {
+      if (widget && fab2 && navBtn && !widget.contains(e.target) && !fab2.contains(e.target) && !navBtn.contains(e.target)) {
         lmChatOpen = true; lmToggleChat();
       }
     }
   });
 }
 
-// Run on DOM ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', lmInit);
 } else {
   lmInit();
 }
 
-})(); // END IIFE
+})();
