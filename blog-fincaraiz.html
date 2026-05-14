@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Guía de Integración con Fincaraiz | Blog | LoMaz Home</title>
+  <meta name="description" content="Paso a paso para publicar los inmuebles de LoMaz Home en Fincaraiz: documentación técnica, validación de campos, prueba y pase a producción."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0D1B2E;--gold:#C4992A;--cream:#F4E5C2;--white:#fff;--text:#1a1a1a;--muted:#6b7280;--light-bg:#f8f9fb;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:"Inter",sans-serif;color:var(--text);background:var(--white);line-height:1.7;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:999;background:var(--navy);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+    .nav-brand{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--white);text-decoration:none;}
+    .nav-brand span{color:var(--gold);}
+    .nav-links{display:flex;gap:2rem;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
+    .nav-links a:hover{color:var(--gold);}
+    .nav-cta{border:1.5px solid var(--gold);color:var(--gold);padding:.45rem 1.1rem;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s;}
+    .nav-cta:hover{background:var(--gold);color:var(--navy);}
+
+    /* HERO */
+    .article-hero{margin-top:62px;background:var(--navy);padding:4rem 2rem 3rem;text-align:center;}
+    .article-cat{display:inline-block;background:var(--gold);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .8rem;margin-bottom:1.2rem;}
+    .article-title{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);max-width:800px;margin:0 auto 1rem;line-height:1.2;}
+    .article-subtitle{color:rgba(255,255,255,.65);font-size:1rem;max-width:620px;margin:0 auto 1.5rem;}
+    .article-meta{color:rgba(255,255,255,.45);font-size:.8rem;letter-spacing:.04em;}
+
+    /* CONTENT */
+    .article-body{max-width:780px;margin:0 auto;padding:3rem 2rem 4rem;}
+    .article-body p{margin-bottom:1.4rem;font-size:1rem;color:#333;line-height:1.8;}
+    .article-body h2{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--navy);margin:2.5rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--gold);}
+    .article-body h3{font-size:1.05rem;font-weight:600;color:var(--navy);margin:1.8rem 0 .7rem;}
+    .article-body ul,
+    .article-body ol{margin:0 0 1.4rem 1.5rem;}
+    .article-body li{margin-bottom:.5rem;font-size:.97rem;color:#333;}
+    .article-body a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;}
+    .article-body a:hover{color:var(--navy);}
+
+    /* STEP BOXES */
+    .step-box{background:var(--light-bg);border-left:4px solid var(--gold);padding:1.2rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;}
+    .step-box .step-num{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
+    .step-box .step-title{font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--navy);margin-bottom:.5rem;}
+    .step-box p{margin-bottom:0;font-size:.93rem;}
+
+    /* NOTE / DISCLAIMER */
+    .note-box{background:#fffbf0;border:1.5px solid var(--gold);border-radius:6px;padding:1.1rem 1.4rem;margin:2rem 0;font-size:.9rem;color:#555;}
+    .note-box strong{color:var(--navy);}
+
+    /* API LINK CARD */
+    .link-card{display:flex;align-items:center;gap:1rem;background:var(--navy);color:var(--white);padding:1.1rem 1.5rem;border-radius:6px;text-decoration:none;margin:1.5rem 0;transition:opacity .2s;}
+    .link-card:hover{opacity:.85;color:var(--white);}
+    .link-card-icon{font-size:1.5rem;flex-shrink:0;}
+    .link-card-text small{display:block;font-size:.7rem;color:rgba(255,255,255,.5);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.2rem;}
+    .link-card-text strong{font-size:.9rem;color:var(--gold);}
+
+    /* CTA SECTION */
+    .cta-section{background:var(--light-bg);border-top:1px solid rgba(196,153,42,.2);padding:3rem 2rem;text-align:center;}
+    .cta-section h2{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--navy);margin-bottom:.8rem;}
+    .cta-section p{color:var(--muted);max-width:480px;margin:0 auto 1.5rem;}
+    .btn-gold{display:inline-block;background:var(--gold);color:var(--navy);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;padding:.75rem 1.8rem;text-decoration:none;transition:opacity .2s;}
+    .btn-gold:hover{opacity:.85;}
+    .btn-outline{display:inline-block;border:1.5px solid var(--navy);color:var(--navy);font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;padding:.7rem 1.6rem;text-decoration:none;margin-left:1rem;transition:background .2s,color .2s;}
+    .btn-outline:hover{background:var(--navy);color:var(--white);}
+
+    /* FOOTER */
+    footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:1.5rem;font-size:.8rem;}
+    footer a{color:var(--gold);text-decoration:none;}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">LoMaz <span>Home</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="propiedades.html">Propiedades</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="login.html">Acceso Asesores</a>
+</nav>
+
+<!-- HERO -->
+<header class="article-hero">
+  <span class="article-cat">Trámites</span>
+  <h1 class="article-title">Cómo publicar los inmuebles de LoMaz Home en Fincaraiz: guía de integración</h1>
+  <p class="article-subtitle">Todo lo que necesitas saber para conectar nuestro portafolio con el portal Fincaraiz y llegar a más compradores en Colombia.</p>
+  <p class="article-meta">Mayo 2026 &middot; 5 min de lectura &middot; Trámites &amp; Tecnología</p>
+</header>
+
+<!-- ARTICLE BODY -->
+<main class="article-body">
+
+  <p>Publicar inmuebles en <strong>Fincaraiz</strong> es una de las formas más efectivas de ampliar la visibilidad del portafolio de LoMaz Home en Colombia. Sin embargo, la integración técnica requiere seguir un proceso ordenado para garantizar que cada propiedad se muestre correctamente, con todos sus atributos, imágenes y datos de contacto bien configurados.</p>
+
+  <p>A continuación encontrarás el proceso completo, desde la revisión de la documentación técnica hasta el pase a producción.</p>
+
+  <h2>Paso 1 — Revisión de la documentación técnica</h2>
+
+  <p>El primer paso es que el equipo técnico de LoMaz Home revise la documentación oficial de integración publicada por Fincaraiz. Allí se describen la estructura requerida, los campos obligatorios, los formatos aceptados, los tipos de datos y las especificaciones técnicas necesarias para la conexión.</p>
+
+  <a class="link-card" href="https://app.swaggerhub.com/apis-docs/Fincaraiz.com.co/Integradores/1.0.0" target="_blank" rel="noopener">
+    <span class="link-card-icon">&#128196;</span>
+    <span class="link-card-text">
+      <small>Documentación oficial</small>
+      <strong>API Integradores Fincaraiz &rarr; SwaggerHub</strong>
+    </span>
+  </a>
+
+  <p>Es fundamental analizar en detalle la estructura del CRM de LoMaz Home y validar que la información disponible pueda mapearse correctamente con los campos exigidos por Fincaraiz antes de avanzar.</p>
+
+  <h2>Paso 2 — Preparación y validación interna</h2>
+
+  <p>Una vez revisada la documentación, el integrador debe realizar una serie de ajustes y validaciones internas antes de intentar cualquier conexión:</p>
+
+  <div class="step-box">
+    <div class="step-num">Tarea 2.1</div>
+    <div class="step-title">Ajuste de estructura del CRM</div>
+    <p>Revisar si el CRM necesita adaptaciones en la estructura de datos para cumplir con el esquema de campos requerido por Fincaraiz (tipos de inmueble, estados, estratos, áreas, etc.).</p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">Tarea 2.2</div>
+    <div class="step-title">Parametrización de campos obligatorios</div>
+    <p>Confirmar que campos como precio, tipo de negocio (venta/arriendo), ciudad, barrio, área construida, número de habitaciones y baños, y datos del asesor estén correctamente diligenciados en todos los inmuebles a publicar.</p>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">Tarea 2.3</div>
+    <div class="step-title">Validación del formato de imágenes y datos</div>
+    <p>Verificar que las imágenes cumplan con los requisitos de peso, resolución y formato exigidos. También confirmar que los valores numéricos (precios, áreas) y los textos (descripciones, títulos) estén correctamente formateados.</p>
+  </div>
+
+  <h2>Paso 3 — Prueba técnica con soporte de Fincaraiz</h2>
+
+  <p>Cuando el integrador confirme que toda la información está lista y bien estructurada, se coordina una <strong>prueba técnica directamente con el equipo de soporte de Fincaraiz</strong>. Esta fase es obligatoria antes del pase a producción.</p>
+
+  <p>Durante la prueba técnica se realizan las siguientes verificaciones:</p>
+
+  <ul>
+    <li>Envío de prueba de un conjunto de inmuebles representativos del portafolio LoMaz Home.</li>
+    <li>Validación de la correcta lectura y presentación de todos los campos (incluyendo imágenes, precios y datos del asesor).</li>
+    <li>Identificación y corrección de errores, campos faltantes o formatos incorrectos.</li>
+    <li>Revisión de la correcta asignación de las propiedades a las categorías y zonas correspondientes.</li>
+  </ul>
+
+  <div class="note-box">
+    <strong>Importante:</strong> Los tiempos de respuesta del equipo de soporte de Fincaraiz pueden variar. Se recomienda iniciar este proceso con al menos <strong>2 semanas de anticipación</strong> antes de la fecha objetivo de publicación.
+  </div>
+
+  <h2>Paso 4 — Pase a producción</h2>
+
+  <p>Una vez que el equipo de soporte de Fincaraiz aprueba la prueba técnica, se autoriza el <strong>pase a producción</strong>. A partir de ese momento, los inmuebles de LoMaz Home comenzarán a sincronizarse de forma oficial y periódica en el portal.</p>
+
+  <p>En producción es importante mantener un proceso de monitoreo continuo que incluya:</p>
+
+  <ul>
+    <li>Revisión periódica de que los inmuebles se sincronizan correctamente.</li>
+    <li>Actualización inmediata cuando un inmueble cambia de estado (arrendado, vendido, fuera de mercado).</li>
+    <li>Verificación de que las imágenes y precios se mantienen actualizados en el portal.</li>
+    <li>Atención a alertas de error que pueda enviar Fincaraiz por datos incompletos o fuera de formato.</li>
+  </ul>
+
+  <h2>Resumen del proceso</h2>
+
+  <ol>
+    <li><strong>Revisión de documentación técnica</strong> en SwaggerHub (API Integradores Fincaraiz).</li>
+    <li><strong>Ajuste y validación interna</strong> del CRM y los datos de los inmuebles.</li>
+    <li><strong>Prueba técnica coordinada</strong> con el soporte de Fincaraiz.</li>
+    <li><strong>Aprobación y pase a producción</strong> con monitoreo continuo.</li>
+  </ol>
+
+  <div class="note-box">
+    <strong>Nota:</strong> Este artículo es una guía de referencia para el equipo de LoMaz Home. Los requerimientos técnicos específicos pueden variar según actualizaciones de Fincaraiz. Siempre consulta la documentación oficial más reciente antes de iniciar la integración.
+  </div>
+
+</main>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>¿Tienes dudas sobre el proceso?</h2>
+  <p>Nuestro equipo puede orientarte. Contáctanos y con gusto te acompañamos.</p>
+  <a href="contacto.html" class="btn-gold">Contactar a LoMaz Home</a>
+  <a href="blog.html" class="btn-outline">Ver más artículos</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 LoMaz Home &mdash; Inmobiliaria de Lujo en Bogotá, Colombia &mdash; <a href="index.html">Inicio</a> &middot; <a href="blog.html">Blog</a> &middot; <a href="contacto.html">Contacto</a></p>
+</footer>
+
+</body>
+</html>
