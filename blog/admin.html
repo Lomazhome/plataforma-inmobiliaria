@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Administración del Blog | LoMaz Home</title>
+<meta name="robots" content="noindex, nofollow">
+<style>:root{--navy:#0D1B2A;--gold:#C9A84C;--gold-light:#E8C96A;--cream:#FAF8F4;--white:#FFFFFF;--gray-100:#F5F5F0;--gray-200:#E8E8E0;--gray-400:#9A9A8A;--gray-600:#666660;--text:#1A1A1A;--font-serif:'Georgia',serif;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 16px rgba(0,0,0,0.10);--radius:8px;--radius-lg:16px;}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}body{font-family:var(--font-sans);color:var(--text);background:#f0f2f5;line-height:1.6;}img{max-width:100%;height:auto;}a{color:inherit;text-decoration:none;}.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--navy);display:flex;flex-direction:column;z-index:100;overflow-y:auto;}.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);}.sidebar-logo .logo{font-family:var(--font-serif);color:#fff;font-size:1.3rem;}.sidebar-logo .logo em{color:var(--gold);font-style:italic;}.sidebar-logo .subtitle{color:rgba(255,255,255,0.5);font-size:0.75rem;margin-top:4px;}.sidebar-nav{padding:16px 0;flex:1;}.nav-section{padding:8px 20px;font-size:0.7rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.12em;margin-top:8px;}.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;color:rgba(255,255,255,0.75);font-size:0.875rem;cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;}.nav-item:hover,.nav-item.active{background:rgba(255,255,255,0.08);color:#fff;border-left-color:var(--gold);}.nav-item .icon{font-size:1.1rem;width:20px;text-align:center;}.sidebar-footer{padding:20px;border-top:1px solid rgba(255,255,255,0.1);}.main-content{margin-left:260px;min-height:100vh;}.top-bar{background:var(--white);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm);border-bottom:1px solid var(--gray-200);}.page-title{font-size:1.1rem;font-weight:600;color:var(--navy);}.top-actions{display:flex;align-items:center;gap:12px;}.btn-primary{background:var(--navy);color:#fff;padding:9px 18px;border-radius:6px;font-size:0.85rem;font-weight:600;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s;}.btn-primary:hover{background:#1a2f47;}.btn-gold{background:var(--gold);color:var(--navy);padding:9px 18px;border-radius:6px;font-size:0.85rem;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s;}.btn-gold:hover{background:var(--gold-light);}.btn-secondary{background:var(--white);color:var(--navy);padding:9px 18px;border-radius:6px;font-size:0.85rem;font-weight:600;border:1.5px solid var(--gray-200);cursor:pointer;transition:all 0.2s;}.btn-secondary:hover{border-color:var(--navy);}.content-area{padding:32px;}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:32px;}.stat-card{background:var(--white);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:16px;}.stat-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;}.stat-icon.navy{background:rgba(13,27,42,0.1);}.stat-icon.gold{background:rgba(201,168,76,0.15);}.stat-icon.green{background:rgba(34,197,94,0.1);}.stat-icon.blue{background:rgba(59,130,246,0.1);}.stat-info h3{font-size:1.75rem;font-weight:700;color:var(--navy);}.stat-info p{font-size:0.8rem;color:var(--gray-400);margin-top:2px;}.section-card{background:var(--white);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:24px;}.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--gray-100);}.section-title{font-family:var(--font-serif);font-size:1.15rem;color:var(--navy);font-weight:400;}.articles-table{width:100%;border-collapse:collapse;}.articles-table th{background:var(--gray-100);padding:12px 16px;text-align:left;font-size:0.8rem;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.06em;border-bottom:2px solid var(--gray-200);}.articles-table td{padding:14px 16px;border-bottom:1px solid var(--gray-100);font-size:0.875rem;vertical-align:middle;}.articles-table tr:last-child td{border-bottom:none;}.articles-table tr:hover td{background:var(--gray-100);}.art-thumb{width:56px;height:40px;object-fit:cover;border-radius:6px;}.art-title-cell{max-width:280px;}.art-title-cell strong{color:var(--navy);display:block;line-height:1.4;}.art-title-cell span{font-size:0.75rem;color:var(--gray-400);}.status-badge{padding:4px 10px;border-radius:50px;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;}.status-published{background:#D1FAE5;color:#065F46;}.status-draft{background:#FEF3C7;color:#92400E;}.status-scheduled{background:#DBEAFE;color:#1E40AF;}.action-btns{display:flex;gap:6px;}.action-btn{padding:5px 12px;border-radius:4px;font-size:0.75rem;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;}.ab-edit{background:var(--gray-100);color:var(--navy);}.ab-edit:hover{background:var(--navy);color:#fff;}.ab-delete{background:#FEE2E2;color:#DC2626;}.ab-delete:hover{background:#DC2626;color:#fff;}.ab-view{background:rgba(201,168,76,0.15);color:var(--gold);}.ab-view:hover{background:var(--gold);color:var(--navy);}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}.form-group{display:flex;flex-direction:column;gap:6px;}.form-group label{font-size:0.8rem;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.06em;}.form-group input,.form-group select,.form-group textarea{padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:0.9rem;font-family:var(--font-sans);outline:none;transition:border-color 0.2s;}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}.editor-toolbar{display:flex;gap:4px;background:var(--gray-100);padding:8px;border-radius:6px 6px 0 0;border:1.5px solid var(--gray-200);border-bottom:none;flex-wrap:wrap;}.toolbar-btn{padding:6px 10px;background:var(--white);border:1px solid var(--gray-200);border-radius:4px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}.toolbar-btn:hover{background:var(--navy);color:#fff;}.wysiwyg-editor{min-height:350px;border:1.5px solid var(--gray-200);border-radius:0 0 6px 6px;padding:16px;font-size:1rem;line-height:1.8;outline:none;background:var(--white);}.wysiwyg-editor:focus{border-color:var(--gold);}.seo-preview{background:var(--gray-100);border-radius:var(--radius);padding:16px;margin-top:16px;}.seo-preview .preview-url{color:#1a0dab;font-size:0.85rem;}.seo-preview .preview-title{color:#1a0dab;font-size:1.1rem;font-weight:400;margin:4px 0;}.seo-preview .preview-desc{color:#4d5156;font-size:0.875rem;}.char-count{font-size:0.75rem;text-align:right;margin-top:4px;}.char-ok{color:#16a34a;}.char-warn{color:#d97706;}.char-bad{color:#dc2626;}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}.cal-header{text-align:center;font-size:0.75rem;font-weight:600;color:var(--gray-400);text-transform:uppercase;padding:8px;}.cal-day{aspect-ratio:1;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8rem;cursor:pointer;transition:background 0.2s;border:1.5px solid transparent;}.cal-day:hover{background:var(--gray-100);}.cal-day.has-article{background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--navy);font-weight:600;}.cal-day.today{background:var(--navy);color:#fff;}.cal-day.past{color:var(--gray-200);cursor:default;}.kw-table{width:100%;border-collapse:collapse;}.kw-table th{background:var(--gray-100);padding:10px 14px;text-align:left;font-size:0.78rem;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.06em;}.kw-table td{padding:12px 14px;border-bottom:1px solid var(--gray-100);font-size:0.85rem;}.kw-table tr:hover td{background:var(--gray-100);}.vol-bar-wrap{width:100px;background:var(--gray-200);border-radius:4px;height:6px;display:inline-block;vertical-align:middle;overflow:hidden;}.vol-bar{height:100%;background:var(--gold);border-radius:4px;}.diff-badge{padding:3px 8px;border-radius:50px;font-size:0.72rem;font-weight:700;}.diff-easy{background:#D1FAE5;color:#065F46;}.diff-med{background:#FEF3C7;color:#92400E;}.diff-hard{background:#FEE2E2;color:#DC2626;}.tab-nav{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:24px;}.tab-btn{padding:12px 20px;font-size:0.875rem;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--gray-400);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.2s;}.tab-btn.active,.tab-btn:hover{color:var(--navy);border-bottom-color:var(--gold);}.tab-content{display:none;}.tab-content.active{display:block;}@media(max-width:1200px){.stats-grid{grid-template-columns:repeat(2,1fr);}.form-grid-3{grid-template-columns:1fr 1fr;}}@media(max-width:768px){.sidebar{display:none;}.main-content{margin-left:0;}.stats-grid{grid-template-columns:1fr;}.form-grid,.form-grid-3{grid-template-columns:1fr;}}</style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<div class="sidebar-logo"><div class="logo">LoMaz <em>Home</em></div><div class="subtitle">Panel de Administración del Blog</div></div>
+<nav class="sidebar-nav">
+<div class="nav-section">Principal</div>
+<div class="nav-item active" onclick="showTab('dashboard')"><span class="icon">📊</span> Dashboard</div>
+<div class="nav-item" onclick="showTab('articles')"><span class="icon">📄</span> Artículos</div>
+<div class="nav-item" onclick="showTab('new-article')"><span class="icon">✏️</span> Nuevo Artículo</div>
+<div class="nav-item" onclick="showTab('calendar')"><span class="icon">📅</span> Calendario Editorial</div>
+<div class="nav-section">SEO</div>
+<div class="nav-item" onclick="showTab('keywords')"><span class="icon">🔑</span> Palabras Clave</div>
+<div class="nav-item" onclick="showTab('seo-checklist')"><span class="icon">✅</span> Checklist SEO</div>
+<div class="nav-section">Configuración</div>
+<div class="nav-item" onclick="showTab('categories')"><span class="icon">📂</span> Categorías</div>
+<div class="nav-item" onclick="showTab('authors')"><span class="icon">👤</span> Autores</div>
+<div class="nav-item" onclick="window.open('/blog/','_blank')"><span class="icon">🌐</span> Ver Blog</div>
+<div class="nav-item" onclick="window.location.href='/admin.html'"><span class="icon">⚙️</span> Admin General</div>
+</nav>
+<div class="sidebar-footer" style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Blog Admin v1.0 · LoMaz Home 2026</div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-content">
+<div class="top-bar">
+<div class="page-title" id="pageTitle">📊 Dashboard del Blog</div>
+<div class="top-actions">
+<button class="btn-secondary" onclick="showTab('new-article')">+ Nuevo artículo</button>
+<button class="btn-gold" onclick="window.open('/blog/','_blank')">🌐 Ver blog</button>
+</div>
+</div>
+
+<div class="content-area">
+
+<!-- ===== DASHBOARD TAB ===== -->
+<div id="tab-dashboard" class="tab-content active">
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-icon navy">📄</div><div class="stat-info"><h3>10</h3><p>Artículos publicados</p></div></div>
+<div class="stat-card"><div class="stat-icon gold">👁️</div><div class="stat-info"><h3>38.2K</h3><p>Vistas del mes</p></div></div>
+<div class="stat-card"><div class="stat-icon green">🔗</div><div class="stat-info"><h3>247</h3><p>Clics orgánicos</p></div></div>
+<div class="stat-card"><div class="stat-icon blue">📈</div><div class="stat-info"><h3>4.2%</h3><p>CTR promedio</p></div></div>
+</div>
+
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">📈 Rendimiento SEO por artículo</h2></div>
+<table class="articles-table"><thead><tr><th>Artículo</th><th>Categoría</th><th>Impresiones</th><th>Clics</th><th>Posición</th><th>CTR</th></tr></thead><tbody>
+<tr><td>Cómo comprar apartamento en Bogotá 2026</td><td>Comprar</td><td>4,820</td><td>387</td><td>8.2</td><td>8.0%</td></tr>
+<tr><td>Crédito hipotecario Colombia 2026</td><td>Comprar</td><td>3,950</td><td>218</td><td>12.4</td><td>5.5%</td></tr>
+<tr><td>Subsidio Mi Casa Ya 2026</td><td>Comprar</td><td>6,100</td><td>489</td><td>6.8</td><td>8.0%</td></tr>
+<tr><td>Contrato arrend. Ley 820 Colombia</td><td>Arriendo</td><td>5,300</td><td>312</td><td>9.5</td><td>5.9%</td></tr>
+<tr><td>Mejores barrios invertir Bogotá 2026</td><td>Zonas</td><td>7,200</td><td>648</td><td>7.1</td><td>9.0%</td></tr>
+</tbody></table>
+</div>
+
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">🔥 Top Keywords (oportunidades)</h2></div>
+<table class="kw-table"><thead><tr><th>Keyword</th><th>Impresiones</th><th>Volumen</th><th>Posición actual</th><th>Dificultad</th><th>Acción</th></tr></thead><tbody>
+<tr><td>comprar apartamento bogota</td><td>8,400</td><td><div class="vol-bar-wrap"><div class="vol-bar" style="width:85%"></div></div></td><td>14.2</td><td><span class="diff-badge diff-med">Media</span></td><td><button class="action-btn ab-edit" onclick="showTab('new-article')">Crear artículo</button></td></tr>
+<tr><td>credito hipotecario colombia</td><td>6,200</td><td><div class="vol-bar-wrap"><div class="vol-bar" style="width:72%"></div></div></td><td>18.5</td><td><span class="diff-badge diff-hard">Alta</span></td><td><button class="action-btn ab-edit" onclick="showTab('new-article')">Mejorar</button></td></tr>
+<tr><td>vivir en chapinero bogota</td><td>3,800</td><td><div class="vol-bar-wrap"><div class="vol-bar" style="width:45%"></div></div></td><td>22.1</td><td><span class="diff-badge diff-easy">Baja</span></td><td><button class="action-btn ab-edit" onclick="showTab('new-article')">Optimizar</button></td></tr>
+</tbody></table>
+</div>
+</div>
+
+<!-- ===== ARTICLES TAB ===== -->
+<div id="tab-articles" class="tab-content">
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">📄 Todos los artículos</h2><div style="display:flex;gap:10px;"><input type="search" placeholder="Buscar artículos..." style="padding:8px 14px;border:1.5px solid #E8E8E0;border-radius:6px;font-size:0.875rem;"><select style="padding:8px 14px;border:1.5px solid #E8E8E0;border-radius:6px;font-size:0.875rem;"><option>Todas las categorías</option><option>Comprar</option><option>Vender</option><option>Arriendo</option><option>Zonas</option><option>Inversión</option><option>Legal</option></select></div></div>
+<table class="articles-table"><thead><tr><th>Imagen</th><th>Título</th><th>Categoría</th><th>Fecha</th><th>Estado</th><th>Vistas</th><th>Acciones</th></tr></thead><tbody id="articlesTableBody">
+</tbody></table>
+</div>
+</div>
+
+<!-- ===== NEW ARTICLE TAB ===== -->
+<div id="tab-new-article" class="tab-content">
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">✏️ Nuevo artículo</h2><div><button class="btn-secondary" style="margin-right:10px;" onclick="saveDraft()">💾 Guardar borrador</button><button class="btn-gold" onclick="publishArticle()">🚀 Publicar</button></div></div>
+
+<div class="tab-nav">
+<button class="tab-btn active" onclick="switchEditorTab(this,'editor-content')">📝 Contenido</button>
+<button class="tab-btn" onclick="switchEditorTab(this,'editor-seo')">🔍 SEO</button>
+<button class="tab-btn" onclick="switchEditorTab(this,'editor-social')">📱 Social</button>
+<button class="tab-btn" onclick="switchEditorTab(this,'editor-schedule')">📅 Publicación</button>
+</div>
+
+<div id="editor-content" class="tab-content active">
+<div class="form-grid" style="margin-bottom:20px;">
+<div class="form-group" style="grid-column:1/-1;"><label>Título del artículo (H1)</label><input type="text" id="artTitle" placeholder="Ej: Cómo comprar apartamento en Bogotá en 2026..." oninput="updateSEOPreview()"></div>
+<div class="form-group"><label>Categoría</label><select id="artCategory"><option value="">Seleccionar...</option><option value="compra">🏠 Comprar Vivienda</option><option value="venta">💰 Vender Inmueble</option><option value="arriendo">🔑 Arriendo</option><option value="zonas">📍 Zonas Bogotá</option><option value="inversion">📈 Inversión</option><option value="legal">⚖️ Legal y Tributario</option></select></div>
+<div class="form-group"><label>URL Slug</label><input type="text" id="artSlug" placeholder="como-comprar-apartamento-bogota-2026" oninput="updateSEOPreview()"></div>
+<div class="form-group"><label>Palabra clave objetivo</label><input type="text" id="artKeyword" placeholder="cómo comprar apartamento en Bogotá"></div>
+<div class="form-group"><label>Imagen destacada (URL)</label><input type="text" id="artImage" placeholder="https://images.unsplash.com/..."></div>
+<div class="form-group"><label>Alt de imagen (descriptivo, obligatorio)</label><input type="text" id="artImgAlt" placeholder="Apartamento moderno en Bogotá con vista a la ciudad"></div>
+<div class="form-group"><label>Etiquetas</label><input type="text" id="artTags" placeholder="crédito, Bogotá, vivienda (separadas por coma)"></div>
+<div class="form-group"><label>Autor</label><select id="artAuthor"><option>Equipo LoMaz Home</option><option>Asesor LoMaz Home</option><option>Redacción LoMaz Home</option></select></div>
+</div>
+<div class="form-group"><label>Introducción / Excerpt</label><textarea id="artExcerpt" rows="2" placeholder="Resumen breve del artículo (155-250 caracteres, aparece en el listado)..." oninput="updateSEOPreview()"></textarea></div>
+<div class="form-group" style="margin-top:20px;"><label>Contenido del artículo (WYSIWYG)</label>
+<div class="editor-toolbar">
+<button class="toolbar-btn" onclick="formatText('bold')" title="Negrita"><b>B</b></button>
+<button class="toolbar-btn" onclick="formatText('italic')" title="Cursiva"><i>I</i></button>
+<button class="toolbar-btn" onclick="formatText('underline')" title="Subrayado"><u>U</u></button>
+<button class="toolbar-btn" onclick="insertHeading(2)">H2</button>
+<button class="toolbar-btn" onclick="insertHeading(3)">H3</button>
+<button class="toolbar-btn" onclick="formatText('insertUnorderedList')" title="Lista">≡</button>
+<button class="toolbar-btn" onclick="formatText('insertOrderedList')" title="Lista numerada">1.</button>
+<button class="toolbar-btn" onclick="insertLink()" title="Enlace">🔗</button>
+<button class="toolbar-btn" onclick="insertInfoBox()" title="Caja informativa">ℹ️</button>
+<button class="toolbar-btn" onclick="insertTable()" title="Tabla">⊞</button>
+<button class="toolbar-btn" style="margin-left:auto;" onclick="togglePreview()">👁️ Vista previa</button>
+</div>
+<div class="wysiwyg-editor" id="wysiwyg" contenteditable="true" data-placeholder="Comienza a escribir tu artículo aquí..."></div>
+</div>
+</div>
+
+<div id="editor-seo" class="tab-content">
+<div class="form-grid" style="margin-bottom:20px;">
+<div class="form-group" style="grid-column:1/-1;"><label>Meta Title (≤ 60 caracteres)</label><input type="text" id="metaTitle" placeholder="Cómo comprar apartamento en Bogotá 2026..." oninput="updateCharCount(this,'metaTitleCount',60)"><div id="metaTitleCount" class="char-count char-ok">0 / 60 caracteres</div></div>
+<div class="form-group" style="grid-column:1/-1;"><label>Meta Description (≤ 155 caracteres)</label><textarea id="metaDesc" rows="3" placeholder="Guía completa para comprar tu primer apartamento en Bogotá..." oninput="updateCharCount(this,'metaDescCount',155)"></textarea><div id="metaDescCount" class="char-count char-ok">0 / 155 caracteres</div></div>
+<div class="form-group"><label>Canonical URL</label><input type="text" id="canonicalUrl" value="https://www.lomazhome.com/blog/" placeholder="https://www.lomazhome.com/blog/slug/"></div>
+<div class="form-group"><label>Schema type</label><select id="schemaType"><option>Article</option><option>FAQPage</option><option>HowTo</option><option>NewsArticle</option></select></div>
+</div>
+<div class="seo-preview"><div class="preview-url" id="previewUrl">https://www.lomazhome.com/blog/slug-del-articulo/</div><div class="preview-title" id="previewTitle">Título del artículo aparecerá aquí...</div><div class="preview-desc" id="previewDesc">La meta description aparecerá aquí. Máximo 155 caracteres para que no se corte en Google.</div></div>
+</div>
+
+<div id="editor-social" class="tab-content">
+<div class="form-grid">
+<div class="form-group"><label>OG Title (Facebook)</label><input type="text" id="ogTitle" placeholder="Título para Facebook/LinkedIn..."></div>
+<div class="form-group"><label>OG Description</label><textarea id="ogDesc" rows="3" placeholder="Descripción para redes sociales..."></textarea></div>
+<div class="form-group"><label>Twitter Card type</label><select><option>summary_large_image</option><option>summary</option></select></div>
+<div class="form-group"><label>Hashtags sugeridos</label><input type="text" placeholder="#fincaraiz #Bogotá #compravivienda"></div>
+</div>
+</div>
+
+<div id="editor-schedule" class="tab-content">
+<div class="form-grid">
+<div class="form-group"><label>Estado</label><select id="artStatus"><option value="published">✅ Publicado</option><option value="draft">📝 Borrador</option><option value="scheduled">📅 Programado</option></select></div>
+<div class="form-group"><label>Fecha de publicación</label><input type="datetime-local" id="artDate"></div>
+<div class="form-group"><label>Tiempo estimado de lectura (minutos)</label><input type="number" id="artReadTime" min="1" max="60" value="8"></div>
+<div class="form-group"><label>Artículos relacionados (slugs)</label><input type="text" id="artRelated" placeholder="slug-1, slug-2, slug-3"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== CALENDAR TAB ===== -->
+<div id="tab-calendar" class="tab-content">
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">📅 Calendario Editorial - Mayo-Julio 2026</h2></div>
+<div style="overflow-x:auto;">
+<table class="articles-table"><thead><tr><th>Semana</th><th>Artículo planificado</th><th>Cluster</th><th>Keyword objetivo</th><th>Volumen est.</th><th>Estado</th></tr></thead><tbody>
+<tr><td>14/05</td><td>Cómo comprar apartamento en Bogotá 2026</td><td>Compra</td><td>como comprar apartamento bogota</td><td>8,400/mes</td><td><span class="status-badge status-published">✅ Publicado</span></td></tr>
+<tr><td>21/05</td><td>Crédito hipotecario Colombia 2026</td><td>Compra</td><td>credito hipotecario colombia</td><td>6,200/mes</td><td><span class="status-badge status-published">✅ Publicado</span></td></tr>
+<tr><td>28/05</td><td>Subsidio Mi Casa Ya 2026</td><td>Compra</td><td>subsidio mi casa ya 2026</td><td>9,100/mes</td><td><span class="status-badge status-published">✅ Publicado</span></td></tr>
+<tr><td>04/06</td><td>Gastos notariales compraventa Colombia</td><td>Compra</td><td>gastos notariales compraventa</td><td>3,800/mes</td><td><span class="status-badge status-scheduled">📅 Programado</span></td></tr>
+<tr><td>11/06</td><td>Cómo arrendar inmueble Bogotá paso a paso</td><td>Arriendo</td><td>como arrendar inmueble bogota</td><td>4,200/mes</td><td><span class="status-badge status-draft">📝 Borrador</span></td></tr>
+<tr><td>18/06</td><td>Depósito vs póliza de arrendamiento</td><td>Arriendo</td><td>deposito poliza arrendamiento</td><td>2,900/mes</td><td><span class="status-badge status-draft">📝 Borrador</span></td></tr>
+<tr><td>25/06</td><td>Apartamentos en Cedritos Bogotá</td><td>Zonas</td><td>apartamentos cedritos bogota</td><td>3,100/mes</td><td><span class="status-badge status-draft">📝 Borrador</span></td></tr>
+<tr><td>02/07</td><td>Airbnb en Bogotá para propietarios</td><td>Inversión</td><td>airbnb bogota propietarios</td><td>4,800/mes</td><td><span class="status-badge status-draft">📝 Borrador</span></td></tr>
+<tr><td>09/07</td><td>Impuesto de registro Bogotá Colombia</td><td>Legal</td><td>impuesto registro bogota</td><td>2,600/mes</td><td><span class="status-badge status-draft">📝 Borrador</span></td></tr>
+<tr><td>16/07</td><td>Comisión inmobiliaria Colombia</td><td>Venta</td><td>comision inmobiliaria colombia</td><td>3,400/mes</td><td><span class="status-badge status-draft">📝 Borrador</span></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- ===== SEO CHECKLIST TAB ===== -->
+<div id="tab-seo-checklist" class="tab-content">
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">✅ Checklist SEO por artículo</h2></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+<div><h3 style="font-size:1rem;color:#0D1B2A;margin-bottom:16px;font-family:Georgia,serif;">🔍 SEO Técnico</h3><div style="display:flex;flex-direction:column;gap:10px;" id="techChecklist"></div></div>
+<div><h3 style="font-size:1rem;color:#0D1B2A;margin-bottom:16px;font-family:Georgia,serif;">✍️ SEO de Contenido</h3><div style="display:flex;flex-direction:column;gap:10px;" id="contentChecklist"></div></div>
+</div>
+</div>
+</div>
+
+<!-- ===== KEYWORDS TAB ===== -->
+<div id="tab-keywords" class="tab-content">
+<div class="section-card">
+<div class="section-header"><h2 class="section-title">🔑 Plan de Palabras Clave - LoMaz Home Blog</h2></div>
+<table class="kw-table"><thead><tr><th>Keyword</th><th>Cluster</th><th>Vol. mensual</th><th>Dificultad</th><th>Intención</th><th>Estado</th></tr></thead><tbody id="keywordsTableBody"></tbody></table>
+</div>
+</div>
+
+<!-- ===== CATEGORIES TAB ===== -->
+<div id="tab-categories" class="tab-content"><div class="section-card"><div class="section-header"><h2 class="section-title">📂 Gestión de Categorías</h2><button class="btn-primary">+ Nueva categoría</button></div><table class="articles-table"><thead><tr><th>Nombre</th><th>Slug</th><th>Artículos</th><th>Meta Description</th><th>Acciones</th></tr></thead><tbody><tr><td>🏠 Comprar Vivienda</td><td>compra</td><td>5</td><td>Guías para comprar tu vivienda en Colombia...</td><td><button class="action-btn ab-edit">Editar</button></td></tr><tr><td>💰 Vender Inmueble</td><td>venta</td><td>5</td><td>Estrategias para vender tu inmueble rápido...</td><td><button class="action-btn ab-edit">Editar</button></td></tr><tr><td>🔑 Arriendo</td><td>arriendo</td><td>5</td><td>Todo sobre arrendamiento en Colombia...</td><td><button class="action-btn ab-edit">Editar</button></td></tr><tr><td>📍 Zonas Bogotá</td><td>zonas</td><td>5</td><td>Guías por zona y barrio en Bogotá...</td><td><button class="action-btn ab-edit">Editar</button></td></tr><tr><td>📈 Inversión</td><td>inversion</td><td>5</td><td>Análisis de rentabilidad e inversión...</td><td><button class="action-btn ab-edit">Editar</button></td></tr><tr><td>⚖️ Legal y Tributario</td><td>legal</td><td>5</td><td>Aspectos legales y tributarios inmobiliarios...</td><td><button class="action-btn ab-edit">Editar</button></td></tr></tbody></table></div></div>
+
+<!-- ===== AUTHORS TAB ===== -->
+<div id="tab-authors" class="tab-content"><div class="section-card"><div class="section-header"><h2 class="section-title">👤 Gestión de Autores</h2><button class="btn-primary">+ Nuevo autor</button></div><table class="articles-table"><thead><tr><th>Nombre</th><th>Rol</th><th>Artículos</th><th>Bio</th><th>Acciones</th></tr></thead><tbody><tr><td>Equipo LoMaz Home</td><td>Editorial</td><td>10</td><td>Equipo especializado en el mercado inmobiliario colombiano</td><td><button class="action-btn ab-edit">Editar</button></td></tr></tbody></table></div></div>
+
+</div><!-- end content-area -->
+</div><!-- end main-content -->
+
+<script>
+// ===== ARTICLES DATA =====
+const ARTICLES = [
+{id:1,slug:"como-comprar-apartamento-bogota-2026",title:"Cómo comprar apartamento en Bogotá en 2026: guía paso a paso",category:"compra",date:"2026-05-01",status:"published",views:4820,img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=80&q=70"},
+{id:2,slug:"credito-hipotecario-colombia-2026",title:"Crédito hipotecario en Colombia 2026: tasas, bancos y requisitos",category:"compra",date:"2026-04-20",status:"published",views:3950,img:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=80&q=70"},
+{id:3,slug:"subsidio-mi-casa-ya-2026-como-aplicar",title:"Subsidio Mi Casa Ya 2026: quién aplica y cómo solicitarlo",category:"compra",date:"2026-04-10",status:"published",views:6100,img:"https://images.unsplash.com/photo-1448630360428-65456885c650?w=80&q=70"},
+{id:4,slug:"contrato-arrendamiento-ley-820-colombia",title:"Contrato de arrendamiento Ley 820: derechos y obligaciones",category:"arriendo",date:"2026-04-05",status:"published",views:5300,img:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=80&q=70"},
+{id:5,slug:"mejores-barrios-invertir-bogota-2026",title:"Los mejores barrios para invertir en Bogotá 2026",category:"zonas",date:"2026-03-12",status:"published",views:7200,img:"https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=80&q=70"},
+{id:6,slug:"rentabilidad-finca-raiz-colombia-2026",title:"Rentabilidad de la finca raíz en Colombia 2026",category:"inversion",date:"2026-05-05",status:"published",views:5800,img:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=80&q=70"},
+{id:7,slug:"promesa-compraventa-colombia-que-incluir",title:"Promesa de compraventa en Colombia: qué incluir y cómo protegerte",category:"legal",date:"2026-04-12",status:"published",views:4200,img:"https://images.unsplash.com/photo-1521791136064-7986c2920216?w=80&q=70"},
+{id:8,slug:"como-vender-apartamento-rapido-bogota",title:"Cómo vender tu apartamento rápido en Bogotá: 10 estrategias",category:"venta",date:"2026-04-15",status:"published",views:4100,img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=80&q=70"},
+{id:9,slug:"vivir-en-chapinero-bogota-guia-completa",title:"Vivir en Chapinero, Bogotá 2026: guía completa",category:"zonas",date:"2026-04-22",status:"published",views:3600,img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=80&q=70"},
+{id:10,slug:"retencion-en-la-fuente-venta-inmueble",title:"Retención en la fuente en venta de inmueble Colombia",category:"legal",date:"2026-03-28",status:"published",views:3100,img:"https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=80&q=70"}
+];
+
+const KEYWORDS = [
+{kw:"como comprar apartamento bogota",cluster:"Compra",vol:8400,diff:"media",intent:"Transaccional",status:"published"},
+{kw:"credito hipotecario colombia",cluster:"Compra",vol:6200,diff:"alta",intent:"Informacional",status:"published"},
+{kw:"subsidio mi casa ya 2026",cluster:"Compra",vol:9100,diff:"baja",intent:"Informacional",status:"published"},
+{kw:"gastos notariales compraventa colombia",cluster:"Compra",vol:3800,diff:"baja",intent:"Informacional",status:"pendiente"},
+{kw:"como vender apartamento rapido",cluster:"Venta",vol:5200,diff:"media",intent:"Transaccional",status:"published"},
+{kw:"avaluo comercial inmueble bogota",cluster:"Venta",vol:3200,diff:"baja",intent:"Informacional",status:"pendiente"},
+{kw:"comision inmobiliaria colombia",cluster:"Venta",vol:3400,diff:"baja",intent:"Informacional",status:"pendiente"},
+{kw:"contrato arrendamiento ley 820",cluster:"Arriendo",vol:5300,diff:"media",intent:"Informacional",status:"published"},
+{kw:"como arrendar inmueble bogota",cluster:"Arriendo",vol:4200,diff:"baja",intent:"Transaccional",status:"pendiente"},
+{kw:"deposito poliza arrendamiento",cluster:"Arriendo",vol:2900,diff:"baja",intent:"Informacional",status:"pendiente"},
+{kw:"vivir en chapinero bogota",cluster:"Zonas",vol:3800,diff:"baja",intent:"Informacional",status:"published"},
+{kw:"apartamentos en cedritos bogota",cluster:"Zonas",vol:3100,diff:"baja",intent:"Informacional",status:"pendiente"},
+{kw:"mejores barrios invertir bogota",cluster:"Zonas",vol:7200,diff:"media",intent:"Informacional",status:"published"},
+{kw:"rentabilidad finca raiz colombia",cluster:"Inversión",vol:5800,diff:"media",intent:"Informacional",status:"published"},
+{kw:"airbnb bogota propietarios",cluster:"Inversión",vol:4800,diff:"media",intent:"Transaccional",status:"pendiente"},
+{kw:"promesa compraventa colombia",cluster:"Legal",vol:4200,diff:"media",intent:"Informacional",status:"published"},
+{kw:"retencion en la fuente venta inmueble",cluster:"Legal",vol:3100,diff:"media",intent:"Informacional",status:"published"},
+{kw:"impuesto registro bogota",cluster:"Legal",vol:2600,diff:"baja",intent:"Informacional",status:"pendiente"}
+];
+
+const TECH_CHECKLIST = ["Meta title ≤ 60 caracteres","Meta description ≤ 155 caracteres","URL slug limpio y amigable","H1 único con keyword principal","H2s y H3s jerarquizados","Schema Article JSON-LD implementado","BreadcrumbList JSON-LD implementado","Canonical URL correcta","Open Graph tags completos","Twitter Card configurado","Imagen destacada con alt descriptivo","Sitemap.xml actualizado","robots.txt correcto","Tiempo de carga < 3s"];
+const CONTENT_CHECKLIST = ["Keyword en el título (H1)","Keyword en los primeros 100 palabras","Keyword en al menos 1 H2","Densidad keyword 1-2% natural","Mínimo 1.200 palabras","Links internos a 2-4 artículos relacionados","Links a páginas de servicio (propiedades, calculadora)","Links externos a fuentes oficiales (MinVivienda, DIAN, etc.)","Introducción con gancho y propuesta de valor","CTA al final del artículo","Botones de compartir en redes","Tiempo estimado de lectura visible","Breadcrumbs funcionales","Imágenes en WebP con lazy loading"];
+
+// Init
+function init() {
+ renderArticlesTable();
+ renderKeywordsTable();
+ renderChecklists();
+}
+
+function showTab(tabId) {
+ document.querySelectorAll(".tab-content").forEach(t => { if(t.id === "tab-"+tabId) { t.classList.add("active"); } else if(t.id.startsWith("tab-")) { t.classList.remove("active"); } });
+ document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+ event.target.classList.add("active");
+ const titles = {dashboard:"📊 Dashboard del Blog",articles:"📄 Todos los artículos","new-article":"✏️ Nuevo artículo",calendar:"📅 Calendario Editorial",keywords:"🔑 Palabras Clave","seo-checklist":"✅ Checklist SEO",categories:"📂 Categorías",authors:"👤 Autores"};
+ document.getElementById("pageTitle").textContent = titles[tabId] || tabId;
+}
+
+function renderArticlesTable() {
+ const tbody = document.getElementById("articlesTableBody");
+ if(!tbody) return;
+ tbody.innerHTML = ARTICLES.map(a => '<tr><td><img src="'+a.img+'" class="art-thumb" alt="'+a.title+'" loading="lazy"></td><td class="art-title-cell"><strong>'+a.title+'</strong><span>'+a.slug+'</span></td><td>'+a.category+'</td><td>'+a.date+'</td><td><span class="status-badge status-'+a.status+'">'+a.status+'</span></td><td>'+a.views.toLocaleString("es-CO")+'</td><td class="action-btns"><button class="action-btn ab-view" onclick="window.open(\"/blog/'+a.slug+'/\",\"_blank\")">👁️ Ver</button><button class="action-btn ab-edit">✏️ Editar</button></td></tr>').join("");
+}
+
+function renderKeywordsTable() {
+ const tbody = document.getElementById("keywordsTableBody");
+ if(!tbody) return;
+ const diffMap = {alta:"diff-hard",media:"diff-med",baja:"diff-easy"};
+ tbody.innerHTML = KEYWORDS.map(k => '<tr><td>'+k.kw+'</td><td>'+k.cluster+'</td><td>'+k.vol.toLocaleString("es-CO")+'</td><td><span class="diff-badge '+diffMap[k.diff]+'">'+k.diff+'</span></td><td>'+k.intent+'</td><td><span class="status-badge '+( k.status==="published"?"status-published":"status-draft")+'">'+k.status+'</span></td></tr>').join("");
+}
+
+function renderChecklists() {
+ const tech = document.getElementById("techChecklist");
+ const cont = document.getElementById("contentChecklist");
+ if(tech) tech.innerHTML = TECH_CHECKLIST.map(item => '<label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;background:#fff;border-radius:6px;font-size:0.875rem;"><input type="checkbox" style="accent-color:#C9A84C;width:16px;height:16px;"> '+item+'</label>').join("");
+ if(cont) cont.innerHTML = CONTENT_CHECKLIST.map(item => '<label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;background:#fff;border-radius:6px;font-size:0.875rem;"><input type="checkbox" style="accent-color:#C9A84C;width:16px;height:16px;"> '+item+'</label>').join("");
+}
+
+function switchEditorTab(btn, tabId) {
+ document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+ btn.classList.add("active");
+ document.querySelectorAll("#tab-new-article .tab-content").forEach(t => t.classList.remove("active"));
+ document.getElementById(tabId).classList.add("active");
+}
+
+function updateSEOPreview() {
+ const title = document.getElementById("artTitle")?.value || "";
+ const slug = document.getElementById("artSlug")?.value || "slug-del-articulo";
+ const desc = document.getElementById("artExcerpt")?.value || "";
+ if(document.getElementById("previewUrl")) document.getElementById("previewUrl").textContent = "https://www.lomazhome.com/blog/" + slug + "/";
+ if(document.getElementById("previewTitle")) document.getElementById("previewTitle").textContent = title || "Título del artículo aparecerá aquí...";
+ if(document.getElementById("previewDesc")) document.getElementById("previewDesc").textContent = desc || "La meta description aparecerá aquí...";
+}
+
+function updateCharCount(input, countId, max) {
+ const len = input.value.length;
+ const el = document.getElementById(countId);
+ if(!el) return;
+ el.textContent = len + " / " + max + " caracteres";
+ el.className = "char-count " + (len <= max * 0.8 ? "char-ok" : len <= max ? "char-warn" : "char-bad");
+}
+
+function formatText(cmd) { document.execCommand(cmd, false, null); }
+function insertHeading(level) { document.execCommand("formatBlock", false, "h" + level); }
+function insertLink() { const url = prompt("URL del enlace:"); if(url) document.execCommand("createLink", false, url); }
+function insertInfoBox() { document.execCommand("insertHTML", false, '<div style="background:#fff;border-left:4px solid #C9A84C;padding:16px 20px;margin:20px 0;"><strong>💡 Nota:</strong> Escribe aquí tu información destacada.</div>'); }
+function insertTable() { document.execCommand("insertHTML", false, '<table border="1" style="width:100%;border-collapse:collapse;margin:20px 0;"><tr><th style="background:#0D1B2A;color:#fff;padding:10px;">Col 1</th><th style="background:#0D1B2A;color:#fff;padding:10px;">Col 2</th></tr><tr><td style="padding:10px;">Dato 1</td><td style="padding:10px;">Dato 2</td></tr></table>'); }
+function togglePreview() { const ed = document.getElementById("wysiwyg"); if(ed) { ed.contentEditable = ed.contentEditable === "true" ? "false" : "true"; } }
+function saveDraft() { alert("Borrador guardado. (Conecta con Supabase para persistencia real)"); }
+function publishArticle() {
+ const title = document.getElementById("artTitle")?.value;
+ if(!title) { alert("Por favor ingresa el título del artículo."); return; }
+ const slug = document.getElementById("artSlug")?.value || title.toLowerCase().replace(/ /g,"-").replace(/[^a-z0-9-]/g,"");
+ alert("Artículo \"" + title + "\" publicado. URL: /blog/" + slug + "/\n\nRecuerda crear el archivo HTML en el repositorio GitHub.");
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
