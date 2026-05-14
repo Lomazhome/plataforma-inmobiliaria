@@ -7,7 +7,7 @@
 
 const S = `
 :root {
-  --lm-navy:#0D1B2E; --lm-navy-light:#162540; --lm-gold:#c9a96e;
+  --lm-navy:#0D1B2E; --lm-navy-light:#162540; --hlm-gold:#c9a96e;
   --lm-gold-dark:#a07840; --lm-cream:#f5f0e8; --lm-cream-light:#faf8f4;
   --lm-ink:#1c1917; --lm-ink-soft:#4a4540; --lm-white:#ffffff;
   --lm-serif:'Cormorant Garamond','Georgia',serif;
@@ -49,7 +49,7 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 .lm-logo span { color:var(--lm-gold); font-style:italic; }
 #lm-nav.lm-dark .lm-logo { color:var(--lm-white); }
 .lm-menu { display:flex; align-items:center; gap:0.25rem; list-style:none; margin:0; padding:0; }
-.lm-item { position:relative; }
+.lm-item { position:relative; } .lm-item::after { content:''; position:absolute; bottom:-8px; left:0; right:0; height:8px; }
 .lm-link {
   display:flex; align-items:center; gap:4px; padding:0.5rem 0.75rem;
   font-size:0.78rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
@@ -67,7 +67,7 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
   height:1px; background:var(--lm-gold);
 }
 .lm-dropdown {
-  position:absolute; top:calc(100% + 8px); left:0; min-width:220px;
+  position:absolute; top:calc(100% + 2px); left:0; min-width:220px;
   background:var(--lm-white); border:1px solid rgba(0,0,0,0.06);
   border-radius:8px; box-shadow:0 12px 40px rgba(0,0,0,0.12);
   padding:0.5rem; opacity:0; visibility:hidden; transform:translateY(-8px);
