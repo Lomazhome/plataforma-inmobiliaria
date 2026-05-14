@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Inmobiliario | Guías y Consejos de Finca Raíz en Colombia | LoMaz Home</title>
+<meta name="description" content="El blog de LoMaz Home: guías expertas sobre compra, venta y arriendo de propiedades en Bogotá. Consejos legales, financieros y de inversión inmobiliaria en Colombia.">
+<link rel="canonical" href="https://www.lomazhome.com/blog/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blog Inmobiliario | LoMaz Home">
+<meta property="og:description" content="Guías expertas sobre compra, venta y arriendo de propiedades en Bogotá y Colombia.">
+<meta property="og:image" content="https://www.lomazhome.com/assets/blog-og.jpg">
+<meta property="og:url" content="https://www.lomazhome.com/blog/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blog Inmobiliario | LoMaz Home">
+<meta name="twitter:description" content="Guías expertas sobre compra, venta y arriendo de propiedades en Bogotá.">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Blog LoMaz Home",
+  "url": "https://www.lomazhome.com/blog/",
+  "description": "Blog inmobiliario especializado en el mercado colombiano",
+  "publisher": {
+    "@type": "Organization",
+    "name": "LoMaz Home",
+    "logo": {"@type": "ImageObject", "url": "https://www.lomazhome.com/assets/logo.png"}
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.lomazhome.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.lomazhome.com/blog/"}
+  ]
+}
+</script>
+<style>
+:root {
+  --navy: #0D1B2A;
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --cream: #FAF8F4;
+  --white: #FFFFFF;
+  --gray-100: #F5F5F0;
+  --gray-200: #E8E8E0;
+  --gray-400: #9A9A8A;
+  --gray-600: #666660;
+  --text: #1A1A1A;
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 8px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-sans); color: var(--text); background: var(--cream); line-height: 1.6; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* NAV */
+.nav { background: var(--navy); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-md); }
+.nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 68px; }
+.nav-logo { font-family: var(--font-serif); color: var(--white); font-size: 1.4rem; font-weight: 400; letter-spacing: 0.02em; }
+.nav-logo span { color: var(--gold); font-style: italic; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.85); font-size: 0.875rem; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.nav-cta { background: var(--gold); color: var(--navy); padding: 10px 22px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s; }
+.nav-cta:hover { background: var(--gold-light); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: 0.3s; }
+
+/* BREADCRUMBS */
+.breadcrumb { background: var(--white); border-bottom: 1px solid var(--gray-200); }
+.breadcrumb-inner { max-width: 1280px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--gray-400); }
+.breadcrumb-inner a { color: var(--gray-400); transition: color 0.2s; }
+.breadcrumb-inner a:hover { color: var(--gold); }
+.breadcrumb-inner .sep { color: var(--gray-200); }
+.breadcrumb-inner .current { color: var(--navy); font-weight: 500; }
+
+/* HERO BLOG */
+.blog-hero { background: linear-gradient(135deg, var(--navy) 0%, #1a2f47 100%); padding: 64px 24px; text-align: center; }
+.blog-hero h1 { font-family: var(--font-serif); color: var(--white); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.2; margin-bottom: 16px; }
+.blog-hero h1 em { color: var(--gold); font-style: italic; }
+.blog-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; max-width: 580px; margin: 0 auto 32px; }
+
+/* SEARCH */
+.blog-search { max-width: 560px; margin: 0 auto; position: relative; }
+.blog-search input { width: 100%; padding: 16px 56px 16px 20px; border-radius: 50px; border: none; font-size: 1rem; outline: none; background: var(--white); color: var(--text); box-shadow: var(--shadow-lg); }
+.blog-search button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: var(--gold); border: none; border-radius: 50px; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.blog-search button:hover { background: var(--gold-light); }
+.blog-search button svg { width: 18px; height: 18px; fill: var(--navy); }
+
+/* STATS BAR */
+.stats-bar { background: var(--white); border-bottom: 1px solid var(--gray-200); }
+.stats-inner { max-width: 1280px; margin: 0 auto; padding: 16px 24px; display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
+.stat-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--gray-600); }
+.stat-item strong { color: var(--navy); font-weight: 600; }
+
+/* MAIN LAYOUT */
+.blog-main { max-width: 1280px; margin: 0 auto; padding: 48px 24px; display: grid; grid-template-columns: 1fr 340px; gap: 48px; }
+
+/* FILTERS */
+.filters-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; align-items: center; }
+.filter-label { font-size: 0.8rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+.filter-btn { padding: 8px 18px; border-radius: 50px; border: 1.5px solid var(--gray-200); background: var(--white); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; color: var(--gray-600); font-family: var(--font-sans); }
+.filter-btn:hover, .filter-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.filter-btn.cat-active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 600; }
+.sort-select { margin-left: auto; padding: 8px 14px; border-radius: 6px; border: 1.5px solid var(--gray-200); background: var(--white); font-size: 0.85rem; cursor: pointer; color: var(--text); }
+
+/* ARTICLES GRID */
+.articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+.article-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.25s, box-shadow 0.25s; cursor: pointer; }
+.article-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.card-img-wrap { position: relative; overflow: hidden; aspect-ratio: 16/9; background: var(--gray-100); }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; loading: lazy; }
+.article-card:hover .card-img-wrap img { transform: scale(1.04); }
+.card-category { position: absolute; top: 12px; left: 12px; background: var(--gold); color: var(--navy); padding: 4px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.card-featured { position: absolute; top: 12px; right: 12px; background: var(--navy); color: var(--gold); padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+.card-body { padding: 24px; }
+.card-meta { display: flex; align-items: center; gap: 12px; font-size: 0.75rem; color: var(--gray-400); margin-bottom: 10px; flex-wrap: wrap; }
+.card-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-200); }
+.card-read-time { display: flex; align-items: center; gap: 4px; }
+.card-title { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 400; color: var(--navy); line-height: 1.4; margin-bottom: 10px; transition: color 0.2s; }
+.article-card:hover .card-title { color: var(--gold); }
+.card-excerpt { font-size: 0.875rem; color: var(--gray-600); line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-tag { padding: 3px 10px; background: var(--gray-100); border-radius: 50px; font-size: 0.72rem; color: var(--gray-600); transition: background 0.2s; }
+.card-tag:hover { background: var(--gold-light); color: var(--navy); }
+.card-footer { padding: 16px 24px; border-top: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+.card-author { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--gray-600); }
+.author-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: var(--navy); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 0.7rem; font-weight: 700; }
+.card-read-more { font-size: 0.8rem; color: var(--gold); font-weight: 600; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; }
+.article-card:hover .card-read-more { gap: 8px; }
+
+/* FEATURED ARTICLE (FIRST) */
+.article-card.featured-main { grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 0; }
+.article-card.featured-main .card-img-wrap { aspect-ratio: auto; min-height: 320px; border-radius: 0; }
+.article-card.featured-main .card-content { display: flex; flex-direction: column; justify-content: center; padding: 40px; }
+.article-card.featured-main .card-title { font-size: 1.6rem; }
+
+/* PAGINATION */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--gray-200); }
+.page-btn { width: 40px; height: 40px; border-radius: 8px; border: 1.5px solid var(--gray-200); background: var(--white); font-size: 0.9rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; color: var(--gray-600); font-family: var(--font-sans); }
+.page-btn:hover, .page-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.page-dots { color: var(--gray-400); }
+
+/* SIDEBAR */
+.blog-sidebar { display: flex; flex-direction: column; gap: 32px; }
+.sidebar-card { background: var(--white); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); }
+.sidebar-title { font-family: var(--font-serif); font-size: 1.1rem; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--gold); display: flex; align-items: center; gap: 8px; }
+
+/* CATEGORIES */
+.cat-list { list-style: none; }
+.cat-list li { padding: 10px 0; border-bottom: 1px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; }
+.cat-list li:last-child { border-bottom: none; }
+.cat-list a { font-size: 0.9rem; color: var(--gray-600); transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+.cat-list a:hover { color: var(--gold); }
+.cat-count { background: var(--gray-100); color: var(--gray-400); padding: 2px 8px; border-radius: 50px; font-size: 0.75rem; }
+
+/* POPULAR ARTICLES */
+.popular-list { display: flex; flex-direction: column; gap: 16px; }
+.popular-item { display: grid; grid-template-columns: 70px 1fr; gap: 12px; align-items: start; }
+.popular-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; background: var(--gray-100); }
+.popular-info .pop-title { font-size: 0.875rem; color: var(--navy); line-height: 1.4; margin-bottom: 4px; font-weight: 500; transition: color 0.2s; }
+.popular-item:hover .pop-title { color: var(--gold); }
+.popular-info .pop-date { font-size: 0.75rem; color: var(--gray-400); }
+
+/* NEWSLETTER */
+.newsletter-card { background: linear-gradient(135deg, var(--navy), #1a2f47); border-radius: var(--radius-lg); padding: 28px; }
+.newsletter-card .sidebar-title { color: var(--white); }
+.newsletter-card p { color: rgba(255,255,255,0.75); font-size: 0.875rem; margin-bottom: 20px; }
+.newsletter-form input { width: 100%; padding: 12px 16px; border-radius: 6px; border: none; margin-bottom: 10px; font-size: 0.9rem; outline: none; }
+.newsletter-btn { width: 100%; padding: 13px; background: var(--gold); border: none; border-radius: 6px; font-size: 0.875rem; font-weight: 700; color: var(--navy); cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; transition: background 0.2s; }
+.newsletter-btn:hover { background: var(--gold-light); }
+.newsletter-privacy { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 10px; text-align: center; }
+
+/* TAGS CLOUD */
+.tags-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag-chip { padding: 6px 14px; background: var(--gray-100); border-radius: 50px; font-size: 0.8rem; color: var(--gray-600); cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+.tag-chip:hover, .tag-chip.selected { background: var(--gold-light); color: var(--navy); border-color: var(--gold); font-weight: 600; }
+
+/* PROPERTIES BANNER */
+.prop-banner { background: linear-gradient(135deg, #1a2f47, var(--navy)); border-radius: var(--radius-lg); padding: 24px; text-align: center; }
+.prop-banner h4 { color: var(--white); font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 8px; }
+.prop-banner p { color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 16px; }
+.prop-banner-btn { display: block; background: var(--gold); color: var(--navy); padding: 12px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; text-align: center; transition: background 0.2s; letter-spacing: 0.04em; }
+.prop-banner-btn:hover { background: var(--gold-light); }
+
+/* NO RESULTS */
+.no-results { text-align: center; padding: 80px 24px; color: var(--gray-400); grid-column: 1/-1; }
+.no-results h3 { font-size: 1.4rem; color: var(--navy); margin-bottom: 8px; }
+
+/* LOADING */
+.skeleton { animation: shimmer 1.5s infinite; background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%); background-size: 200% 100%; border-radius: var(--radius); }
+@keyframes shimmer { 0%{background-position: -200% 0} 100%{background-position: 200% 0} }
+
+/* FOOTER */
+.blog-footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 48px 24px; margin-top: 80px; }
+.footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+.footer-brand .brand-name { font-family: var(--font-serif); color: var(--white); font-size: 1.4rem; margin-bottom: 12px; }
+.footer-brand .brand-name em { color: var(--gold); font-style: italic; }
+.footer-brand p { font-size: 0.875rem; line-height: 1.7; max-width: 280px; }
+.footer-col h5 { color: var(--white); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a { font-size: 0.875rem; transition: color 0.2s; }
+.footer-col ul a:hover { color: var(--gold); }
+.footer-bottom { max-width: 1280px; margin: 32px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; flex-wrap: wrap; gap: 12px; }
+
+/* RESULTS COUNTER */
+.results-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.results-count { font-size: 0.875rem; color: var(--gray-600); }
+.results-count strong { color: var(--navy); }
+
+/* SEARCH HIGHLIGHT */
+mark { background: rgba(201,168,76,0.3); padding: 0 2px; border-radius: 2px; }
+
+/* MOBILE */
+@media (max-width: 1024px) {
+  .blog-main { grid-template-columns: 1fr; }
+  .blog-sidebar { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .article-card.featured-main { grid-template-columns: 1fr; }
+  .article-card.featured-main .card-img-wrap { min-height: 220px; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .nav-links.mobile-open { display: flex; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: var(--navy); padding: 20px 24px; gap: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .blog-main { padding: 32px 16px; }
+  .blog-hero { padding: 48px 16px; }
+  .articles-grid { grid-template-columns: 1fr; }
+  .blog-sidebar { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .stats-inner { gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="https://www.lomazhome.com/" class="nav-logo">LoMaz <em>Home</em></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="https://www.lomazhome.com/propiedades.html">Propiedades</a></li>
+      <li><a href="https://www.lomazhome.com/blog/" class="active">Blog</a></li>
+      <li><a href="https://www.lomazhome.com/calculadora.html">Calculadora</a></li>
+      <li><a href="https://www.lomazhome.com/comparador.html">Comparador</a></li>
+      <li><a href="https://www.lomazhome.com/contacto.html">Contacto</a></li>
+    </ul>
+    <a href="https://www.lomazhome.com/contacto.html" class="nav-cta">Consulta Gratis</a>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú" role="button">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMBS -->
+<nav class="breadcrumb" aria-label="Ruta de navegación">
+  <div class="breadcrumb-inner">
+    <a href="https://www.lomazhome.com/">Inicio</a>
+    <span class="sep">›</span>
+    <span class="current">Blog</span>
+  </div>
+</nav>
+
+<!-- BLOG HERO -->
+<header class="blog-hero">
+  <h1>Guías expertas de <em>finca raíz</em><br>para tomar mejores decisiones</h1>
+  <p>Todo lo que necesitas saber sobre compra, venta, arriendo e inversión inmobiliaria en Bogotá y Colombia.</p>
+  <div class="blog-search">
+    <input type="search" id="searchInput" placeholder="Busca artículos: crédito hipotecario, arriendo, Chapinero..." aria-label="Buscar artículos">
+    <button onclick="runSearch()" aria-label="Buscar">
+      <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">📄 <strong id="totalArticles">30</strong> artículos</div>
+    <div class="stat-item">🏷️ <strong>6</strong> categorías</div>
+    <div class="stat-item">📅 Actualizado <strong>mayo 2026</strong></div>
+    <div class="stat-item">⭐ Por asesores certificados en Colombia</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="blog-main" id="blogMain">
+  <!-- ARTICLES COLUMN -->
+  <section>
+    <!-- FILTERS -->
+    <div class="filters-bar" id="filtersBar" role="navigation" aria-label="Filtros de categoría">
+      <span class="filter-label">Categoría:</span>
+      <button class="filter-btn cat-active" onclick="filterByCategory('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filterByCategory('compra', this)">🏠 Comprar</button>
+      <button class="filter-btn" onclick="filterByCategory('venta', this)">💰 Vender</button>
+      <button class="filter-btn" onclick="filterByCategory('arriendo', this)">🔑 Arrendar</button>
+      <button class="filter-btn" onclick="filterByCategory('zonas', this)">📍 Zonas Bogotá</button>
+      <button class="filter-btn" onclick="filterByCategory('inversion', this)">📈 Inversión</button>
+      <button class="filter-btn" onclick="filterByCategory('legal', this)">⚖️ Legal</button>
+      <select class="sort-select" id="sortSelect" onchange="sortArticles(this.value)">
+        <option value="reciente">Más recientes</option>
+        <option value="popular">Más populares</option>
+        <option value="lectura">Menor tiempo de lectura</option>
+      </select>
+    </div>
+
+    <!-- RESULTS INFO -->
+    <div class="results-info" id="resultsInfo">
+      <p class="results-count">Mostrando <strong id="shownCount">10</strong> de <strong id="totalCount">30</strong> artículos</p>
+      <div id="activeFilters"></div>
+    </div>
+
+    <!-- ARTICLES GRID -->
+    <div class="articles-grid" id="articlesGrid" aria-label="Lista de artículos del blog">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" id="pagination" role="navigation" aria-label="Paginación"></div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="blog-sidebar" aria-label="Contenido relacionado">
+
+    <!-- CATEGORIES -->
+    <div class="sidebar-card">
+      <h2 class="sidebar-title">📂 Categorías</h2>
+      <ul class="cat-list">
+        <li><a href="#" onclick="filterByCategory('compra',null);return false">🏠 Comprar vivienda <span class="cat-count" id="cnt-compra">5</span></a></li>
+        <li><a href="#" onclick="filterByCategory('venta',null);return false">💰 Vender inmueble <span class="cat-count" id="cnt-venta">5</span></a></li>
+        <li><a href="#" onclick="filterByCategory('arriendo',null);return false">🔑 Arriendo <span class="cat-count" id="cnt-arriendo">5</span></a></li>
+        <li><a href="#" onclick="filterByCategory('zonas',null);return false">📍 Zonas Bogotá <span class="cat-count" id="cnt-zonas">5</span></a></li>
+        <li><a href="#" onclick="filterByCategory('inversion',null);return false">📈 Inversión <span class="cat-count" id="cnt-inversion">5</span></a></li>
+        <li><a href="#" onclick="filterByCategory('legal',null);return false">⚖️ Legal y tributario <span class="cat-count" id="cnt-legal">5</span></a></li>
+      </ul>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="newsletter-card sidebar-card">
+      <h2 class="sidebar-title">📬 Newsletter inmobiliario</h2>
+      <p>Recibe cada semana las mejores guías de finca raíz directamente en tu bandeja.</p>
+      <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+        <input type="text" placeholder="Tu nombre" id="nlName" required autocomplete="name">
+        <input type="email" placeholder="Tu email" id="nlEmail" required autocomplete="email">
+        <button type="submit" class="newsletter-btn">Suscribirme gratis →</button>
+      </form>
+      <p class="newsletter-privacy">Sin spam. Solo contenido de valor. Cancela cuando quieras.</p>
+    </div>
+
+    <!-- POPULAR ARTICLES -->
+    <div class="sidebar-card">
+      <h2 class="sidebar-title">🔥 Más leídos</h2>
+      <div class="popular-list" id="popularList"></div>
+    </div>
+
+    <!-- TAGS -->
+    <div class="sidebar-card">
+      <h2 class="sidebar-title">🏷️ Temas</h2>
+      <div class="tags-cloud" id="tagsCloud"></div>
+    </div>
+
+    <!-- PROPERTIES BANNER -->
+    <div class="prop-banner">
+      <h4>¿Buscas tu próximo hogar?</h4>
+      <p>Explora todas las propiedades disponibles en Bogotá con LoMaz Home.</p>
+      <a href="https://www.lomazhome.com/propiedades.html" class="prop-banner-btn">Ver propiedades →</a>
+    </div>
+
+    <!-- WHATSAPP -->
+    <div class="sidebar-card" style="background:linear-gradient(135deg,#25D366,#128C7E);text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:8px;">💬</div>
+      <h4 style="color:#fff;font-family:var(--font-serif);margin-bottom:8px;">¿Tienes dudas?</h4>
+      <p style="color:rgba(255,255,255,0.85);font-size:0.85rem;margin-bottom:16px;">Habla con un asesor ahora mismo por WhatsApp</p>
+      <a href="https://wa.me/573001234567?text=Hola%20LoMaz%20Home%2C%20vi%20el%20blog%20y%20tengo%20una%20consulta" target="_blank" rel="noopener" style="display:block;background:#fff;color:#128C7E;padding:12px;border-radius:6px;font-weight:700;font-size:0.875rem;transition:opacity 0.2s;">Escribir por WhatsApp</a>
+    </div>
+
+  </aside>
+</main>
+<!-- FOOTER -->
+<footer class="blog-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="brand-name">LoMaz <em>Home</em></div>
+<p>Inmobiliaria boutique especializada en Bogotá. Asesoría personalizada, tecnología de punta y la confianza que mereces desde 2024.</p>
+</div>
+<div class="footer-col"><h5>Blog</h5><ul><li><a href="/blog/?cat=compra">Comprar vivienda</a></li><li><a href="/blog/?cat=venta">Vender inmueble</a></li><li><a href="/blog/?cat=arriendo">Arriendo</a></li><li><a href="/blog/?cat=inversion">Inversión</a></li><li><a href="/blog/?cat=legal">Legal y Tributario</a></li></ul></div>
+<div class="footer-col"><h5>Servicios</h5><ul><li><a href="/propiedades.html">Propiedades</a></li><li><a href="/calculadora.html">Calculadora</a></li><li><a href="/comparador.html">Comparador</a></li><li><a href="/aria.html">Chatbot ARIA</a></li></ul></div>
+<div class="footer-col"><h5>Contacto</h5><ul><li><a href="/contacto.html">Escríbenos</a></li><li><a href="https://wa.me/573001234567" target="_blank">WhatsApp</a></li><li><a href="mailto:info@lomazhome.com">info@lomazhome.com</a></li></ul></div>
+</div>
+<div class="footer-bottom"><span>© 2026 LoMaz Home. Todos los derechos reservados.</span><span>Bogotá, Colombia 🇨🇴</span></div>
+</footer>
+
+<script>
+// ===== BLOG DATA =====
+const ARTICLES = [
+{id:1,slug:"como-comprar-apartamento-bogota-2026",title:"Cómo comprar apartamento en Bogotá en 2026: guía paso a paso",excerpt:"Desde elegir la zona hasta firmar escrituras: todo lo que debes saber antes de comprar tu primer apartamento en Bogotá.",category:"compra",tags:["compra","bogotá","crédito hipotecario","primer apartamento"],date:"2026-05-01",readTime:12,views:4820,featured:true,img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80",alt:"Apartamento moderno en Bogotá para comprar",author:"Equipo LoMaz Home",keyword:"cómo comprar apartamento en Bogotá"},
+{id:2,slug:"credito-hipotecario-colombia-2026",title:"Crédito hipotecario en Colombia 2026: tasas, requisitos y bancos",excerpt:"Compara las tasas de los principales bancos colombianos y aprende a elegir el mejor crédito para comprar vivienda este año.",category:"compra",tags:["crédito hipotecario","bancos","tasa de interés","finanzas"],date:"2026-04-20",readTime:10,views:3950,featured:false,img:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80",alt:"Solicitud de crédito hipotecario en banco colombiano",author:"Equipo LoMaz Home",keyword:"crédito hipotecario Colombia"},
+{id:3,slug:"subsidio-mi-casa-ya-2026-como-aplicar",title:"Subsidio Mi Casa Ya 2026: quién aplica y cómo solicitarlo",excerpt:"El programa de vivienda del gobierno más popular de Colombia. Te explicamos los requisitos actualizados y el paso a paso para aplicar.",category:"compra",tags:["Mi Casa Ya","subsidio","VIS","gobierno"],date:"2026-04-10",readTime:8,views:6100,featured:true,img:"https://images.unsplash.com/photo-1448630360428-65456885c650?w=600&q=80",alt:"Familia colombiana en su nueva vivienda con subsidio Mi Casa Ya",author:"Equipo LoMaz Home",keyword:"subsidio Mi Casa Ya 2026"},
+{id:4,slug:"gastos-notariales-compraventa-colombia",title:"Gastos notariales en compraventa de inmueble en Colombia",excerpt:"Promesa, escrituración, registro, retención en la fuente... Descubre exactamente cuánto debes pagar al comprar o vender un inmueble.",category:"compra",tags:["gastos notariales","escrituración","registro","costos"],date:"2026-03-25",readTime:9,views:2800,featured:false,img:"https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80",alt:"Notaría colombiana con documentos de compraventa",author:"Equipo LoMaz Home",keyword:"gastos notariales compraventa Colombia"},
+{id:5,slug:"avaluo-comercial-inmueble-bogota",title:"Avalúo comercial de inmueble en Bogotá: todo lo que debes saber",excerpt:"¿Cuánto vale realmente tu propiedad? Te explicamos cómo se hace un avalúo comercial, quién lo puede realizar y cuánto cuesta.",category:"venta",tags:["avalúo","precio","venta","lonja"],date:"2026-04-28",readTime:7,views:3200,featured:false,img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",alt:"Perito realizando avalúo de propiedad en Bogotá",author:"Equipo LoMaz Home",keyword:"avalúo comercial inmueble Bogotá"}];
+const ARTICLES2 = [
+{id:6,slug:"como-vender-apartamento-rapido-bogota",title:"Cómo vender tu apartamento rápido en Bogotá: 10 estrategias efectivas",excerpt:"Precio correcto, fotos profesionales, home staging y marketing digital: la fórmula para vender tu inmueble en el menor tiempo posible.",category:"venta",tags:["venta","precio","fotos","marketing inmobiliario"],date:"2026-04-15",readTime:11,views:4100,featured:true,img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80",alt:"Casa con letrero de venta en Bogotá",author:"Equipo LoMaz Home",keyword:"cómo vender apartamento rápido"},
+{id:7,slug:"comision-inmobiliaria-colombia-cuanto-cobran",title:"Comisión inmobiliaria en Colombia: ¿cuánto cobran las agencias?",excerpt:"¿Cuánto cobra una inmobiliaria en Colombia? Te explicamos el porcentaje estándar, quién lo paga y cómo negociarlo.",category:"venta",tags:["comisión","agencia","vendedor","honorarios"],date:"2026-03-30",readTime:6,views:2650,featured:false,img:"https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80",alt:"Asesor inmobiliario en reunión con cliente en Bogotá",author:"Equipo LoMaz Home",keyword:"comisión inmobiliaria Colombia"},
+{id:8,slug:"contrato-arrendamiento-ley-820-colombia",title:"Contrato de arrendamiento Ley 820: derechos y obligaciones",excerpt:"La Ley 820 de 2003 regula el arrendamiento urbano en Colombia. Conoce tus derechos como arrendador o arrendatario.",category:"arriendo",tags:["Ley 820","contrato","arrendamiento","derechos"],date:"2026-04-05",readTime:13,views:5300,featured:true,img:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80",alt:"Firma de contrato de arrendamiento en Colombia",author:"Equipo LoMaz Home",keyword:"contrato arrendamiento Ley 820"},
+{id:9,slug:"como-arrendar-inmueble-bogota-paso-a-paso",title:"Cómo arrendar tu inmueble en Bogotá: guía completa para propietarios",excerpt:"Desde fijar el canon hasta seleccionar el inquilino ideal: el proceso completo para arrendar tu propiedad en Bogotá sin complicaciones.",category:"arriendo",tags:["arriendo","propietario","canon","inquilino"],date:"2026-03-18",readTime:10,views:3750,featured:false,img:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80",alt:"Propietario mostrando apartamento para arrendar en Bogotá",author:"Equipo LoMaz Home",keyword:"cómo arrendar inmueble Bogotá"},
+{id:10,slug:"deposito-poliza-arrendamiento-colombia",title:"Depósito vs póliza de arrendamiento: ¿cuál te conviene?",excerpt:"¿Depósito en efectivo o póliza de arrendamiento? Te ayudamos a entender las diferencias y cuál protege mejor tu patrimonio.",category:"arriendo",tags:["póliza","depósito","arriendo","garantía"],date:"2026-03-05",readTime:7,views:2900,featured:false,img:"https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=600&q=80",alt:"Documentos de garantía de arrendamiento",author:"Equipo LoMaz Home",keyword:"depósito y póliza de arrendamiento"}];
+const ARTICLES3 = [
+{id:11,slug:"vivir-en-chapinero-bogota-guia-completa",title:"Vivir en Chapinero, Bogotá: todo lo que necesitas saber en 2026",excerpt:"Chapinero es uno de los barrios más dinámicos de Bogotá. Te contamos sobre precios, servicios, transporte y calidad de vida.",category:"zonas",tags:["Chapinero","barrios","Bogotá","calidad de vida"],date:"2026-04-22",readTime:9,views:3600,featured:true,img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",alt:"Vista aérea del barrio Chapinero en Bogotá",author:"Equipo LoMaz Home",keyword:"vivir en Chapinero"},
+{id:12,slug:"apartamentos-en-cedritos-bogota",title:"Apartamentos en Cedritos Bogotá: precios, zonas y qué esperar",excerpt:"Cedritos se consolida como una de las zonas de mayor valorización en el norte de Bogotá. Descubre por qué vale la pena invertir aquí.",category:"zonas",tags:["Cedritos","norte Bogotá","apartamentos","precio"],date:"2026-04-08",readTime:8,views:2800,featured:false,img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",alt:"Edificios de apartamentos en Cedritos Bogotá",author:"Equipo LoMaz Home",keyword:"apartamentos en Cedritos"},
+{id:13,slug:"mejores-barrios-invertir-bogota-2026",title:"Los mejores barrios para invertir en finca raíz en Bogotá 2026",excerpt:"Análisis de los barrios con mayor valorización, mejor rentabilidad de arriendo y mayor demanda en Bogotá para este año.",category:"zonas",tags:["inversión","barrios","valorización","rentabilidad"],date:"2026-03-12",readTime:14,views:7200,featured:true,img:"https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80",alt:"Panorama de Bogotá con barrios de inversión inmobiliaria",author:"Equipo LoMaz Home",keyword:"mejores barrios para invertir Bogotá"},
+{id:14,slug:"rentabilidad-finca-raiz-colombia-2026",title:"Rentabilidad de finca raíz en Colombia 2026: ¿vale la pena invertir?",excerpt:"¿Cuánto rinde una propiedad en Colombia? Analizamos la rentabilidad por arriendo, plusvalía y comparamos con otras inversiones.",category:"inversion",tags:["rentabilidad","inversión","ROI","valorización"],date:"2026-05-05",readTime:12,views:5800,featured:true,img:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80",alt:"Gráfica de rentabilidad de finca raíz en Colombia",author:"Equipo LoMaz Home",keyword:"rentabilidad finca raíz Colombia"},
+{id:15,slug:"airbnb-bogota-guia-para-propietarios",title:"Airbnb en Bogotá: guía completa para propietarios en 2026",excerpt:"¿Es rentable poner tu apartamento en Airbnb en Bogotá? Calculamos ingresos esperados, impuestos y los mejores barrios para short rentals.",category:"inversion",tags:["Airbnb","renta corta","turismo","ingresos pasivos"],date:"2026-04-18",readTime:10,views:4400,featured:false,img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80",alt:"Apartamento decorado para Airbnb en Bogotá",author:"Equipo LoMaz Home",keyword:"Airbnb en Bogotá"}];
+const ARTICLES4 = [
+{id:16,slug:"promesa-compraventa-colombia-que-incluir",title:"Promesa de compraventa en Colombia: qué debe incluir y cómo protegerte",excerpt:"La promesa de compraventa es el contrato más importante en una transacción inmobiliaria. Te explicamos sus cláusulas esenciales.",category:"legal",tags:["promesa de compraventa","contrato","jurídico","protección"],date:"2026-04-12",readTime:11,views:4200,featured:true,img:"https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80",alt:"Abogado revisando promesa de compraventa en Colombia",author:"Equipo LoMaz Home",keyword:"promesa de compraventa Colombia"},
+{id:17,slug:"retencion-en-la-fuente-venta-inmueble",title:"Retención en la fuente en venta de inmueble: ¿cuánto debes pagar?",excerpt:"Al vender una propiedad en Colombia, el comprador debe practicar retención en la fuente. Conoce las tarifas y cómo calcularla.",category:"legal",tags:["retención en la fuente","impuesto","DIAN","tributario"],date:"2026-03-28",readTime:9,views:3100,featured:false,img:"https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=600&q=80",alt:"Formulario tributario DIAN para venta de inmueble",author:"Equipo LoMaz Home",keyword:"retención en la fuente venta inmueble"},
+{id:18,slug:"impuesto-registro-bogota-colombia",title:"Impuesto de registro en Bogotá: tarifas y cómo liquidarlo",excerpt:"El impuesto de registro es uno de los costos obligatorios al registrar una escritura. Te explicamos cómo se calcula en Bogotá.",category:"legal",tags:["impuesto de registro","escritura","gobernación","costos"],date:"2026-03-15",readTime:7,views:2400,featured:false,img:"https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80",alt:"Oficina de registro de instrumentos públicos en Bogotá",author:"Equipo LoMaz Home",keyword:"impuesto de registro Bogotá"},
+{id:19,slug:"permuta-inmobiliaria-colombia-como-funciona",title:"Permuta inmobiliaria en Colombia: cómo cambiar tu propiedad sin usar efectivo",excerpt:"La permuta es una alternativa cada vez más usada para cambiar de vivienda en Colombia. Conoce sus ventajas, riesgos y proceso.",category:"inversion",tags:["permuta","intercambio","vivienda","alternativas"],date:"2026-02-28",readTime:8,views:2200,featured:false,img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80",alt:"Dos propietarios intercambiando propiedades en Colombia",author:"Equipo LoMaz Home",keyword:"permuta inmobiliaria Colombia"},
+{id:20,slug:"aumentar-valor-apartamento-antes-vender",title:"10 mejoras que aumentan el valor de tu apartamento antes de venderlo",excerpt:"Pequeñas inversiones en tu propiedad pueden aumentar su precio de venta significativamente. Descubre cuáles tienen mejor ROI.",category:"venta",tags:["home staging","remodelación","valor","venta"],date:"2026-02-15",readTime:9,views:3800,featured:false,img:"https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=80",alt:"Apartamento remodelado en Bogotá listo para vender",author:"Equipo LoMaz Home",keyword:"aumentar valor apartamento"}
+];
+
+// Merge all articles
+const ALL_ARTICLES = [...ARTICLES, ...ARTICLES2, ...ARTICLES3, ...ARTICLES4];
+
+// ===== STATE =====
+let state = { page: 1, perPage: 9, category: 'todos', search: '', sort: 'reciente', filtered: [] };
+
+// ===== INIT =====
+function init() {
+  updateFiltered();
+  renderGrid();
+  renderPopular();
+  renderTags();
+  updateCategoryCounts();
+  setupSearch();
+  checkURLParams();
+}
+
+function checkURLParams() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('cat')) filterByCategory(params.get('cat'), null);
+  if (params.get('tag')) filterByTag(params.get('tag'));
+  if (params.get('q')) { document.getElementById('searchInput').value = params.get('q'); state.search = params.get('q'); updateFiltered(); renderGrid(); }
+}
+
+function updateFiltered() {
+  let arr = [...ALL_ARTICLES];
+  if (state.category !== 'todos') arr = arr.filter(a => a.category === state.category);
+  if (state.tag) arr = arr.filter(a => a.tags.includes(state.tag));
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    arr = arr.filter(a => a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q) || a.tags.some(t => t.toLowerCase().includes(q)));
+  }
+  if (state.sort === 'popular') arr.sort((a,b) => b.views - a.views);
+  else if (state.sort === 'lectura') arr.sort((a,b) => a.readTime - b.readTime);
+  else arr.sort((a,b) => new Date(b.date) - new Date(a.date));
+  state.filtered = arr;
+  state.page = 1;
+  document.getElementById('totalArticles').textContent = ALL_ARTICLES.length;
+  document.getElementById('totalCount').textContent = arr.length;
+}
+
+function filterByCategory(cat, btn) {
+  state.category = cat;
+  state.tag = null;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('cat-active'));
+  if (btn) btn.classList.add('cat-active');
+  updateFiltered();
+  renderGrid();
+  renderPagination();
+  updateURL();
+}
+
+function filterByTag(tag) {
+  state.tag = state.tag === tag ? null : tag;
+  state.category = 'todos';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('cat-active'));
+  document.querySelector('.filter-btn').classList.add('cat-active');
+  document.querySelectorAll('.tag-chip').forEach(c => c.classList.toggle('selected', c.dataset.tag === state.tag));
+  updateFiltered();
+  renderGrid();
+  updateURL();
+}
+
+function sortArticles(val) { state.sort = val; updateFiltered(); renderGrid(); renderPagination(); }
+
+function runSearch() {
+  state.search = document.getElementById('searchInput').value.trim();
+  state.category = 'todos';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('cat-active'));
+  document.querySelector('.filter-btn').classList.add('cat-active');
+  updateFiltered();
+  renderGrid();
+  updateURL();
+}
+
+function updateURL() {
+  const params = new URLSearchParams();
+  if (state.category !== 'todos') params.set('cat', state.category);
+  if (state.tag) params.set('tag', state.tag);
+  if (state.search) params.set('q', state.search);
+  history.replaceState(null, '', window.location.pathname + (params.toString() ? '?' + params.toString() : ''));
+}
+
+// ===== RENDER =====
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+  return text.replace(re, "<mark>$1</mark>");
+}
+
+function formatDate(d) {
+  const dt = new Date(d);
+  return dt.toLocaleDateString("es-CO", {year:"numeric",month:"long",day:"numeric"});
+}
+
+function catLabel(cat) {
+  const m = {compra:"🏠 Comprar",venta:"💰 Vender",arriendo:"🔑 Arriendo",zonas:"📍 Zonas",inversion:"📈 Inversión",legal:"⚖️ Legal"};
+  return m[cat] || cat;
+}
+
+function renderCard(a, big, q) {
+  const title = q ? highlight(a.title, q) : a.title;
+  const exc = q ? highlight(a.excerpt, q) : a.excerpt;
+  const tags = a.tags.slice(0,3).map(t => '<span class="card-tag" onclick="filterByTag(\''+ t +'\');event.stopPropagation()">#'+ t +'</span>').join("");
+  return '<article class="article-card'+(big?" featured-main":"")+'" onclick="window.location=\"/blog/'+a.slug+'/\"">'  +
+    '<div class="card-img-wrap"><img src="'+a.img+'" alt="'+a.alt+'" loading="lazy" width="600" height="338">' +
+    '<span class="card-category">'+ catLabel(a.category) +'</span>' +
+    (a.featured ? '<span class="card-featured">⭐ Destacado</span>' : "") +
+    '</div>' +
+    '<div class="'+(big?"card-content":"card-body")+'">' +
+    '<div class="card-meta"><time datetime="'+a.date+'">'+formatDate(a.date)+'</time><span class="dot"></span>' +
+    '<span class="card-read-time">📖 '+a.readTime+' min</span><span class="dot"></span>' +
+    '<span>'+a.views.toLocaleString("es-CO")+' lecturas</span></div>' +
+    '<h2 class="card-title">'+title+'</h2>' +
+    '<p class="card-excerpt">'+exc+'</p>' +
+    '<div class="card-tags">'+tags+'</div></div>' +
+    '<div class="card-footer"><div class="card-author"><div class="author-avatar">LH</div>'+a.author+'</div>' +
+    '<span class="card-read-more">Leer artículo →</span></div></article>';
+}
+
+function renderGrid() {
+  const grid = document.getElementById("articlesGrid");
+  const start = (state.page-1) * state.perPage;
+  const page = state.filtered.slice(start, start + state.perPage);
+  document.getElementById("shownCount").textContent = Math.min(state.filtered.length, state.page * state.perPage);
+  if (state.filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results"><h3>No encontramos artículos</h3><p>Intenta con otros términos.</p></div>';
+    document.getElementById("pagination").innerHTML = "";
+    return;
+  }
+  const q = state.search;
+  grid.innerHTML = page.map((a, i) => {
+    const big = i===0 && state.page===1 && state.category==="todos" && !state.search;
+    return renderCard(a, big, q);
+  }).join("");
+  renderPagination();
+}
+
+function renderPagination() {
+  const total = Math.ceil(state.filtered.length / state.perPage);
+  const pg = document.getElementById("pagination");
+  if (total <= 1) { pg.innerHTML = ""; return; }
+  let html = '<button class="page-btn" onclick="goPage(state.page-1)" ' + (state.page===1?"disabled":"")+'>‹</button>';
+  for (let i=1; i<=total; i++) {
+    if (i===1 || i===total || Math.abs(i-state.page)<=1) {
+      html += '<button class="page-btn'+(i===state.page?" active":"")+'" onclick="goPage('+ i +')">'+ i +'</button>';
+    } else if (Math.abs(i-state.page)===2) html += '<span class="page-dots">…</span>';
+  }
+  html += '<button class="page-btn" onclick="goPage(state.page+1)" ' + (state.page===total?"disabled":"")+'>›</button>';
+  pg.innerHTML = html;
+}
+
+function goPage(p) {
+  const total = Math.ceil(state.filtered.length / state.perPage);
+  if (p < 1 || p > total) return;
+  state.page = p;
+  renderGrid();
+  document.getElementById("blogMain").scrollIntoView({behavior:"smooth"});
+}
+
+function renderPopular() {
+  const top = [...ALL_ARTICLES].sort((a,b)=>b.views-a.views).slice(0,5);
+  document.getElementById("popularList").innerHTML = top.map(a =>
+    '<a href="/blog/'+ a.slug +'/" class="popular-item">'  +
+    '<img src="'+ a.img +'" alt="'+ a.alt +'" class="popular-img" loading="lazy" width="70" height="70">'  +
+    '<div class="popular-info"><p class="pop-title">'+ a.title +'</p>' +
+    '<span class="pop-date">'+ formatDate(a.date) +'</span></div></a>'
+  ).join("");
+}
+
+function renderTags() {
+  const all = ALL_ARTICLES.flatMap(a=>a.tags);
+  const freq = {}; all.forEach(t=>{ freq[t]=(freq[t]||0)+1; });
+  const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+  document.getElementById("tagsCloud").innerHTML = sorted.map(([t,c]) =>
+    '<span class="tag-chip" data-tag="'+ t +'" onclick="filterByTag(\''+ t +'\')">#'+ t +' ('+ c +')</span>'
+  ).join("");
+}
+
+function updateCategoryCounts() {
+  const cats = ["compra","venta","arriendo","zonas","inversion","legal"];
+  cats.forEach(c => {
+    const el = document.getElementById("cnt-"+c);
+    if (el) el.textContent = ALL_ARTICLES.filter(a=>a.category===c).length;
+  });
+}
+
+function setupSearch() {
+  const inp = document.getElementById("searchInput");
+  let timer;
+  inp.addEventListener("keyup", function(e) {
+    if (e.key === "Enter") { runSearch(); return; }
+    clearTimeout(timer);
+    timer = setTimeout(runSearch, 400);
+  });
+}
+
+function subscribeNewsletter(e) {
+  e.preventDefault();
+  const name = document.getElementById("nlName").value;
+  const email = document.getElementById("nlEmail").value;
+  alert("¡Gracias " + name + "! Te hemos suscrito al newsletter. Recibirás los mejores artículos de finca raíz en " + email);
+  e.target.reset();
+}
+
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("mobile-open");
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+gtag("config", "G-XXXXXXXXXX");
+// Custom events
+document.addEventListener("DOMContentLoaded", function() {
+  // Scroll depth tracking
+  const depths = [25,50,75,90];
+  const fired = new Set();
+  window.addEventListener("scroll", function() {
+    const pct = Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+    depths.forEach(d=>{ if(pct>=d && !fired.has(d)) { fired.add(d); gtag("event","scroll_depth",{depth_percentage:d,page_location:location.href}); } });
+  });
+  // CTA click tracking
+  document.querySelectorAll("a[href*='wa.me']").forEach(el => {
+    el.addEventListener("click", ()=>gtag("event","whatsapp_click",{source:"blog_index"}));
+  });
+});
+</script>
+
+<!-- ARIA Chatbot -->
+<script src="https://www.lomazhome.com/ux-widgets.js" defer></script>
+
+</body>
+</html>
