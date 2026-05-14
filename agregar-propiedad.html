@@ -112,7 +112,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="form-group"><label>BANOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
       <div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div>
       <div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
-      <div class="form-group"><label>ANTIGUEDAD (anos)</label><input type="number" id="antigüedad" placeholder="0 si es nuevo" min="0"/></div>
+      <div class="form-group"><label>ANTIGUEDAD (anos)</label><input type="number" id="antigÃ¼edad" placeholder="0 si es nuevo" min="0"/></div>
       <div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
       <div class="form-group full"><label>DESCRIPCION DETALLADA *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
     </div></div>
@@ -125,6 +125,9 @@ textarea{resize:vertical;min-height:100px}
       <div class="form-group"><label>CIUDAD *</label><input type="text" id="ciudad" placeholder="Ej: Bogota, Medellin, Cali..."/></div>
       <div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" placeholder="Ej: El Poblado, Chapinero Alto..."/></div>
       <div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
+      <div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(requerida para Finca Raiz)</small></label><input type="number" id="latitud" placeholder="Ej: 4.7109886" step="0.0000001"/></div>
+      <div class="form-group"><label>LONGITUD <small style="color:#888;font-weight:400">(requerida para Finca Raiz)</small></label><input type="number" id="longitud" placeholder="Ej: -74.072092" step="0.0000001"/></div>
+      <div class="form-group"><label>FOTOS (URLs separadas por coma, máx 30)</label><input type="text" id="fotos_url" placeholder="https://img1.jpg, https://img2.jpg"/></div>
     </div></div>
     <div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(1)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(3)">Siguiente &#8594;</button></div>
   </div>
@@ -292,7 +295,7 @@ async function publicarPropiedad(){
     banos:parseInt(document.getElementById("banos").value)||0,
     garajes:parseInt(document.getElementById("garajes").value)||0,
     estrato:parseInt(document.getElementById("estrato").value)||1,
-    antigüedad:parseInt(document.getElementById("antigüedad").value)||0,
+    antigÃ¼edad:parseInt(document.getElementById("antigÃ¼edad").value)||0,
     piso:parseInt(document.getElementById("piso").value)||0,
     deposito:document.getElementById("deposito").value==="true",
     descripcion:document.getElementById("descripcion").value.trim(),
@@ -301,6 +304,9 @@ async function publicarPropiedad(){
     barrio:document.getElementById("barrio").value.trim(),
     direccion:document.getElementById("direccion").value.trim(),
     amenidades:amenidades,
+    latitud:parseFloat(document.getElementById("latitud").value)||null,
+    longitud:parseFloat(document.getElementById("longitud").value)||null,
+    fotos_url:document.getElementById("fotos_url").value.trim()||null,
     estado:"activo",
     asesor_id:currentUser.id
   };
@@ -324,9 +330,79 @@ async function publicarPropiedad(){
     {id:"marketplace",name:"Facebook Marketplace",cb:"ch-marketplace"},
     {id:"instagram",name:"Instagram",cb:"ch-instagram"}
   ];
+
+  // ── Cargar credenciales de portales desde Supabase ──
+  const {data:credsList} = await sb.from("configuracion_portales").select("*");
+  const creds = {};
+  if(credsList) credsList.forEach(c => { creds[c.portal] = c; });
+
+  // ── Función real de publicación en Finca Raiz API ──
+  async function publicarEnFincaraiz(propData, propId) {
+    const cfg = creds["fincaraiz"];
+    if(!cfg || !cfg.access_token || !cfg.client_id) {
+      return {ok:false, msg:"Sin credenciales. Ve a Ajustes > Portales > Finca Raiz y configura tu API Key y Client ID."};
+    }
+    const offerMap = {"venta":"sell","arriendo":"rent","alquiler_vacacional":"lease"};
+    const offer = offerMap[propData.tipo_operacion] || "sell";
+    const typeMap = {
+      "apartamento":"apartment","casa":"house","lote":"lot","local":"commercial",
+      "oficina":"office","bodega":"warehouse","finca":"farm","habitacion":"room",
+      "consultorio":"consulting-room","edificio":"building","cabana":"cabin",
+      "casa_campestre":"country-house","estudio":"studio","casa_lote":"house-lot",
+      "parqueadero":"parking"
+    };
+    const propertyType = typeMap[propData.tipo_propiedad] || "apartment";
+    const photosList = [];
+    if(propData.fotos_url) {
+      const urls = propData.fotos_url.split(",").map(u=>u.trim()).filter(u=>u.startsWith("http")).slice(0,30);
+      urls.forEach((url, i) => { photosList.push({sort_order:i+1, is_main:i===0, image:url}); });
+    }
+    const payload = [{
+      external_code: String(propId),
+      client_id: cfg.client_id,
+      offer: offer,
+      property_type: propertyType,
+      description: propData.descripcion || propData.titulo || "Inmueble LoMaz Home",
+      price: { value: propData.precio, currency: "COP" },
+      area: propData.m2_construccion || 0,
+      address: { address: propData.direccion || propData.barrio || propData.ciudad || "Bogota" },
+      locations: {
+        location_point: {
+          latitude: propData.latitud || 4.710988,
+          longitude: propData.longitud || -74.072092
+        },
+        view_map: (propData.latitud && propData.longitud) ? 0 : 2
+      },
+      listing_contact: { emails: [currentUser.email], phones: [] },
+      ...(propData.habitaciones > 0 && {rooms: propData.habitaciones}),
+      ...(propData.banos > 0 && {baths: propData.banos}),
+      ...(propData.garajes > 0 && {garages: propData.garajes}),
+      ...(propData.piso > 0 && {floor: propData.piso}),
+      ...(propData.estrato > 0 && {stratum: propData.estrato}),
+      ...(propData.precio_admin > 0 && offer==="rent" && {administration:{is_included:false, price:propData.precio_admin}}),
+      ...(photosList.length > 0 && {photos: photosList})
+    }];
+    try {
+      const resp = await fetch("https://api.fincaraiz.com.co/listing", {
+        method:"POST",
+        headers:{"Content-Type":"application/json","apikey":cfg.access_token},
+        body:JSON.stringify(payload)
+      });
+      const json = await resp.json().catch(()=>({message:resp.statusText}));
+      if(resp.ok){
+        const taskId = json?.task_id || (Array.isArray(json) && json[0]?.task_id) || "";
+        return {ok:true, msg:"Enviado a Finca Raiz." + (taskId ? " Task ID: "+taskId : "") + " Queda en estado Pendiente hasta ser activado."};
+      } else {
+        return {ok:false, msg:"Error Finca Raiz ("+resp.status+"): "+(json?.message||json?.detail||JSON.stringify(json)).substring(0,200)};
+      }
+    } catch(e) {
+      return {ok:false, msg:"Error de red con Finca Raiz: "+e.message+" (verifica CORS o usa Edge Function)"};
+    }
+  }
+
+  // ── Loop de portales ──
   const msgs={
     "metrocuadrado":"Para publicacion automatica configura tu API Key en Ajustes > Portales > Metrocuadrado.",
-    "fincaraiz":"Finca Raiz requiere autenticacion OAuth. Ve a Ajustes > Portales > Finca Raiz y conecta tu cuenta.",
     "proppit":"Proppit distribuira a 6 portales. Configura tu token en Ajustes > Portales > Proppit.",
     "marketplace":"Texto copiado para Facebook Marketplace. Abre Facebook Marketplace > Crear anuncio > Pega el texto.",
     "instagram":"Post generado para Instagram. Abre tu app Instagram y publica con el caption preparado."
@@ -336,24 +412,21 @@ async function publicarPropiedad(){
     if(!checked)continue;
     setPortalStatus(p.id,"publishing","Publicando...");
     addLog("loading",p.name,"Enviando al portal...");
-    await new Promise(r=>setTimeout(r,800));
-    const{error:ePortal}=await sb.from("publicaciones_portales").insert({
-      propiedad_id:prop.id,
-      portal:p.id,
-      estado:"pendiente_credenciales",
-      mensaje:msgs[p.id]||"Requiere configuracion.",
-      asesor_id:currentUser.id
-    });
-    if(ePortal){
-      setPortalStatus(p.id,"error","Error DB");
-      addLog("error",p.name,"Error al registrar: "+ePortal.message);
-    } else {
-      setPortalStatus(p.id,"pending","Config. requerida");
-      addLog("info",p.name,msgs[p.id]);
+    if(p.id === "fincaraiz"){
+      const result = await publicarEnFincaraiz(data, prop.id);
+      const estado = result.ok ? "publicado" : (creds["fincaraiz"]?.access_token ? "error_api" : "pendiente_credenciales");
+      await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
+      if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
+      else{setPortalStatus("fincaraiz","error",creds["fincaraiz"]?.access_token?"Error API":"Sin credenciales");addLog("error","Finca Raiz",result.msg);}
+      continue;
     }
+    await new Promise(r=>setTimeout(r,800));
+    const{error:ePortal}=await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:p.id,estado:"pendiente_credenciales",mensaje:msgs[p.id]||"Requiere configuracion.",asesor_id:currentUser.id});
+    if(ePortal){setPortalStatus(p.id,"error","Error DB");addLog("error",p.name,"Error: "+ePortal.message);}
+    else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,msgs[p.id]);}
   }
   btn.textContent="Publicado en Lomaz Home";
-  showAlert("Propiedad publicada en Lomaz Home. Revisa el registro de portales para los proximos pasos.","success");
+  showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
 }
 </script>
 </body>
