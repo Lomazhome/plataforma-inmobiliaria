@@ -243,6 +243,10 @@ mark { background: rgba(201,168,76,0.3); padding: 0 2px; border-radius: 2px; }
   .footer-inner { grid-template-columns: 1fr; }
   .stats-inner { gap: 16px; }
 }
+
+.article-card-link { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+.article-card-link:hover .card-title { color: var(--gold); }
+.article-card-link:focus { outline: 3px solid var(--gold); outline-offset: 4px; border-radius: 12px; }
 </style>
 </head>
 <body>
@@ -250,7 +254,7 @@ mark { background: rgba(201,168,76,0.3); padding: 0 2px; border-radius: 2px; }
 <!-- NAVIGATION -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="https://www.lomazhome.com/" class="nav-logo">LoMaz <em>Home</em></a>
+    <a href="https://www.lomazhome.com/" class="nav-logo">Lo<em>Maz</em> Home</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="https://www.lomazhome.com/propiedades.html">Propiedades</a></li>
       <li><a href="https://www.lomazhome.com/blog/" class="active">Blog</a></li>
@@ -393,7 +397,7 @@ mark { background: rgba(201,168,76,0.3); padding: 0 2px; border-radius: 2px; }
 <footer class="blog-footer">
 <div class="footer-inner">
 <div class="footer-brand">
-<div class="brand-name">LoMaz <em>Home</em></div>
+<div class="brand-name">Lo<em>Maz</em> Home</div>
 <p>Inmobiliaria boutique especializada en Bogotá. Asesoría personalizada, tecnología de punta y la confianza que mereces desde 2024.</p>
 </div>
 <div class="footer-col"><h5>Blog</h5><ul><li><a href="/blog/?cat=compra">Comprar vivienda</a></li><li><a href="/blog/?cat=venta">Vender inmueble</a></li><li><a href="/blog/?cat=arriendo">Arriendo</a></li><li><a href="/blog/?cat=inversion">Inversión</a></li><li><a href="/blog/?cat=legal">Legal y Tributario</a></li></ul></div>
@@ -534,8 +538,8 @@ function catLabel(cat) {
 function renderCard(a, big, q) {
   const title = q ? highlight(a.title, q) : a.title;
   const exc = q ? highlight(a.excerpt, q) : a.excerpt;
-  const tags = a.tags.slice(0,3).map(t => '<span class="card-tag" onclick="filterByTag(\''+ t +'\');event.stopPropagation()">#'+ t +'</span>').join("");
-  return '<article class="article-card'+(big?" featured-main":"")+'" onclick="window.location=\"/blog/'+a.slug+'/\"">'  +
+  const tags = a.tags.slice(0,3).map(t => '<span class="card-tag" onclick="event.preventDefault();filterByTag(\''+ t +'\');event.stopPropagation()">#'+ t +'</span>').join("");
+  return '<a href="/blog/'+a.slug+'/" class="article-card-link" aria-label="Leer: '+a.title.replace(/"/g,"&quot;")+'"><article class="article-card'+(big?" featured-main":"")+'">'  +
     '<div class="card-img-wrap"><img src="'+a.img+'" alt="'+a.alt+'" loading="lazy" width="600" height="338">' +
     '<span class="card-category">'+ catLabel(a.category) +'</span>' +
     (a.featured ? '<span class="card-featured">⭐ Destacado</span>' : "") +
@@ -548,7 +552,7 @@ function renderCard(a, big, q) {
     '<p class="card-excerpt">'+exc+'</p>' +
     '<div class="card-tags">'+tags+'</div></div>' +
     '<div class="card-footer"><div class="card-author"><div class="author-avatar">LH</div>'+a.author+'</div>' +
-    '<span class="card-read-more">Leer artículo →</span></div></article>';
+    '<span class="card-read-more">Leer artículo →</span></div></article></a>';
 }
 
 function renderGrid() {
