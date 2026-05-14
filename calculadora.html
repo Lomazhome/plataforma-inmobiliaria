@@ -102,14 +102,14 @@ select option{background:#ffffff;color:var(--text)}
 <main class="main-content">
 
 <div class="module active" id="mod1">
-<div class="mod-header"><h1>&#128220; Gastos Notariales y de Escrituración</h1><p>Calcula el desglose exacto de costos de cierre entre comprador y vendedor según la normativa notarial colombiana vigente.</p></div>
+<div class="mod-header">
+  <h1>&#128220; Gastos Notariales y de Escrituración</h1>
+  <p>Preliquidación según la Resolución 964 de 2026. Derechos notariales, escrituración, IVA, Super-Notariado, cuenta especial y registro ORIP.</p>
+</div>
 <div class="card">
-  <div class="card-title">Datos de la Transacción</div>
+  <div class="card-title">Valor de la transacción</div>
   <div class="form-grid">
-    <div class="form-group"><label>Valor de Venta (COP)</label><input type="text" id="m1_vv" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Tipo de Vendedor</label><select id="m1_ej"><option value="0">Persona Natural</option><option value="1">Persona Jurídica (Empresa)</option></select></div>
-    <div class="form-group full"><div class="toggle-grp"><input type="checkbox" id="m1_th" onchange="document.getElementById('m1_hg').style.display=this.checked?'block':'none'"/><label for="m1_th">¿Incluye crédito hipotecario?</label></div></div>
-    <div class="form-group full" id="m1_hg" style="display:none"><label>Valor del Crédito Hipotecario (COP)</label><input type="text" id="m1_vh" placeholder="$315.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Cuantía / Valor de Venta (COP)</label><input type="text" id="m1_vv" placeholder="$455.000.000" oninput="fmtF(this)"/></div>
   </div>
   <br/><button class="btn-calc" onclick="calcM1()">&#9654; Calcular Gastos</button>
 </div>
@@ -131,8 +131,7 @@ select option{background:#ffffff;color:var(--text)}
       <div class="gncard-total"><span>Total Vendedor</span><span id="m1_tv2">-</span></div>
     </div>
   </div>
-  <div class="al info" style="margin-top:1rem">&#128161; Tarifas Bogotá D.C. / Cundinamarca 2024. Registro SNR 0.50% + Beneficencia 0.50%. No incluye estudio de títulos ni avalúo. El notario puede ajustar según municipio.</div>
-</div>
+  <div class="al info" style="margin-top:1rem">&#9432; Cálculo estimado con base en la Resolución 964 de 2026. Los valores definitivos los liquida la notaría correspondiente.</div>
 </div>
 </div>
 
@@ -329,42 +328,74 @@ function pct(n){return n.toFixed(2)+'%';}
 function eaMv(ea){return Math.pow(1+ea/100,1/12)-1;}
 function PMT(p,tm,n){if(tm===0)return p/n;return p*(tm*Math.pow(1+tm,n))/(Math.pow(1+tm,n)-1);}
 
-// M1 GASTOS NOTARIALES
+// M1 GASTOS NOTARIALES — Res. 964 de 2026 (Notaría 7ª Bogotá)
 function calcM1(){
-  var vv=pCOP(document.getElementById('m1_vv').value);
-  if(!vv){alert('Ingresa el valor de venta');return;}
-  var th=document.getElementById('m1_th').checked;
-  var vh=pCOP(document.getElementById('m1_vh').value);
-  var ej=document.getElementById('m1_ej').value==='1';
-  var T=0.0054,TR=0.0050,TB=0.0050,PAP=150000,LIM=685000000;
-  var nCV=Math.round(vv*T);
-  var nHP=th?Math.round(vh*T):0;
-  var ret=ej?0:(vv<LIM?Math.round(vv*0.01):Math.round(vv*0.025));
-  var ireg=Math.round(vv*TR),iben=Math.round(vv*TB);
-  var cEsc=Math.round(nCV*0.5),vEsc=Math.round(nCV*0.5);
-  var tc=cEsc+nHP+ireg+iben+PAP,tv=vEsc+ret;
-  // Update summary totals
-  document.getElementById('m1_tc').textContent=fmt(tc);
-  document.getElementById('m1_tv').textContent=fmt(tv);
-  document.getElementById('m1_gt').textContent=fmt(tc+tv);
-  var tc2el=document.getElementById('m1_tc2');if(tc2el)tc2el.textContent=fmt(tc);
-  var tv2el=document.getElementById('m1_tv2');if(tv2el)tv2el.textContent=fmt(tv);
-  // Build Comprador rows
-  var cRows=[['Escritura Compraventa (50% notarial)',cEsc]];
-  if(th)cRows.push(['Escritura Hipoteca 0.54% s/crédito',nHP]);
-  cRows.push(['Impuesto de Registro SNR 0.50%',ireg]);
-  cRows.push(['Beneficencia Cundinamarca 0.50%',iben]);
-  cRows.push(['Recaudos notariales (cópias, biometría)',PAP]);
-  var cHtml=cRows.map(function(r){return'<div class="gnr"><span>'+r[0]+'</span><span>'+fmt(r[1])+'</span></div>';}).join('');
-  document.getElementById('m1_cb').innerHTML=cHtml;
-  // Build Vendedor rows
-  var vRows=[['Escritura Compraventa (50% notarial)',vEsc]];
-  if(ret>0)vRows.push(['Retención en la Fuente ('+(vv<LIM?'1%':'2.5%')+')',ret]);
-  else vRows.push(['Retención en la Fuente','Empresa: exenta']);
-  var vHtml=vRows.map(function(r){return'<div class="gnr"><span>'+r[0]+'</span><span>'+(typeof r[1]==='number'?fmt(r[1]):r[1])+'</span></div>';}).join('');
-  document.getElementById('m1_vb').innerHTML=vHtml;
-  document.getElementById('m1_r').style.display='block';
-  document.getElementById('m3_ga').value=fmt(tc);
+  var cuantia = pCOP(document.getElementById('m1_vv').value);
+  if(!cuantia){alert('Ingresa el valor de venta');return;}
+
+  // Paso 1: Derechos notariales (3‰ + componente fijo)
+  var notariales = cuantia * 0.003 + 30122;
+
+  // Paso 2: Gastos de escrituración fijos (hojas, copias, biometría, firma digital)
+  var escrituracion = 259900;
+
+  // Paso 3: Recaudos a terceros sobre notariales
+  var iva            = notariales * 0.19 * 0.2254;   // IVA (porción gravada)
+  var superNotariado = notariales * 0.1013;            // Superintendencia de Notariado
+  var cuentaEspecial = notariales * 0.1013;            // Cuenta especial
+
+  // Paso 4: Retención en la fuente (1% sobre valor de venta — paga vendedor)
+  var retefuente = cuantia * 0.01;
+
+  // Paso 5: Derechos e Impuesto de Registro ORIP (paga comprador)
+  var derechosRegistro    = cuantia * 0.0126;
+  var impuestoRegistro    = cuantia * 0.01;
+  var boletaFiscal        = 31400;
+  var certLibertad        = 97950;   // 3 certificados × $32.650
+  var sistematizacion     = 114700;
+  var registroTotal       = derechosRegistro + impuestoRegistro + boletaFiscal + certLibertad + sistematizacion;
+
+  // Paso 6: Gastos compartidos notaría (50 / 50)
+  var gastosCompartidos = notariales + escrituracion + iva + superNotariado + cuentaEspecial;
+  var mitadNotaria      = gastosCompartidos / 2;
+
+  // Paso 7: Totales por parte
+  var totalVendedor  = Math.round(mitadNotaria + retefuente);
+  var totalComprador = Math.round(mitadNotaria + registroTotal);
+  var totalGeneral   = totalVendedor + totalComprador;
+
+  // Actualizar tarjetas de resumen
+  document.getElementById('m1_tc').textContent = fmt(totalComprador);
+  document.getElementById('m1_tv').textContent = fmt(totalVendedor);
+  document.getElementById('m1_gt').textContent = fmt(totalGeneral);
+  var tc2el = document.getElementById('m1_tc2'); if(tc2el) tc2el.textContent = fmt(totalComprador);
+  var tv2el = document.getElementById('m1_tv2'); if(tv2el) tv2el.textContent = fmt(totalVendedor);
+
+  // Desglose Vendedor
+  var vHtml = [
+    ['50% gastos notariales y escrituración', Math.round(mitadNotaria)],
+    ['Retención en la fuente (1% s/venta)', Math.round(retefuente)]
+  ].map(function(r){
+    return '<div class="gnr"><span>'+r[0]+'</span><span>'+fmt(r[1])+'</span></div>';
+  }).join('');
+  document.getElementById('m1_vb').innerHTML = vHtml;
+
+  // Desglose Comprador
+  var cHtml = [
+    ['50% gastos notariales y escrituración', Math.round(mitadNotaria)],
+    ['Derechos de Registro ORIP (1.26%)', Math.round(derechosRegistro)],
+    ['Impuesto de Registro (1.00%)', Math.round(impuestoRegistro)],
+    ['Boleta fiscal', boletaFiscal],
+    ['Certificados de libertad (×3)', certLibertad],
+    ['Sistematización', sistematizacion]
+  ].map(function(r){
+    return '<div class="gnr"><span>'+r[0]+'</span><span>'+fmt(r[1])+'</span></div>';
+  }).join('');
+  document.getElementById('m1_cb').innerHTML = cHtml;
+
+  document.getElementById('m1_r').style.display = 'block';
+  // Pasar gasto comprador a calculadora de rentabilidad
+  document.getElementById('m3_ga').value = fmt(totalComprador);
 }
 
 // M2 CREDITO HIPOTECARIO
