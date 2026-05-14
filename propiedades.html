@@ -548,6 +548,23 @@ const schema={
   "url":"https://www.lomazhome.com/propiedades.html"
 };
 const sc=document.createElement("script");sc.type="application/ld+json";sc.text=JSON.stringify(schema);document.head.appendChild(sc);
+
+// URL PARAMS - AUTO-ACTIVATE FILTERS
+(function applyUrlFilters() {
+  const p = new URLSearchParams(window.location.search);
+  const tipo = p.get('tipo');
+  const zona = p.get('zona');
+  if (tipo) {
+    const m = {'apartamento':'Apartamento','casa':'Casa','oficina':'Oficina','local':'Local'};
+    const chip = document.querySelector('.chip[data-val="' + (m[tipo]||tipo) + '"]');
+    if (chip) chip.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  }
+  if (zona) {
+    const m = {'usaquen':'Usaquén','chapinero':'Chapinero','la-cabrera':'La Cabrera','rosales':'Rosales','santa-barbara':'Santa Bárbara'};
+    const chip = document.querySelector('.chip[data-val="' + (m[zona]||zona) + '"]');
+    if (chip) chip.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  }
+})();
 </script>
 <script src="lomaz-nav.js" defer></script>
 </body>
