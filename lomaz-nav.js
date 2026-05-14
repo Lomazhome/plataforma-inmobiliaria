@@ -340,17 +340,22 @@ const KB = {
   d:'Soy ARIA, asesora inmobiliaria IA de LoMaz Home. Te ayudo con propiedades, zonas, proceso de compra, gastos y créditos. ¿Qué necesitas?'
 };
 
-function resp(m) {
-  m = m.toLowerCase();
-  if(m.includes('usaqu')) return KB.u;
-  if(m.includes('chapinero')) return KB.c;
-  if(m.includes('propiedad')||m.includes('apartamento')||m.includes('casa')) return KB.p;
-  if(m.includes('compra')||m.includes('proceso')||m.includes('escritura')) return KB.b;
-  if(m.includes('notarial')||m.includes('gastos')) return KB.n;
-  if(m.includes('crédito')||m.includes('credito')||m.includes('hipotecario')) return KB.h;
-  if(m.includes('contacto')||m.includes('teléfono')||m.includes('email')) return KB.k;
-  return KB.d;
-}
+// === ARIA: Motor de captacion de leads ===
+const LEAD={intencion:null,nombre:null,whatsapp:null,email:null,zona:null,tipo_inmueble:null,habitaciones:null,area_m2:null,precio_esperado:null,presupuesto_aprox:null,mensaje_libre:'',consentimiento:false};
+let LEAD_STEP='idle';
+const HIST=[];
+const RX={email:/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i,waCO:/(?:\+?57\s?)?(3\d{2})\s?\d{3}\s?\d{4}/,hab:/(\d+)\s*(hab|habitaciones|alcobas|cuartos|dormitorios)/i,area:/(\d{2,4})\s*(m2|m\u00b2|metros)/i};
+const ZONAS=['usaquen','usaqu\u00e9n','chapinero','la cabrera','cabrera','rosales','santa b\u00e1rbara','santa barbara'];
+const TIPOS=['apartamento','apto','casa','local','oficina','penthouse','duplex','d\u00faplex','lote','bodega'];
+const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function detectIntent(t){const x=norm(t);if(/\b(vender|vendo|venta|propietario|soy due[n\u00f1]o|poner en venta|avaluo|aval\u00fao|valuacion|valuaci\u00f3n)\b/.test(x))return 'venta';if(/\b(arrendar|arriendo|alquilar|rentar)\b/.test(x))return 'arriendo';if(/\b(comprar|compra|busco|buscar|quiero un|necesito un|encontrar)\b/.test(x))return 'compra';if(/\b(asesor|agendar|cita|hablar con|contactar|cont[a\u00e1]ctenme)\b/.test(x))return 'asesor';return null;}
+function extractData(t){const e=t.match(RX.email);if(e&&!LEAD.email)LEAD.email=e[0].toLowerCase();const w=t.match(RX.waCO);if(w&&!LEAD.whatsapp)LEAD.whatsapp=w[0].replace(/\D/g,'').replace(/^57/,'');const h=t.match(RX.hab);if(h&&!LEAD.habitaciones)LEAD.habitaciones=parseInt(h[1]);const a=t.match(RX.area);if(a&&!LEAD.area_m2)LEAD.area_m2=parseInt(a[1]);const z=ZONAS.find(z=>norm(t).includes(z));if(z&&!LEAD.zona)LEAD.zona=z;const tp=TIPOS.find(tp=>norm(t).includes(tp));if(tp&&!LEAD.tipo_inmueble)LEAD.tipo_inmueble=tp;}
+async function saveLead(){try{if(!window.supabase||typeof window.SUPABASE_URL==='undefined')return;const sb=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);await sb.from('leads_aria').insert({intencion:LEAD.intencion,nombre:LEAD.nombre,whatsapp:LEAD.whatsapp,email:LEAD.email,zona:LEAD.zona,tipo_inmueble:LEAD.tipo_inmueble,habitaciones:LEAD.habitaciones,area_m2:LEAD.area_m2,presupuesto_aprox:LEAD.presupuesto_aprox,precio_esperado:LEAD.precio_esperado,mensaje_libre:LEAD.mensaje_libre,consentimiento:LEAD.consentimiento,url_origen:location.href,user_agent:(navigator.userAgent||'').substring(0,200),conversacion:HIST});}catch(err){console.error('[ARIA] saveLead:',err);}}
+function nextStep(){if(!LEAD.nombre){LEAD_STEP='nombre';return '\u00bfCu\u00e1l es tu nombre?';}if(!LEAD.whatsapp){LEAD_STEP='whatsapp';return 'Gracias '+LEAD.nombre.split(' ')[0]+'. \u00bfCu\u00e1l es tu WhatsApp? (ej: 3001234567)';}if(!LEAD.email){LEAD_STEP='email';return '\u00bfTu correo electr\u00f3nico?';}if(LEAD.intencion==='venta'){if(!LEAD.zona){LEAD_STEP='zona';return '\u00bfEn qu\u00e9 zona est\u00e1 tu propiedad? (Usaqu\u00e9n, Chapinero, La Cabrera, Rosales, Santa B\u00e1rbara\u2026)';}if(!LEAD.tipo_inmueble){LEAD_STEP='tipo';return '\u00bfQu\u00e9 tipo de inmueble es? (apartamento, casa, local, oficina\u2026)';}if(!LEAD.area_m2||!LEAD.precio_esperado){LEAD_STEP='detalle_venta';return 'Cu\u00e9ntame en una frase: \u00e1rea aproximada (m\u00b2), habitaciones y precio que esperas.';}}else{if(!LEAD.zona){LEAD_STEP='zona';return '\u00bfEn qu\u00e9 zona te interesa? (Usaqu\u00e9n, Chapinero, La Cabrera, Rosales, Santa B\u00e1rbara)';}if(!LEAD.tipo_inmueble){LEAD_STEP='tipo';return '\u00bfQu\u00e9 tipo de inmueble buscas? (apartamento, casa, local\u2026)';}if(!LEAD.presupuesto_aprox){LEAD_STEP='detalle_compra';return 'Perfecto. Cu\u00e9ntame: habitaciones, presupuesto y preferencias importantes.';}}LEAD_STEP='consent';return 'Para conectarte con un asesor necesito tu autorizaci\u00f3n para tratar tus datos seg\u00fan la Ley 1581 de 2012. \u00bfAceptas? (s\u00ed/no)';}
+async function finalizeLead(accepted){LEAD.consentimiento=!!accepted;if(accepted)await saveLead();LEAD_STEP='done';if(accepted){const wa=window.LH_WHATSAPP_ASESOR||'573003300343';const txt=encodeURIComponent('Hola, soy '+LEAD.nombre+'. Vengo del chat de LoMaz Home. Intenci\u00f3n: '+LEAD.intencion+'.');return '\u00a1Listo '+LEAD.nombre.split(' ')[0]+'! Un asesor te contactar\u00e1 al '+LEAD.whatsapp+' muy pronto. Si quieres escribir ya, abre WhatsApp: https://wa.me/'+wa+'?text='+txt;}return 'Entendido, no guardo tus datos. Si cambias de opini\u00f3n, escr\u00edbeme.';}
+async function resp(m){const txt=(m||'').trim();HIST.push({who:'user',text:txt,ts:Date.now()});extractData(txt);if(txt.length>0)LEAD.mensaje_libre=(LEAD.mensaje_libre+' '+txt).trim().slice(0,1000);if(LEAD_STEP==='consent'){const x=norm(txt);if(/\b(si|s\u00ed|claro|acepto|de acuerdo|ok|dale|autorizo)\b/.test(x))return await finalizeLead(true);if(/\b(no|negativo|cancelar)\b/.test(x))return await finalizeLead(false);return 'Necesito un s\u00ed o un no, por favor.';}if(LEAD_STEP==='nombre'&&txt.length>=2)LEAD.nombre=txt.substring(0,80);if(LEAD_STEP==='detalle_venta')LEAD.precio_esperado=txt.substring(0,200);if(LEAD_STEP==='detalle_compra')LEAD.presupuesto_aprox=txt.substring(0,200);if(!LEAD.intencion){const it=detectIntent(txt);if(it){LEAD.intencion=it;const intros={venta:'Perfecto, te ayudamos a vender. Voy a tomar unos datos para que un asesor te contacte.',compra:'Genial, te ayudamos a encontrar tu pr\u00f3xima propiedad. Tomo unos datos r\u00e1pidos.',arriendo:'Listo, te apoyamos con arriendo. Necesito unos datos.',asesor:'Te conecto con un asesor. Solo necesito tus datos b\u00e1sicos.'};return intros[it]+' '+nextStep();}const x=norm(txt);if(x.includes('usaqu')||x.includes('chapinero')||x.includes('cabrera')||x.includes('rosales')||x.includes('santa b')){return (KB.u||'')+' \u00bfQuieres comprar, arrendar o vender en esa zona?';}if(x.includes('proceso')||x.includes('escritura'))return KB.b;if(x.includes('notarial')||x.includes('gastos'))return KB.n;if(x.includes('credito')||x.includes('cr\u00e9dito')||x.includes('hipotecario'))return KB.h;return 'Puedo ayudarte con: 1) vender tu propiedad, 2) comprar, 3) arrendar, 4) hablar con un asesor. Escribe la opci\u00f3n o cu\u00e9ntame qu\u00e9 necesitas.';}return nextStep();}
+// === Fin motor ARIA ===
+
 
 let open=false,typing=false;
 
@@ -386,7 +391,7 @@ async function send(t) {
   addMsg(t,'user');
   await new Promise(r=>setTimeout(r,300)); showTyp();
   await new Promise(r=>setTimeout(r,800+Math.random()*600)); hideTyp();
-  await stream(resp(t));
+  await stream(await resp(t));
   typing=false; if(sb) sb.disabled=false; if(inp) inp.focus();
 }
 
