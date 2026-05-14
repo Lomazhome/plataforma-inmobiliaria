@@ -293,10 +293,10 @@ const NAV = [
     {i:'💳',l:'Capacidad Endeudamiento',s:'VIS / No VIS',h:'calculadora.html#endeudamiento'},
     {i:'🧮',l:'Suite Completa',s:'Todas las calculadoras',h:'calculadora.html'},
   ]},
-  {l:'Nosotros',h:'#nosotros',d:[
-    {i:'🏛️',l:'Nuestra Historia',s:'Quiénes somos',h:'#nosotros'},
-    {i:'👥',l:'El Equipo',s:'Asesores especializados',h:'#equipo'},
-    {i:'🤝',l:'Valores y Filosofía',s:'Lo que nos mueve',h:'#valores'},
+  {l:'Nosotros',h:'index.html#nosotros',d:[
+    {i:'🏛️',l:'Nuestra Historia',s:'Quiénes somos',h:'index.html#nosotros'},
+    {i:'👥',l:'El Equipo',s:'Asesores especializados',h:'index.html#equipo'},
+    {i:'🤝',l:'Valores y Filosofía',s:'Lo que nos mueve',h:'index.html#valores'},
   ]},
   {l:'Contacto',h:'contacto.html',d:[
     {i:'📞',l:'Hablar con un Asesor',s:'Asesoría personalizada',h:'contacto.html'},
@@ -314,7 +314,7 @@ function bNav() {
     const dd = n.d.map(d=>'<a href="'+d.h+'"><span class="dd-icon">'+d.i+'</span><span class="dd-text"><span class="dd-label">'+d.l+'</span><span class="dd-sub">'+d.s+'</span></span></a>').join('');
     return '<li class="lm-item"><a class="lm-link'+(act?' lm-active':'')+'" href="'+n.h+'">'+n.l+' '+CV+'</a><div class="lm-dropdown">'+dd+'</div></li>';
   }).join('');
-  return '<nav id="lm-nav" class="lm-transparent"><div id="lm-progress"></div><div class="lm-nav-inner"><a class="lm-logo" href="index.html">Lo<span>Maz</span> Home</a><ul class="lm-menu">'+mi+'</ul><div class="lm-nav-right"><button class="lm-aria-nav-btn" id="lm-aria-btn"><span class="lm-aria-dot"></span>ARIA IA</button><a class="lm-asesores-btn" href="panel.html">ACCESO ASESORES</a><button class="lm-hamburger" id="lm-ham"><span></span><span></span><span></span></button></div></div></nav>';
+  return '<nav id="lm-nav" class="lm-transparent"><div id="lm-progress"></div><div class="lm-nav-inner"><a class="lm-logo" href="index.html">Lo<span>Maz</span> Home</a><ul class="lm-menu">'+mi+'</ul><div class="lm-nav-right"><button class="lm-aria-nav-btn" id="lm-aria-btn"><span class="lm-aria-dot"></span>ARIA IA</button><a class="lm-asesores-btn" href="dashboard.html">ACCESO ASESORES</a><button class="lm-hamburger" id="lm-ham"><span></span><span></span><span></span></button></div></div></nav>';
 }
 
 function bFAB() {
@@ -326,7 +326,7 @@ function bChat() {
 }
 
 function bMob() {
-  return '<div id="lm-mobile-menu"><button id="lm-mob-cls" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="panel.html" style="color:var(--lm-gold)">Acceso Asesores</a></div>';
+  return '<div id="lm-mobile-menu"><button id="lm-mob-cls" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="dashboard.html" style="color:var(--lm-gold)">Acceso Asesores</a></div>';
 }
 
 const KB = {
