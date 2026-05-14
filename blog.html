@@ -575,6 +575,23 @@ const blogSchema={
   }))
 };
 const sc=document.createElement("script");sc.type="application/ld+json";sc.text=JSON.stringify(blogSchema);document.head.appendChild(sc);
+
+// URL PARAMS - AUTO-ACTIVATE BLOG CATEGORY FILTERS
+(function applyBlogUrlFilters() {
+  const p = new URLSearchParams(window.location.search);
+  const cat = p.get('cat');
+  if (cat) {
+    const catMap = {
+      'mercado':'Mercado',
+      'compradores':'Compraventa',
+      'legal':'Trámites',
+      'inversion':'Financiación'
+    };
+    const catVal = catMap[cat] || cat;
+    const btn = document.querySelector('[data-cat="' + catVal + '"]');
+    if (btn) btn.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  }
+})();
 </script>
 <script src="lomaz-nav.js" defer></script>
 </body>
