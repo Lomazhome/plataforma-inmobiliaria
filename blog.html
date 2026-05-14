@@ -594,5 +594,22 @@ const sc=document.createElement("script");sc.type="application/ld+json";sc.text=
 })();
 </script>
 <script src="lomaz-nav.js" defer></script>
+
+<script>
+// Make blog cards fully clickable
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".blog-card").forEach(function(card) {
+    var link = card.querySelector("a.blog-card-link");
+    if (link && link.href) {
+      card.style.cursor = "pointer";
+      card.addEventListener("click", function(e) {
+        if (e.target.tagName !== "A") {
+          window.location.href = link.href;
+        }
+      });
+    }
+  });
+});
+</script>
 </body>
     </html>
