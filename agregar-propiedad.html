@@ -24,19 +24,10 @@ a{color:inherit;text-decoration:none}
 .page-title,h1.page-title,h2.page-title{font-family:var(--serif);font-size:2rem;font-weight:500;color:#fff;letter-spacing:.3px;margin-bottom:.4rem}
 .page-title em,h1 em{font-style:italic;color:var(--gold)}
 .page-sub,.subtitle{color:var(--txt-soft);font-size:.92rem;margin-bottom:1.8rem;font-weight:300}
-.section-divider{height:1px;background:linear-gradient(90deg,var(--gold) 0%,transparent 60%);margin:1.25rem 0;opacity:.4}
-.section-title{font-family:var(--serif);font-weight:500;color:#fff;letter-spacing:.3px;font-size:1.35rem}
-.section-title em{font-style:italic;color:var(--gold)}
 .alert,.message,.notification{padding:.9rem 1.2rem;border-radius:var(--r-sm);font-size:.88rem;font-weight:500;margin-bottom:1.5rem;display:none}
 .alert.error,.message.error{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff8a93;display:block}
 .alert.success,.message.success{background:rgba(40,167,69,.10);border:1px solid rgba(40,167,69,.35);color:#7dd87d;display:block}
 .alert.info{background:rgba(201,169,110,.10);border:1px solid rgba(201,169,110,.30);color:var(--gold);display:block}
-.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin-bottom:2rem}
-.tab{padding:.9rem 1.6rem;cursor:pointer;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease;font-family:var(--sans)}
-.tab:hover{color:var(--gold)}
-.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.tab-panel,.tab-content{display:none}
-.tab-panel.active,.tab-content.active{display:block}
 .card,.section-card,.panel{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.75rem;margin-bottom:1.5rem;box-shadow:var(--sh-soft);position:relative;overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.4}
 .card h3,.card h2{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:#fff;margin-bottom:1.3rem;letter-spacing:.3px}
@@ -45,45 +36,100 @@ a{color:inherit;text-decoration:none}
 .form-grid-3,.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
 .form-group,.field{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
 .form-group.full,.field.full,.full-width{grid-column:1/-1}
+.full{grid-column:1/-1}
 label{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:.3rem}
 input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.78rem 1rem;color:var(--txt);font-family:var(--sans);font-size:.9rem;outline:none;transition:all .25s ease;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
 select option{background:var(--navy-2);color:var(--txt)}
 input::placeholder,textarea::placeholder{color:var(--txt-mute)}
 textarea{resize:vertical;min-height:90px}
+/* ====== WIZARD STEPS (NUEVO mayo 2026 inspirado en Century 21) ====== */
+.wizard-steps{display:flex;align-items:center;justify-content:center;gap:0;margin:1.5rem 0 2.2rem;flex-wrap:wrap;padding:1.5rem;background:linear-gradient(180deg,#0F1E36 0%,#0A1626 100%);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-soft)}
+.wizard-steps .step{display:flex;flex-direction:column;align-items:center;gap:.55rem;cursor:default;min-width:90px;transition:all .25s ease}
+.wizard-steps .step-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.15rem;font-weight:600;background:rgba(13,27,46,.85);color:var(--txt-soft);border:2px solid var(--line);transition:all .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.wizard-steps .step-label{font-size:.72rem;color:var(--txt-soft);font-weight:600;letter-spacing:1px;text-transform:uppercase;text-align:center}
+.wizard-steps .step.active .step-circle{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border-color:var(--gold);box-shadow:0 0 0 5px rgba(201,169,110,.18),0 4px 14px rgba(201,169,110,.35);transform:scale(1.06)}
+.wizard-steps .step.active .step-label{color:var(--gold)}
+.wizard-steps .step.done .step-circle{background:linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%);color:#fff;border-color:#2a8a4f}
+.wizard-steps .step.done .step-circle::after{content:"\2713";font-size:1.2rem}
+.wizard-steps .step.done .step-circle{font-size:0}
+.wizard-steps .step.done .step-label{color:#7dd87d}
+.wizard-steps .step-line{flex:1;height:2px;max-width:90px;background:linear-gradient(90deg,var(--line) 0%,var(--gold) 50%,var(--line) 100%);opacity:.4;margin:0 .25rem;margin-top:-30px}
+/* ====== STEP PANELS (mostrar/ocultar) ====== */
+.step-panel{display:none;animation:fadeIn .35s ease}
+.step-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ====== NAV BUTTONS (Anterior / Siguiente) ====== */
+.nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;gap:1rem}
+.btn-nav{padding:.85rem 1.8rem;border-radius:var(--r-sm);font-size:.85rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease}
+.btn-nav.btn-next{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);box-shadow:0 2px 8px rgba(201,169,110,.25)}
+.btn-nav.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
+.btn-nav.btn-prev{background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line)}
+.btn-nav.btn-prev:hover{border-color:var(--gold);color:var(--gold)}
+/* ====== AMENIDADES (checkbox grid) ====== */
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.7rem}
+.char-item{display:flex;align-items:center;gap:.6rem;padding:.7rem .9rem;background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r-sm);cursor:pointer;font-size:.85rem;color:var(--txt);transition:all .2s ease;text-transform:none;letter-spacing:normal;font-weight:400}
+.char-item:hover{border-color:var(--gold);background:rgba(201,169,110,.06)}
+.char-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;margin:0}
+.char-item input[type=checkbox]:checked + span,.char-item:has(input:checked){color:var(--gold);border-color:var(--gold);background:rgba(201,169,110,.08)}
+.amenity-group-title{grid-column:1/-1;font-family:var(--serif);font-size:1rem;color:var(--gold);margin:.8rem 0 .3rem;padding-bottom:.3rem;border-bottom:1px solid var(--line-strong);font-weight:500;letter-spacing:.3px;text-transform:none}
+/* ====== SUMMARY TABLE ====== */
+.summary-table{width:100%;border-collapse:collapse}
+.summary-table tr{border-bottom:1px solid var(--line)}
+.summary-table tr:last-child{border-bottom:none}
+.summary-table td{padding:.7rem 1rem;font-size:.88rem;color:var(--txt)}
+.summary-table td:first-child{color:var(--gold);font-weight:600;text-transform:uppercase;font-size:.72rem;letter-spacing:1.2px;width:35%}
+/* ====== PORTALES ====== */
+.portales-grid{display:flex;flex-direction:column;gap:.6rem}
+.portal-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.2rem;background:rgba(13,27,46,.45);border:1px solid var(--line);border-radius:var(--r-sm);transition:all .2s ease}
+.portal-row.selected{border-color:var(--gold);background:rgba(201,169,110,.06)}
+.portal-check{display:flex;align-items:center;gap:.85rem}
+.portal-check input[type=checkbox]{width:20px;height:20px;accent-color:var(--gold);cursor:pointer;margin:0}
+.portal-name{font-weight:600;color:#fff;font-size:.95rem;margin-bottom:.15rem}
+.portal-desc{font-size:.78rem;color:var(--txt-soft)}
+.portal-status{padding:.3rem .85rem;border-radius:14px;font-size:.7rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.portal-status.ok{background:rgba(40,167,69,.12);color:#7dd87d;border:1px solid rgba(40,167,69,.35)}
+.portal-status.pending{background:rgba(201,169,110,.10);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
+.portal-status.publishing{background:rgba(0,123,255,.10);color:#79b8ff;border:1px solid rgba(0,123,255,.3)}
+.portal-status.error{background:rgba(220,53,69,.10);color:#ff8a93;border:1px solid rgba(220,53,69,.35)}
+/* ====== PUBLISH BUTTON ====== */
+.btn-publish{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--sans);font-size:.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(201,169,110,.3);transition:all .25s ease;margin-top:1rem}
+.btn-publish:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,169,110,.45)}
+.btn-publish:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* ====== PUBLISH LOG ====== */
+.publish-log{margin-top:1.2rem;padding:1rem;background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r-sm);max-height:240px;overflow-y:auto}
+.log-entry{display:flex;align-items:flex-start;gap:.7rem;padding:.55rem .3rem;border-bottom:1px solid var(--line);font-size:.82rem}
+.log-entry:last-child{border-bottom:none}
+.log-icon{font-weight:700;font-size:.7rem;letter-spacing:.5px;padding:.15rem .4rem;border-radius:4px;min-width:38px;text-align:center}
+.log-entry.success .log-icon{background:rgba(40,167,69,.15);color:#7dd87d}
+.log-entry.error .log-icon{background:rgba(220,53,69,.15);color:#ff8a93}
+.log-entry.info .log-icon{background:rgba(201,169,110,.15);color:var(--gold)}
+.log-entry.loading .log-icon{background:rgba(0,123,255,.15);color:#79b8ff}
+.log-text{flex:1}
+.log-text strong{display:block;color:#fff;font-weight:600;margin-bottom:.15rem}
+.log-text span{color:var(--txt-soft);font-size:.78rem}
+/* ====== TABS legacy (compatibilidad) ====== */
+.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin-bottom:2rem}
+.tab{padding:.9rem 1.6rem;cursor:pointer;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease;font-family:var(--sans)}
+.tab:hover{color:var(--gold)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-panel,.tab-content{display:none}
+.tab-panel.active,.tab-content.active{display:block}
 .btn,.btn-sm,button.btn-primary,button[type="submit"]{padding:.65rem 1.4rem;border-radius:var(--r-sm);font-size:.8rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease}
 .btn-primary,button[type="submit"]{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);box-shadow:0 2px 8px rgba(201,169,110,.25)}
 .btn-primary:hover,button[type="submit"]:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.btn-danger{background:rgba(220,53,69,.12);color:#ff8a93;border:1px solid rgba(220,53,69,.35)}
-.btn-danger:hover{background:rgba(220,53,69,.2)}
-.btn-success{background:rgba(40,167,69,.12);color:#7dd87d;border:1px solid rgba(40,167,69,.35)}
-.btn-success:hover{background:rgba(40,167,69,.2)}
-.btn-secondary,.btn-neutral{background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line)}
-.btn-secondary:hover,.btn-neutral:hover{border-color:var(--gold);color:var(--gold)}
-.table-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--line);margin-bottom:1.5rem}
-table{width:100%;border-collapse:collapse}
-thead tr{background:rgba(13,27,46,.6)}
-th{padding:.95rem 1.2rem;text-align:left;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;border-bottom:1px solid var(--line-strong)}
-tbody tr{border-bottom:1px solid var(--line);transition:all .2s ease}
-tbody tr:hover{background:rgba(201,169,110,.04)}
-tbody tr:last-child{border-bottom:none}
-td{padding:1rem 1.2rem;font-size:.88rem;color:var(--txt)}
-td strong{font-weight:600;color:#fff}
-.empty-state,.empty{text-align:center;padding:3rem;color:var(--txt-mute);font-size:.95rem;font-style:italic;font-family:var(--serif)}
-.badge,.pill,.tag{display:inline-block;padding:.3rem .85rem;border-radius:14px;font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(201,169,110,.12);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
-.stat,.kpi-card,.metric{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh-soft)}
-.stat .num,.kpi-value{font-family:var(--serif);font-size:2.4rem;font-weight:500;color:#fff;line-height:1}
-.stat .lbl,.kpi-label{font-size:.72rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-top:.5rem}
-.kanban,.board{display:flex;gap:1rem;overflow-x:auto;padding:.5rem 0}
-.column,.kanban-col{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r);padding:1rem;min-width:280px;flex:1}
-.column h4{font-family:var(--serif);color:var(--gold);font-size:1.05rem;margin-bottom:1rem;letter-spacing:.3px}
 @media(max-width:900px){
 .form-grid,.grid-2{grid-template-columns:1fr}
 .form-grid-3,.grid-3{grid-template-columns:1fr}
 .topbar{padding:.75rem 1rem}
 .brand-text{font-size:1.3rem}
 .container,.main,.wrap{padding:0 1rem;margin:1.5rem auto}
+.wizard-steps{padding:1rem .5rem;gap:.2rem}
+.wizard-steps .step-line{max-width:30px;margin-top:-25px}
+.wizard-steps .step{min-width:60px}
+.wizard-steps .step-label{font-size:.62rem}
+.char-grid{grid-template-columns:1fr}
 }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -107,106 +153,204 @@ td strong{font-weight:600;color:#fff}
 </div>
 </div>
 <div class="container">
-  <div class="page-title">Agregar Propiedad</div>
-  <div class="page-sub">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
-  <div id="alert" class="alert" style="display:none"></div>
-  <div class="wizard-steps" id="wizard">
-    <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info basica</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Ubicacion</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Caracteristicas</div></div>
-    <div class="step-line"></div>
-    <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Portales</div></div>
-  </div>
-  <div class="step-panel active" id="panel1">
-    <div class="card"><h3>&#128203; Informacion Basica</h3>
-    <div class="form-grid">
-      <div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
-      <div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option></select></div>
-      <div class="form-group full"><label>TITULO DEL AVISO *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
-      <div class="form-group"><label>PRECIO (COP) *</label><input type="number" id="precio" placeholder="Ej: 450000000"/></div>
-      <div class="form-group"><label>ADMINISTRACION (COP)</label><input type="number" id="precio_admin" placeholder="0 si no aplica"/></div>
-      <div class="form-group"><label>AREA CONSTRUIDA (m2) *</label><input type="number" id="m2_construccion" placeholder="Ej: 120"/></div>
-      <div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
-      <div class="form-group"><label>BANOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
-      <div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div>
-      <div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
-      <div class="form-group"><label>ANTIGUEDAD (anos)</label><input type="number" id="antigÃ¼edad" placeholder="0 si es nuevo" min="0"/></div>
-      <div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
-      <div class="form-group full"><label>DESCRIPCION DETALLADA *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
-    </div></div>
-    <div class="nav-btns"><div></div><button class="btn-nav btn-next" onclick="goStep(2)">Siguiente &#8594;</button></div>
-  </div>
-  <div class="step-panel" id="panel2">
-    <div class="card"><h3>&#128205; Ubicacion</h3>
-    <div class="form-grid">
-      <div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar</option><option value="Cundinamarca">Cundinamarca</option><option value="Antioquia">Antioquia</option><option value="Valle del Cauca">Valle del Cauca</option><option value="Atlantico">Atlantico</option><option value="Bolivar">Bolivar</option><option value="Santander">Santander</option><option value="Cordoba">Cordoba</option><option value="Narino">Narino</option><option value="Tolima">Tolima</option><option value="Huila">Huila</option><option value="Risaralda">Risaralda</option><option value="Caldas">Caldas</option><option value="Quindio">Quindio</option><option value="Meta">Meta</option><option value="Otro">Otro</option></select></div>
-      <div class="form-group"><label>CIUDAD *</label><input type="text" id="ciudad" placeholder="Ej: Bogota, Medellin, Cali..."/></div>
-      <div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" placeholder="Ej: El Poblado, Chapinero Alto..."/></div>
-      <div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
-      <div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(requerida para Finca Raiz)</small></label><input type="number" id="latitud" placeholder="Ej: 4.7109886" step="0.0000001"/></div>
-      <div class="form-group"><label>LONGITUD <small style="color:#888;font-weight:400">(requerida para Finca Raiz)</small></label><input type="number" id="longitud" placeholder="Ej: -74.072092" step="0.0000001"/></div>
-      <div class="form-group"><label>FOTOS (URLs separadas por coma, máx 30)</label><input type="text" id="fotos_url" placeholder="https://img1.jpg, https://img2.jpg"/></div>
-    </div></div>
-    <div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(1)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(3)">Siguiente &#8594;</button></div>
-  </div>
-  <div class="step-panel" id="panel3">
-    <div class="card"><h3>&#127968; Caracteristicas y Amenidades</h3>
-    <p style="color:#888;font-size:.85rem;margin-bottom:1rem">Selecciona todas las que apliquen</p>
-    <div class="char-grid" id="charGrid">
-      <label class="char-item"><input type="checkbox" name="char" value="Piscina"/> Piscina</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Gimnasio"/> Gimnasio</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Salon comunal"/> Salon comunal</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Parque infantil"/> Parque infantil</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Zona BBQ"/> Zona BBQ</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Seguridad 24h"/> Seguridad 24h</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Porteria"/> Porteria</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Camara seguridad"/> Camara seguridad</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Jacuzzi"/> Jacuzzi</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Sauna"/> Sauna</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Terraza"/> Terraza</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Balcon"/> Balcon</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Cuarto servicio"/> Cuarto servicio</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Lavanderia"/> Lavanderia</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Gas natural"/> Gas natural</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Citofono"/> Citofono</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Ascensor"/> Ascensor</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Parqueadero visitantes"/> Parqueadero visitantes</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Cancha de tenis"/> Cancha de tenis</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Cancha futbol"/> Cancha futbol</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Vista al mar"/> Vista al mar</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Vista ciudad"/> Vista ciudad</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Pet friendly"/> Pet friendly</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Amoblado"/> Amoblado</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Aire acondicionado"/> Aire acondicionado</label>
-      <label class="char-item"><input type="checkbox" name="char" value="Calefaccion"/> Calefaccion</label>
-    </div>
-    <div style="margin-top:1.5rem"><label style="display:block;margin-bottom:.5rem">DEPOSITO INCLUIDO</label><select id="deposito"><option value="false">No</option><option value="true">Si</option></select></div>
-    </div>
-    <div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(2)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(4)">Siguiente &#8594;</button></div>
-  </div>
-  <div class="step-panel" id="panel4">
-    <div class="card"><h3>&#128203; Resumen de la propiedad</h3><table class="summary-table" id="summaryTable"></table></div>
-    <div class="card"><h3>&#127758; Publicar en portales externos</h3>
-    <p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Selecciona los portales adicionales:</p>
-    <div class="portales-grid">
-      <div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
-      <div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
-      <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario especializado Colombia</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
-      <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
-      <div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Millones de usuarios activos en Colombia</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
-      <div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Publicacion automatica con imagen y texto</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
-    </div>
-    <div class="publish-log" id="publishLog" style="display:none">
-      <p style="color:#888;font-size:.8rem;margin-bottom:.5rem">&#128202; Registro de publicacion:</p>
-      <div id="logEntries"></div>
-    </div>
-    </div>
-    <button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">&#128640; Publicar Propiedad</button>
-    <div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">&#8592; Anterior</button><div></div></div>
-  </div>
+<div class="page-title">Agregar <em>Propiedad</em></div>
+<div class="page-sub">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
+<div id="alert" class="alert" style="display:none"></div>
+
+<div class="wizard-steps" id="wizard">
+<div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info basica</div></div>
+<div class="step-line"></div>
+<div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Ubicacion</div></div>
+<div class="step-line"></div>
+<div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Caracteristicas</div></div>
+<div class="step-line"></div>
+<div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Portales</div></div>
 </div>
+
+<div class="step-panel active" id="panel1">
+<div class="card"><h3>&#128203; Informacion <em>Basica</em></h3>
+<div class="form-grid">
+<div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
+<div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitacion</option></select></div>
+<div class="form-group"><label>ESTADO DE LA PROPIEDAD *</label><select id="status_propiedad"><option value="borrador">Borrador (no visible)</option><option value="activa" selected>Activa (publicada)</option><option value="pausada">Pausada (oculta temporal)</option><option value="vendida">Vendida</option><option value="arrendada">Arrendada</option><option value="reservada">Reservada</option></select></div>
+<div class="form-group"><label>EXCLUSIVA</label><select id="exclusiva"><option value="no">No</option><option value="si">Si (LoMaz Home exclusiva)</option></select></div>
+<div class="form-group full"><label>TITULO DEL AVISO *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
+<div class="form-group"><label>PRECIO (COP) *</label><input type="number" id="precio" placeholder="Ej: 450000000"/></div>
+<div class="form-group"><label>ADMINISTRACION (COP)</label><input type="number" id="precio_admin" placeholder="0 si no aplica"/></div>
+<div class="form-group"><label>AREA CONSTRUIDA (m2) *</label><input type="number" id="m2_construccion" placeholder="Ej: 120"/></div>
+<div class="form-group"><label>AREA DE TERRENO (m2)</label><input type="number" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
+<div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
+<div class="form-group"><label>BANOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+<div class="form-group"><label>ANTIGUEDAD (anos)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
+<div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
+<div class="form-group"><label>ACEPTA CREDITO</label><select id="acepta_credito"><option value="si">Si</option><option value="no">No</option></select></div>
+<div class="form-group full"><label>DESCRIPCION DETALLADA *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
+</div></div>
+<div class="nav-btns"><div></div><button class="btn-nav btn-next" onclick="goStep(2)">Siguiente &#8594;</button></div>
+</div>
+
+<div class="step-panel" id="panel2">
+<div class="card"><h3>&#128205; <em>Ubicacion</em></h3>
+<div class="form-grid">
+<div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar</option><option value="Cundinamarca">Cundinamarca</option><option value="Antioquia">Antioquia</option><option value="Valle del Cauca">Valle del Cauca</option><option value="Atlantico">Atlantico</option><option value="Bolivar">Bolivar</option><option value="Santander">Santander</option><option value="Cordoba">Cordoba</option><option value="Narino">Narino</option><option value="Tolima">Tolima</option><option value="Huila">Huila</option><option value="Risaralda">Risaralda</option><option value="Caldas">Caldas</option><option value="Quindio">Quindio</option><option value="Meta">Meta</option><option value="Otro">Otro</option></select></div>
+<div class="form-group"><label>CIUDAD *</label><input type="text" id="ciudad" placeholder="Ej: Bogota, Medellin, Cali..."/></div>
+<div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" placeholder="Ej: El Poblado, Chapinero Alto..."/></div>
+<div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
+<div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(requerida para Finca Raiz)</small></label><input type="number" id="latitud" placeholder="Ej: 4.7109886" step="0.0000001"/></div>
+<div class="form-group"><label>LONGITUD <small style="color:#888;font-weight:400">(requerida para Finca Raiz)</small></label><input type="number" id="longitud" placeholder="Ej: -74.072092" step="0.0000001"/></div>
+<div class="form-group full"><label>COMO LLEGAR (referencias)</label><textarea id="como_llegar" placeholder="Ej: Frente al parque principal, junto al centro comercial..." style="min-height:60px"></textarea></div>
+</div></div>
+<div class="card"><h3>&#127909; Multimedia y <em>Tours</em></h3>
+<div class="form-grid">
+<div class="form-group full"><label>FOTOS (URLs separadas por coma, max 30)</label><input type="text" id="fotos_url" placeholder="https://img1.jpg, https://img2.jpg"/></div>
+<div class="form-group"><label>VIDEO YOUTUBE (URL)</label><input type="url" id="video_url" placeholder="https://youtube.com/watch?v=..."/></div>
+<div class="form-group"><label>RECORRIDO VIRTUAL 360 (URL)</label><input type="url" id="recorrido_virtual" placeholder="https://matterport.com/show/?m=..."/></div>
+</div></div>
+<div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(1)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(3)">Siguiente &#8594;</button></div>
+</div>
+
+<div class="step-panel" id="panel3">
+<div class="card"><h3>&#127968; Caracteristicas y <em>Amenidades</em></h3>
+<p style="color:#888;font-size:.85rem;margin-bottom:1rem">Selecciona todas las que apliquen a tu propiedad</p>
+<div class="char-grid" id="charGrid">
+<div class="amenity-group-title">Recreacion y Bienestar</div>
+<label class="char-item"><input type="checkbox" name="char" value="Piscina"/> <span>Piscina</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Piscina climatizada"/> <span>Piscina climatizada</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Piscina privada"/> <span>Piscina privada</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Jacuzzi"/> <span>Jacuzzi</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Sauna"/> <span>Sauna</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Turco"/> <span>Turco</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Gimnasio"/> <span>Gimnasio</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cancha de tenis"/> <span>Cancha de tenis</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cancha futbol"/> <span>Cancha futbol</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cancha squash"/> <span>Cancha squash</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cancha multiple"/> <span>Cancha multiple</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Juegos infantiles"/> <span>Juegos infantiles</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parque infantil"/> <span>Parque infantil</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Salon comunal"/> <span>Salon comunal</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Salon social"/> <span>Salon social</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Zona BBQ"/> <span>Zona BBQ</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Terraza BBQ"/> <span>Terraza BBQ</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Senderos ecologicos"/> <span>Senderos ecologicos</span></label>
+<div class="amenity-group-title">Seguridad</div>
+<label class="char-item"><input type="checkbox" name="char" value="Porteria 24h"/> <span>Porteria 24h</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Seguridad 24h"/> <span>Seguridad 24h</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Camara seguridad"/> <span>Camara seguridad</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Control acceso"/> <span>Control acceso</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Vigilancia privada"/> <span>Vigilancia privada</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Conserjeria"/> <span>Conserjeria</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Citofono"/> <span>Citofono</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Portón electrico"/> <span>Portón electrico</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Puerta blindada"/> <span>Puerta blindada</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cuarto de escoltas"/> <span>Cuarto de escoltas</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Detector de humo"/> <span>Detector de humo</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Detector incendio"/> <span>Detector incendio</span></label>
+<div class="amenity-group-title">Estructura y Servicios</div>
+<label class="char-item"><input type="checkbox" name="char" value="Ascensor"/> <span>Ascensor</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Elevador de carga"/> <span>Elevador de carga</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Gas natural"/> <span>Gas natural</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Aire acondicionado"/> <span>Aire acondicionado</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Calefaccion"/> <span>Calefaccion</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Calentador agua"/> <span>Calentador agua</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Paneles solares"/> <span>Paneles solares</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Pozo agua"/> <span>Pozo agua</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Pozo septico"/> <span>Pozo septico</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cisterna"/> <span>Cisterna</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Planta electrica"/> <span>Planta electrica</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Internet fibra optica"/> <span>Internet fibra optica</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="TV cable"/> <span>TV cable</span></label>
+<div class="amenity-group-title">Espacios</div>
+<label class="char-item"><input type="checkbox" name="char" value="Terraza"/> <span>Terraza</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Balcon"/> <span>Balcon</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Patio"/> <span>Patio</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Jardin"/> <span>Jardin</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Sotano"/> <span>Sotano</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Mezanine"/> <span>Mezanine</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Estudio"/> <span>Estudio</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cuarto servicio"/> <span>Cuarto servicio</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Bano servicio"/> <span>Bano servicio</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Lavanderia"/> <span>Lavanderia</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Closets"/> <span>Closets</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Vestier"/> <span>Vestier</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cuarto util"/> <span>Cuarto util</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Deposito"/> <span>Deposito</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Bodega privada"/> <span>Bodega privada</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Zona de ropas"/> <span>Zona de ropas</span></label>
+<div class="amenity-group-title">Cocina y Equipamiento</div>
+<label class="char-item"><input type="checkbox" name="char" value="Cocina integral"/> <span>Cocina integral</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cocina abierta"/> <span>Cocina abierta</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cocina americana"/> <span>Cocina americana</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Comedor auxiliar"/> <span>Comedor auxiliar</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Horno"/> <span>Horno</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Estufa gas"/> <span>Estufa gas</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Estufa electrica"/> <span>Estufa electrica</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Microondas"/> <span>Microondas</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Nevera"/> <span>Nevera</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Lavavajillas"/> <span>Lavavajillas</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Chimenea"/> <span>Chimenea</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Barra desayunadora"/> <span>Barra desayunadora</span></label>
+<div class="amenity-group-title">Parqueo</div>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero cubierto"/> <span>Parqueadero cubierto</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero descubierto"/> <span>Parqueadero descubierto</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero doble"/> <span>Parqueadero doble</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero visitantes"/> <span>Parqueadero visitantes</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero moto"/> <span>Parqueadero moto</span></label>
+<div class="amenity-group-title">Vista y Entorno</div>
+<label class="char-item"><input type="checkbox" name="char" value="Vista al mar"/> <span>Vista al mar</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Vista a la montaña"/> <span>Vista a la montaña</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Vista panoramica"/> <span>Vista panoramica</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Vista ciudad"/> <span>Vista ciudad</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Vista al lago"/> <span>Vista al lago</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Frente parque"/> <span>Frente parque</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Esquinero"/> <span>Esquinero</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Iluminacion natural"/> <span>Iluminacion natural</span></label>
+<div class="amenity-group-title">Politicas y Estado</div>
+<label class="char-item"><input type="checkbox" name="char" value="Pet friendly"/> <span>Pet friendly</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Amoblado"/> <span>Amoblado</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Semi amoblado"/> <span>Semi amoblado</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Construccion nueva"/> <span>Construccion nueva</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Recien remodelado"/> <span>Recien remodelado</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Bilingue"/> <span>Bilingue</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Persianas"/> <span>Persianas</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cortinas"/> <span>Cortinas</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Pisos en madera"/> <span>Pisos en madera</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Pisos en porcelanato"/> <span>Pisos en porcelanato</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Pisos en marmol"/> <span>Pisos en marmol</span></label>
+</div>
+<div class="form-grid" style="margin-top:1.5rem">
+<div class="form-group"><label>DEPOSITO INCLUIDO</label><select id="deposito"><option value="false">No</option><option value="true">Si</option></select></div>
+<div class="form-group"><label>UNIDAD CERRADA</label><select id="unidad_cerrada"><option value="no">No</option><option value="si">Si (conjunto/edificio cerrado)</option></select></div>
+<div class="form-group"><label>TIPO DE PISO PRINCIPAL</label><select id="tipo_piso"><option value="">Seleccionar</option><option value="madera">Madera</option><option value="porcelanato">Porcelanato</option><option value="ceramica">Ceramica</option><option value="marmol">Marmol</option><option value="alfombra">Alfombra</option><option value="vinilo">Vinilo</option><option value="laminado">Laminado</option></select></div>
+<div class="form-group"><label>NUMERO DE NIVELES</label><input type="number" id="niveles" placeholder="1" min="1" max="10"/></div>
+</div>
+</div>
+<div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(2)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(4)">Siguiente &#8594;</button></div>
+</div>
+
+<div class="step-panel" id="panel4">
+<div class="card"><h3>&#128203; Resumen de la <em>propiedad</em></h3><table class="summary-table" id="summaryTable"></table></div>
+<div class="card"><h3>&#127758; Publicar en <em>portales externos</em></h3>
+<p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Selecciona los portales adicionales:</p>
+<div class="portales-grid">
+<div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
+<div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
+<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario especializado Colombia</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
+<div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
+<div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Millones de usuarios activos en Colombia</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
+<div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Publicacion automatica con imagen y texto</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
+</div>
+<div class="publish-log" id="publishLog" style="display:none">
+<p style="color:#888;font-size:.8rem;margin-bottom:.5rem">&#128202; Registro de publicacion:</p>
+<div id="logEntries"></div>
+</div>
+</div>
+<button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">&#128640; Publicar Propiedad</button>
+<div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">&#8592; Anterior</button><div></div></div>
+</div>
+</div>
+
 <script>
 const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
 const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
@@ -214,264 +358,222 @@ const sb=window.supabase.createClient(SURL,SKEY);
 let currentUser=null;
 let propiedadId=null;
 (async()=>{
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href="login.html";return;}
-  currentUser=session.user;
-  document.getElementById("user-email").textContent=currentUser.email||"";
+const{data:{session}}=await sb.auth.getSession();
+if(!session){window.location.href="login.html";return;}
+currentUser=session.user;
+document.getElementById("user-email").textContent=currentUser.email||"";
 })();
 function togglePortal(cb,rowId){
-  const row=document.getElementById(rowId);
-  if(cb.checked)row.classList.add("selected");
-  else row.classList.remove("selected");
+const row=document.getElementById(rowId);
+if(cb.checked)row.classList.add("selected");
+else row.classList.remove("selected");
 }
 function showAlert(msg,type){
-  const a=document.getElementById("alert");
-  a.className="alert "+type;
-  a.textContent=msg;
-  a.style.display="block";
-  a.scrollIntoView({behavior:"smooth"});
+const a=document.getElementById("alert");
+a.className="alert "+type;
+a.textContent=msg;
+a.style.display="block";
+a.scrollIntoView({behavior:"smooth"});
 }
 function hideAlert(){document.getElementById("alert").style.display="none";}
 function goStep(n){
-  if(n===2&&!validateStep1())return;
-  if(n===3&&!validateStep2())return;
-  if(n===4){buildSummary();}
-  for(let i=1;i<=4;i++){
-    const s=document.getElementById("s"+i);
-    const p=document.getElementById("panel"+i);
-    s.className="step"+(i<n?" done":i===n?" active":"");
-    p.className="step-panel"+(i===n?" active":"");
-  }
-  window.scrollTo({top:0,behavior:"smooth"});
+if(n===2&&!validateStep1())return;
+if(n===3&&!validateStep2())return;
+if(n===4){buildSummary();}
+for(let i=1;i<=4;i++){
+const s=document.getElementById("s"+i);
+const p=document.getElementById("panel"+i);
+s.className="step"+(i<n?" done":i===n?" active":"");
+p.className="step-panel"+(i===n?" active":"");
+}
+window.scrollTo({top:0,behavior:"smooth"});
 }
 function validateStep1(){
-  const fields=[["tipo_operacion","Tipo de negocio"],["tipo_propiedad","Tipo de inmueble"],["titulo","Titulo"],["precio","Precio"],["m2_construccion","Area construida"],["descripcion","Descripcion"]];
-  for(const[id,name]of fields){
-    if(!document.getElementById(id).value.trim()){
-      showAlert("Campo requerido: "+name,"error");return false;
-    }
-  }
-  hideAlert();return true;
+const fields=[["tipo_operacion","Tipo de negocio"],["tipo_propiedad","Tipo de inmueble"],["titulo","Titulo"],["precio","Precio"],["m2_construccion","Area construida"],["descripcion","Descripcion"]];
+for(const[id,name]of fields){
+if(!document.getElementById(id).value.trim()){
+showAlert("Campo requerido: "+name,"error");return false;
+}
+}
+hideAlert();return true;
 }
 function validateStep2(){
-  const fields=[["departamento","Departamento"],["ciudad","Ciudad"],["barrio","Barrio/Sector"]];
-  for(const[id,name]of fields){
-    if(!document.getElementById(id).value.trim()){
-      showAlert("Campo requerido: "+name,"error");return false;
-    }
-  }
-  hideAlert();return true;
+const fields=[["departamento","Departamento"],["ciudad","Ciudad"],["barrio","Barrio/Sector"]];
+for(const[id,name]of fields){
+if(!document.getElementById(id).value.trim()){
+showAlert("Campo requerido: "+name,"error");return false;
+}
+}
+hideAlert();return true;
 }
 function buildSummary(){
-  const rows=[
-    ["Tipo negocio",document.getElementById("tipo_operacion").value],
-    ["Tipo inmueble",document.getElementById("tipo_propiedad").value],
-    ["Titulo",document.getElementById("titulo").value],
-    ["Precio","$"+Number(document.getElementById("precio").value||0).toLocaleString("es-CO")+" COP"],
-    ["Administracion","$"+Number(document.getElementById("precio_admin").value||0).toLocaleString("es-CO")],
-    ["Area",document.getElementById("m2_construccion").value+" m2"],
-    ["Habitaciones",document.getElementById("habitaciones").value],
-    ["Banos",document.getElementById("banos").value],
-    ["Ciudad",document.getElementById("ciudad").value],
-    ["Barrio",document.getElementById("barrio").value],
-  ];
-  const t=document.getElementById("summaryTable");
-  t.innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]||"N/A"}</td></tr>`).join("");
+const v = id => (document.getElementById(id)||{}).value || "";
+const rows=[
+["Estado", v("status_propiedad")],
+["Tipo negocio", v("tipo_operacion")],
+["Tipo inmueble", v("tipo_propiedad")],
+["Titulo", v("titulo")],
+["Precio","$"+Number(v("precio")||0).toLocaleString("es-CO")+" COP"],
+["Administracion","$"+Number(v("precio_admin")||0).toLocaleString("es-CO")],
+["Area construida", v("m2_construccion")+" m2"],
+["Habitaciones", v("habitaciones")],
+["Banos", v("banos")],
+["Parqueaderos", v("garajes")],
+["Ciudad", v("ciudad")],
+["Barrio", v("barrio")],
+["Video", v("video_url") ? "Si" : "No"],
+["Recorrido virtual", v("recorrido_virtual") ? "Si" : "No"],
+];
+const t=document.getElementById("summaryTable");
+t.innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]||"N/A"}</td></tr>`).join("");
 }
 function addLog(type,title,detail){
-  const lg=document.getElementById("publishLog");
-  const le=document.getElementById("logEntries");
-  lg.style.display="block";
-  const icons={success:"checkmark",error:"cross",info:"info",loading:"clock"};
-  const emojis={success:"OK",error:"ERR",info:"INFO",loading:"..."};
-  const div=document.createElement("div");
-  div.className="log-entry "+type;
-  div.innerHTML=`<div class="log-icon">${emojis[type]||"."}</div><div class="log-text"><strong>${title}</strong><span>${detail}</span></div>`;
-  le.appendChild(div);
-  lg.scrollTop=lg.scrollHeight;
+const lg=document.getElementById("publishLog");
+const le=document.getElementById("logEntries");
+lg.style.display="block";
+const emojis={success:"OK",error:"ERR",info:"INFO",loading:"..."};
+const div=document.createElement("div");
+div.className="log-entry "+type;
+div.innerHTML=`<div class="log-icon">${emojis[type]||"."}</div><div class="log-text"><strong>${title}</strong><span>${detail}</span></div>`;
+le.appendChild(div);
+lg.scrollTop=lg.scrollHeight;
 }
 function setPortalStatus(id,status,text){
-  const el=document.getElementById("st-"+id);
-  if(!el)return;
-  el.className="portal-status "+status;
-  el.textContent=text;
+const el=document.getElementById("st-"+id);
+if(!el)return;
+el.className="portal-status "+status;
+el.textContent=text;
 }
 async function publicarPropiedad(){
-  const btn=document.getElementById("btnPublish");
-  btn.disabled=true;
-  btn.textContent="Publicando...";
-  hideAlert();
-  document.getElementById("logEntries").innerHTML="";
-  document.getElementById("publishLog").style.display="none";
-  const amenidades=[...document.querySelectorAll("input[name=char]:checked")].map(c=>c.value);
-  const data={
-    tipo_operacion:document.getElementById("tipo_operacion").value,
-    tipo_propiedad:document.getElementById("tipo_propiedad").value,
-    titulo:document.getElementById("titulo").value.trim(),
-    precio:parseFloat(document.getElementById("precio").value)||0,
-    precio_admin:parseFloat(document.getElementById("precio_admin").value)||0,
-    m2_construccion:parseFloat(document.getElementById("m2_construccion").value)||0,
-    habitaciones:parseInt(document.getElementById("habitaciones").value)||0,
-    banos:parseInt(document.getElementById("banos").value)||0,
-    garajes:parseInt(document.getElementById("garajes").value)||0,
-    estrato:parseInt(document.getElementById("estrato").value)||1,
-    antigÃ¼edad:parseInt(document.getElementById("antigÃ¼edad").value)||0,
-    piso:parseInt(document.getElementById("piso").value)||0,
-    deposito:document.getElementById("deposito").value==="true",
-    descripcion:document.getElementById("descripcion").value.trim(),
-    departamento:document.getElementById("departamento").value,
-    ciudad:document.getElementById("ciudad").value.trim(),
-    barrio:document.getElementById("barrio").value.trim(),
-    direccion:document.getElementById("direccion").value.trim(),
-    amenidades:amenidades,
-    latitud:parseFloat(document.getElementById("latitud").value)||null,
-    longitud:parseFloat(document.getElementById("longitud").value)||null,
-    fotos_url:document.getElementById("fotos_url").value.trim()||null,
-    estado:"activo",
-    asesor_id:currentUser.id
-  };
-  addLog("loading","Lomaz Home","Guardando propiedad en la plataforma...");
-  setPortalStatus("lomazhome","publishing","Publicando...");
-  const{data:prop,error:errProp}=await sb.from("propiedades").insert([data]).select().single();
-  if(errProp){
-    addLog("error","Lomaz Home","Error: "+errProp.message);
-    setPortalStatus("lomazhome","error","Error");
-    showAlert("Error al guardar: "+errProp.message,"error");
-    btn.disabled=false;btn.textContent="Publicar Propiedad";
-    return;
-  }
-  propiedadId=prop.id;
-  addLog("success","Lomaz Home","Propiedad publicada correctamente (ID: "+prop.id+")");
-  setPortalStatus("lomazhome","ok","Publicado");
-  const portales=[
-    {id:"metrocuadrado",name:"Metrocuadrado",cb:"ch-metrocuadrado"},
-    {id:"fincaraiz",name:"Finca Raiz",cb:"ch-fincaraiz"},
-    {id:"proppit",name:"Proppit",cb:"ch-proppit"},
-    {id:"marketplace",name:"Facebook Marketplace",cb:"ch-marketplace"},
-    {id:"instagram",name:"Instagram",cb:"ch-instagram"}
-  ];
+const btn=document.getElementById("btnPublish");
+btn.disabled=true;
+btn.textContent="Publicando...";
+hideAlert();
+document.getElementById("logEntries").innerHTML="";
+document.getElementById("publishLog").style.display="none";
+const amenidades=[...document.querySelectorAll("input[name=char]:checked")].map(c=>c.value);
+const v = id => (document.getElementById(id)||{}).value || "";
+const data={
+tipo_operacion: v("tipo_operacion"),
+tipo_propiedad: v("tipo_propiedad"),
+status_propiedad: v("status_propiedad") || "activa",
+exclusiva: v("exclusiva") === "si",
+titulo: v("titulo").trim(),
+precio: parseFloat(v("precio"))||0,
+precio_admin: parseFloat(v("precio_admin"))||0,
+m2_construccion: parseFloat(v("m2_construccion"))||0,
+m2_terreno: parseFloat(v("m2_terreno"))||0,
+habitaciones: parseInt(v("habitaciones"))||0,
+banos: parseInt(v("banos"))||0,
+garajes: parseInt(v("garajes"))||0,
+estrato: parseInt(v("estrato"))||1,
+antiguedad: parseInt(v("antiguedad"))||0,
+piso: parseInt(v("piso"))||0,
+niveles: parseInt(v("niveles"))||1,
+acepta_credito: v("acepta_credito") === "si",
+deposito: v("deposito")==="true",
+unidad_cerrada: v("unidad_cerrada") === "si",
+tipo_piso: v("tipo_piso"),
+descripcion: v("descripcion").trim(),
+departamento: v("departamento"),
+ciudad: v("ciudad").trim(),
+barrio: v("barrio").trim(),
+direccion: v("direccion").trim(),
+como_llegar: v("como_llegar").trim(),
+amenidades: amenidades,
+latitud: parseFloat(v("latitud"))||null,
+longitud: parseFloat(v("longitud"))||null,
+fotos_url: v("fotos_url").trim()||null,
+video_url: v("video_url").trim()||null,
+recorrido_virtual: v("recorrido_virtual").trim()||null,
+estado: v("status_propiedad") === "borrador" ? "borrador" : "activo",
+asesor_id: currentUser.id
+};
+addLog("loading","Lomaz Home","Guardando propiedad en la plataforma...");
+setPortalStatus("lomazhome","publishing","Publicando...");
+// Solo enviamos columnas que existen en la tabla (las nuevas se ignoran si no existen)
+const safeData = {};
+const knownCols = ["tipo_operacion","tipo_propiedad","titulo","precio","precio_admin","m2_construccion","habitaciones","banos","garajes","estrato","antiguedad","piso","deposito","descripcion","departamento","ciudad","barrio","direccion","amenidades","latitud","longitud","fotos_url","estado","asesor_id"];
+for (const k of knownCols) if (data[k] !== undefined) safeData[k] = data[k];
+// Campos nuevos opcionales (intentamos guardarlos; si la columna no existe, fallara y reintentamos sin ellos)
+const optionalCols = ["status_propiedad","exclusiva","m2_terreno","niveles","acepta_credito","unidad_cerrada","tipo_piso","como_llegar","video_url","recorrido_virtual"];
+const extendedData = {...safeData};
+for (const k of optionalCols) if (data[k] !== undefined && data[k] !== "" && data[k] !== null) extendedData[k] = data[k];
 
-  // ── Cargar credenciales de portales desde Supabase ──
-  const {data:credsList} = await sb.from("configuracion_portales").select("*");
-  const creds = {};
-  if(credsList) credsList.forEach(c => { creds[c.portal] = c; });
-
-  // ── Función real de publicación en Finca Raiz API ──
-  async function publicarEnFincaraiz(propData, propId) {
-    const cfg = creds["fincaraiz"];
-    if(!cfg || !cfg.access_token || !cfg.client_id) {
-      return {ok:false, msg:"Sin credenciales. Ve a Ajustes > Portales > Finca Raiz y configura tu API Key y Client ID."};
-    }
-    const offerMap = {"venta":"sell","arriendo":"rent","alquiler_vacacional":"lease"};
-    const offer = offerMap[propData.tipo_operacion] || "sell";
-    const typeMap = {
-      "apartamento":"apartment","casa":"house","lote":"lot","local":"commercial",
-      "oficina":"office","bodega":"warehouse","finca":"farm","habitacion":"room",
-      "consultorio":"consulting-room","edificio":"building","cabana":"cabin",
-      "casa_campestre":"country-house","estudio":"studio","casa_lote":"house-lot",
-      "parqueadero":"parking"
-    };
-    const propertyType = typeMap[propData.tipo_propiedad] || "apartment";
-    const photosList = [];
-    if(propData.fotos_url) {
-      const urls = propData.fotos_url.split(",").map(u=>u.trim()).filter(u=>u.startsWith("http")).slice(0,30);
-      urls.forEach((url, i) => { photosList.push({sort_order:i+1, is_main:i===0, image:url}); });
-    }
-    const payload = [{
-      external_code: String(propId),
-      client_id: cfg.client_id,
-      offer: offer,
-      property_type: propertyType,
-      description: propData.descripcion || propData.titulo || "Inmueble LoMaz Home",
-      price: { value: propData.precio, currency: "COP" },
-      area: propData.m2_construccion || 0,
-      address: { address: propData.direccion || propData.barrio || propData.ciudad || "Bogota" },
-      locations: {
-        location_point: {
-          latitude: propData.latitud || 4.710988,
-          longitude: propData.longitud || -74.072092
-        },
-        view_map: (propData.latitud && propData.longitud) ? 0 : 2
-      },
-      listing_contact: { emails: [currentUser.email], phones: [] },
-      ...(propData.habitaciones > 0 && {rooms: propData.habitaciones}),
-      ...(propData.banos > 0 && {baths: propData.banos}),
-      ...(propData.garajes > 0 && {garages: propData.garajes}),
-      ...(propData.piso > 0 && {floor: propData.piso}),
-      ...(propData.estrato > 0 && {stratum: propData.estrato}),
-      ...(propData.precio_admin > 0 && offer==="rent" && {administration:{is_included:false, price:propData.precio_admin}}),
-      ...(photosList.length > 0 && {photos: photosList})
-    }];
-    try {
-      const resp = await fetch("https://api.fincaraiz.com.co/listing", {
-        method:"POST",
-        headers:{"Content-Type":"application/json","apikey":cfg.access_token},
-        body:JSON.stringify(payload)
-      });
-      const json = await resp.json().catch(()=>({message:resp.statusText}));
-      if(resp.ok){
-        const taskId = json?.task_id || (Array.isArray(json) && json[0]?.task_id) || "";
-        return {ok:true, msg:"Enviado a Finca Raiz." + (taskId ? " Task ID: "+taskId : "") + " Queda en estado Pendiente hasta ser activado."};
-      } else {
-        return {ok:false, msg:"Error Finca Raiz ("+resp.status+"): "+(json?.message||json?.detail||JSON.stringify(json)).substring(0,200)};
-      }
-    } catch(e) {
-      return {ok:false, msg:"Error de red con Finca Raiz: "+e.message+" (verifica CORS o usa Edge Function)"};
-    }
-  }
-
-  // ── Loop de portales ──
-  const msgs={
-    "metrocuadrado":"Para publicacion automatica configura tu API Key en Ajustes > Portales > Metrocuadrado.",
-    "proppit":"Proppit distribuira a 6 portales. Configura tu token en Ajustes > Portales > Proppit.",
-    "marketplace":"Texto copiado para Facebook Marketplace. Abre Facebook Marketplace > Crear anuncio > Pega el texto.",
-    "instagram":"Post generado para Instagram. Abre tu app Instagram y publica con el caption preparado."
-  };
-  for(const p of portales){
-    const checked=document.getElementById(p.cb)?.checked;
-    if(!checked)continue;
-    setPortalStatus(p.id,"publishing","Publicando...");
-    addLog("loading",p.name,"Enviando al portal...");
-    if(p.id === "fincaraiz"){
-      const result = await publicarEnFincaraiz(data, prop.id);
-      const estado = result.ok ? "publicado" : (creds["fincaraiz"]?.access_token ? "error_api" : "pendiente_credenciales");
-      await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
-      if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
-      else{setPortalStatus("fincaraiz","error",creds["fincaraiz"]?.access_token?"Error API":"Sin credenciales");addLog("error","Finca Raiz",result.msg);}
-      continue;
-    }
-    await new Promise(r=>setTimeout(r,800));
-    const{error:ePortal}=await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:p.id,estado:"pendiente_credenciales",mensaje:msgs[p.id]||"Requiere configuracion.",asesor_id:currentUser.id});
-    if(ePortal){setPortalStatus(p.id,"error","Error DB");addLog("error",p.name,"Error: "+ePortal.message);}
-    else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,msgs[p.id]);}
-  }
-  btn.textContent="Publicado en Lomaz Home";
-  showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
+let prop = null, errProp = null;
+let res = await sb.from("propiedades").insert([extendedData]).select().single();
+if (res.error) {
+  // Reintentar con solo las columnas conocidas (por si las nuevas no existen en BD)
+  res = await sb.from("propiedades").insert([safeData]).select().single();
 }
-// === LoMaz Home: Override seguro (mayo 2026) ===
+prop = res.data; errProp = res.error;
+if(errProp){
+addLog("error","Lomaz Home","Error: "+errProp.message);
+setPortalStatus("lomazhome","error","Error");
+showAlert("Error al guardar: "+errProp.message,"error");
+btn.disabled=false;btn.textContent="Publicar Propiedad";
+return;
+}
+propiedadId=prop.id;
+addLog("success","Lomaz Home","Propiedad publicada correctamente (ID: "+prop.id+")");
+setPortalStatus("lomazhome","ok","Publicado");
+const portales=[
+{id:"metrocuadrado",name:"Metrocuadrado",cb:"ch-metrocuadrado"},
+{id:"fincaraiz",name:"Finca Raiz",cb:"ch-fincaraiz"},
+{id:"proppit",name:"Proppit",cb:"ch-proppit"},
+{id:"marketplace",name:"Facebook Marketplace",cb:"ch-marketplace"},
+{id:"instagram",name:"Instagram",cb:"ch-instagram"}
+];
+const msgs={
+"metrocuadrado":"Para publicacion automatica configura tu API Key en Ajustes > Portales > Metrocuadrado.",
+"proppit":"Proppit distribuira a 6 portales. Configura tu token en Ajustes > Portales > Proppit.",
+"marketplace":"Texto copiado para Facebook Marketplace. Abre Facebook Marketplace > Crear anuncio > Pega el texto.",
+"instagram":"Post generado para Instagram. Abre tu app Instagram y publica con el caption preparado."
+};
+for(const p of portales){
+const checked=document.getElementById(p.cb)?.checked;
+if(!checked)continue;
+setPortalStatus(p.id,"publishing","Publicando...");
+addLog("loading",p.name,"Enviando al portal...");
+if(p.id === "fincaraiz"){
+const result = await window.publicarEnFincaraiz(data, prop.id);
+const estado = result.ok ? "publicado" : "pendiente_credenciales";
+await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
+if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
+else{setPortalStatus("fincaraiz","pending","Proximamente");addLog("info","Finca Raiz",result.msg);}
+continue;
+}
+await new Promise(r=>setTimeout(r,800));
+const{error:ePortal}=await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:p.id,estado:"pendiente_credenciales",mensaje:msgs[p.id]||"Requiere configuracion.",asesor_id:currentUser.id});
+if(ePortal){setPortalStatus(p.id,"error","Error DB");addLog("error",p.name,"Error: "+ePortal.message);}
+else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,msgs[p.id]);}
+}
+btn.textContent="Publicado en Lomaz Home";
+showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
+}
+// === LoMaz Home: Override seguro (mayo 2026) - Finca Raiz via Edge Function ===
 window.publicarEnFincaraiz = async function(propData, propId){
-  try {
-    const payload = { propiedad: Object.assign({}, propData, { id: propId, contacto_email: (typeof currentUser!=='undefined' && currentUser ? currentUser.email : null) }) };
-    const supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co';
-    const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
-    const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
-      body: JSON.stringify(payload)
-    });
-    const json = await resp.json().catch(function(){return {};});
-    if (json && json.ok) return { ok:true, msg: 'Enviado a Finca Raiz via Edge Function.' };
-    if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
-    return { ok:false, msg: 'Error Finca Raiz: ' + (json && json.msg ? json.msg : 'respuesta no esperada') };
-  } catch(e) {
-    return { ok:false, msg: 'Error de red: ' + e.message };
-  }
+try {
+const payload = { propiedad: Object.assign({}, propData, { id: propId, contacto_email: (typeof currentUser!=='undefined' && currentUser ? currentUser.email : null) }) };
+const supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co';
+const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
+const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
+method: 'POST',
+headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
+body: JSON.stringify(payload)
+});
+const json = await resp.json().catch(function(){return {};});
+if (json && json.ok) return { ok:true, msg: 'Enviado a Finca Raiz via Edge Function.' };
+if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz (estamos esperando Client ID y URL del integrador).' };
+return { ok:false, msg: 'Pendiente de activacion: ' + (json && json.msg ? json.msg : 'integracion en pruebas') };
+} catch(e) {
+return { ok:false, msg: 'Pendiente activacion (sin red): ' + e.message };
+}
 };
 document.addEventListener('DOMContentLoaded', function(){
-  const st = document.getElementById('st-fincaraiz');
-  if (st) { st.textContent = 'Proximamente'; st.className = 'portal-status pending'; }
+const st = document.getElementById('st-fincaraiz');
+if (st) { st.textContent = 'Proximamente'; st.className = 'portal-status pending'; }
 });
 </script>
 </body>
-  </html>
-
+</html>
