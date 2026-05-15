@@ -381,7 +381,7 @@ async function stream(t) {
   const b=document.createElement('div'); b.className='lm-msg-bubble';
   d.innerHTML='<div class="lm-msg-avatar">A</div>'; d.appendChild(b); m.appendChild(d);
   let i=0;
-  return new Promise(r=>{(function f(){if(i<t.length){b.textContent+=t[i++];m.scrollTop=m.scrollHeight;setTimeout(f,16);}else r();})();});
+  return new Promise(r=>{(function f(){if(i<t.length){b.textContent+=t[i++];m.scrollTop=m.scrollHeight;setTimeout(f,16);}else{b.innerHTML=t;m.scrollTop=m.scrollHeight;r();}})();});
 }
 
 async function send(t) {
