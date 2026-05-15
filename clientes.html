@@ -124,6 +124,8 @@ td strong{font-weight:600;color:#fff}
       <div class="fg"><label>Teléfono <span class="req">*</span></label><input type="tel" id="fTelefono" placeholder="Ej: 3001234567" maxlength="20"></div>
       <div class="fg"><label>Correo electrónico</label><input type="email" id="fEmail" placeholder="Ej: maria@gmail.com"></div>
       <div class="fg"><label>Códula / NIT</label><input type="text" id="fCedula" placeholder="Ej: 1234567890" maxlength="20"></div>
+      <div class="fg"><label>Fecha de nacimiento <span style="color:#a8a29e;font-size:11px">(para saludo de cumpleaños)</span></label><input type="date" id="fFechaNac"></div>
+      <div class="fg"><label>Canales de saludo de cumpleaños</label><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:8px 0"><label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:13px;color:#d4cfc7;cursor:pointer"><input type="checkbox" id="fPrefEmail" checked style="width:16px;height:16px"> Correo electrónico</label><label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:13px;color:#d4cfc7;cursor:pointer"><input type="checkbox" id="fPrefWa" checked style="width:16px;height:16px"> WhatsApp</label></div></div>
       <div class="fg"><label>Tipo de búsqueda <span class="req">*</span></label><select id="fTipoBus"><option value="">Seleccionar...</option><option value="Compra">Compra</option><option value="Arriendo">Arriendo</option><option value="Ambos">Ambos</option></select></div>
       <div class="fg"><label>Estado del cliente</label><select id="fEstadoCli"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option><option value="Cerrado">Cerrado</option></select></div>
       <div class="fg"><label>Tipo de inmueble de interés</label><select id="fTipoInm"><option value="">Cualquiera</option><option value="Apartamento">Apartamento</option><option value="Casa">Casa</option><option value="Casa Campestre">Casa Campestre</option><option value="Finca">Finca</option><option value="Lote">Lote</option><option value="Local Comercial">Local Comercial</option><option value="Oficina">Oficina</option></select></div>
@@ -261,6 +263,9 @@ function openEdit(id){
   document.getElementById("fTelefono").value=c.telefono||"";
   document.getElementById("fEmail").value=c.email||"";
   document.getElementById("fCedula").value=c.cedula||"";
+  document.getElementById("fFechaNac").value=c.fecha_nacimiento||"";
+  document.getElementById("fPrefEmail").checked=c.prefiere_email!==false;
+  document.getElementById("fPrefWa").checked=c.prefiere_whatsapp!==false;
   document.getElementById("fTipoBus").value=c.tipo_busqueda||"";
   document.getElementById("fEstadoCli").value=c.estado||"Activo";
   document.getElementById("fTipoInm").value=c.tipo_inmueble_interes||"";
@@ -293,6 +298,9 @@ async function saveClient(){
     telefono:tel,
     email:document.getElementById("fEmail").value.trim()||null,
     cedula:document.getElementById("fCedula").value.trim()||null,
+    fecha_nacimiento:document.getElementById("fFechaNac").value||null,
+    prefiere_email:document.getElementById("fPrefEmail").checked,
+    prefiere_whatsapp:document.getElementById("fPrefWa").checked,
     tipo_busqueda:tipoBus,
     estado:document.getElementById("fEstadoCli").value,
     tipo_inmueble_interes:document.getElementById("fTipoInm").value||null,
