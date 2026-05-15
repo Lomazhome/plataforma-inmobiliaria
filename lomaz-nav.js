@@ -379,7 +379,7 @@ function extractDetails(t){
 function isValidName(s){const n=cleanName(s);return n.length>=2&&/[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(n)&&!RX.email.test(s)&&!RX.wa.test(s)?n:null;}
 function isValidEmail(s){const m=s.match(RX.email);return m?m[0].toLowerCase():null;}
 function isValidWhatsapp(s){const m=s.match(RX.wa);if(!m)return null;let n=m[0].replace(/\D/g,'');if(n.startsWith('57'))n=n.slice(2);return n.length===10?n:null;}
-function hasDetailInfo(){return LEAD.area_m2||LEAD.habitaciones||/\d/.test(LEAD.mensaje_libre.slice(-200));}
+function hasDetailInfo(){return !!(LEAD.area_m2||LEAD.habitaciones||LEAD.precio_esperado||LEAD.presupuesto_aprox);}
 async function saveLead(){
   try{
     if(!window.supabase||!window.SUPABASE_URL||!window.SUPABASE_ANON_KEY)return;
