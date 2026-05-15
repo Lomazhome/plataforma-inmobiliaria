@@ -336,7 +336,7 @@ textarea{resize:vertical;min-height:90px}
 <div class="portales-grid">
 <div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
 <div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
-<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario especializado Colombia</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
+<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
 <div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Millones de usuarios activos en Colombia</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
 <div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Publicacion automatica con imagen y texto</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
@@ -347,6 +347,7 @@ textarea{resize:vertical;min-height:90px}
 </div>
 </div>
 <button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">&#128640; Publicar Propiedad</button>
+<button class="btn-publish" id="btn-activar-fr" onclick="activarEnFincaraiz()" style="display:none;background:linear-gradient(135deg,#79b8ff 0%,#3b82f6 100%);color:#fff;margin-top:.6rem">&#9989; Activar en Finca Raiz (pasar de Pendiente a Activa)</button>
 <div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">&#8592; Anterior</button><div></div></div>
 </div>
 </div>
@@ -453,60 +454,50 @@ document.getElementById("logEntries").innerHTML="";
 document.getElementById("publishLog").style.display="none";
 const amenidades=[...document.querySelectorAll("input[name=char]:checked")].map(c=>c.value);
 const v = id => (document.getElementById(id)||{}).value || "";
+// Mapeo correcto a columnas reales de la tabla 'propiedades'
+const fotosList = v("fotos_url").trim() ? v("fotos_url").trim().split(',').map(u=>u.trim()).filter(u=>u) : null;
 const data={
 tipo_operacion: v("tipo_operacion"),
 tipo_propiedad: v("tipo_propiedad"),
-status_propiedad: v("status_propiedad") || "activa",
-exclusiva: v("exclusiva") === "si",
 titulo: v("titulo").trim(),
 precio: parseFloat(v("precio"))||0,
 precio_admin: parseFloat(v("precio_admin"))||0,
 m2_construccion: parseFloat(v("m2_construccion"))||0,
-m2_terreno: parseFloat(v("m2_terreno"))||0,
+m2_terreno: parseFloat(v("m2_terreno"))||null,
 habitaciones: parseInt(v("habitaciones"))||0,
 banos: parseInt(v("banos"))||0,
 garajes: parseInt(v("garajes"))||0,
+parqueaderos: parseInt(v("garajes"))||0,
 estrato: parseInt(v("estrato"))||1,
 antiguedad: parseInt(v("antiguedad"))||0,
 piso: parseInt(v("piso"))||0,
-niveles: parseInt(v("niveles"))||1,
-acepta_credito: v("acepta_credito") === "si",
+pisos_totales: parseInt(v("niveles"))||null,
+acepta_creditos: v("acepta_credito") === "si",
 deposito: v("deposito")==="true",
-unidad_cerrada: v("unidad_cerrada") === "si",
-tipo_piso: v("tipo_piso"),
+tipo_piso: v("tipo_piso") || null,
 descripcion: v("descripcion").trim(),
 departamento: v("departamento"),
 ciudad: v("ciudad").trim(),
+pais: "Colombia",
 barrio: v("barrio").trim(),
-direccion: v("direccion").trim(),
-como_llegar: v("como_llegar").trim(),
+direccion: v("direccion").trim() || null,
 amenidades: amenidades,
+caracteristicas: amenidades,
 latitud: parseFloat(v("latitud"))||null,
 longitud: parseFloat(v("longitud"))||null,
-fotos_url: v("fotos_url").trim()||null,
+fotos: fotosList,
+foto_principal: fotosList && fotosList[0] ? fotosList[0] : null,
 video_url: v("video_url").trim()||null,
-recorrido_virtual: v("recorrido_virtual").trim()||null,
-estado: v("status_propiedad") === "borrador" ? "borrador" : "activo",
+tour_virtual_url: v("recorrido_virtual").trim()||null,
+estado: v("status_propiedad") || "activo",
+moneda: "COP",
 asesor_id: currentUser.id
 };
 addLog("loading","Lomaz Home","Guardando propiedad en la plataforma...");
 setPortalStatus("lomazhome","publishing","Publicando...");
-// Solo enviamos columnas que existen en la tabla (las nuevas se ignoran si no existen)
-const safeData = {};
-const knownCols = ["tipo_operacion","tipo_propiedad","titulo","precio","precio_admin","m2_construccion","habitaciones","banos","garajes","estrato","antiguedad","piso","deposito","descripcion","departamento","ciudad","barrio","direccion","amenidades","latitud","longitud","fotos_url","estado","asesor_id"];
-for (const k of knownCols) if (data[k] !== undefined) safeData[k] = data[k];
-// Campos nuevos opcionales (intentamos guardarlos; si la columna no existe, fallara y reintentamos sin ellos)
-const optionalCols = ["status_propiedad","exclusiva","m2_terreno","niveles","acepta_credito","unidad_cerrada","tipo_piso","como_llegar","video_url","recorrido_virtual"];
-const extendedData = {...safeData};
-for (const k of optionalCols) if (data[k] !== undefined && data[k] !== "" && data[k] !== null) extendedData[k] = data[k];
-
-let prop = null, errProp = null;
-let res = await sb.from("propiedades").insert([extendedData]).select().single();
-if (res.error) {
-  // Reintentar con solo las columnas conocidas (por si las nuevas no existen en BD)
-  res = await sb.from("propiedades").insert([safeData]).select().single();
-}
-prop = res.data; errProp = res.error;
+// Insercion directa - todos los campos mapean a columnas reales
+let res = await sb.from("propiedades").insert([data]).select().single();
+let prop = res.data, errProp = res.error;
 if(errProp){
 addLog("error","Lomaz Home","Error: "+errProp.message);
 setPortalStatus("lomazhome","error","Error");
@@ -563,17 +554,58 @@ headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization'
 body: JSON.stringify(payload)
 });
 const json = await resp.json().catch(function(){return {};});
-if (json && json.ok) return { ok:true, msg: 'Enviado a Finca Raiz via Edge Function.' };
-if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz (estamos esperando Client ID y URL del integrador).' };
-return { ok:false, msg: 'Pendiente de activacion: ' + (json && json.msg ? json.msg : 'integracion en pruebas') };
+if (json && json.ok) {
+  const taskId = (json.fincaraiz && json.fincaraiz.task && json.fincaraiz.task.id) || '';
+  window._LAST_FR_TASK_ID = taskId;
+  window._LAST_FR_PROP_ID = propId;
+  // Mostrar boton de activacion
+  setTimeout(function(){
+    const btnA = document.getElementById('btn-activar-fr');
+    if (btnA) { btnA.style.display='inline-block'; btnA.dataset.taskId = taskId; btnA.dataset.propId = propId; }
+  }, 200);
+  return { ok:true, msg: 'Enviado a Finca Raiz QA. Task ID: ' + taskId + '. Estado: Pendiente. Usa el boton ACTIVAR para publicar.' };
+}
+if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
+return { ok:false, msg: 'Error Finca Raiz: ' + (json && json.msg ? json.msg : JSON.stringify(json).substring(0,300)) };
 } catch(e) {
-return { ok:false, msg: 'Pendiente activacion (sin red): ' + e.message };
+return { ok:false, msg: 'Error de red: ' + e.message };
 }
 };
-document.addEventListener('DOMContentLoaded', function(){
-const st = document.getElementById('st-fincaraiz');
-if (st) { st.textContent = 'Proximamente'; st.className = 'portal-status pending'; }
+
+// Boton para activar la propiedad en Finca Raiz (PATCH /listing/status)
+window.activarEnFincaraiz = async function(){
+const btn = document.getElementById('btn-activar-fr');
+if (!btn) return;
+const propId = btn.dataset.propId;
+if (!propId) { alert('Primero publica la propiedad en Finca Raiz'); return; }
+btn.disabled = true;
+btn.textContent = 'Activando...';
+try {
+const supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co';
+const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
+const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
+method: 'POST',
+headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
+body: JSON.stringify({ accion: 'activar', propiedad_id: propId })
 });
+const json = await resp.json().catch(function(){return {};});
+if (json && json.ok) {
+  addLog('success','Finca Raiz - ACTIVAR', 'Propiedad activada correctamente en Finca Raiz. Ya esta visible publicamente.');
+  btn.textContent = 'Activada en Finca Raiz';
+  btn.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)';
+  btn.style.color = '#fff';
+} else {
+  addLog('error','Finca Raiz - ACTIVAR', 'Error al activar: ' + (json && json.msg ? json.msg : 'respuesta no esperada'));
+  btn.disabled = false;
+  btn.textContent = 'Reintentar activacion';
+}
+} catch(e) {
+addLog('error','Finca Raiz - ACTIVAR', 'Error de red: ' + e.message);
+btn.disabled = false;
+btn.textContent = 'Reintentar activacion';
+}
+};
+// Finca Raiz QA esta listo - no override
 </script>
 </body>
 </html>
