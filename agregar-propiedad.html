@@ -337,7 +337,7 @@ textarea{resize:vertical;min-height:90px}
 <div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
 <div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
 <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
-<div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
+<div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
 <div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
 <div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Genera caption + descarga fotos + abre Instagram</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
 </div>
@@ -517,7 +517,7 @@ const portales=[
 ];
 const msgs={
 "metrocuadrado":"Para publicacion automatica configura tu API Key en Ajustes > Portales > Metrocuadrado.",
-"proppit":"Proppit distribuira a 6 portales. Configura tu token en Ajustes > Portales > Proppit.",
+"proppit":"Proppit lee automaticamente el feed XML cada dia. Esta propiedad aparecera en Trovit, Mitula, Nestoria, Nuroa y puntopropiedad en proxima sincronizacion.",
 "marketplace":"Texto copiado para Facebook Marketplace. Abre Facebook Marketplace > Crear anuncio > Pega el texto.",
 "instagram":"Post generado para Instagram. Abre tu app Instagram y publica con el caption preparado."
 };
@@ -548,6 +548,13 @@ const estado = result.ok ? "publicado" : "pendiente_credenciales";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
 else{setPortalStatus("fincaraiz","pending","Proximamente");addLog("info","Finca Raiz",result.msg);}
+continue;
+}
+if(p.id === "proppit"){
+const proppitMsg = "Propiedad agregada al XML feed de Proppit. URL del feed: https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/proppit-feed. Proppit lo lee 1x dia.";
+await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"proppit",estado:"publicado_xml_feed",mensaje:proppitMsg,asesor_id:currentUser.id});
+setPortalStatus("proppit","ok","En feed XML");
+addLog("success","Proppit",proppitMsg);
 continue;
 }
 await new Promise(r=>setTimeout(r,800));
