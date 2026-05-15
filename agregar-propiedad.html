@@ -448,6 +448,29 @@ async function publicarPropiedad(){
   btn.textContent="Publicado en Lomaz Home";
   showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
 }
+// === LoMaz Home: Override seguro (mayo 2026) ===
+window.publicarEnFincaraiz = async function(propData, propId){
+  try {
+    const payload = { propiedad: Object.assign({}, propData, { id: propId, contacto_email: (typeof currentUser!=='undefined' && currentUser ? currentUser.email : null) }) };
+    const supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co';
+    const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
+    const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
+      body: JSON.stringify(payload)
+    });
+    const json = await resp.json().catch(function(){return {};});
+    if (json && json.ok) return { ok:true, msg: 'Enviado a Finca Raiz via Edge Function.' };
+    if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
+    return { ok:false, msg: 'Error Finca Raiz: ' + (json && json.msg ? json.msg : 'respuesta no esperada') };
+  } catch(e) {
+    return { ok:false, msg: 'Error de red: ' + e.message };
+  }
+};
+document.addEventListener('DOMContentLoaded', function(){
+  const st = document.getElementById('st-fincaraiz');
+  if (st) { st.textContent = 'Proximamente'; st.className = 'portal-status pending'; }
+});
 </script>
 </body>
   </html>
