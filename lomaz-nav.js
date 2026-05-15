@@ -385,7 +385,7 @@ async function saveLead(){
   try{
     if(!window.supabase||!window.SUPABASE_URL||!window.SUPABASE_ANON_KEY)return;
     const c=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
-    const payload={...LEAD,origen_url:location.href,user_agent:navigator.userAgent.slice(0,300),historial:HIST.slice(-20)};
+    const payload={...LEAD,url_origen:location.href,user_agent:navigator.userAgent.slice(0,300),conversacion:HIST.slice(-20)};
     await c.from('leads_aria').insert(payload);
   }catch(e){console.warn('saveLead',e);}
 }
