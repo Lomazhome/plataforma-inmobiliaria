@@ -376,6 +376,7 @@ function extractDetails(t){
   const h=t.match(RX.hab); if(h&&!LEAD.habitaciones) LEAD.habitaciones=parseInt(h[1],10);
   const a=t.match(RX.area); if(a&&!LEAD.area_m2) LEAD.area_m2=parseInt(a[1],10);
 }
+function extractName(t){if(LEAD.nombre)return;const m=t.match(/(?:^|\b)(?:soy|me llamo|mi nombre es)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ][A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]{2,60})(?=[,.;]|\s+(?:mi|y |con |whatsapp|wpp|wa|tel|telefono|teléfono|cel|celular|correo|email|e-mail|@)|$)/i);if(m){const n=cleanName(m[1]);if(n.length>=2)LEAD.nombre=n;}}
 function isValidName(s){const n=cleanName(s);return n.length>=2&&/[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(n)&&!RX.email.test(s)&&!RX.wa.test(s)?n:null;}
 function isValidEmail(s){const m=s.match(RX.email);return m?m[0].toLowerCase():null;}
 function isValidWhatsapp(s){const m=s.match(RX.wa);if(!m)return null;let n=m[0].replace(/\D/g,'');if(n.startsWith('57'))n=n.slice(2);return n.length===10?n:null;}
@@ -429,6 +430,7 @@ async function resp(m){
   if(txt) LEAD.mensaje_libre=(LEAD.mensaje_libre+' '+txt).trim().slice(0,1000);
 
   // En cualquier momento extraemos contactos y detalles oportunistamente
+  extractName(txt);
   extractContacts(txt);
   extractDetails(txt);
 
