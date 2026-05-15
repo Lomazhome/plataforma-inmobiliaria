@@ -175,29 +175,27 @@ async function crearUsuario(){
   if(!nombre||!email||!password||!rolId){showAlert("Completa todos los campos obligatorios","error");return;}
   if(password.length<8){showAlert("La contrasena debe tener al menos 8 caracteres","error");return;}
   hideAlert();
-  // Crear usuario en Supabase Auth (solo admin puede hacerlo via service role)
-  // Como usamos anon key, usamos signUp y luego desactivamos autoconfirm en el perfil
-  const{data:newUser,error:errAuth}=await sb.auth.admin?.createUser({
-    email,password,email_confirm:true,
-    user_metadata:{nombre_completo:nombre}
-  }).catch(()=>({data:null,error:{message:"Admin API no disponible con anon key"}}));
-  
-  if(errAuth||!newUser){
-    // Fallback: signUp normal + marcar pendiente confirmacion
-    const{data:signData,error:signErr}=await sb.auth.signUp({email,password,options:{data:{nombre_completo:nombre}}});
-    if(signErr){showAlert("Error al crear usuario: "+signErr.message,"error");return;}
-    if(signData.user){
-      await sb.from("perfiles_usuarios").upsert({id:signData.user.id,nombre_completo:nombre,telefono,rol_id:parseInt(rolId),notas,creado_por:currentUser.id});
-      showAlert("Usuario creado. Debe confirmar su correo electronico antes de ingresar.","success");
-      limpiarFormCrear();
-      await cargarUsuarios();
+  const btn=document.getElementById("btn-crear-usuario");
+  if(btn){btn.disabled=true;btn.textContent="Creando...";}
+  try{
+    const { data, error } = await sb.functions.invoke("admin-crear-usuario",{
+      body:{ email, password, nombre_completo:nombre, telefono, rol_id:parseInt(rolId), notas }
+    });
+    if(error){
+      let msg=error.message||"Error desconocido";
+      try{ const ctx=await error.context.json(); if(ctx&&ctx.error) msg=ctx.error; }catch(e){}
+      showAlert("Error al crear usuario: "+msg,"error");
+      return;
     }
-    return;
+    if(data&&data.error){ showAlert("Error: "+data.error,"error"); return; }
+    showAlert("Usuario creado exitosamente: "+nombre,"success");
+    limpiarFormCrear();
+    await cargarUsuarios();
+  }catch(e){
+    showAlert("Error al crear usuario: "+(e.message||e),"error");
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent="Crear Usuario";}
   }
-  await sb.from("perfiles_usuarios").upsert({id:newUser.user.id,nombre_completo:nombre,telefono,rol_id:parseInt(rolId),notas,creado_por:currentUser.id});
-  showAlert("Usuario creado exitosamente: "+nombre,"success");
-  limpiarFormCrear();
-  await cargarUsuarios();
 }
 
 function limpiarFormCrear(){
