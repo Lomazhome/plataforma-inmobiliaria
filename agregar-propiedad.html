@@ -338,7 +338,7 @@ textarea{resize:vertical;min-height:90px}
 <div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
 <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
-<div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Millones de usuarios activos en Colombia</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
+<div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
 <div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Publicacion automatica con imagen y texto</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
 </div>
 <div class="publish-log" id="publishLog" style="display:none">
@@ -526,6 +526,14 @@ const checked=document.getElementById(p.cb)?.checked;
 if(!checked)continue;
 setPortalStatus(p.id,"publishing","Publicando...");
 addLog("loading",p.name,"Enviando al portal...");
+if(p.id === "marketplace"){
+const result = await window.publicarEnFacebookMarketplace(data, prop.id);
+const estado = result.ok ? "preparado_manual" : "error";
+await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"marketplace",estado,mensaje:result.msg,asesor_id:currentUser.id});
+if(result.ok){setPortalStatus("marketplace","ok","Listo p/ pegar");addLog("success","Facebook Marketplace",result.msg);}
+else{setPortalStatus("marketplace","error","Error");addLog("error","Facebook Marketplace",result.msg);}
+continue;
+}
 if(p.id === "fincaraiz"){
 const result = await window.publicarEnFincaraiz(data, prop.id);
 const estado = result.ok ? "publicado" : "pendiente_credenciales";
@@ -605,6 +613,53 @@ btn.disabled = false;
 btn.textContent = 'Reintentar activacion';
 }
 };
+
+// === LoMaz Home: Publicacion asistida en Facebook Marketplace (mayo 2026) ===
+window.publicarEnFacebookMarketplace = async function(propData, propId){
+try {
+  const tipo = (propData.tipo_propiedad||'').charAt(0).toUpperCase() + (propData.tipo_propiedad||'').slice(1);
+  const op = propData.tipo_operacion === 'venta' ? 'EN VENTA' : (propData.tipo_operacion === 'arriendo' ? 'EN ARRIENDO' : 'DISPONIBLE');
+  const precio = '
+</script>
+</body>
+</html>
+ + Number(propData.precio||0).toLocaleString('es-CO') + ' COP';
+  const admin = propData.precio_admin > 0 ? '\\n\u{1F4BC} Administracion: 
+</script>
+</body>
+</html>
+ + Number(propData.precio_admin).toLocaleString('es-CO') : '';
+  const ubic = [propData.barrio, propData.ciudad, propData.departamento].filter(Boolean).join(', ');
+  const habs = propData.habitaciones ? '\\n\u{1F6CF}\uFE0F Habitaciones: ' + propData.habitaciones : '';
+  const banos = propData.banos ? '\\n\u{1F6BF} Banos: ' + propData.banos : '';
+  const parq = propData.garajes ? '\\n\u{1F697} Parqueaderos: ' + propData.garajes : '';
+  const m2 = propData.m2_construccion ? '\\n\u{1F4D0} Area: ' + propData.m2_construccion + ' m\u00B2' : '';
+  const estrato = propData.estrato ? '\\n\u2B50 Estrato: ' + propData.estrato : '';
+  const ament = (propData.amenidades && propData.amenidades.length) ? '\\n\\n\u2728 AMENIDADES:\\n' + propData.amenidades.slice(0,15).map(function(a){return '\u2022 '+a;}).join('\\n') : '';
+  const hashtags = ['#Inmobiliaria','#'+(propData.ciudad||'Colombia').replace(/\\s+/g,''),'#'+(propData.tipo_propiedad||'Propiedad'),'#'+(propData.tipo_operacion||'Venta'),'#LoMazHome','#BienesRaices'].join(' ');
+  const url = 'https://www.lomazhome.com/propiedad.html?id=' + propId;
+  const texto = '\u{1F3E1} ' + tipo.toUpperCase() + ' ' + op + ' \u{1F3E1}\\n\\n' + propData.titulo + '\\n\\n' + '\u{1F4CD} ' + ubic + '\\n' + '\u{1F4B0} ' + precio + admin + '\\n' + m2 + habs + banos + parq + estrato + '\\n\\n' + '\u{1F4DD} DESCRIPCION:\\n' + propData.descripcion + ament + '\\n\\n' + '\u{1F4DE} Agenda tu visita HOY!\\n' + '\u{1F310} Mas info: ' + url + '\\n\\n' + hashtags;
+  await navigator.clipboard.writeText(texto);
+  const fotos = propData.fotos || [];
+  if (fotos.length > 0) {
+    fotos.slice(0,10).forEach(function(url, i){
+      setTimeout(function(){
+        const a = document.createElement('a');
+        a.href = url; a.download = 'lomazhome-' + propId + '-foto-' + (i+1) + '.jpg';
+        a.target = '_blank'; a.rel = 'noopener';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }, i*300);
+    });
+  }
+  setTimeout(function(){
+    window.open('https://www.facebook.com/marketplace/create/rental', '_blank', 'noopener');
+  }, 1500);
+  return { ok:true, msg:'Texto copiado al portapapeles. Se abriran las fotos y Facebook Marketplace en nuevas pestanas. Pega el texto con Ctrl+V y sube las fotos descargadas.' };
+} catch(e) {
+  return { ok:false, msg:'Error preparando publicacion: ' + e.message };
+}
+};
+
 // Finca Raiz QA esta listo - no override
 </script>
 </body>
