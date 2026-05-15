@@ -178,8 +178,8 @@ async function loadClients(){
 function updateStats(){
   document.getElementById("sTotal").textContent=all.length;
   document.getElementById("sActivos").textContent=all.filter(c=>c.estado==="Activo").length;
-  document.getElementById("sCompra").textContent=all.filter(c=>c.tipo_busqueda==="Compra").length;
-  document.getElementById("sArriendo").textContent=all.filter(c=>c.tipo_busqueda==="Arriendo").length;
+  document.getElementById("sCompra").textContent=all.filter(c=>c.tipo==="Compra").length;
+  document.getElementById("sArriendo").textContent=all.filter(c=>c.tipo==="Arriendo").length;
   document.getElementById("sCerrado").textContent=all.filter(c=>c.estado==="Cerrado").length;
 }
 
@@ -188,8 +188,8 @@ function applyFilter(){
   const t=document.getElementById("fTipo").value;
   const e=document.getElementById("fEstado").value;
   filtered=all.filter(c=>{
-    const ms=!s||(c.nombre||"").toLowerCase().includes(s)||(c.email||"").toLowerCase().includes(s)||(c.ciudad_interes||"").toLowerCase().includes(s)||(c.telefono||"").includes(s);
-    const mt=!t||c.tipo_busqueda===t;
+    const ms=!s||(c.nombre||"").toLowerCase().includes(s)||(c.email||"").toLowerCase().includes(s)||(c.ciudad||"").toLowerCase().includes(s)||(c.telefono||"").includes(s);
+    const mt=!t||c.tipo===t;
     const me=!e||c.estado===e;
     return ms&&mt&&me;
   });
@@ -207,12 +207,12 @@ function renderTable(){
   let h=`<table><thead><tr><th>Cliente</th><th>Contacto</th><th>Búsqueda</th><th>Presupuesto</th><th>Estado</th><th>Fuente</th><th>Acciones</th></tr></thead><tbody>`;
   pg.forEach(c=>{
     const ini=(c.nombre||"?")[0].toUpperCase();
-    const bTipo=`<span class="badge badge-${(c.tipo_busqueda||"compra").toLowerCase()}">${c.tipo_busqueda||"-"}</span>`;
+    const bTipo=`<span class="badge badge-${(c.tipo||"compra").toLowerCase()}">${c.tipo||"-"}</span>`;
     const bEst=`<span class="badge badge-${(c.estado||"activo").toLowerCase()}">${c.estado||"-"}</span>`;
     const pMin=c.presupuesto_min?("$"+Number(c.presupuesto_min).toLocaleString("es-CO")):"";
     const pMax=c.presupuesto_max?("$"+Number(c.presupuesto_max).toLocaleString("es-CO")):"";
     const pres=pMin||pMax?(pMin&&pMax?pMin+" - "+pMax:pMin||pMax):"-";
-    const subInfo=[c.tipo_inmueble_interes,c.ciudad_interes,c.habitaciones_min?(c.habitaciones_min+"hab+"):""].filter(Boolean).join(" · ");
+    const subInfo=[c.tipo_inmueble_interes,c.ciudad,c.habitaciones_min?(c.habitaciones_min+"hab+"):""].filter(Boolean).join(" · ");
     h+=`<tr>
       <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">${ini}</div><div><div class="client-name">${c.nombre||"-"}</div><div class="client-sub">${subInfo||"Sin preferencia"}</div></div></div></td>
       <td><div style="font-size:13px">${c.telefono||"-"}</div><div style="font-size:12px;color:#888">${c.email||""}</div></td>
@@ -266,10 +266,10 @@ function openEdit(id){
   document.getElementById("fFechaNac").value=c.fecha_nacimiento||"";
   document.getElementById("fPrefEmail").checked=c.prefiere_email!==false;
   document.getElementById("fPrefWa").checked=c.prefiere_whatsapp!==false;
-  document.getElementById("fTipoBus").value=c.tipo_busqueda||"";
+  document.getElementById("fTipoBus").value=c.tipo||"";
   document.getElementById("fEstadoCli").value=c.estado||"Activo";
   document.getElementById("fTipoInm").value=c.tipo_inmueble_interes||"";
-  document.getElementById("fCiudad").value=c.ciudad_interes||"";
+  document.getElementById("fCiudad").value=c.ciudad||"";
   document.getElementById("fBarrio").value=c.barrio_interes||"";
   document.getElementById("fEstrato").value=c.estrato_interes||"";
   document.getElementById("fPresMin").value=c.presupuesto_min||"";
@@ -278,7 +278,7 @@ function openEdit(id){
   document.getElementById("fBan").value=c.banos_min||"";
   document.getElementById("fFuente").value=c.fuente||"";
   document.getElementById("fPrioridad").value=c.prioridad||"Media";
-  document.getElementById("fObs").value=c.observaciones||"";
+  document.getElementById("fObs").value=c.notas||"";
   document.getElementById("formAlert").classList.add("hidden");
   document.getElementById("formModal").classList.remove("hidden");
 }
@@ -297,23 +297,14 @@ async function saveClient(){
     nombre,
     telefono:tel,
     email:document.getElementById("fEmail").value.trim()||null,
-    cedula:document.getElementById("fCedula").value.trim()||null,
-    fecha_nacimiento:document.getElementById("fFechaNac").value||null,
+        fecha_nacimiento:document.getElementById("fFechaNac").value||null,
     prefiere_email:document.getElementById("fPrefEmail").checked,
     prefiere_whatsapp:document.getElementById("fPrefWa").checked,
-    tipo_busqueda:tipoBus,
+    tipo:tipoBus,nombre_completo:nombre,
     estado:document.getElementById("fEstadoCli").value,
-    tipo_inmueble_interes:document.getElementById("fTipoInm").value||null,
-    ciudad_interes:document.getElementById("fCiudad").value.trim()||null,
-    barrio_interes:document.getElementById("fBarrio").value.trim()||null,
-    estrato_interes:document.getElementById("fEstrato").value?Number(document.getElementById("fEstrato").value):null,
-    presupuesto_min:document.getElementById("fPresMin").value?Number(document.getElementById("fPresMin").value):null,
-    presupuesto_max:document.getElementById("fPresMax").value?Number(document.getElementById("fPresMax").value):null,
-    habitaciones_min:document.getElementById("fHab").value?Number(document.getElementById("fHab").value):null,
-    banos_min:document.getElementById("fBan").value?Number(document.getElementById("fBan").value):null,
-    fuente:document.getElementById("fFuente").value||null,
-    prioridad:document.getElementById("fPrioridad").value,
-    observaciones:document.getElementById("fObs").value.trim()||null
+        ciudad:document.getElementById("fCiudad").value.trim()||null,
+                presupuesto_max:document.getElementById("fPresMax").value?Number(document.getElementById("fPresMax").value):null,
+                    notas:document.getElementById("fObs").value.trim()||null
   };
   try{
     let error;
