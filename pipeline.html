@@ -6,69 +6,82 @@
 <title>Pipeline - Lomaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f2f5;color:#333;}
-.topbar{background:#1a1a2e;color:#fff;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:12px;}
-.logo{font-size:19px;font-weight:700;color:#e8b86d;white-space:nowrap;}
-.topbar-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
-.uemail{font-size:12px;color:#ccc;}
-.btn-tb{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;display:inline-block;white-space:nowrap;}
-.page-wrap{padding:20px;}
-.page-title{font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
-.page-sub{color:#666;font-size:13px;margin-bottom:18px;}
-.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
-.sbar{background:#fff;border-radius:10px;padding:12px 18px;box-shadow:0 2px 6px rgba(0,0,0,.05);display:flex;align-items:center;gap:10px;}
-.sbar-icon{font-size:22px;}
-.sbar-n{font-size:20px;font-weight:700;color:#1a1a2e;}
-.sbar-l{font-size:11px;color:#888;}
-.board{display:flex;gap:14px;overflow-x:auto;padding-bottom:20px;min-height:70vh;}
-.col{flex:0 0 260px;display:flex;flex-direction:column;gap:0;}
-.col-header{border-radius:10px 10px 0 0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;}
-.col-title{font-size:13px;font-weight:700;color:#fff;}
-.col-count{background:rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
-.col-body{background:#e8eaf0;border-radius:0 0 10px 10px;padding:8px;min-height:300px;display:flex;flex-direction:column;gap:8px;transition:background .2s;}
-.col-body.drag-over{background:#d0d4e0;border:2px dashed #aaa;}
-.card{background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 2px 6px rgba(0,0,0,.07);cursor:grab;border-left:4px solid #e8b86d;transition:box-shadow .2s,transform .1s;}
-.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.12);}
-.card.dragging{opacity:.5;transform:rotate(2deg);}
-.card-name{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
-.card-prop{font-size:11px;color:#2980b9;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.card-info{display:flex;flex-direction:column;gap:3px;}
-.card-line{font-size:11px;color:#888;display:flex;align-items:center;gap:5px;}
-.card-price{font-size:12px;font-weight:700;color:#27ae60;margin-top:5px;}
-.card-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid #f0f2f5;}
-.cbtn{padding:4px 8px;border-radius:5px;border:none;cursor:pointer;font-size:11px;font-weight:600;}
-.cbtn-notes{background:#fef9e7;color:#b7770d;}
-.cbtn-leads{background:#eaf4fb;color:#1a5276;}
-.cbtn-move{background:#f0f2f5;color:#555;}
-.cbtn:hover{opacity:.8;}
-.empty-col{text-align:center;padding:24px 10px;color:#bbb;font-size:12px;}
-.empty-col span{font-size:28px;display:block;margin-bottom:6px;}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
-.modal{background:#fff;border-radius:14px;padding:24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
-.modal h3{font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #f0f2f5;}
-.info-row{display:flex;gap:8px;margin-bottom:8px;font-size:13px;}
-.info-row .lbl{font-weight:700;color:#888;min-width:90px;}
-.info-row .val{color:#1a1a2e;}
-textarea{width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;resize:vertical;min-height:90px;font-family:inherit;margin-top:8px;}
-textarea:focus{outline:none;border-color:#e8b86d;}
-.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
-.btn-save{background:#e8b86d;color:#fff;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;}
-.btn-cancel{background:#f0f2f5;color:#555;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;}
-.move-opts{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
-.move-opt{padding:10px 14px;border-radius:8px;border:none;cursor:pointer;text-align:left;font-size:13px;font-weight:600;transition:opacity .15s;}
-.move-opt:hover{opacity:.85;}
-.hidden{display:none!important;}
-</style></head><body>
+:root{--navy:#0D1B2E;--navy-2:#162540;--gold:#c9a96e;--gold-d:#a07840;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px;--r-lg:16px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.9rem 1.75rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:.85rem}
+.brand-svg{width:42px;height:42px;flex-shrink:0}
+.brand-text{font-family:var(--serif);font-size:1.55rem;font-weight:500;letter-spacing:.5px;line-height:1}
+.brand-text .lo{color:var(--gold)}
+.brand-text .ho{color:#fff;font-family:var(--sans);font-size:.78rem;letter-spacing:6px;font-weight:400;display:block;margin-top:2px;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.topbar-right .user-email,.topbar-right span{font-size:.85rem;color:var(--txt-soft);font-weight:500}
+.btn-back{background:transparent;border:1px solid var(--line);color:var(--txt-soft);padding:.5rem 1rem;border-radius:var(--r-sm);cursor:pointer;font-size:.8rem;font-weight:500;letter-spacing:.5px;transition:all .25s ease;font-family:var(--sans)}
+.btn-back:hover{border-color:var(--gold);color:var(--gold)}
+.container,.main,main.main,.wrap{max-width:1200px;margin:2rem auto;padding:0 1.5rem}
+.page-title,h1.page-title,h2.page-title{font-family:var(--serif);font-size:2rem;font-weight:500;color:#fff;letter-spacing:.3px;margin-bottom:.4rem}
+.page-title em,h1 em{font-style:italic;color:var(--gold)}
+.page-sub,.subtitle{color:var(--txt-soft);font-size:.92rem;margin-bottom:1.8rem;font-weight:300}
+.alert,.message{padding:.9rem 1.2rem;border-radius:var(--r-sm);font-size:.88rem;margin-bottom:1.5rem;display:none}
+.alert.error{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff8a93;display:block}
+.alert.success{background:rgba(40,167,69,.10);border:1px solid rgba(40,167,69,.35);color:#7dd87d;display:block}
+.card,.section-card,.panel{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.75rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.4}
+.card h3,.card h2{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:#fff;margin-bottom:1.3rem}
+.card h3 em,.card h2 em{font-style:italic;color:var(--gold)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.form-group{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+label{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:.3rem}
+input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.78rem 1rem;color:var(--txt);font-family:var(--sans);font-size:.9rem;outline:none;transition:all .25s ease;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85)}
+select option{background:#162540;color:var(--txt)}
+input::placeholder,textarea::placeholder{color:var(--txt-mute)}
+textarea{resize:vertical;min-height:90px}
+.btn,.btn-sm,button.btn-primary,button[type="submit"]{padding:.65rem 1.4rem;border-radius:var(--r-sm);font-size:.8rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease}
+.btn-primary,button[type="submit"]{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
+.btn-danger{background:rgba(220,53,69,.12);color:#ff8a93;border:1px solid rgba(220,53,69,.35)}
+.btn-success{background:rgba(40,167,69,.12);color:#7dd87d;border:1px solid rgba(40,167,69,.35)}
+.btn-secondary,.btn-neutral{background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line)}
+.btn-secondary:hover,.btn-neutral:hover{border-color:var(--gold);color:var(--gold)}
+.table-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--line);margin-bottom:1.5rem}
+table{width:100%;border-collapse:collapse}
+thead tr{background:rgba(13,27,46,.6)}
+th{padding:.95rem 1.2rem;text-align:left;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;border-bottom:1px solid var(--line-strong)}
+tbody tr{border-bottom:1px solid var(--line)}
+tbody tr:hover{background:rgba(201,169,110,.04)}
+td{padding:1rem 1.2rem;font-size:.88rem;color:var(--txt)}
+.empty-state{text-align:center;padding:3rem;color:var(--txt-mute);font-style:italic;font-family:var(--serif)}
+.badge,.pill,.tag{display:inline-block;padding:.3rem .85rem;border-radius:14px;font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(201,169,110,.12);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
+.stat{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem}
+.stat .num{font-family:var(--serif);font-size:2.4rem;font-weight:500;color:#fff;line-height:1}
+.stat .lbl{font-size:.72rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-top:.5rem}
+.kanban,.board,.pipeline{display:flex;gap:1rem;overflow-x:auto;padding:.5rem 0;align-items:flex-start}
+.column,.kanban-col,.pipe-col{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r);padding:1rem;min-width:280px;flex-shrink:0}
+.column h3,.column h4,.kanban-col h3,.pipe-col h3{font-family:var(--serif);color:var(--gold);font-size:1.05rem;margin-bottom:1rem;letter-spacing:.3px;text-transform:capitalize}
+.lead-card,.kanban-card,.pipe-card{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r-sm);padding:.85rem 1rem;margin-bottom:.7rem;cursor:grab;transition:all .2s ease}
+.lead-card:hover,.kanban-card:hover,.pipe-card:hover{border-color:rgba(201,169,110,.3);transform:translateY(-1px)}
+@media(max-width:900px){.form-grid{grid-template-columns:1fr}.topbar{padding:.75rem 1rem}}
+</style><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head><body>
 <div class="topbar">
-  <span class="logo">Lomaz Home</span>
-  <div class="topbar-right">
-    <span class="uemail" id="uEmail"></span>
-    <a href="panel.html" class="btn-tb">Panel</a>
-    <a href="leads.html" class="btn-tb">Lista</a>
-    <a href="clientes.html" class="btn-tb">Clientes</a>
-    <a href="mis-propiedades.html" class="btn-tb">Propiedades</a>
-  </div>
+<a href="dashboard.html" class="brand">
+<svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M84 60 L80 62 M84 65 L88 67 M85 70 L81 72 M85 75 L89 77 M86 80 L82 82" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/>
+</svg>
+<div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
+</a>
+<div class="topbar-right">
+<span id="user-email" class="user-email"></span>
+<button class="btn-back" onclick="location.href='dashboard.html'">&larr; Dashboard</button>
+</div>
 </div>
 <div class="page-wrap">
   <div class="page-title">&#128200; Pipeline de Ventas</div>
