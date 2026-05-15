@@ -339,7 +339,7 @@ textarea{resize:vertical;min-height:90px}
 <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">Publica en 6 portales simultaneamente</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
 <div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
-<div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Publicacion automatica con imagen y texto</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
+<div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Genera caption + descarga fotos + abre Instagram</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
 </div>
 <div class="publish-log" id="publishLog" style="display:none">
 <p style="color:#888;font-size:.8rem;margin-bottom:.5rem">&#128202; Registro de publicacion:</p>
@@ -526,6 +526,14 @@ const checked=document.getElementById(p.cb)?.checked;
 if(!checked)continue;
 setPortalStatus(p.id,"publishing","Publicando...");
 addLog("loading",p.name,"Enviando al portal...");
+if(p.id === "instagram"){
+const result = await window.publicarEnInstagram(data, prop.id);
+const estado = result.ok ? "preparado_manual" : "error";
+await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"instagram",estado,mensaje:result.msg,asesor_id:currentUser.id});
+if(result.ok){setPortalStatus("instagram","ok","Listo p/ pegar");addLog("success","Instagram",result.msg);}
+else{setPortalStatus("instagram","error","Error");addLog("error","Instagram",result.msg);}
+continue;
+}
 if(p.id === "marketplace"){
 const result = await window.publicarEnFacebookMarketplace(data, prop.id);
 const estado = result.ok ? "preparado_manual" : "error";
@@ -617,35 +625,28 @@ btn.textContent = 'Reintentar activacion';
 // === LoMaz Home: Publicacion asistida en Facebook Marketplace (mayo 2026) ===
 window.publicarEnFacebookMarketplace = async function(propData, propId){
 try {
-  const tipo = (propData.tipo_propiedad||'').charAt(0).toUpperCase() + (propData.tipo_propiedad||'').slice(1);
-  const op = propData.tipo_operacion === 'venta' ? 'EN VENTA' : (propData.tipo_operacion === 'arriendo' ? 'EN ARRIENDO' : 'DISPONIBLE');
-  const precio = '
-</script>
-</body>
-</html>
- + Number(propData.precio||0).toLocaleString('es-CO') + ' COP';
-  const admin = propData.precio_admin > 0 ? '\\n\u{1F4BC} Administracion: 
-</script>
-</body>
-</html>
- + Number(propData.precio_admin).toLocaleString('es-CO') : '';
-  const ubic = [propData.barrio, propData.ciudad, propData.departamento].filter(Boolean).join(', ');
-  const habs = propData.habitaciones ? '\\n\u{1F6CF}\uFE0F Habitaciones: ' + propData.habitaciones : '';
-  const banos = propData.banos ? '\\n\u{1F6BF} Banos: ' + propData.banos : '';
-  const parq = propData.garajes ? '\\n\u{1F697} Parqueaderos: ' + propData.garajes : '';
-  const m2 = propData.m2_construccion ? '\\n\u{1F4D0} Area: ' + propData.m2_construccion + ' m\u00B2' : '';
-  const estrato = propData.estrato ? '\\n\u2B50 Estrato: ' + propData.estrato : '';
-  const ament = (propData.amenidades && propData.amenidades.length) ? '\\n\\n\u2728 AMENIDADES:\\n' + propData.amenidades.slice(0,15).map(function(a){return '\u2022 '+a;}).join('\\n') : '';
-  const hashtags = ['#Inmobiliaria','#'+(propData.ciudad||'Colombia').replace(/\\s+/g,''),'#'+(propData.tipo_propiedad||'Propiedad'),'#'+(propData.tipo_operacion||'Venta'),'#LoMazHome','#BienesRaices'].join(' ');
-  const url = 'https://www.lomazhome.com/propiedad.html?id=' + propId;
-  const texto = '\u{1F3E1} ' + tipo.toUpperCase() + ' ' + op + ' \u{1F3E1}\\n\\n' + propData.titulo + '\\n\\n' + '\u{1F4CD} ' + ubic + '\\n' + '\u{1F4B0} ' + precio + admin + '\\n' + m2 + habs + banos + parq + estrato + '\\n\\n' + '\u{1F4DD} DESCRIPCION:\\n' + propData.descripcion + ament + '\\n\\n' + '\u{1F4DE} Agenda tu visita HOY!\\n' + '\u{1F310} Mas info: ' + url + '\\n\\n' + hashtags;
+  var NL = String.fromCharCode(10);
+  var tipo = (propData.tipo_propiedad||'').charAt(0).toUpperCase() + (propData.tipo_propiedad||'').slice(1);
+  var op = propData.tipo_operacion === 'venta' ? 'EN VENTA' : (propData.tipo_operacion === 'arriendo' ? 'EN ARRIENDO' : 'DISPONIBLE');
+  var precio = '$' + Number(propData.precio||0).toLocaleString('es-CO') + ' COP';
+  var admin = propData.precio_admin > 0 ? NL + 'Administracion: $' + Number(propData.precio_admin).toLocaleString('es-CO') : '';
+  var ubic = [propData.barrio, propData.ciudad, propData.departamento].filter(Boolean).join(', ');
+  var habs = propData.habitaciones ? NL + 'Habitaciones: ' + propData.habitaciones : '';
+  var banos = propData.banos ? NL + 'Banos: ' + propData.banos : '';
+  var parq = propData.garajes ? NL + 'Parqueaderos: ' + propData.garajes : '';
+  var m2 = propData.m2_construccion ? NL + 'Area: ' + propData.m2_construccion + ' m2' : '';
+  var estrato = propData.estrato ? NL + 'Estrato: ' + propData.estrato : '';
+  var ament = (propData.amenidades && propData.amenidades.length) ? NL+NL + 'AMENIDADES:' + NL + propData.amenidades.slice(0,15).map(function(a){return '- '+a;}).join(NL) : '';
+  var hashtags = ['#Inmobiliaria','#'+(propData.ciudad||'Colombia').replace(/\s+/g,''),'#'+(propData.tipo_propiedad||'Propiedad'),'#'+(propData.tipo_operacion||'Venta'),'#LoMazHome','#BienesRaices'].join(' ');
+  var url = 'https://www.lomazhome.com/propiedad.html?id=' + propId;
+  var texto = tipo.toUpperCase() + ' ' + op + NL + NL + propData.titulo + NL + NL + 'Ubicacion: ' + ubic + NL + 'Precio: ' + precio + admin + m2 + habs + banos + parq + estrato + NL + NL + 'DESCRIPCION:' + NL + propData.descripcion + ament + NL + NL + 'Agenda tu visita HOY!' + NL + 'Mas info: ' + url + NL + NL + hashtags;
   await navigator.clipboard.writeText(texto);
-  const fotos = propData.fotos || [];
+  var fotos = propData.fotos || [];
   if (fotos.length > 0) {
-    fotos.slice(0,10).forEach(function(url, i){
+    fotos.slice(0,10).forEach(function(fu, i){
       setTimeout(function(){
-        const a = document.createElement('a');
-        a.href = url; a.download = 'lomazhome-' + propId + '-foto-' + (i+1) + '.jpg';
+        var a = document.createElement('a');
+        a.href = fu; a.download = 'lomazhome-' + propId + '-foto-' + (i+1) + '.jpg';
         a.target = '_blank'; a.rel = 'noopener';
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
       }, i*300);
@@ -657,6 +658,43 @@ try {
   return { ok:true, msg:'Texto copiado al portapapeles. Se abriran las fotos y Facebook Marketplace en nuevas pestanas. Pega el texto con Ctrl+V y sube las fotos descargadas.' };
 } catch(e) {
   return { ok:false, msg:'Error preparando publicacion: ' + e.message };
+}
+};
+
+// === LoMaz Home: Publicacion asistida en Instagram (mayo 2026) ===
+window.publicarEnInstagram = async function(propData, propId){
+try {
+  var NL = String.fromCharCode(10);
+  var tipo = (propData.tipo_propiedad||'').toUpperCase();
+  var op = propData.tipo_operacion === 'venta' ? 'EN VENTA' : 'EN ARRIENDO';
+  var precio = '$' + Number(propData.precio||0).toLocaleString('es-CO') + ' COP';
+  var ubic = [propData.barrio, propData.ciudad].filter(Boolean).join(', ');
+  var habs = propData.habitaciones ? propData.habitaciones + ' hab' : '';
+  var banos = propData.banos ? propData.banos + ' banos' : '';
+  var parq = propData.garajes ? propData.garajes + ' parq' : '';
+  var m2 = propData.m2_construccion ? propData.m2_construccion + 'm2' : '';
+  var specs = [habs,banos,parq,m2].filter(Boolean).join(' - ');
+  var top3 = (propData.amenidades||[]).slice(0,5).map(function(a){return '- '+a;}).join(NL);
+  var tags = ['#inmobiliaria','#bienesraices','#'+(propData.ciudad||'colombia').toLowerCase().replace(/\s+/g,''),'#'+(propData.tipo_propiedad||'propiedad').toLowerCase(),'#'+(propData.tipo_operacion||'venta'),'#lomazhome','#realestate','#vivienda','#'+(propData.tipo_operacion==='venta'?'casaenventa':'casaenarriendo'),'#sebusca','#hogar','#nuevahogar','#sumejorinversion','#asesorinmobiliario','#colombia'].join(' ');
+  var caption = tipo + ' ' + op + NL + NL + propData.titulo + NL + NL + 'Ubicacion: ' + ubic + NL + 'Precio: ' + precio + NL + specs + (top3 ? NL+NL+'Caracteristicas:'+NL+top3 : '') + NL + NL + (propData.descripcion||'').substring(0,500) + NL + NL + 'Mas info: lomazhome.com' + NL + NL + tags;
+  await navigator.clipboard.writeText(caption);
+  var fotos = propData.fotos || [];
+  if (fotos.length > 0) {
+    fotos.slice(0,5).forEach(function(fu, i){
+      setTimeout(function(){
+        var a = document.createElement('a');
+        a.href = fu; a.download = 'lomazhome-ig-' + propId + '-' + (i+1) + '.jpg';
+        a.target = '_blank'; a.rel = 'noopener';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }, i*300);
+    });
+  }
+  setTimeout(function(){
+    window.open('https://www.instagram.com/', '_blank', 'noopener');
+  }, 1500);
+  return { ok:true, msg:'Caption copiado al portapapeles + fotos descargadas. Abre Instagram, crea un post, sube las fotos y pega el caption con Ctrl+V.' };
+} catch(e) {
+  return { ok:false, msg:'Error preparando publicacion IG: ' + e.message };
 }
 };
 
