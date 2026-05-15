@@ -3,73 +3,141 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Admin Usuarios - Lomaz Home</title>
+<title>Gestion de Usuarios | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+:root{
+--navy:#0D1B2E;--navy-2:#162540;--navy-3:#1d2e4d;
+--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;
+--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);
+--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;
+--serif:'Cormorant Garamond',Georgia,serif;
+--sans:'Inter',system-ui,-apple-system,sans-serif;
+--sh-card:0 8px 32px rgba(0,0,0,.35);--sh-soft:0 4px 16px rgba(0,0,0,.25);
+--r-sm:8px;--r:12px;--r-lg:16px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
-.topbar{background:#111;border-bottom:1px solid #222;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.topbar .logo{font-size:1.2rem;font-weight:800;color:#c9a484;letter-spacing:2px}
-.topbar-right{display:flex;align-items:center;gap:1rem;font-size:.85rem;color:#aaa}
-.btn-sm{padding:.4rem .9rem;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;border:none;font-family:Montserrat,sans-serif;letter-spacing:.5px;text-transform:uppercase;transition:.3s}
-.btn-back{background:transparent;border:1px solid #444;color:#ccc}
-.btn-primary{background:#c9a484;color:#000}
-.btn-primary:hover{background:#b8956d}
-.btn-danger{background:rgba(220,53,69,.15);color:#ff6b7a;border:1px solid rgba(220,53,69,.3)}
-.btn-success{background:rgba(40,167,69,.15);color:#5dd879;border:1px solid rgba(40,167,69,.3)}
-.container{max-width:1100px;margin:2rem auto;padding:0 1rem}
-.page-title{font-size:1.6rem;font-weight:800;letter-spacing:1px;margin-bottom:.3rem}
-.page-sub{color:#888;font-size:.85rem;margin-bottom:2rem}
-.tabs{display:flex;gap:0;border-bottom:1px solid #222;margin-bottom:2rem}
-.tab{padding:.8rem 1.5rem;cursor:pointer;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#888;border-bottom:3px solid transparent;transition:.3s}
-.tab.active{color:#c9a484;border-bottom-color:#c9a484}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.9rem 1.75rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:.85rem}
+.brand-svg{width:42px;height:42px;flex-shrink:0}
+.brand-text{font-family:var(--serif);font-size:1.55rem;font-weight:500;letter-spacing:.5px;line-height:1}
+.brand-text .lo{color:var(--gold)}
+.brand-text .ho{color:#fff;font-family:var(--sans);font-size:.78rem;letter-spacing:6px;font-weight:400;display:block;margin-top:2px;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.topbar-right .admin-email{font-size:.85rem;color:var(--txt-soft);font-weight:500}
+.btn-back{background:transparent;border:1px solid var(--line);color:var(--txt-soft);padding:.5rem 1rem;border-radius:var(--r-sm);cursor:pointer;font-size:.8rem;font-weight:500;letter-spacing:.5px;transition:all .25s ease;font-family:var(--sans)}
+.btn-back:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.05)}
+.container{max-width:1200px;margin:2rem auto;padding:0 1.5rem}
+.page-header{margin-bottom:2rem}
+.page-title{font-family:var(--serif);font-size:2.2rem;font-weight:500;color:#fff;letter-spacing:.3px;display:flex;align-items:center;gap:.75rem}
+.page-title em{font-style:italic;color:var(--gold)}
+.page-sub{color:var(--txt-soft);font-size:.92rem;margin-top:.4rem;font-weight:300}
+.section-divider{height:1px;background:linear-gradient(90deg,var(--gold) 0%,transparent 60%);margin:1.25rem 0;opacity:.4}
+.alert{padding:.9rem 1.2rem;border-radius:var(--r-sm);font-size:.88rem;font-weight:500;margin-bottom:1.5rem;display:none}
+.alert.error{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff8a93;display:block}
+.alert.success{background:rgba(40,167,69,.10);border:1px solid rgba(40,167,69,.35);color:#7dd87d;display:block}
+.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin-bottom:2rem}
+.tab{padding:.9rem 1.6rem;cursor:pointer;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease;font-family:var(--sans)}
+.tab:hover{color:var(--gold)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 .tab-panel{display:none}.tab-panel.active{display:block}
-.alert{padding:.8rem 1rem;border-radius:8px;font-size:.85rem;font-weight:600;margin-bottom:1.5rem;display:none}
-.alert.error{background:rgba(220,53,69,.15);border:1px solid rgba(220,53,69,.4);color:#ff6b7a;display:block}
-.alert.success{background:rgba(40,167,69,.15);border:1px solid rgba(40,167,69,.4);color:#5dd879;display:block}
-.card{background:#111;border:1px solid #222;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
-.card h3{font-size:1rem;font-weight:700;color:#c9a484;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.form-group{display:flex;flex-direction:column;gap:.4rem}
+.card{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.75rem;margin-bottom:1.5rem;box-shadow:var(--sh-soft);position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.4}
+.card h3{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:#fff;margin-bottom:1.3rem;display:flex;align-items:center;gap:.6rem;letter-spacing:.3px}
+.card h3 em{font-style:italic;color:var(--gold)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.form-group{display:flex;flex-direction:column;gap:.45rem}
 .form-group.full{grid-column:1/-1}
-label{font-size:.75rem;color:#aaa;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-input,select,textarea{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none;transition:.3s}
-input:focus,select:focus{border-color:#c9a484}
-select option{background:#1a1a1a}
-.table-wrap{overflow-x:auto}
+label{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;text-transform:uppercase}
+input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.78rem 1rem;color:var(--txt);font-family:var(--sans);font-size:.9rem;outline:none;transition:all .25s ease}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
+select option{background:var(--navy-2);color:var(--txt)}
+input::placeholder{color:var(--txt-mute)}
+.btn-sm{padding:.55rem 1.2rem;border-radius:var(--r-sm);font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease}
+.btn-primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);box-shadow:0 2px 8px rgba(201,169,110,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-danger{background:rgba(220,53,69,.12);color:#ff8a93;border:1px solid rgba(220,53,69,.35)}
+.btn-danger:hover{background:rgba(220,53,69,.2)}
+.btn-success{background:rgba(40,167,69,.12);color:#7dd87d;border:1px solid rgba(40,167,69,.35)}
+.btn-success:hover{background:rgba(40,167,69,.2)}
+.btn-neutral{background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line)}
+.btn-neutral:hover{border-color:var(--gold);color:var(--gold)}
+.btn-create{padding:.85rem 2.2rem;font-size:.85rem;letter-spacing:1.5px}
+.form-actions{margin-top:1.4rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.form-actions .helper{color:var(--txt-mute);font-size:.82rem;font-style:italic;font-family:var(--serif)}
+.roles-info{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:.7rem}
+.role-card{background:rgba(13,27,46,.5);border-radius:var(--r-sm);padding:1rem 1.1rem;border-left:3px solid var(--gold);transition:all .25s ease}
+.role-card:hover{transform:translateY(-1px);background:rgba(13,27,46,.75)}
+.role-card .role-name{font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--gold);letter-spacing:.5px;text-transform:capitalize}
+.role-card .role-desc{color:var(--txt-soft);font-size:.8rem;margin-top:.3rem;font-weight:300;line-height:1.45}
+.table-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--line)}
 table{width:100%;border-collapse:collapse}
-thead tr{background:#1a1a1a;border-bottom:2px solid #333}
-th{padding:.7rem 1rem;text-align:left;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:#888;font-weight:700}
-tbody tr{border-bottom:1px solid #1a1a1a;transition:.2s}
-tbody tr:hover{background:rgba(201,164,132,.04)}
-td{padding:.8rem 1rem;font-size:.85rem}
-.badge-rol{display:inline-block;padding:.2rem .7rem;border-radius:12px;font-size:.7rem;font-weight:700;letter-spacing:.5px}
-.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.4rem}
-.dot-active{background:#5dd879}
-.dot-inactive{background:#ff6b7a}
-.permisos-grid{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr;gap:0;border:1px solid #222;border-radius:8px;overflow:hidden}
-.pg-header{background:#1a1a1a;padding:.6rem 1rem;font-size:.75rem;font-weight:700;color:#888;letter-spacing:1px;text-transform:uppercase;text-align:center}
+thead tr{background:rgba(13,27,46,.6)}
+th{padding:.95rem 1.2rem;text-align:left;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;border-bottom:1px solid var(--line-strong)}
+tbody tr{border-bottom:1px solid var(--line);transition:all .2s ease}
+tbody tr:hover{background:rgba(201,169,110,.04)}
+tbody tr:last-child{border-bottom:none}
+td{padding:1rem 1.2rem;font-size:.88rem;color:var(--txt)}
+td strong{font-weight:600;color:#fff}
+.badge-rol{display:inline-block;padding:.3rem .85rem;border-radius:14px;font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.5rem;box-shadow:0 0 8px currentColor}
+.dot-active{background:#7dd87d;color:#7dd87d}
+.dot-inactive{background:#ff8a93;color:#ff8a93}
+.tools-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;gap:1rem;flex-wrap:wrap}
+.tools-row input{max-width:340px;flex:1}
+.permisos-grid{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;background:rgba(13,27,46,.4)}
+.pg-header{background:rgba(13,27,46,.7);padding:.85rem 1.1rem;font-size:.72rem;font-weight:600;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-bottom:1px solid var(--line-strong)}
 .pg-header:first-child{text-align:left}
-.pg-row{display:contents}
-.pg-row>div{padding:.6rem 1rem;border-top:1px solid #1a1a1a;display:flex;align-items:center;justify-content:center;font-size:.8rem}
-.pg-row>div:first-child{justify-content:flex-start;font-weight:600;color:#eee}
-.pg-row>div input[type=checkbox]{width:16px;height:16px;accent-color:#c9a484;cursor:pointer}
-.empty-state{text-align:center;padding:3rem;color:#555;font-size:.9rem}
+.empty-state{text-align:center;padding:3rem;color:var(--txt-mute);font-size:.9rem;font-style:italic;font-family:var(--serif)}
+.action-buttons{display:flex;gap:.4rem;flex-wrap:wrap}
+@media (max-width:900px){
+.form-grid{grid-template-columns:1fr}
+.topbar{padding:.75rem 1rem}
+.brand-text{font-size:1.3rem}
+.page-title{font-size:1.7rem}
+.container{padding:0 1rem;margin:1.5rem auto}
+.tab{padding:.7rem 1rem;font-size:.72rem;letter-spacing:1px}
+}
 </style>
-</head>
-<body>
-<div class="topbar"><div class="logo">LOMAZ HOME</div><div class="topbar-right"><span id="admin-email"></span><button class="btn-sm btn-back" onclick="location.href='admin.html'">← Admin</button></div></div>
+</head><body>
+<div class="topbar">
+<a href="dashboard.html" class="brand">
+<svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M84 60 L80 62 M84 65 L88 67 M85 70 L81 72 M85 75 L89 77 M86 80 L82 82" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/>
+</svg>
+<div class="brand-text">
+<span class="lo">LoMaz</span>
+<span class="ho">Home</span>
+</div>
+</a>
+<div class="topbar-right">
+<span class="admin-email" id="admin-email"></span>
+<button class="btn-back" onclick="location.href='dashboard.html'">&larr; Dashboard</button>
+</div>
+</div>
 <div class="container">
-<div class="page-title">👥 Gestion de Usuarios</div>
+<div class="page-header">
+<div class="page-title">Gestion de <em>Usuarios</em></div>
 <div class="page-sub">Crea y administra los asesores de tu plataforma. Solo el administrador puede crear usuarios.</div>
+<div class="section-divider"></div>
+</div>
 <div id="alert" class="alert"></div>
 <div class="tabs">
-<div class="tab active" onclick="showTab('crear',this)">➕ Crear Usuario</div>
-<div class="tab" onclick="showTab('lista',this)">👥 Usuarios Activos</div>
-<div class="tab" onclick="showTab('roles',this)">🛡️ Roles y Permisos</div>
+<div class="tab active" onclick="showTab('crear',this)">Crear Usuario</div>
+<div class="tab" onclick="showTab('lista',this)">Usuarios Activos</div>
+<div class="tab" onclick="showTab('roles',this)">Roles y Permisos</div>
 </div>
 <div class="tab-panel active" id="panel-crear">
-<div class="card"><h3>➕ Crear Nuevo Usuario</h3>
+<div class="card"><h3>Crear <em>Nuevo Usuario</em></h3>
 <div class="form-grid">
 <div class="form-group"><label>Nombre completo *</label><input type="text" id="c-nombre" placeholder="Ej: Juan Carlos Perez"/></div>
 <div class="form-group"><label>Correo electronico *</label><input type="email" id="c-email" placeholder="asesor@empresa.com"/></div>
@@ -78,48 +146,47 @@ td{padding:.8rem 1rem;font-size:.85rem}
 <div class="form-group"><label>Rol asignado *</label><select id="c-rol"><option value="">Seleccionar rol...</option></select></div>
 <div class="form-group full"><label>Notas internas</label><input type="text" id="c-notas" placeholder="Zona asignada, especialidad, observaciones..."/></div>
 </div>
-<div style="margin-top:1.2rem;display:flex;gap:1rem;align-items:center">
-<button class="btn-sm btn-primary" style="padding:.7rem 2rem;font-size:.85rem" onclick="crearUsuario()">Crear Usuario</button>
-<span style="color:#888;font-size:.8rem">El usuario recibira un correo para confirmar su cuenta</span>
+<div class="form-actions">
+<button id="btn-crear-usuario" class="btn-sm btn-primary btn-create" onclick="crearUsuario()">Crear Usuario</button>
+<span class="helper">El usuario recibira un correo para confirmar su cuenta</span>
 </div>
 </div>
-<div class="card" style="background:rgba(201,164,132,.05);border-color:rgba(201,164,132,.2)">
-<h3 style="color:#888">ℹ️ Sobre los roles disponibles</h3>
-<div id="roles-info" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:.5rem"></div>
+<div class="card">
+<h3>Roles <em>Disponibles</em></h3>
+<div id="roles-info" class="roles-info"></div>
 </div>
 </div>
 <div class="tab-panel" id="panel-lista">
-<div class="card"><h3>👥 Usuarios de la Plataforma</h3>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-<input type="text" id="buscar-usuario" placeholder="Buscar por nombre o correo..." style="max-width:300px" oninput="filtrarUsuarios()"/>
-<button class="btn-sm btn-primary" onclick="cargarUsuarios()">↻ Actualizar</button>
+<div class="card"><h3>Usuarios de la <em>Plataforma</em></h3>
+<div class="tools-row">
+<input type="text" id="buscar-usuario" placeholder="Buscar por nombre o correo..." oninput="filtrarUsuarios()"/>
+<button class="btn-sm btn-neutral" onclick="cargarUsuarios()">&#x21bb; Actualizar</button>
 </div>
 <div class="table-wrap"><table id="tabla-usuarios">
 <thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Creado</th><th>Acciones</th></tr></thead>
 <tbody id="tbody-usuarios"><tr><td colspan="6" class="empty-state">Cargando usuarios...</td></tr></tbody>
 </table></div></div></div>
 <div class="tab-panel" id="panel-roles">
-<div class="card"><h3>🛡️ Permisos por Rol</h3>
-<p style="color:#888;font-size:.85rem;margin-bottom:1.5rem">Configura que puede hacer cada rol en cada modulo de la plataforma</p>
-<div class="form-group" style="margin-bottom:1.5rem;max-width:300px">
+<div class="card"><h3>Permisos <em>por Rol</em></h3>
+<p style="color:var(--txt-soft);font-size:.88rem;margin-bottom:1.5rem;font-weight:300">Configura que puede hacer cada rol en cada modulo de la plataforma.</p>
+<div class="form-group" style="margin-bottom:1.5rem;max-width:320px">
 <label>Seleccionar rol para editar</label>
 <select id="rol-editar" onchange="cargarPermisosRol()"><option value="">Seleccionar...</option></select>
 </div>
 <div id="permisos-container" style="display:none">
 <div class="permisos-grid" id="permisos-grid">
 <div class="pg-header">Modulo</div>
-<div class="pg-header">👁️ Ver</div>
-<div class="pg-header">➕ Crear</div>
-<div class="pg-header">✏️ Editar</div>
-<div class="pg-header">🗑️ Eliminar</div>
-<div id="filas-permisos"></div>
+<div class="pg-header">Ver</div>
+<div class="pg-header">Crear</div>
+<div class="pg-header">Editar</div>
+<div class="pg-header">Eliminar</div>
+<div id="filas-permisos" style="display:contents"></div>
 </div>
-<div style="margin-top:1.2rem">
-<button class="btn-sm btn-primary" style="padding:.7rem 2rem" onclick="guardarPermisos()">Guardar Permisos</button>
+<div style="margin-top:1.4rem">
+<button class="btn-sm btn-primary btn-create" onclick="guardarPermisos()">Guardar Permisos</button>
 </div></div></div>
 </div>
-</div>
-<script>
+</div><script>
 const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
 const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const sb=window.supabase.createClient(SURL,SKEY);
@@ -128,174 +195,174 @@ let todosRoles=[];
 let currentUser=null;
 
 (async()=>{
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href="login.html";return;}
-  currentUser=session.user;
-  document.getElementById("admin-email").textContent=currentUser.email;
-  // Verificar que es admin
-  const{data:perfil}=await sb.from("perfiles_usuarios").select("rol_id,roles(nombre)").eq("id",currentUser.id).single();
-  if(!perfil||!perfil.roles||perfil.roles.nombre!=="admin"){
-    document.body.innerHTML='<div style="text-align:center;padding:4rem;color:#ff6b7a"><h2>Acceso denegado</h2><p>Solo el administrador puede acceder a esta seccion.</p><a href="dashboard.html" style="color:#c9a484">Ir al dashboard</a></div>';
-    return;
-  }
-  await cargarRoles();
-  await cargarUsuarios();
+const{data:{session}}=await sb.auth.getSession();
+if(!session){window.location.href="login.html";return;}
+currentUser=session.user;
+document.getElementById("admin-email").textContent=currentUser.email;
+const{data:perfil}=await sb.from("perfiles_usuarios").select("rol_id,roles(nombre)").eq("id",currentUser.id).single();
+if(!perfil||!perfil.roles||perfil.roles.nombre!=="admin"){
+document.body.innerHTML='<div style="text-align:center;padding:4rem;color:#ff8a93;font-family:Inter,sans-serif;background:#0D1B2E;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center"><h2 style="font-family:Cormorant Garamond,serif;font-size:2rem;color:#c9a96e;margin-bottom:1rem">Acceso denegado</h2><p style="color:#a8a29e;margin-bottom:2rem">Solo el administrador puede acceder a esta seccion.</p><a href="dashboard.html" style="color:#c9a96e;text-decoration:none;border:1px solid #c9a96e;padding:.7rem 1.5rem;border-radius:8px">Ir al dashboard</a></div>';
+return;
+}
+await cargarRoles();
+await cargarUsuarios();
 })();
 
-function showAlert(msg,type){const a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;a.scrollIntoView({behavior:"smooth"});}
-function hideAlert(){document.getElementById("alert").style.display="none";}
+function showAlert(msg,type){const a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;a.scrollIntoView({behavior:"smooth",block:"center"});}
+function hideAlert(){const a=document.getElementById("alert");a.style.display="none";a.className="alert";}
 
 function showTab(id,el){
-  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.getElementById("panel-"+id).classList.add("active");
-  el.classList.add("active");
+document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+document.getElementById("panel-"+id).classList.add("active");
+el.classList.add("active");
 }
 
 async function cargarRoles(){
-  const{data:roles}=await sb.from("roles").select("*").eq("activo",true).order("nombre");
-  if(!roles)return;
-  todosRoles=roles;
-  const sel=document.getElementById("c-rol");
-  sel.innerHTML='<option value="">Seleccionar rol...</option>'+roles.map(r=>`<option value="${r.id}">${r.nombre} - ${r.descripcion}</option>`).join("");
-  const sel2=document.getElementById("rol-editar");
-  sel2.innerHTML='<option value="">Seleccionar...</option>'+roles.filter(r=>r.nombre!=="admin").map(r=>`<option value="${r.id}">${r.nombre}</option>`).join("");
-  // Mostrar info de roles
-  const info=document.getElementById("roles-info");
-  info.innerHTML=roles.map(r=>`<div style="background:#1a1a1a;border-radius:8px;padding:.8rem;border-left:3px solid ${r.color}"><div style="font-weight:700;font-size:.85rem;color:${r.color}">${r.nombre}</div><div style="color:#888;font-size:.75rem;margin-top:.3rem">${r.descripcion}</div></div>`).join("");
+const{data:roles}=await sb.from("roles").select("*").eq("activo",true).order("nombre");
+if(!roles)return;
+todosRoles=roles;
+const sel=document.getElementById("c-rol");
+sel.innerHTML='<option value="">Seleccionar rol...</option>'+roles.map(r=>'<option value="'+r.id+'">'+r.nombre+' - '+r.descripcion+'</option>').join("");
+const sel2=document.getElementById("rol-editar");
+sel2.innerHTML='<option value="">Seleccionar...</option>'+roles.filter(r=>r.nombre!=="admin").map(r=>'<option value="'+r.id+'">'+r.nombre+'</option>').join("");
+const info=document.getElementById("roles-info");
+info.innerHTML=roles.map(r=>'<div class="role-card" style="border-left-color:'+(r.color||"#c9a96e")+'"><div class="role-name" style="color:'+(r.color||"#c9a96e")+'">'+r.nombre+'</div><div class="role-desc">'+(r.descripcion||"")+'</div></div>').join("");
 }
 
 async function crearUsuario(){
-  const nombre=document.getElementById("c-nombre").value.trim();
-  const email=document.getElementById("c-email").value.trim();
-  const password=document.getElementById("c-password").value;
-  const telefono=document.getElementById("c-telefono").value.trim();
-  const rolId=document.getElementById("c-rol").value;
-  const notas=document.getElementById("c-notas").value.trim();
-  if(!nombre||!email||!password||!rolId){showAlert("Completa todos los campos obligatorios","error");return;}
-  if(password.length<8){showAlert("La contrasena debe tener al menos 8 caracteres","error");return;}
-  hideAlert();
-  const btn=document.getElementById("btn-crear-usuario");
-  if(btn){btn.disabled=true;btn.textContent="Creando...";}
-  try{
-    const { data, error } = await sb.functions.invoke("admin-crear-usuario",{
-      body:{ email, password, nombre_completo:nombre, telefono, rol_id:parseInt(rolId), notas }
-    });
-    if(error){
-      let msg=error.message||"Error desconocido";
-      try{ const ctx=await error.context.json(); if(ctx&&ctx.error) msg=ctx.error; }catch(e){}
-      showAlert("Error al crear usuario: "+msg,"error");
-      return;
-    }
-    if(data&&data.error){ showAlert("Error: "+data.error,"error"); return; }
-    showAlert("Usuario creado exitosamente: "+nombre,"success");
-    limpiarFormCrear();
-    await cargarUsuarios();
-  }catch(e){
-    showAlert("Error al crear usuario: "+(e.message||e),"error");
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent="Crear Usuario";}
-  }
+const nombre=document.getElementById("c-nombre").value.trim();
+const email=document.getElementById("c-email").value.trim();
+const password=document.getElementById("c-password").value;
+const telefono=document.getElementById("c-telefono").value.trim();
+const rolId=document.getElementById("c-rol").value;
+const notas=document.getElementById("c-notas").value.trim();
+if(!nombre||!email||!password||!rolId){showAlert("Completa todos los campos obligatorios","error");return;}
+if(password.length<8){showAlert("La contrasena debe tener al menos 8 caracteres","error");return;}
+hideAlert();
+const btn=document.getElementById("btn-crear-usuario");
+if(btn){btn.disabled=true;btn.textContent="Creando...";}
+try{
+const { data, error } = await sb.functions.invoke("admin-crear-usuario",{
+body:{ email, password, nombre_completo:nombre, telefono, rol_id:parseInt(rolId), notas }
+});
+if(error){
+let msg=error.message||"Error desconocido";
+try{ const ctx=await error.context.json(); if(ctx&&ctx.error) msg=ctx.error; }catch(e){}
+showAlert("Error al crear usuario: "+msg,"error");
+return;
+}
+if(data&&data.error){ showAlert("Error: "+data.error,"error"); return; }
+showAlert("Usuario creado exitosamente: "+nombre,"success");
+limpiarFormCrear();
+await cargarUsuarios();
+}catch(e){
+showAlert("Error al crear usuario: "+(e.message||e),"error");
+}finally{
+if(btn){btn.disabled=false;btn.textContent="Crear Usuario";}
+}
 }
 
 function limpiarFormCrear(){
-  ["c-nombre","c-email","c-password","c-telefono","c-notas"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("c-rol").value="";
+["c-nombre","c-email","c-password","c-telefono","c-notas"].forEach(id=>document.getElementById(id).value="");
+document.getElementById("c-rol").value="";
 }
 
 async function cargarUsuarios(){
-  const{data:perfiles}=await sb.from("perfiles_usuarios").select("*,roles(nombre,color)").order("created_at",{ascending:false});
-  if(!perfiles){document.getElementById("tbody-usuarios").innerHTML='<tr><td colspan="6" class="empty-state">No hay usuarios</td></tr>';return;}
-  todosUsuarios=perfiles;
-  renderTablaUsuarios(perfiles);
+const{data:perfiles}=await sb.from("perfiles_usuarios").select("*,roles(nombre,color)").order("created_at",{ascending:false});
+if(!perfiles){document.getElementById("tbody-usuarios").innerHTML='<tr><td colspan="6" class="empty-state">No hay usuarios</td></tr>';return;}
+todosUsuarios=perfiles;
+renderTablaUsuarios(perfiles);
 }
 
 function renderTablaUsuarios(perfiles){
-  const tbody=document.getElementById("tbody-usuarios");
-  if(!perfiles.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state">No hay usuarios registrados</td></tr>';return;}
-  tbody.innerHTML=perfiles.map(p=>`
-    <tr>
-      <td><strong>${p.nombre_completo||"Sin nombre"}</strong><br/><span style="color:#888;font-size:.75rem">${p.telefono||""}</span></td>
-      <td style="color:#888;font-size:.8rem">${p.id.substring(0,8)}...</td>
-      <td><span class="badge-rol" style="background:${p.roles?.color||"#444"}22;color:${p.roles?.color||"#888"};border:1px solid ${p.roles?.color||"#444"}44">${p.roles?.nombre||"Sin rol"}</span></td>
-      <td><span class="status-dot ${p.activo?"dot-active":"dot-inactive"}"></span>${p.activo?"Activo":"Inactivo"}</td>
-      <td style="color:#888;font-size:.75rem">${new Date(p.created_at).toLocaleDateString("es-CO")}</td>
-      <td style="display:flex;gap:.4rem;flex-wrap:wrap">
-        <button class="btn-sm btn-primary" onclick="editarUsuario('${p.id}')">Editar</button>
-        <button class="btn-sm ${p.activo?"btn-danger":"btn-success"}" onclick="toggleActivo('${p.id}',${!p.activo})">${p.activo?"Desactivar":"Activar"}</button>
-        <button class="btn-sm" style="background:#1a1a1a;color:#888;border:1px solid #333" onclick="resetPass('${p.id}')">Reset Pass</button>
-      </td>
-    </tr>
-  `).join("");
+const tbody=document.getElementById("tbody-usuarios");
+if(!perfiles.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state">No hay usuarios registrados</td></tr>';return;}
+tbody.innerHTML=perfiles.map(p=>{
+const color=p.roles && p.roles.color ? p.roles.color : "#c9a96e";
+const rolNombre=p.roles && p.roles.nombre ? p.roles.nombre : "Sin rol";
+return '<tr>'+
+'<td><strong>'+(p.nombre_completo||"Sin nombre")+'</strong><br/><span style="color:var(--txt-mute);font-size:.75rem">'+(p.telefono||"")+'</span></td>'+
+'<td style="color:var(--txt-soft);font-size:.82rem">'+p.id.substring(0,8)+'...</td>'+
+'<td><span class="badge-rol" style="background:'+color+'22;color:'+color+';border:1px solid '+color+'55">'+rolNombre+'</span></td>'+
+'<td><span class="status-dot '+(p.activo?"dot-active":"dot-inactive")+'"></span>'+(p.activo?"Activo":"Inactivo")+'</td>'+
+'<td style="color:var(--txt-soft);font-size:.8rem">'+new Date(p.created_at).toLocaleDateString("es-CO")+'</td>'+
+'<td><div class="action-buttons">'+
+'<button class="btn-sm btn-neutral" onclick="editarUsuario(\''+p.id+'\')">Editar</button>'+
+'<button class="btn-sm '+(p.activo?"btn-danger":"btn-success")+'" onclick="toggleActivo(\''+p.id+'\','+(!p.activo)+')">'+(p.activo?"Desactivar":"Activar")+'</button>'+
+'<button class="btn-sm btn-neutral" onclick="resetPass(\''+p.id+'\')">Reset Pass</button>'+
+'</div></td>'+
+'</tr>';
+}).join("");
 }
 
 function filtrarUsuarios(){
-  const q=document.getElementById("buscar-usuario").value.toLowerCase();
-  const filtrados=todosUsuarios.filter(u=>(u.nombre_completo||"").toLowerCase().includes(q));
-  renderTablaUsuarios(filtrados);
+const q=document.getElementById("buscar-usuario").value.toLowerCase();
+const filtrados=todosUsuarios.filter(u=>(u.nombre_completo||"").toLowerCase().includes(q)||(u.id||"").toLowerCase().includes(q));
+renderTablaUsuarios(filtrados);
 }
 
 async function toggleActivo(userId,nuevoEstado){
-  const{error}=await sb.from("perfiles_usuarios").update({activo:nuevoEstado}).eq("id",userId);
-  if(error)showAlert("Error: "+error.message,"error");
-  else{showAlert("Estado del usuario actualizado","success");await cargarUsuarios();}
+const{error}=await sb.from("perfiles_usuarios").update({activo:nuevoEstado}).eq("id",userId);
+if(error)showAlert("Error: "+error.message,"error");
+else{showAlert("Estado del usuario actualizado","success");await cargarUsuarios();}
 }
 
 async function editarUsuario(userId){
-  const usuario=todosUsuarios.find(u=>u.id===userId);
-  if(!usuario)return;
-  const nuevoRol=prompt("Cambiar rol (ingresa el ID del rol):\n"+todosRoles.map(r=>r.id+": "+r.nombre).join("\n"),usuario.rol_id);
-  if(!nuevoRol)return;
-  const{error}=await sb.from("perfiles_usuarios").update({rol_id:parseInt(nuevoRol)}).eq("id",userId);
-  if(error)showAlert("Error: "+error.message,"error");
-  else{showAlert("Rol actualizado correctamente","success");await cargarUsuarios();}
+const usuario=todosUsuarios.find(u=>u.id===userId);
+if(!usuario)return;
+const nuevoRol=prompt("Cambiar rol (ingresa el ID del rol):\n"+todosRoles.map(r=>r.id+": "+r.nombre).join("\n"),usuario.rol_id);
+if(!nuevoRol)return;
+const{error}=await sb.from("perfiles_usuarios").update({rol_id:parseInt(nuevoRol)}).eq("id",userId);
+if(error)showAlert("Error: "+error.message,"error");
+else{showAlert("Rol actualizado correctamente","success");await cargarUsuarios();}
 }
 
 async function resetPass(userId){
-  const usuario=todosUsuarios.find(u=>u.id===userId);
-  if(!usuario)return;
-  const confirm=window.confirm("Enviar correo de recuperacion de contrasena a este usuario?");
-  if(!confirm)return;
-  showAlert("Funcion de reset: el usuario debe solicitar el reset desde login.html","success");
+const usuario=todosUsuarios.find(u=>u.id===userId);
+if(!usuario)return;
+const ok=window.confirm("Enviar correo de recuperacion de contrasena a este usuario?");
+if(!ok)return;
+showAlert("Funcion de reset: el usuario debe solicitar el reset desde login.html","success");
 }
 
-// PERMISOS POR ROL
 const MODULOS=["dashboard","propiedades","agregar_propiedad","clientes","leads","pipeline","blog","calculadora","portales","notificaciones","comparador","favoritos","reportes","admin_usuarios"];
 const MODULOS_LABELS={"dashboard":"Dashboard","propiedades":"Propiedades","agregar_propiedad":"Agregar Propiedad","clientes":"Clientes","leads":"Leads","pipeline":"Pipeline","blog":"Blog","calculadora":"Calculadora","portales":"Portales","notificaciones":"Notificaciones","comparador":"Comparador","favoritos":"Favoritos","reportes":"Reportes","admin_usuarios":"Admin Usuarios"};
 let permisosActuales={};
 
 async function cargarPermisosRol(){
-  const rolId=document.getElementById("rol-editar").value;
-  if(!rolId){document.getElementById("permisos-container").style.display="none";return;}
-  const{data:permisos}=await sb.from("permisos_modulos").select("*").eq("rol_id",rolId);
-  permisosActuales={};
-  if(permisos)permisos.forEach(p=>{permisosActuales[p.modulo]={ver:p.puede_ver,crear:p.puede_crear,editar:p.puede_editar,eliminar:p.puede_eliminar,id:p.id};});
-  const filas=document.getElementById("filas-permisos");
-  filas.style.display="contents";
-  filas.innerHTML=MODULOS.map(m=>`
-    <div style="justify-content:flex-start!important;font-weight:600;color:#eee;padding:.6rem 1rem;border-top:1px solid #1a1a1a">${MODULOS_LABELS[m]||m}</div>
-    <div style="padding:.6rem;border-top:1px solid #1a1a1a;text-align:center"><input type="checkbox" id="p-${m}-ver" ${permisosActuales[m]?.ver?"checked":""}/></div>
-    <div style="padding:.6rem;border-top:1px solid #1a1a1a;text-align:center"><input type="checkbox" id="p-${m}-crear" ${permisosActuales[m]?.crear?"checked":""}/></div>
-    <div style="padding:.6rem;border-top:1px solid #1a1a1a;text-align:center"><input type="checkbox" id="p-${m}-editar" ${permisosActuales[m]?.editar?"checked":""}/></div>
-    <div style="padding:.6rem;border-top:1px solid #1a1a1a;text-align:center"><input type="checkbox" id="p-${m}-eliminar" ${permisosActuales[m]?.eliminar?"checked":""}/></div>
-  `).join("");
-  document.getElementById("permisos-container").style.display="block";
+const rolId=document.getElementById("rol-editar").value;
+if(!rolId){document.getElementById("permisos-container").style.display="none";return;}
+const{data:permisos}=await sb.from("permisos_modulos").select("*").eq("rol_id",rolId);
+permisosActuales={};
+if(permisos)permisos.forEach(p=>{permisosActuales[p.modulo]={ver:p.puede_ver,crear:p.puede_crear,editar:p.puede_editar,eliminar:p.puede_eliminar,id:p.id};});
+const filas=document.getElementById("filas-permisos");
+filas.innerHTML=MODULOS.map(m=>{
+const pa=permisosActuales[m]||{};
+const cellBase='padding:.7rem 1.1rem;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.85rem';
+return '<div style="'+cellBase+';justify-content:flex-start;font-weight:500;color:#fff">'+(MODULOS_LABELS[m]||m)+'</div>'+
+'<div style="'+cellBase+'"><input type="checkbox" id="p-'+m+'-ver" '+(pa.ver?"checked":"")+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer"/></div>'+
+'<div style="'+cellBase+'"><input type="checkbox" id="p-'+m+'-crear" '+(pa.crear?"checked":"")+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer"/></div>'+
+'<div style="'+cellBase+'"><input type="checkbox" id="p-'+m+'-editar" '+(pa.editar?"checked":"")+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer"/></div>'+
+'<div style="'+cellBase+'"><input type="checkbox" id="p-'+m+'-eliminar" '+(pa.eliminar?"checked":"")+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer"/></div>';
+}).join("");
+document.getElementById("permisos-container").style.display="block";
 }
 
 async function guardarPermisos(){
-  const rolId=parseInt(document.getElementById("rol-editar").value);
-  if(!rolId)return;
-  const updates=MODULOS.map(m=>({
-    rol_id:rolId,modulo:m,
-    puede_ver:document.getElementById("p-"+m+"-ver")?.checked||false,
-    puede_crear:document.getElementById("p-"+m+"-crear")?.checked||false,
-    puede_editar:document.getElementById("p-"+m+"-editar")?.checked||false,
-    puede_eliminar:document.getElementById("p-"+m+"-eliminar")?.checked||false
-  }));
-  const{error}=await sb.from("permisos_modulos").upsert(updates,{onConflict:"rol_id,modulo"});
-  if(error)showAlert("Error al guardar: "+error.message,"error");
-  else showAlert("Permisos guardados correctamente para el rol seleccionado","success");
+const rolId=parseInt(document.getElementById("rol-editar").value);
+if(!rolId)return;
+const updates=MODULOS.map(m=>({
+rol_id:rolId,modulo:m,
+puede_ver:document.getElementById("p-"+m+"-ver")?.checked||false,
+puede_crear:document.getElementById("p-"+m+"-crear")?.checked||false,
+puede_editar:document.getElementById("p-"+m+"-editar")?.checked||false,
+puede_eliminar:document.getElementById("p-"+m+"-eliminar")?.checked||false
+}));
+const{error}=await sb.from("permisos_modulos").upsert(updates,{onConflict:"rol_id,modulo"});
+if(error)showAlert("Error al guardar: "+error.message,"error");
+else showAlert("Permisos guardados correctamente para el rol seleccionado","success");
 }
 </script>
 </body>
-</html>
+  </html>
