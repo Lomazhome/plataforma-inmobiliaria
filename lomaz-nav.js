@@ -339,7 +339,7 @@ const KB = {
   b:'El proceso de compra incluye: promesa de compraventa, estudio jurídico, crédito hipotecario, escrituración notarial y registro ORIP. Te acompañamos en cada paso.',
   n:'Gastos notariales 2026: derechos notariales 0.27%, beneficencia 1%, registro ORIP 0.5%, IVA sobre honorarios. Usa nuestra calculadora para tu estimado exacto.',
   h:'Para un crédito hipotecario necesitas ingresos demostrables, historial limpio y cuota inicial mínima del 30% (VIS) o 20% (No VIS). ¿Calculamos tu capacidad?',
-  k:'Contáctanos: info@lomazhome.com | +57 (300) 000-0000. Agenda tu consulta privada sin costo desde nuestra página de contacto.',
+  k:'Contáctanos: lomazhome@gmail.com | +57 300 330 0343. Agenda tu consulta privada sin costo desde nuestra página de contacto.',
   d:'Soy ARIA, asesora inmobiliaria IA de LoMaz Home. Te ayudo con propiedades, zonas, proceso de compra, gastos y créditos. ¿Qué necesitas?'
 };
 
