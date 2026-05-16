@@ -1,8 +1,7 @@
 /**
- * LoMaz Home — Social Orbit System v2 (Refinado)
- * Sistema compacto crista/dorado en armonía con la paleta de la página.
- * Estado actual: Instagram + Facebook + WhatsApp activos.
- * Preparado para crecer hasta 7+ planetas equidistantes en una sola órbita.
+ * LoMaz Home - Social Orbit System v3
+ * Sol circular luminoso (ARIA) + planetas equidistantes en orbita unica.
+ * Paleta cristal/dorada en armonia con la pagina.
  */
 (function () {
   'use strict';
@@ -13,266 +12,253 @@
       name: 'Instagram',
       url: 'https://www.instagram.com/lomazhome',
       brand: '#d6249f',
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.9" fill="currentColor"/></svg>'
+      svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>'
     },
     {
       id: 'fb',
       name: 'Facebook',
       url: 'https://www.facebook.com/LomelinAngeliK',
       brand: '#1877F2',
-      svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.55l.4-3h-2.95V8.6c0-.87.24-1.46 1.49-1.46H16.5V4.45c-.27-.04-1.2-.12-2.27-.12-2.25 0-3.79 1.37-3.79 3.9v2.27H7.9v3h2.55V21h3.05z"/></svg>'
+      svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg>'
     },
     {
       id: 'wa',
       name: 'WhatsApp',
       url: 'https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n.',
       brand: '#25D366',
-      svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1s-.7.9-.9 1.1c-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.7-1.6-2-.2-.3 0-.4.1-.5.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.7.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.2L2 22l4.9-1.3c1.5.8 3.3 1.3 5.1 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.1c-1.7 0-3.3-.5-4.6-1.3l-.3-.2-3.4.9.9-3.3-.2-.3C3.5 14.5 3 13.3 3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9z"/></svg>'
+      svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.05 0C5.5 0 .18 5.32.18 11.87a11.8 11.8 0 0 0 1.62 5.95L0 24l6.34-1.66a11.86 11.86 0 0 0 5.7 1.45h.01c6.55 0 11.87-5.32 11.87-11.87a11.78 11.78 0 0 0-3.4-8.44zM12.05 21.8h-.01a9.84 9.84 0 0 1-5.02-1.37l-.36-.21-3.76.99 1-3.66-.23-.37a9.83 9.83 0 0 1-1.51-5.31c0-5.44 4.43-9.87 9.88-9.87 2.64 0 5.12 1.03 6.98 2.9a9.79 9.79 0 0 1 2.89 6.98c0 5.44-4.43 9.87-9.87 9.87zm5.42-7.39c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47a8.94 8.94 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.5 1.7.63.71.23 1.36.2 1.88.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg>'
     }
   ];
 
-  // Parámetros geométricos
-  const ORBIT_RADIUS = 58;      // distancia del centro al planeta
-  const PLANET_SIZE  = 30;      // diámetro de cada planeta
-  const SUN_W        = 60;      // ancho cápsula ARIA
-  const SUN_H        = 24;      // alto cápsula ARIA
-  const CONTAINER    = 160;     // contenedor total
-  const SPIN_DURATION = 60;     // segundos por vuelta completa (muy lento, elegante)
+  const ORBIT_W = 160;
+  const ORBIT_H = 160;
+  const SUN_D = 38;
+  const PLANET_D = 30;
+  const RADIUS = 58;
+  const SPIN_SEC = 60;
 
-  const STYLES = `
-    /* Ocultar el FAB orbe antiguo de lomaz-nav.js */
-    #lm-aria-fab { display:none !important; }
-
-    #lm-orbit-system {
+  const style = document.createElement('style');
+  style.textContent = `
+    .lm-orbit-wrap {
       position: fixed;
-      bottom: 22px;
-      right: 22px;
-      width: ${CONTAINER}px;
-      height: ${CONTAINER}px;
-      z-index: 99990;
+      bottom: 18px;
+      right: 18px;
+      width: ${ORBIT_W}px;
+      height: ${ORBIT_H}px;
+      z-index: 9998;
       pointer-events: none;
-      font-family: var(--lm-sans, 'Inter', sans-serif);
+      font-family: 'Inter', system-ui, sans-serif;
     }
-    #lm-orbit-system * { box-sizing: border-box; }
+    .lm-orbit-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px dashed rgba(201,169,110,0.18);
+      opacity: 0.6;
+    }
+    .lm-orbit-rotor {
+      position: absolute;
+      inset: 0;
+      animation: lm-spin ${SPIN_SEC}s linear infinite;
+    }
+    @keyframes lm-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .lm-orbit-wrap:hover .lm-orbit-rotor { animation-play-state: paused; }
 
-    /* Sol — Cápsula ARIA discreta tipo cristal */
     .lm-sun {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: ${SUN_W}px;
-      height: ${SUN_H}px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.55);
-      backdrop-filter: blur(14px) saturate(160%);
-      -webkit-backdrop-filter: blur(14px) saturate(160%);
-      border: 1px solid rgba(201,169,110,0.35);
+      width: ${SUN_D}px;
+      height: ${SUN_D}px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,0.95) 0%, rgba(255,247,225,0.85) 35%, rgba(232,205,150,0.7) 70%, rgba(201,169,110,0.55) 100%);
+      border: 1px solid rgba(201,169,110,0.55);
       box-shadow:
-        0 4px 18px rgba(28,25,23,0.06),
-        inset 0 1px 0 rgba(255,255,255,0.5);
-      display: flex; align-items: center; justify-content: center;
-      gap: 5px;
+        0 0 0 1px rgba(255,255,255,0.6) inset,
+        0 0 12px rgba(232,205,150,0.55),
+        0 0 28px rgba(201,169,110,0.35),
+        0 0 48px rgba(201,169,110,0.18),
+        0 4px 16px rgba(28,25,23,0.08);
       cursor: pointer;
       pointer-events: auto;
       transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-      padding: 0 6px;
+      animation: lm-sun-glow 4s ease-in-out infinite;
+      display: flex; align-items: center; justify-content: center;
     }
-    .lm-sun-dot {
-      width: 4px; height: 4px;
-      background: #c9a96e;
+    .lm-sun::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
       border-radius: 50%;
-      box-shadow: 0 0 6px rgba(201,169,110,0.7);
-      animation: lm-dot-pulse 2.4s ease-in-out infinite;
-      flex-shrink: 0;
+      background: radial-gradient(circle, rgba(201,169,110,0.18) 0%, rgba(201,169,110,0) 70%);
+      pointer-events: none;
+      animation: lm-sun-aura 4s ease-in-out infinite;
     }
-    @keyframes lm-dot-pulse {
-      0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 6px rgba(201,169,110,0.7); }
-      50% { opacity: 0.5; transform: scale(0.8); box-shadow: 0 0 10px rgba(201,169,110,0.9); }
+    .lm-sun-core {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(255,255,255,0.95), 0 0 14px rgba(232,205,150,0.85);
+      animation: lm-core-pulse 2.4s ease-in-out infinite;
     }
-    .lm-sun-label {
-      font-family: var(--lm-serif, 'Cormorant Garamond', Georgia, serif);
-      font-style: italic;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      color: #a07840;
-      line-height: 1;
+    @keyframes lm-sun-glow {
+      0%,100% {
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,0.6) inset,
+          0 0 12px rgba(232,205,150,0.55),
+          0 0 28px rgba(201,169,110,0.35),
+          0 0 48px rgba(201,169,110,0.18),
+          0 4px 16px rgba(28,25,23,0.08);
+      }
+      50% {
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,0.7) inset,
+          0 0 18px rgba(232,205,150,0.7),
+          0 0 38px rgba(201,169,110,0.45),
+          0 0 62px rgba(201,169,110,0.25),
+          0 4px 18px rgba(28,25,23,0.1);
+      }
+    }
+    @keyframes lm-sun-aura {
+      0%,100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+    @keyframes lm-core-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(0.85); }
     }
     .lm-sun:hover {
-      background: rgba(255,255,255,0.75);
-      border-color: rgba(201,169,110,0.55);
-      box-shadow:
-        0 6px 22px rgba(201,169,110,0.18),
-        0 0 0 1px rgba(201,169,110,0.15),
-        inset 0 1px 0 rgba(255,255,255,0.6);
+      transform: translate(-50%, -50%) scale(1.08);
     }
 
-    /* Track giratorio (contiene un planeta) */
-    .lm-orbit-track {
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
-      transform-origin: 0 0;
-      animation: lm-orbit-rotate ${SPIN_DURATION}s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes lm-orbit-rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* Planeta — círculo de cristal con borde dorado */
     .lm-planet {
       position: absolute;
-      width: ${PLANET_SIZE}px;
-      height: ${PLANET_SIZE}px;
-      margin: ${-PLANET_SIZE/2}px 0 0 ${-PLANET_SIZE/2}px;
+      top: 50%; left: 50%;
+      width: ${PLANET_D}px;
+      height: ${PLANET_D}px;
+      margin-left: -${PLANET_D/2}px;
+      margin-top: -${PLANET_D/2}px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.55);
-      backdrop-filter: blur(14px) saturate(160%);
-      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px) saturate(160%);
+      -webkit-backdrop-filter: blur(10px) saturate(160%);
       border: 1px solid rgba(201,169,110,0.3);
-      color: #a07840;
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none;
-      pointer-events: auto;
-      cursor: pointer;
       box-shadow:
-        0 3px 10px rgba(28,25,23,0.05),
-        inset 0 1px 0 rgba(255,255,255,0.5);
-      transition:
-        color 0.4s ease,
-        border-color 0.4s ease,
-        box-shadow 0.4s ease,
-        transform 0.35s cubic-bezier(0.4,0,0.2,1);
-      /* Contrarrotación para que el ícono no gire */
-      animation: lm-planet-counter ${SPIN_DURATION}s linear infinite;
+        0 2px 10px rgba(28,25,23,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.55);
+      display: flex; align-items: center; justify-content: center;
+      color: #a07840;
+      cursor: pointer;
+      pointer-events: auto;
+      text-decoration: none;
+      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
     }
-    @keyframes lm-planet-counter {
+    .lm-planet svg { width: 14px; height: 14px; display: block; }
+    .lm-planet-inner { animation: lm-anti-spin ${SPIN_SEC}s linear infinite; display: flex; align-items: center; justify-content: center; }
+    @keyframes lm-anti-spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(-360deg); }
     }
-    .lm-planet svg {
-      width: 15px; height: 15px;
-      transition: transform 0.35s ease;
-    }
+    .lm-orbit-wrap:hover .lm-planet-inner { animation-play-state: paused; }
 
-    /* Hover: el ícono y borde adoptan el color de la red, halo fluorescente sutil */
     .lm-planet:hover {
+      transform: scale(1.18);
+      background: rgba(255,255,255,0.92);
+      border-color: color-mix(in srgb, var(--lm-brand) 55%, rgba(201,169,110,0.4));
       color: var(--lm-brand);
-      border-color: var(--lm-brand);
       box-shadow:
-        0 0 0 3px color-mix(in srgb, var(--lm-brand) 14%, transparent),
-        0 4px 18px color-mix(in srgb, var(--lm-brand) 28%, transparent),
-        inset 0 1px 0 rgba(255,255,255,0.6);
-    }
-    .lm-planet:hover svg { transform: scale(1.12); }
-
-    /* Pausar órbita al hover sobre cualquier elemento del sistema */
-    #lm-orbit-system:hover .lm-orbit-track,
-    #lm-orbit-system:hover .lm-planet {
-      animation-play-state: paused;
+        0 4px 18px color-mix(in srgb, var(--lm-brand) 25%, transparent),
+        0 0 0 3px color-mix(in srgb, var(--lm-brand) 12%, transparent),
+        inset 0 1px 0 rgba(255,255,255,0.7);
     }
 
-    /* Tooltip refinado */
-    .lm-planet::after {
-      content: attr(data-name);
+    .lm-tooltip {
       position: absolute;
       bottom: calc(100% + 6px);
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(10px);
-      color: #4a4540;
-      padding: 3px 8px;
-      border-radius: 3px;
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      background: rgba(28,25,23,0.92);
+      color: #f5efe3;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      padding: 3px 7px;
+      border-radius: 4px;
       white-space: nowrap;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s ease;
-      border: 1px solid rgba(201,169,110,0.2);
-      box-shadow: 0 2px 8px rgba(28,25,23,0.06);
-      font-family: var(--lm-sans, 'Inter', sans-serif);
-      font-weight: 500;
+      transition: opacity 0.25s;
     }
-    .lm-planet:hover::after { opacity: 1; }
+    .lm-planet:hover .lm-tooltip { opacity: 1; }
 
-    /* Móvil */
-    @media (max-width: 768px) {
-      #lm-orbit-system { width: 130px; height: 130px; bottom: 16px; right: 16px; }
-    }
-
-    /* Reducir movimiento */
-    @media (prefers-reduced-motion: reduce) {
-      .lm-orbit-track, .lm-planet, .lm-sun-dot { animation: none !important; }
+    @media (max-width: 640px) {
+      .lm-orbit-wrap { width: 130px; height: 130px; bottom: 12px; right: 12px; }
     }
   `;
+  document.head.appendChild(style);
 
-  function init() {
-    const style = document.createElement('style');
-    style.id = 'lm-orbit-styles';
-    style.textContent = STYLES;
-    document.head.appendChild(style);
+  const wrap = document.createElement('div');
+  wrap.className = 'lm-orbit-wrap';
+  wrap.setAttribute('aria-label', 'Redes sociales LoMaz Home');
 
-    const root = document.createElement('div');
-    root.id = 'lm-orbit-system';
-    root.setAttribute('aria-label', 'Redes sociales LoMaz Home');
+  const ring = document.createElement('div');
+  ring.className = 'lm-orbit-ring';
+  wrap.appendChild(ring);
 
-    // Sol ARIA
-    const sun = document.createElement('button');
-    sun.className = 'lm-sun';
-    sun.type = 'button';
-    sun.setAttribute('aria-label', 'Abrir asistente ARIA');
-    sun.innerHTML = '<span class="lm-sun-dot"></span><span class="lm-sun-label">ARIA</span>';
-    sun.addEventListener('click', function () {
-      const ariaPanel = document.getElementById('lm-aria-panel');
-      if (ariaPanel) {
-        ariaPanel.classList.toggle('lm-open');
-      } else {
-        document.dispatchEvent(new CustomEvent('aria:toggle'));
-      }
-    });
-    root.appendChild(sun);
+  const sun = document.createElement('button');
+  sun.type = 'button';
+  sun.className = 'lm-sun';
+  sun.setAttribute('aria-label', 'ARIA - Asistente LoMaz');
+  sun.innerHTML = '<span class="lm-sun-core"></span>';
+  sun.addEventListener('click', () => {
+    const ariaBtn = document.querySelector('.lm-aria-nav-btn, [data-aria-trigger], #aria-trigger');
+    if (ariaBtn) ariaBtn.click();
+    else window.location.href = 'aria.html';
+  });
+  wrap.appendChild(sun);
 
-    // Planetas equidistantes
-    const total = PLANETS.length;
-    const angleStep = 360 / total;
+  const rotor = document.createElement('div');
+  rotor.className = 'lm-orbit-rotor';
+  wrap.appendChild(rotor);
 
-    PLANETS.forEach(function (p, i) {
-      const offsetDeg = i * angleStep;
+  const N = PLANETS.length;
+  PLANETS.forEach((p, i) => {
+    const angle = (360 / N) * i - 90;
+    const rad = angle * Math.PI / 180;
+    const x = Math.cos(rad) * RADIUS;
+    const y = Math.sin(rad) * RADIUS;
 
-      const track = document.createElement('div');
-      track.className = 'lm-orbit-track';
-      // Desfase inicial para que cada planeta arranque en su posición equidistante
-      track.style.animationDelay = (-SPIN_DURATION * (offsetDeg / 360)) + 's';
+    const a = document.createElement('a');
+    a.className = 'lm-planet';
+    a.href = p.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.transform = `translate(${x}px, ${y}px)`;
+    a.style.setProperty('--lm-brand', p.brand);
+    a.setAttribute('aria-label', p.name);
 
-      const planet = document.createElement('a');
-      planet.className = 'lm-planet';
-      planet.href = p.url;
-      planet.target = '_blank';
-      planet.rel = 'noopener noreferrer';
-      planet.dataset.name = p.name;
-      planet.setAttribute('aria-label', 'Visitar perfil de ' + p.name);
-      planet.style.setProperty('--lm-brand', p.brand);
-      planet.innerHTML = p.svg;
+    const inner = document.createElement('span');
+    inner.className = 'lm-planet-inner';
+    inner.innerHTML = p.svg;
+    a.appendChild(inner);
 
-      // Posición sobre la órbita (lado derecho del track)
-      planet.style.left = ORBIT_RADIUS + 'px';
-      planet.style.top = '0';
-      planet.style.animationDelay = (-SPIN_DURATION * (offsetDeg / 360)) + 's';
+    const tip = document.createElement('span');
+    tip.className = 'lm-tooltip';
+    tip.textContent = p.name;
+    a.appendChild(tip);
 
-      track.appendChild(planet);
-      root.appendChild(track);
-    });
+    rotor.appendChild(a);
+  });
 
-    document.body.appendChild(root);
+  function mount() {
+    if (!document.body.contains(wrap)) document.body.appendChild(wrap);
   }
-
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', mount);
   } else {
-    init();
+    mount();
   }
 })();
