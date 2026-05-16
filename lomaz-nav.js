@@ -17,7 +17,7 @@ const S = `
 }
 /* Hide old navs and ARIA legacy */
 #lhNav,#lhOverlay,.nav__overlay,
-nav:not(#lm-nav) { display:none!important; }
+nav.topnav,nav.nav__primary,nav.legacy-nav,nav.main-nav,nav.top-bar,nav.navbar:not(#lm-nav) { display:none!important; }
 #aria-fab,#aria-overlay,#aria-panel { display:none!important; }
 /* Hide WhatsApp float */
 .wa-float,.whatsapp-float,.float-wa,.wa-btn-float,
