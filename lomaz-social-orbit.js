@@ -119,14 +119,23 @@
       pointer-events: none;
       animation: lm-sun-aura 4s ease-in-out infinite;
     }
-    .lm-sun-core {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 8px rgba(255,255,255,0.95), 0 0 14px rgba(232,205,150,0.85);
-      animation: lm-core-pulse 2.4s ease-in-out infinite;
+    .lm-sun-letter {
+      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1;
+      color: #6b4a1a;
+      text-shadow:
+        0 0 6px rgba(255,255,255,0.8),
+        0 0 12px rgba(232,205,150,0.6),
+        0 1px 0 rgba(255,255,255,0.5);
+      animation: lm-letter-pulse 3.2s ease-in-out infinite;
       position: relative;
       z-index: 1;
+      letter-spacing: 0;
+      user-select: none;
+      pointer-events: none;
     }
     @keyframes lm-sun-glow {
       0%,100% {
@@ -150,9 +159,9 @@
       0%,100% { opacity: 0.6; transform: scale(1); }
       50% { opacity: 1; transform: scale(1.12); }
     }
-    @keyframes lm-core-pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.75; transform: scale(0.85); }
+    @keyframes lm-letter-pulse {
+      0%,100% { opacity: 1; transform: scale(1); text-shadow: 0 0 6px rgba(255,255,255,0.8), 0 0 12px rgba(232,205,150,0.6), 0 1px 0 rgba(255,255,255,0.5); }
+      50% { opacity: 0.95; transform: scale(0.96); text-shadow: 0 0 10px rgba(255,255,255,0.95), 0 0 18px rgba(232,205,150,0.8), 0 1px 0 rgba(255,255,255,0.6); }
     }
     .lm-sun:hover {
       transform: scale(1.08);
@@ -276,7 +285,7 @@
   sun.type = 'button';
   sun.className = 'lm-sun';
   sun.setAttribute('aria-label', 'ARIA - Asistente LoMaz');
-  sun.innerHTML = '<span class="lm-sun-core"></span>';
+  sun.innerHTML = '<span class="lm-sun-letter" aria-hidden="true">A</span>';
   sun.addEventListener('click', () => {
     const triggers = ['#lm-aria-fab', '.lm-aria-nav-btn', '[data-aria-trigger]', '#aria-trigger'];
     for (const sel of triggers) {
