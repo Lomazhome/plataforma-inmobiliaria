@@ -90,14 +90,14 @@ select option{background:#ffffff;color:var(--text)}
 <div class="layout">
 <nav class="sidebar">
   <div class="sidebar-title">Suite Calculadoras</div>
-  <a class="sb-item active" href="#" onclick="showMod('mod1',this);return false"><span class="sb-num">01</span><span class="sb-text"><strong>Gastos Notariales</strong><small>Escrituración y cierre</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod2',this);return false"><span class="sb-num">02</span><span class="sb-text"><strong>Crédito Hipotecario</strong><small>Cuota y amortización</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod3',this);return false"><span class="sb-num">03</span><span class="sb-text"><strong>Rentabilidad</strong><small>Cap Rate e inversión</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod4',this);return false"><span class="sb-num">04</span><span class="sb-text"><strong>Ganancia Ocasional</strong><small>Impuesto al vender</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod5',this);return false"><span class="sb-num">05</span><span class="sb-text"><strong>Capacidad Endeudamiento</strong><small>VIS / No VIS</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod6',this);return false"><span class="sb-num">06</span><span class="sb-text"><strong>Tradicional vs Airbnb</strong><small>Comparador de modelo</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod7',this);return false"><span class="sb-num">07</span><span class="sb-text"><strong>Vacancia y Reserva</strong><small>Costos ocultos</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('mod8',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
+  <a class="sb-item active" href="#" onclick="showMod('notariales',this);return false"><span class="sb-num">01</span><span class="sb-text"><strong>Gastos Notariales</strong><small>Escrituración y cierre</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('credito',this);return false"><span class="sb-num">02</span><span class="sb-text"><strong>Crédito Hipotecario</strong><small>Cuota y amortización</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('rentabilidad',this);return false"><span class="sb-num">03</span><span class="sb-text"><strong>Rentabilidad</strong><small>Cap Rate e inversión</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('ganancia',this);return false"><span class="sb-num">04</span><span class="sb-text"><strong>Ganancia Ocasional</strong><small>Impuesto al vender</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('endeudamiento',this);return false"><span class="sb-num">05</span><span class="sb-text"><strong>Capacidad Endeudamiento</strong><small>VIS / No VIS</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('airbnb',this);return false"><span class="sb-num">06</span><span class="sb-text"><strong>Tradicional vs Airbnb</strong><small>Comparador de modelo</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('vacancia',this);return false"><span class="sb-num">07</span><span class="sb-text"><strong>Vacancia y Reserva</strong><small>Costos ocultos</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('cartera',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
 </nav>
 <main class="main-content">
 
@@ -234,7 +234,7 @@ select option{background:#ffffff;color:var(--text)}
 </div>
 </div>
 
-<div class="module" id="mod6">
+<div class="module" id="airbnb">
 <div class="mod-header"><h1>&#127968; Arriendo Tradicional vs. Vacacional (Airbnb)</h1><p>Compara cuál modelo de negocio genera mayor rentabilidad neta para tu inmueble.</p></div>
 <div class="card">
   <div class="card-title">Modelo Vacacional</div>
@@ -275,7 +275,7 @@ select option{background:#ffffff;color:var(--text)}
 </div>
 </div>
 
-<div class="module" id="mod7">
+<div class="module" id="vacancia">
 <div class="mod-header"><h1>&#127981; Vacancia y Fondo de Reserva</h1><p>Calcula los costos ocultos que erosionan la rentabilidad: mantenimiento estructural y períodos sin arrendar.</p></div>
 <div class="card">
   <div class="card-title">Datos del Inmueble</div>
@@ -296,7 +296,7 @@ select option{background:#ffffff;color:var(--text)}
 </div>
 </div>
 
-<div class="module" id="mod8">
+<div class="module" id="cartera">
 <div class="mod-header"><h1>&#128260; Compra de Cartera / Refinanciación</h1><p>Simula cuánto ahorrarías si trasladas tu crédito hipotecario a un banco con menor tasa de interés.</p></div>
 <div class="card">
   <div class="card-title">Datos de tu Crédito Actual</div>
@@ -582,10 +582,10 @@ function showMod(id,el){
 }
 window.addEventListener('DOMContentLoaded',function(){
   var h=location.hash;
-  var map={'#tab-hipotecaria':'mod2','#tab-notarial':'mod1','#mod1':'mod1','#mod2':'mod2','#mod3':'mod3','#mod4':'mod4','#mod5':'mod5','#mod6':'mod6','#mod7':'mod7','#mod8':'mod8'};
+  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera'};
   if(map[h]){
     var t=map[h];
-    var idx=['mod1','mod2','mod3','mod4','mod5','mod6','mod7','mod8'].indexOf(t);
+    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera'].indexOf(t);
     showMod(t,document.querySelectorAll('.sb-item')[idx]||null);
   }
 });
