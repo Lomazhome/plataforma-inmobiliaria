@@ -90,15 +90,15 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 .lm-aria-nav-btn {
   display:flex; align-items:center; gap:6px;
   padding:0.35rem 0.875rem 0.35rem 0.6rem;
-  background:var(--lm-navy); color:var(--lm-gold);
+  background:rgba(255,255,255,0.55); backdrop-filter:blur(14px) saturate(160%); -webkit-backdrop-filter:blur(14px) saturate(160%); color:var(--lm-gold-dark);
   border:1px solid rgba(201,169,110,0.3); border-radius:20px;
   font-size:0.75rem; font-weight:600; letter-spacing:0.06em;
   cursor:pointer; font-family:var(--lm-sans); transition:all var(--lm-tr);
 }
-.lm-aria-nav-btn:hover { background:var(--lm-navy-light); border-color:var(--lm-gold); }
+.lm-aria-nav-btn:hover { background:rgba(255,255,255,0.75); border-color:rgba(201,169,110,0.55); box-shadow:0 4px 18px rgba(201,169,110,0.18); }
 .lm-aria-dot {
-  width:6px; height:6px; background:#4ade80; border-radius:50%;
-  box-shadow:0 0 6px rgba(74,222,128,0.6); animation:lm-pulse 2s infinite;
+  width:5px; height:5px; background:var(--lm-gold); border-radius:50%;
+  box-shadow:0 0 6px rgba(201,169,110,0.7); animation:lm-pulse 2s infinite;
 }
 @keyframes lm-pulse {
   0%,100% { opacity:1; transform:scale(1); }
