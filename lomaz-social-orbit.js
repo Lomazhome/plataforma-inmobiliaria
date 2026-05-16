@@ -38,6 +38,9 @@
 
   const style = document.createElement('style');
   style.textContent = `
+    /* Ocultar FAB ARIA legacy cuando el sistema orbital esta activo */
+    #lm-aria-fab, .lm-aria-fab { display: none !important; }
+
     .lm-orbit-wrap {
       position: fixed;
       bottom: 18px;
@@ -275,9 +278,12 @@
   sun.setAttribute('aria-label', 'ARIA - Asistente LoMaz');
   sun.innerHTML = '<span class="lm-sun-core"></span>';
   sun.addEventListener('click', () => {
-    const ariaBtn = document.querySelector('.lm-aria-nav-btn, [data-aria-trigger], #aria-trigger');
-    if (ariaBtn) ariaBtn.click();
-    else window.location.href = 'aria.html';
+    const triggers = ['#lm-aria-fab', '.lm-aria-nav-btn', '[data-aria-trigger]', '#aria-trigger'];
+    for (const sel of triggers) {
+      const el = document.querySelector(sel);
+      if (el) { el.click(); return; }
+    }
+    window.location.href = 'aria.html';
   });
   stage.appendChild(sun);
 
