@@ -291,6 +291,9 @@ const NAV = [
     {i:'📈',l:'Rentabilidad',s:'Cap Rate e inversión',h:'calculadora.html#rentabilidad'},
     {i:'💸',l:'Ganancia Ocasional',s:'Impuesto al vender',h:'calculadora.html#ganancia'},
     {i:'💳',l:'Capacidad Endeudamiento',s:'VIS / No VIS',h:'calculadora.html#endeudamiento'},
+    {i:'🏨',l:'Tradicional vs Airbnb',s:'Comparador de modelo',h:'calculadora.html#airbnb'},
+    {i:'📊',l:'Vacancia y Reserva',s:'Costos ocultos',h:'calculadora.html#vacancia'},
+    {i:'🔄',l:'Compra de Cartera',s:'Refinanciación',h:'calculadora.html#cartera'},
     {i:'🧮',l:'Suite Completa',s:'Todas las calculadoras',h:'calculadora.html'},
   ]},
   {l:'Nosotros',h:'index.html#nosotros',d:[
