@@ -215,11 +215,11 @@ async function loadProps(uid) {
 
 function updateStats() {
   document.getElementById("statTotal").textContent = allProps.length;
-  document.getElementById("statDisponible").textContent = allProps.filter(p => p.estado === "Disponible").length;
-  document.getElementById("statReservado").textContent = allProps.filter(p => p.estado === "Reservado").length;
-  document.getElementById("statVendido").textContent = allProps.filter(p => p.estado === "Vendido" || p.estado === "Arrendado").length;
-  document.getElementById("statVenta").textContent = allProps.filter(p => p.tipo_negocio === "Venta" || p.tipo_negocio === "Venta y Arriendo").length;
-  document.getElementById("statArriendo").textContent = allProps.filter(p => p.tipo_negocio === "Arriendo" || p.tipo_negocio === "Venta y Arriendo").length;
+  document.getElementById("statDisponible").textContent = allProps.filter(p => ["activa","disponible"].includes((p.estado||"").toLowerCase())).length;
+  document.getElementById("statReservado").textContent = allProps.filter(p => ["reservada","reservado"].includes((p.estado||"").toLowerCase())).length;
+  document.getElementById("statVendido").textContent = allProps.filter(p => ["vendida","vendido","arrendada","arrendado"].includes((p.estado||"").toLowerCase())).length;
+  document.getElementById("statVenta").textContent = allProps.filter(p => ["venta","venta y arriendo"].includes((p.tipo_negocio||"").toLowerCase())).length;
+  document.getElementById("statArriendo").textContent = allProps.filter(p => ["arriendo","arriendo_temporal","venta y arriendo"].includes((p.tipo_negocio||"").toLowerCase())).length;
 }
 
 function filterProps() {
@@ -229,9 +229,9 @@ function filterProps() {
   const tipo = document.getElementById("filterTipo").value;
   filtered = allProps.filter(p => {
     const matchSearch = !search || (p.titulo||"").toLowerCase().includes(search) || (p.ciudad||"").toLowerCase().includes(search) || (p.barrio||"").toLowerCase().includes(search);
-    const matchEstado = !estado || p.estado === estado;
-    const matchNegocio = !negocio || (p.tipo_negocio||"").includes(negocio);
-    const matchTipo = !tipo || p.tipo_propiedad === tipo;
+    const _estMap = {"disponible":["activa","disponible"],"reservado":["reservada","reservado"],"vendido":["vendida","vendido"],"arrendado":["arrendada","arrendado"]}; const _estWanted = _estMap[(estado||"").toLowerCase()] || [(estado||"").toLowerCase()]; const matchEstado = !estado || _estWanted.includes((p.estado||"").toLowerCase());
+    const matchNegocio = !negocio || (p.tipo_negocio||"").toLowerCase().includes((negocio||"").toLowerCase());
+    const matchTipo = !tipo || (p.tipo_propiedad||"").toLowerCase() === (tipo||"").toLowerCase();
     return matchSearch && matchEstado && matchNegocio && matchTipo;
   });
   currentPage = 1;
@@ -262,14 +262,14 @@ function renderTable() {
   page.forEach(p => {
     const img = p.foto_principal ? `<img src="${p.foto_principal}" class="prop-thumb" onerror="this.style.display='none'">` : `<div class="prop-no-img">&#127968;</div>`;
     const badgeE = `<span class="badge badge-${(p.estado||"disponible").toLowerCase()}">${p.estado||"N/A"}</span>`;
-    const badgeN = `<span class="badge badge-${(p.tipo_negocio||"").toLowerCase().replace(/ /g,"-")}">${p.tipo_negocio||""}</span>`;
+    const _negLbl = {"venta":"Venta","arriendo":"Arriendo","arriendo_temporal":"Arriendo temporal","venta y arriendo":"Venta y Arriendo","permuta":"Permuta"}; const _negKey = (p.tipo_negocio||"").toLowerCase(); const badgeN = `<span class="badge badge-${_negKey.replace(/ /g,"-")}">${_negLbl[_negKey]||(p.tipo_negocio||"-")}</span>`;
     const price = "$" + Number(p.precio||0).toLocaleString("es-CO");
     const portalesCount = (p.portales_publicacion||[]).length;
     const portalesText = portalesCount > 0 ? `&#127760; ${portalesCount} portal${portalesCount>1?"es":""}` : "-";
     const fecha = p.created_at ? new Date(p.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}) : "-";
     html += `<tr>
       <td>${img}</td>
-      <td><div class="prop-title">${p.titulo||"Sin t\u00edtulo"}</div><div class="prop-loc">&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""} &#183; ${p.area_construida||"?"}m\u00b2${p.habitaciones?" &#183; "+p.habitaciones+"hab":""}</div></td>
+      <td><div class="prop-title">${p.titulo||"Sin t\u00edtulo"}</div><div class="prop-loc">&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""} &#183; ${p.area_construida||p.area_total||p.area_privada||"?"}m\u00b2${p.habitaciones?" &#183; "+p.habitaciones+"hab":""}</div></td>
       <td>${badgeN}<br><small style="color:#888;font-size:11px">${p.tipo_propiedad||""}</small></td>
       <td class="price">${price}</td>
       <td>${badgeE}</td>
