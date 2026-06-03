@@ -348,6 +348,7 @@ textarea{resize:vertical;min-height:90px}
 <div id="logEntries"></div>
 </div>
 </div>
+      <div class="card"><h3>&#10024; Copys para <em>Redes Sociales</em></h3><p style="color:#888;font-size:13px;margin-bottom:10px">Genera autom&aacute;ticamente el texto listo para publicar en Instagram y Facebook. Solo c&oacute;pialo y p&eacute;galo.</p><button type="button" id="btnGenCopys" class="btn-secondary" style="margin-bottom:12px">&#9889; Generar copys</button><div id="copysWrap" style="display:none"><div class="form-group full"><label>&#128241; INSTAGRAM <button type="button" class="btnCopyTxt" data-target="copyInstagram" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyInstagram" rows="9" style="width:100%;font-family:inherit"></textarea></div><div class="form-group full"><label>&#128242; FACEBOOK <button type="button" class="btnCopyTxt" data-target="copyFacebook" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyFacebook" rows="9" style="width:100%;font-family:inherit"></textarea></div><div id="copyStatus" style="font-size:12px;color:var(--gold)"></div></div></div>
 <button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">&#128640; Publicar Propiedad</button>
 <button class="btn-publish" id="btn-activar-fr" onclick="activarEnFincaraiz()" style="display:none;background:linear-gradient(135deg,#79b8ff 0%,#3b82f6 100%);color:#fff;margin-top:.6rem">&#9989; Activar en Finca Raiz (pasar de Pendiente a Activa)</button>
 <div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">&#8592; Anterior</button><div></div></div>
@@ -358,6 +359,23 @@ textarea{resize:vertical;min-height:90px}
 const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
 const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const sb=window.supabase.createClient(SURL,SKEY);
+// ===== Generador de copys para redes sociales =====
+function __genCopys(){ var NL=String.fromCharCode(10); var v=function(id){ return ((document.getElementById(id)||{}).value||"").trim(); };
+  var tipo=v("tipo_propiedad"), op=v("tipo_operacion"); var tipoCap=tipo? tipo.charAt(0).toUpperCase()+tipo.slice(1) : "Inmueble";
+  var opTxt = op==="arriendo"?"en ARRIENDO":(op==="venta"?"en VENTA":"disponible");
+  var titulo=v("titulo"), ciudad=v("ciudad"), barrio=v("barrio"), precio=v("precio"), admin=v("precio_admin");
+  var hab=v("habitaciones"), ban=v("banos"), gar=v("garajes"), m2c=v("m2_construccion"), m2t=v("m2_terreno"), estrato=v("estrato"), desc=v("descripcion");
+  var fmtMoney=function(n){ n=parseFloat(n)||0; return n? ("$"+n.toLocaleString("es-CO")) : ""; };
+  var emoji = ({apartamento:"\uD83C\uDFE2",casa:"\uD83C\uDFE1",finca:"\uD83C\uDF3E",lote:"\uD83C\uDF31",local:"\uD83C\uDFEC",oficina:"\uD83D\uDCBC",bodega:"\uD83C\uDFED"})[tipo] || "\uD83C\uDFE0";
+  var feats=[]; if(m2c) feats.push("\uD83D\uDCD0 "+m2c+" m2"); if(m2t) feats.push("\uD83C\uDF33 "+m2t+" m2 terreno"); if(hab&&hab!=="0") feats.push("\uD83D\uDECF\uFE0F "+hab+" hab"); if(ban&&ban!=="0") feats.push("\uD83D\uDEBF "+ban+" banos"); if(gar&&gar!=="0") feats.push("\uD83D\uDE97 "+gar+" parq"); if(estrato&&estrato!=="0") feats.push("Estrato "+estrato);
+  var precioLine = precio? ("\uD83D\uDCB0 "+fmtMoney(precio)+(op==="arriendo"?" /mes":"")+((admin&&admin!=="0")?(" + Admin "+fmtMoney(admin)):"")) : "";
+  var ubic = (barrio?barrio:"")+((barrio&&ciudad)?", ":"")+(ciudad?ciudad:"");
+  var tags=["#"+(ciudad||"Colombia").replace(/\s/g,""),"#"+tipoCap.replace(/\s/g,""),(op==="arriendo"?"#Arriendo":"#Venta"),"#FincaRaiz","#Inmobiliaria","#LomazHome"];
+  var igParts=[]; igParts.push(emoji+" "+tipoCap+" "+opTxt+(ubic?(" en "+ubic):"")); if(titulo) igParts.push(titulo); if(precioLine) igParts.push(precioLine); if(feats.length) igParts.push(feats.join("  -  ")); if(desc) igParts.push(desc); igParts.push("\uD83D\uDCF2 Escribenos por mensaje directo para mas informacion y fotos."); igParts.push(tags.join(" ")); var ig=igParts.join(NL+NL);
+  var fbParts=[]; fbParts.push((op==="arriendo"?"ARRIENDO ":"VENTA ")+tipoCap.toUpperCase()+(ubic?(" - "+ubic.toUpperCase()):"")); if(titulo) fbParts.push(titulo); if(precioLine) fbParts.push(precioLine); if(feats.length) fbParts.push("Caracteristicas:"+NL+feats.map(function(f){return "\u2705 "+f;}).join(NL)); if(desc) fbParts.push(desc); fbParts.push("\uD83D\uDCDE Contactanos para agendar visita."+NL+"Lomaz Home - Tu inmobiliaria de confianza."); fbParts.push(tags.join(" ")); var fb=fbParts.join(NL+NL);
+  var igEl=document.getElementById("copyInstagram"), fbEl=document.getElementById("copyFacebook"); if(igEl) igEl.value=ig; if(fbEl) fbEl.value=fb; var w=document.getElementById("copysWrap"); if(w) w.style.display="block"; }
+async function __copyText(targetId){ var el=document.getElementById(targetId); var st=document.getElementById("copyStatus"); if(!el) return; try{ el.select(); await navigator.clipboard.writeText(el.value); if(st){ st.textContent="Texto copiado al portapapeles."; setTimeout(function(){ st.textContent=""; },2500); } }catch(e){ try{ document.execCommand("copy"); }catch(_){} } }
+document.addEventListener("DOMContentLoaded",function(){ var b=document.getElementById("btnGenCopys"); if(b) b.addEventListener("click",__genCopys); document.querySelectorAll(".btnCopyTxt").forEach(function(btn){ btn.addEventListener("click",function(){ __copyText(btn.getAttribute("data-target")); }); }); });
 // ===== Campos dinamicos segun tipo de propiedad =====
 function __fieldGroup(id){ const e=document.getElementById(id); return e? e.closest(".form-group") : null; }
 function __applyTipoFields(){ const tp=((document.getElementById("tipo_propiedad")||{}).value||"").toLowerCase();
