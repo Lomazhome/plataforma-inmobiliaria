@@ -204,7 +204,7 @@ let deleteId = null;
 async function loadProps(uid) {
   const { data, error } = await sb
     .from("propiedades")
-    .select("id,titulo,tipo_negocio,tipo_inmueble,precio,estado,ciudad,barrio,area_construida,habitaciones,imagen_principal,created_at,portales_publicacion")
+    .select("id,titulo,tipo_negocio,tipo_propiedad,precio,estado,ciudad,barrio,area_construida,habitaciones,foto_principal,created_at")
     .eq("asesor_id", uid)
     .order("created_at", { ascending: false });
   if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon">&#10060;</span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
@@ -231,7 +231,7 @@ function filterProps() {
     const matchSearch = !search || (p.titulo||"").toLowerCase().includes(search) || (p.ciudad||"").toLowerCase().includes(search) || (p.barrio||"").toLowerCase().includes(search);
     const matchEstado = !estado || p.estado === estado;
     const matchNegocio = !negocio || (p.tipo_negocio||"").includes(negocio);
-    const matchTipo = !tipo || p.tipo_inmueble === tipo;
+    const matchTipo = !tipo || p.tipo_propiedad === tipo;
     return matchSearch && matchEstado && matchNegocio && matchTipo;
   });
   currentPage = 1;
@@ -260,7 +260,7 @@ function renderTable() {
     <th>Foto</th><th>Propiedad</th><th>Tipo</th><th>Precio</th><th>Estado</th><th>Portales</th><th>Fecha</th><th>Acciones</th>
   </tr></thead><tbody>`;
   page.forEach(p => {
-    const img = p.imagen_principal ? `<img src="${p.imagen_principal}" class="prop-thumb" onerror="this.style.display='none'">` : `<div class="prop-no-img">&#127968;</div>`;
+    const img = p.foto_principal ? `<img src="${p.foto_principal}" class="prop-thumb" onerror="this.style.display='none'">` : `<div class="prop-no-img">&#127968;</div>`;
     const badgeE = `<span class="badge badge-${(p.estado||"disponible").toLowerCase()}">${p.estado||"N/A"}</span>`;
     const badgeN = `<span class="badge badge-${(p.tipo_negocio||"").toLowerCase().replace(/ /g,"-")}">${p.tipo_negocio||""}</span>`;
     const price = "$" + Number(p.precio||0).toLocaleString("es-CO");
@@ -270,7 +270,7 @@ function renderTable() {
     html += `<tr>
       <td>${img}</td>
       <td><div class="prop-title">${p.titulo||"Sin t\u00edtulo"}</div><div class="prop-loc">&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""} &#183; ${p.area_construida||"?"}m\u00b2${p.habitaciones?" &#183; "+p.habitaciones+"hab":""}</div></td>
-      <td>${badgeN}<br><small style="color:#888;font-size:11px">${p.tipo_inmueble||""}</small></td>
+      <td>${badgeN}<br><small style="color:#888;font-size:11px">${p.tipo_propiedad||""}</small></td>
       <td class="price">${price}</td>
       <td>${badgeE}</td>
       <td style="font-size:12px;color:#666">${portalesText}</td>
