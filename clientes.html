@@ -116,6 +116,25 @@ td strong{font-weight:600;color:#fff}
 @media(max-width:700px){.agenda-form{grid-template-columns:1fr}}
 .agent-key-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.9rem;font-size:.78rem;color:var(--txt-soft)}
 .agent-key-row input{flex:1;min-width:160px}
+
+/* ===== Modal overlay fix (Lomaz Home) ===== */
+.overlay{position:fixed;inset:0;background:rgba(8,15,28,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:200;padding:1.5rem}
+.overlay.hidden{display:none!important}
+.overlay .modal{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line-strong);border-radius:var(--r-lg);padding:1.8rem;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,.55);position:relative}
+.overlay .modal h3{font-family:var(--serif);font-size:1.5rem;color:#fff;margin-bottom:1.2rem}
+.overlay .modal .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.overlay .modal .fg.span2{grid-column:1/-1}
+.overlay .modal .req{color:#ff8a93}
+.modal-btns{display:flex;gap:.8rem;justify-content:flex-end;margin-top:1.3rem;flex-wrap:wrap}
+.modal-btns button{padding:.7rem 1.5rem;border-radius:var(--r-sm);font-size:.8rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border:1px solid var(--line);font-family:var(--sans);transition:all .25s ease}
+.btn-cancel{background:rgba(255,255,255,.04);color:var(--txt-soft)}
+.btn-cancel:hover{border-color:var(--gold);color:var(--gold)}
+.btn-save{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy);border:none}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
+.btn-danger{background:rgba(220,53,69,.14);color:#ff8a93;border:1px solid rgba(220,53,69,.4)}
+.del-modal{max-width:420px}
+.alert-err{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff8a93;padding:.8rem 1rem;border-radius:var(--r-sm);font-size:.85rem;margin-bottom:1rem}
+.alert-err.hidden,.hidden{display:none!important}
 </style><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head><body>
 <div class="topbar">
