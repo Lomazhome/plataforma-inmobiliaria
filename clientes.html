@@ -241,14 +241,18 @@ td strong{font-weight:600;color:#fff}
 <div class="fg"><label>Tipo</label><select id="czTipo"><option>Visita</option><option>Llamada</option><option>Reunión</option><option>Firma</option><option>Avalúo</option><option>Seguimiento</option></select></div>
 <div class="fg"><label>Fecha y hora *</label><input type="datetime-local" id="czFecha"></div>
 <div class="fg"><label>Duración (min)</label><input type="number" id="czDur" value="60" min="15" step="15"></div>
+<div class="fg"><label>Nombre del prospecto</label><input type="text" id="czNombre" placeholder="Quien asiste a la cita"></div>
 <div class="fg"><label>Cliente / Lead</label><select id="czContacto"><option value="">-- Sin asignar --</option></select></div>
 <div class="fg"><label>Propiedad</label><select id="czProp"><option value="">-- Ninguna --</option></select></div>
 <div class="fg"><label>Ubicación</label><input type="text" id="czUbic" placeholder="Dirección o enlace"></div>
 <div class="fg"><label>Teléfono de contacto</label><input type="tel" id="czTel" placeholder="3001234567"></div>
+<div class="fg"><label>Propietario (nombre)</label><input type="text" id="czPropNom" placeholder="Dueño del inmueble"></div>
+<div class="fg"><label>Teléfono del propietario</label><input type="tel" id="czPropTel" placeholder="3001234567"></div>
 <div class="fg span2"><label>Notas</label><textarea id="czNotas" placeholder="Detalles, recordatorios..."></textarea></div>
 </div>
 <button class="btn-primary" onclick="citaSave()">Guardar cita</button>
 <span id="czMsg" style="margin-left:1rem;font-size:.85rem"></span>
+<div id="czShareBox" style="display:none;margin-top:1.3rem"></div>
 </div>
 <div class="agent-panel" style="margin-top:1.3rem">
 <h3>&#128338; Próximas <em>citas</em></h3>
@@ -635,6 +639,7 @@ function agentAgendaFrom(id){
   if(l){
     var cs=document.getElementById('czContacto'); if(cs)cs.value='lead:'+l.id;
     document.getElementById('czTel').value=l.telefono||'';
+var _czn=document.getElementById('czNombre');if(_czn)_czn.value=l.nombre||'';
     document.getElementById('czTitulo').value=(l.propiedades?('Visita '+l.propiedades.titulo):('Cita con '+(l.nombre||'')));
     if(l.propiedad_id){var ps=document.getElementById('czProp');if(ps)ps.value=l.propiedad_id;}
   }
@@ -654,14 +659,18 @@ async function citaSave(){
     fecha_hora:new Date(fecha).toISOString(),duracion_min:Number(document.getElementById('czDur').value)||60,
     cliente_id,lead_id,propiedad_id:pv?Number(pv):null,
     ubicacion:document.getElementById('czUbic').value.trim()||null,
-    contacto_telefono:document.getElementById('czTel').value.trim()||null,
+    contacto_nombre:document.getElementById('czNombre').value.trim()||null,
+contacto_telefono:document.getElementById('czTel').value.trim()||null,
+propietario_nombre:document.getElementById('czPropNom').value.trim()||null,
+propietario_telefono:document.getElementById('czPropTel').value.trim()||null,
     notas:document.getElementById('czNotas').value.trim()||null,estado:'Programada'};
   msg.style.color='var(--txt-soft)';msg.textContent='Guardando...';
   const {data,error}=await sb.from('citas').insert([payload]).select();
   if(error){msg.style.color='#ff8a93';msg.textContent='Error: '+error.message;return;}
   msg.style.color='#7dd87d';msg.textContent='✓ Cita agendada';
   if(data&&data[0])agCitas.push(data[0]);
-  ['czTitulo','czFecha','czUbic','czTel','czNotas'].forEach(id=>document.getElementById(id).value='');
+  if(data&&data[0]) buildShareBox(data[0]);
+['czTitulo','czFecha','czUbic','czTel','czNotas','czNombre','czPropNom','czPropTel'].forEach(id=>{var _e=document.getElementById(id);if(_e)_e.value='';});
   agUpdateKpis(); renderAgenda();
 }
 function renderAgenda(){
@@ -686,6 +695,91 @@ function renderAgenda(){
   cont.innerHTML=h;
 }
 function citaWhats(tel,titulo){tel=(tel||'').replace(/[^0-9]/g,'');if(tel&&tel.length<=10)tel='57'+tel;window.open('https://wa.me/'+tel+'?text='+encodeURIComponent('Hola, te recuerdo nuestra cita: '+titulo),'_blank');}
+
+
+/* ---- Cita: generar mensajes de WhatsApp para ambas partes ---- */
+function citaFmtFecha(iso){
+  try{ var d=new Date(iso);
+    var f=d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
+    var h=d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+    return f+' a las '+h;
+  }catch(e){ return iso; }
+}
+function citaPropTitulo(c){
+  if(c.propiedad_id){ var p=agProps.find(function(x){return String(x.id)===String(c.propiedad_id);}); if(p) return p.titulo+(p.ciudad?(' ('+p.ciudad+')'):''); }
+  return '';
+}
+function citaNombreProspecto(c){
+  if(c.contacto_nombre) return c.contacto_nombre;
+  if(c.cliente_id){ var cc=agClientes.find(function(x){return x.id===c.cliente_id;}); if(cc) return cc.nombre; }
+  if(c.lead_id){ var ll=agLeads.find(function(x){return x.id===c.lead_id;}); if(ll) return ll.nombre; }
+  return '';
+}
+function citaMsgProspecto(c){
+  var nom=(citaNombreProspecto(c)||'').split(' ')[0]||'';
+  var prop=citaPropTitulo(c)||c.titulo||'el inmueble';
+  var cuando=citaFmtFecha(c.fecha_hora);
+  var lugar=c.ubicacion?('\n📍 Lugar: '+c.ubicacion):'';
+  return 'Hola '+nom+'! 👋 Te confirmo tu '+(c.tipo||'Visita').toLowerCase()+' con Lomaz Home.\n\n'+
+    '🏠 Inmueble: '+prop+'\n📅 Fecha: '+cuando+lugar+'\n\n'+
+    'Cualquier cosa me avisas. ¡Nos vemos! — Lomaz Home';
+}
+function citaMsgPropietario(c){
+  var nom=(c.propietario_nombre||'').split(' ')[0]||'';
+  var prop=citaPropTitulo(c)||c.titulo||'su inmueble';
+  var cuando=citaFmtFecha(c.fecha_hora);
+  var prospecto=citaNombreProspecto(c);
+  var lugar=c.ubicacion?('\n📍 Lugar: '+c.ubicacion):'';
+  return 'Hola '+nom+'! 👋 Le escribo de Lomaz Home. Hemos coordinado una '+(c.tipo||'visita').toLowerCase()+' para su inmueble.\n\n'+
+    '🏠 Inmueble: '+prop+'\n📅 Fecha: '+cuando+lugar+
+    (prospecto?('\n👤 Interesado: '+prospecto):'')+'\n\n'+
+    'Quedo atento para confirmar. Gracias. — Lomaz Home';
+}
+function citaWaLink(tel,msg){
+  tel=(tel||'').replace(/[^0-9]/g,''); if(tel&&tel.length<=10) tel='57'+tel;
+  return 'https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
+}
+function buildShareBox(c){
+  var box=document.getElementById('czShareBox'); if(!box)return;
+  var msgP=citaMsgProspecto(c);
+  var msgO=citaMsgPropietario(c);
+  window.__lastCita={c:c,msgP:msgP,msgO:msgO};
+  var telP=c.contacto_telefono||'';
+  var telO=c.propietario_telefono||'';
+  var h='<div class="agent-panel" style="border-left:3px solid var(--gold)">'+
+    '<h3>✅ Cita agendada — <em>mensajes listos</em></h3>'+
+    '<p style="font-size:.84rem;color:var(--txt-soft);margin-bottom:1rem">El agente ya redactó los mensajes para ambas partes. Revísalos y pulsa enviar; se abrirá WhatsApp con el texto listo.</p>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">'+
+      '<div>'+
+        '<label>Mensaje al prospecto</label>'+
+        '<div class="agent-msg" id="czMsgPText">'+esc(msgP)+'</div>'+
+        '<div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">'+
+          '<button class="btn-mini gold" onclick="citaSendWa(\'P\')"'+(telP?'':' disabled title="Sin teléfono"')+'>Enviar al prospecto</button>'+
+          '<button class="btn-mini" onclick="citaCopyMsg(\'P\')">Copiar</button>'+
+        '</div>'+
+      '</div>'+
+      '<div>'+
+        '<label>Mensaje al propietario</label>'+
+        '<div class="agent-msg" id="czMsgOText">'+esc(msgO)+'</div>'+
+        '<div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">'+
+          '<button class="btn-mini gold" onclick="citaSendWa(\'O\')"'+(telO?'':' disabled title="Sin teléfono"')+'>Enviar al propietario</button>'+
+          '<button class="btn-mini" onclick="citaCopyMsg(\'O\')">Copiar</button>'+
+        '</div>'+
+      '</div>'+
+    '</div></div>';
+  box.innerHTML=h; box.style.display='block';
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function citaSendWa(which){
+  if(!window.__lastCita)return; var c=window.__lastCita.c;
+  if(which==='P') window.open(citaWaLink(c.contacto_telefono,window.__lastCita.msgP),'_blank');
+  else window.open(citaWaLink(c.propietario_telefono,window.__lastCita.msgO),'_blank');
+}
+function citaCopyMsg(which){
+  if(!window.__lastCita)return;
+  var txt=which==='P'?window.__lastCita.msgP:window.__lastCita.msgO;
+  navigator.clipboard.writeText(txt).then(function(){var b=event.target;var o=b.textContent;b.textContent='¡Copiado!';setTimeout(function(){b.textContent=o;},1500);});
+}
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
