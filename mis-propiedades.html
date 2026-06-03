@@ -82,6 +82,31 @@ td strong{font-weight:600;color:#fff}
 .brand-text{font-size:1.3rem}
 .container,.main,.wrap{padding:0 1rem;margin:1.5rem auto}
 }
+
+/* ===== Vista tarjetas tipo portal (rediseno inventario) ===== */
+.props-grid{display:flex;flex-direction:column;gap:1rem}
+.prop-card{display:flex;gap:1.25rem;background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.1rem;box-shadow:var(--sh-soft);transition:all .22s ease;position:relative;overflow:hidden}
+.prop-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold),transparent);opacity:.5}
+.prop-card:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:var(--sh-card)}
+.prop-card-photo{position:relative;width:180px;height:135px;flex-shrink:0;border-radius:var(--r);overflow:hidden;background:rgba(13,27,46,.6);display:flex;align-items:center;justify-content:center}
+.prop-card-photo img{width:100%;height:100%;object-fit:cover}
+.prop-card-photo .ph-ico{font-size:2.6rem;opacity:.5}
+.prop-card-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.prop-card-title{font-family:var(--serif);font-size:1.3rem;font-weight:500;color:#fff;letter-spacing:.2px;margin-bottom:.25rem;line-height:1.2}
+.prop-card-title a{color:#fff;transition:color .2s}
+.prop-card-title a:hover{color:var(--gold)}
+.prop-card-loc{font-size:.82rem;color:var(--txt-soft);margin-bottom:.7rem}
+.prop-card-badges{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:auto}
+.prop-card-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;min-width:210px}
+.prop-card-price{font-family:var(--serif);font-size:1.55rem;font-weight:600;color:var(--gold);white-space:nowrap}
+.prop-card-date{font-size:.72rem;color:var(--txt-mute);letter-spacing:.5px;margin-top:.15rem;text-align:right}
+.prop-card-actions{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end;margin-top:.9rem}
+.pc-act{padding:.5rem .9rem;border-radius:var(--r-sm);font-size:.72rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--txt-soft);transition:all .2s;font-family:var(--sans)}
+.pc-act:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.06)}
+.pc-act.view{border-color:rgba(201,169,110,.45);color:var(--gold)}
+.pc-act.del:hover{border-color:rgba(220,53,69,.5);color:#ff8a93;background:rgba(220,53,69,.08)}
+.prop-card-badges .badge{font-size:.62rem;letter-spacing:.8px}
+@media(max-width:760px){.prop-card{flex-direction:column}.prop-card-right{align-items:flex-start;min-width:0}.prop-card-actions{justify-content:flex-start}.prop-card-photo{width:100%;height:170px}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -248,42 +273,44 @@ function clearFilters() {
 }
 
 function renderTable() {
-  const container = document.getElementById("tableContainer");
-  document.getElementById("countBadge").textContent = filtered.length + " propiedad" + (filtered.length !== 1 ? "es" : "");
-  if (filtered.length === 0) {
-    container.innerHTML = `<div class="empty-state"><span class="icon">&#127968;</span><p>No hay propiedades. <a href="agregar-propiedad.html">&#43; Agregar primera propiedad</a></p></div>`;
-    return;
-  }
-  const start = (currentPage - 1) * PER_PAGE;
-  const page = filtered.slice(start, start + PER_PAGE);
-  let html = `<table><thead><tr>
-    <th>Foto</th><th>Propiedad</th><th>Tipo</th><th>Precio</th><th>Estado</th><th>Portales</th><th>Fecha</th><th>Acciones</th>
-  </tr></thead><tbody>`;
-  page.forEach(p => {
-    const img = p.foto_principal ? `<img src="${p.foto_principal}" class="prop-thumb" onerror="this.style.display='none'">` : `<div class="prop-no-img">&#127968;</div>`;
-    const badgeE = `<span class="badge badge-${(p.estado||"disponible").toLowerCase()}">${p.estado||"N/A"}</span>`;
-    const _negLbl = {"venta":"Venta","arriendo":"Arriendo","arriendo_temporal":"Arriendo temporal","venta y arriendo":"Venta y Arriendo","permuta":"Permuta"}; const _negKey = (p.tipo_negocio||"").toLowerCase(); const badgeN = `<span class="badge badge-${_negKey.replace(/ /g,"-")}">${_negLbl[_negKey]||(p.tipo_negocio||"-")}</span>`;
-    const price = "$" + Number(p.precio||0).toLocaleString("es-CO");
-    const portalesCount = (p.portales_publicacion||[]).length;
-    const portalesText = portalesCount > 0 ? `&#127760; ${portalesCount} portal${portalesCount>1?"es":""}` : "-";
-    const fecha = p.created_at ? new Date(p.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}) : "-";
-    html += `<tr>
-      <td>${img}</td>
-      <td><div class="prop-title">${p.titulo||"Sin t\u00edtulo"}</div><div class="prop-loc">&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""} &#183; ${p.area_construida||p.area_total||p.area_privada||"?"}m\u00b2${p.habitaciones?" &#183; "+p.habitaciones+"hab":""}</div></td>
-      <td>${badgeN}<br><small style="color:#888;font-size:11px">${p.tipo_propiedad||""}</small></td>
-      <td class="price">${price}</td>
-      <td>${badgeE}</td>
-      <td style="font-size:12px;color:#666">${portalesText}</td>
-      <td style="font-size:12px;color:#888">${fecha}</td>
-      <td><div class="actions">
-        <a href="propiedad.html?id=${p.id}" class="btn-action btn-view" target="_blank">Ver</a>
-        <button class="btn-action btn-edit" onclick="editProp('${p.id}')">Editar</button>
-        <button class="btn-action btn-del" onclick="confirmDelete('${p.id}')">Eliminar</button>
-      </div></td>
-    </tr>`;
-  });
-  html += "</tbody></table>";
-  container.innerHTML = html;
+const container = document.getElementById("tableContainer");
+document.getElementById("countBadge").textContent = filtered.length + " propiedad" + (filtered.length !== 1 ? "es" : "");
+if (filtered.length === 0) {
+container.innerHTML = `<div class="empty-state"><span class="icon">&#127968;</span><p>No hay propiedades. <a href="agregar-propiedad.html">&#43; Agregar primera propiedad</a></p></div>`;
+return;
+}
+const start = (currentPage - 1) * PER_PAGE;
+const page = filtered.slice(start, start + PER_PAGE);
+let html = '<div class="props-grid">';
+page.forEach(p => {
+const photo = p.foto_principal
+? `<img src="${p.foto_principal}" onerror="this.parentElement.innerHTML='<span class=ph-ico>&#127968;</span>'">`
+: `<span class="ph-ico">&#127968;</span>`;
+const badgeE = `<span class="badge badge-${(p.estado||"disponible").toLowerCase()}">${p.estado||"N/A"}</span>`;
+const _negLbl = {"venta":"Venta","arriendo":"Arriendo","arriendo_temporal":"Arriendo temporal","venta y arriendo":"Venta y Arriendo","permuta":"Permuta"}; const _negKey = (p.tipo_negocio||"").toLowerCase(); const badgeN = `<span class="badge badge-${_negKey.replace(/ /g,"-")}">${_negLbl[_negKey]||(p.tipo_negocio||"-")}</span>`;
+const badgeT = p.tipo_propiedad ? `<span class="badge">${p.tipo_propiedad}</span>` : "";
+const price = "$" + Number(p.precio||0).toLocaleString("es-CO");
+const fecha = p.created_at ? new Date(p.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}) : "-";
+const loc = `&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""}${(p.area_construida)?" &#183; "+p.area_construida+"m\u00b2":""}${p.habitaciones?" &#183; "+p.habitaciones+" hab":""}`;
+html += `<div class="prop-card">
+<div class="prop-card-photo">${photo}</div>
+<div class="prop-card-body">
+<div class="prop-card-title"><a href="propiedad.html?id=${p.id}" target="_blank">${p.titulo||"Sin t\u00edtulo"}</a></div>
+<div class="prop-card-loc">${loc}</div>
+<div class="prop-card-badges">${badgeN}${badgeT}${badgeE}</div>
+</div>
+<div class="prop-card-right">
+<div><div class="prop-card-price">${price}</div><div class="prop-card-date">${fecha}</div></div>
+<div class="prop-card-actions">
+<a href="propiedad.html?id=${p.id}" class="pc-act view" target="_blank">Ver</a>
+<button class="pc-act" onclick="editProp('${p.id}')">Editar</button>
+<button class="pc-act del" onclick="confirmDelete('${p.id}')">Eliminar</button>
+</div>
+</div>
+</div>`;
+});
+html += "</div>";
+container.innerHTML = html;
 }
 
 function renderPagination() {
