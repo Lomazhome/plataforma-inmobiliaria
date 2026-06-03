@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing / Contenido - Lomaz Home</title>
+<meta name="google" content="notranslate">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1B2E;--navy-2:#162540;--navy-3:#1d2e4d;--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--sh-card:0 8px 32px rgba(0,0,0,.35);--sh-soft:0 4px 16px rgba(0,0,0,.25);--r-sm:8px;--r:12px;--r-lg:16px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.9rem 1.75rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:.85rem}
+.brand-svg{width:42px;height:42px;flex-shrink:0}
+.brand-text{font-family:var(--serif);font-size:1.55rem;font-weight:500;letter-spacing:.5px;line-height:1}
+.brand-text .lo{color:var(--gold)}
+.brand-text .ho{color:#fff;font-family:var(--sans);font-size:.78rem;letter-spacing:6px;font-weight:400;display:block;margin-top:2px;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.topbar-right .user-email{font-size:.85rem;color:var(--txt-soft);font-weight:500}
+.btn-back{background:transparent;border:1px solid var(--line);color:var(--txt-soft);padding:.5rem 1rem;border-radius:var(--r-sm);cursor:pointer;font-size:.8rem;font-weight:500;letter-spacing:.5px;transition:all .25s ease;font-family:var(--sans)}
+.btn-back:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.05)}
+.container{max-width:1280px;margin:2rem auto;padding:0 1.5rem}
+.page-title{font-family:var(--serif);font-size:2rem;font-weight:500;color:#fff;letter-spacing:.3px;margin-bottom:.4rem}
+.page-title em{font-style:italic;color:var(--gold)}
+.page-sub{color:var(--txt-soft);font-size:.92rem;margin-bottom:1.8rem;font-weight:300;max-width:760px}
+.hero-strip{background:linear-gradient(135deg,#0A1626 0%,#13233d 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.4rem 1.6rem;margin-bottom:1.6rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:relative;overflow:hidden}
+.hero-strip::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5}
+.hero-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+.chip{font-size:.72rem;padding:.3rem .7rem;border-radius:20px;background:rgba(201,169,110,.10);border:1px solid rgba(201,169,110,.25);color:var(--gold-l);letter-spacing:.3px}
+.alert{padding:.9rem 1.2rem;border-radius:var(--r-sm);font-size:.88rem;font-weight:500;margin-bottom:1.2rem;display:none}
+.alert.error{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff8a93;display:block}
+.alert.success{background:rgba(40,167,69,.10);border:1px solid rgba(40,167,69,.35);color:#7dd87d;display:block}
+.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin-bottom:1.8rem;flex-wrap:wrap}
+.tab{padding:.85rem 1.4rem;cursor:pointer;font-size:.78rem;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease}
+.tab:hover{color:var(--gold)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.panel{display:none}
+.panel.active{display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.6rem}
+.kpi{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem;box-shadow:var(--sh-soft);position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.35}
+.kpi .lbl{font-size:.68rem;color:var(--gold);letter-spacing:1.8px;text-transform:uppercase;font-weight:600;margin-bottom:.6rem}
+.kpi .num{font-family:var(--serif);font-size:2.2rem;font-weight:500;color:#fff;line-height:1}
+.kpi .mini{font-size:.74rem;color:var(--txt-soft);margin-top:.5rem;display:flex;gap:.6rem;flex-wrap:wrap}
+.kpi .mini b{color:var(--gold-l);font-weight:600}
+.bar{height:7px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:.4rem}
+.bar > i{display:block;height:100%;border-radius:5px}
+.toolbar{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center;margin-bottom:1.2rem}
+.toolbar select,.toolbar input{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.6rem .85rem;color:var(--txt);font-family:var(--sans);font-size:.85rem;outline:none}
+.toolbar .spacer{flex:1}
+.btn{padding:.62rem 1.2rem;border-radius:var(--r-sm);font-size:.76rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.7px;text-transform:uppercase;transition:all .25s ease}
+.btn-primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);box-shadow:0 2px 8px rgba(201,169,110,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
+.btn-secondary{background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line)}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn-danger{background:rgba(220,53,69,.12);color:#ff8a93;border:1px solid rgba(220,53,69,.35)}
+.table-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--line);margin-bottom:1.5rem;background:linear-gradient(180deg,#13233d 0%,#0F1E36 100%)}
+table{width:100%;border-collapse:collapse;min-width:920px}
+thead tr{background:rgba(13,27,46,.7)}
+th{padding:.85rem 1rem;text-align:left;font-size:.66rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold);font-weight:600;border-bottom:1px solid var(--line-strong);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--line);transition:all .2s ease}
+tbody tr:hover{background:rgba(201,169,110,.04)}
+td{padding:.85rem 1rem;font-size:.84rem;color:var(--txt);vertical-align:top}
+td .tprev{max-width:340px;color:var(--txt-soft);font-size:.78rem;line-height:1.4}
+.empty{text-align:center;padding:3rem;color:var(--txt-mute);font-size:1rem;font-style:italic;font-family:var(--serif)}
+.badge{display:inline-block;padding:.26rem .7rem;border-radius:14px;font-size:.64rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap}
+.b-borr{background:rgba(168,162,158,.15);color:#cfcac4;border:1px solid rgba(168,162,158,.35)}
+.b-prog{background:rgba(201,169,110,.14);color:var(--gold);border:1px solid rgba(201,169,110,.4)}
+.b-pub{background:rgba(40,167,69,.14);color:#7dd87d;border:1px solid rgba(40,167,69,.4)}
+.rs{display:inline-flex;align-items:center;gap:.35rem;font-weight:600;font-size:.8rem}
+.ico-act{cursor:pointer;color:var(--txt-soft);font-size:.95rem;padding:.2rem .35rem;border-radius:6px;transition:all .2s}
+.ico-act:hover{color:var(--gold);background:rgba(201,169,110,.08)}
+.ico-act.del:hover{color:#ff8a93;background:rgba(220,53,69,.1)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.cal-nav{display:flex;align-items:center;gap:.6rem}
+.cal-nav button{background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.3);color:var(--gold);width:38px;height:34px;border-radius:8px;cursor:pointer;font-size:1rem}
+.cal-month{font-family:var(--serif);font-size:1.4rem;color:#fff;letter-spacing:.5px;min-width:200px;text-align:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{text-align:center;font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;padding:.4rem 0}
+.cal-cell{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:8px;min-height:96px;padding:.4rem;display:flex;flex-direction:column;gap:.25rem}
+.cal-cell.empty-cell{background:transparent;border:none}
+.cal-cell.today{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+.cal-daynum{font-size:.78rem;color:var(--txt-soft);font-weight:600}
+.cal-evt{font-size:.64rem;padding:.2rem .35rem;border-radius:5px;cursor:pointer;line-height:1.2;border-left:3px solid;background:rgba(255,255,255,.04);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;margin:.8rem 0 1.2rem;font-size:.74rem;color:var(--txt-soft)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.35rem;vertical-align:middle}
+.overlay{position:fixed;inset:0;background:rgba(5,10,20,.7);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:3rem 1rem;overflow-y:auto}
+.overlay.show{display:flex}
+.modal{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line-strong);border-radius:var(--r-lg);padding:1.8rem;width:100%;max-width:640px;box-shadow:var(--sh-card);position:relative}
+.modal h3{font-family:var(--serif);font-size:1.5rem;color:#fff;margin-bottom:1.3rem}
+.modal h3 em{font-style:italic;color:var(--gold)}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.fg.full{grid-column:1/-1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+label{font-size:.68rem;color:var(--gold);font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
+input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.7rem .9rem;color:var(--txt);font-family:var(--sans);font-size:.88rem;outline:none;transition:all .25s ease;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
+select option{background:var(--navy-2);color:var(--txt)}
+textarea{resize:vertical;min-height:70px}
+.modal-btns{display:flex;justify-content:flex-end;gap:.7rem;margin-top:1.2rem}
+@media(max-width:900px){.kpi-row{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.cal-cell{min-height:70px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+<a href="dashboard.html" class="brand">
+<svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
+</svg>
+<div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
+</a>
+<div class="topbar-right">
+<span id="uEmail" class="user-email"></span>
+<button class="btn-back" onclick="location.href='dashboard.html'">&larr; Dashboard</button>
+</div>
+</div>
+
+<div class="container">
+<div class="page-title">&#128241; Centro de Mando <em>Social</em></div>
+<div class="page-sub">Controla tu calendario de creacion de contenido digital y toda la publicidad y marketing que realizas en redes sociales cada mes. Planifica, programa y haz seguimiento de cada publicacion de LOMAZ HOME y tu marca personal.</div>
+
+<div class="hero-strip">
+<div>
+<div style="font-family:var(--serif);font-size:1.25rem;color:#fff">Matriz de Publicacion Mensual</div>
+<div style="font-size:.82rem;color:var(--txt-soft);margin-top:.3rem">Fusion de marca corporativa <b style="color:var(--gold-l)">LOMAZ HOME</b> + marca personal del asesor para proyectar autoridad en el sector.</div>
+<div class="hero-chips">
+<span class="chip">TikTok</span><span class="chip">Instagram</span><span class="chip">Facebook</span><span class="chip">LinkedIn</span><span class="chip">YouTube</span><span class="chip">Threads</span><span class="chip">WhatsApp</span><span class="chip">X</span>
+</div>
+</div>
+<button class="btn btn-primary" onclick="openEditor()">+ Nueva publicacion</button>
+</div>
+
+<div class="alert" id="alert"></div>
+
+<div class="kpi-row">
+<div class="kpi"><div class="lbl">Volumen mensual</div><div class="num" id="kVol">0</div><div class="mini"><span><b id="kBorr">0</b> borrador</span><span><b id="kProg">0</b> prog.</span><span><b id="kPub">0</b> pub.</span></div></div>
+<div class="kpi"><div class="lbl">Mix de redes</div><div class="num" id="kRedes">0</div><div class="mini" id="kRedesMini" style="font-size:.7rem">&mdash;</div></div>
+<div class="kpi"><div class="lbl">Balance de marca</div><div class="num" id="kMarcaTop">&mdash;</div><div class="mini" id="kMarcaMini">&mdash;</div></div>
+<div class="kpi"><div class="lbl">Pilares estrategicos</div><div class="num" id="kPilarTop">&mdash;</div><div class="mini" id="kPilarMini">&mdash;</div></div>
+</div>
+
+<div class="tabs">
+<div class="tab active" data-panel="plan" onclick="switchTab('plan')">&#128203; Planificador</div>
+<div class="tab" data-panel="cal" onclick="switchTab('cal')">&#128197; Calendario visual</div>
+</div>
+
+<div class="panel active" id="panel-plan">
+<div class="toolbar">
+<select id="fRed" onchange="render()"><option value="">Todas las redes</option></select>
+<select id="fEnfoque" onchange="render()"><option value="">Todos los enfoques</option></select>
+<select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>Borrador</option><option>Programado</option><option>Publicado</option></select>
+<input type="text" id="fSearch" placeholder="&#128269; Buscar tema, copy..." oninput="render()" style="min-width:200px">
+<div class="spacer"></div>
+<button class="btn btn-secondary" onclick="clearFilters()">Limpiar</button>
+<button class="btn btn-primary" onclick="openEditor()">+ Nueva</button>
+</div>
+<div id="tableHost"><div class="empty">Cargando publicaciones...</div></div>
+</div>
+
+<div class="panel" id="panel-cal">
+<div class="cal-head">
+<div class="cal-nav"><button onclick="calMove(-1)">&#8592;</button><div class="cal-month" id="calMonth"></div><button onclick="calMove(1)">&#8594;</button></div>
+<button class="btn btn-primary" onclick="openEditor()">+ Nueva publicacion</button>
+</div>
+<div class="legend">
+<span><i style="background:#a8a29e"></i>Borrador</span>
+<span><i style="background:#c9a96e"></i>Programado</span>
+<span><i style="background:#28a745"></i>Publicado</span>
+</div>
+<div class="cal-grid" id="calGrid"></div>
+</div>
+</div>
+
+<div class="overlay" id="editorOverlay">
+<div class="modal">
+<h3 id="editorTitle">Nueva <em>publicacion</em></h3>
+<input type="hidden" id="ePostId">
+<div class="grid3">
+<div class="fg"><label>Fecha</label><input type="date" id="eFecha"></div>
+<div class="fg"><label>Hora</label><input type="time" id="eHora"></div>
+<div class="fg"><label>Estado</label><select id="eEstado"><option>Borrador</option><option>Programado</option><option>Publicado</option></select></div>
+</div>
+<div class="grid3">
+<div class="fg"><label>Red social</label><select id="eRed"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>YouTube</option><option>Threads</option><option>WhatsApp</option><option>X</option></select></div>
+<div class="fg"><label>Enfoque de marca</label><select id="eEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
+<div class="fg"><label>Pilar de contenido</label><select id="ePilar"><option>Educacion y Autoridad</option><option>Portafolio Inmobiliario</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
+</div>
+<div class="fg full"><label>Titulo / Tema central</label><input type="text" id="eTitulo" placeholder="Ej: Tour exclusivo penthouse..."></div>
+<div class="fg full"><label>Hook (gancho de apertura)</label><textarea id="eHook" placeholder="La primera linea que detiene el scroll..."></textarea></div>
+<div class="fg full"><label>Copy / Guion</label><textarea id="eCopy" placeholder="Cuerpo del post, guion o descripcion..." style="min-height:120px"></textarea></div>
+<div class="fg full"><label>Responsable</label><input type="text" id="eResp" placeholder="Ej: Salomon Mazabell / Equipo de contenido"></div>
+<div class="modal-btns">
+<button class="btn btn-secondary" onclick="closeEditor()">Cancelar</button>
+<button class="btn btn-primary" id="btnSave" onclick="savePost()">Guardar</button>
+</div>
+</div>
+</div>
+
+<div class="overlay" id="delOverlay">
+<div class="modal" style="max-width:400px">
+<h3>Eliminar <em>publicacion</em></h3>
+<p style="color:var(--txt-soft);font-size:.9rem;margin-bottom:.5rem">Esta accion no se puede deshacer. La publicacion se eliminara de tu calendario.</p>
+<div class="modal-btns">
+<button class="btn btn-secondary" onclick="closeDel()">Cancelar</button>
+<button class="btn btn-danger" id="btnConfDel">Si, eliminar</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+const K=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const U="https://lniouebpuuuqctrgxoiw.supabase.co";
+const sb=supabase.createClient(U,K);
+const TABLE="publicaciones_marketing";
+let uid=null, posts=[], delId=null;
+let calRef=new Date();
+
+const RED_ICON={TikTok:"\u{1F3B5}",Instagram:"\u{1F4F8}",Facebook:"\u{1F465}",LinkedIn:"\u{1F4BC}",YouTube:"\u{1F3AC}",Threads:"\u{1F9F5}",WhatsApp:"\u{1F4AC}",X:"\u{2716}"};
+const EST_BADGE={Borrador:"b-borr",Programado:"b-prog",Publicado:"b-pub"};
+const EST_COLOR={Borrador:"#a8a29e",Programado:"#c9a96e",Publicado:"#28a745"};
+
+function showAlert(msg,type){const a=document.getElementById("alert");a.textContent=msg;a.className="alert "+type;setTimeout(()=>{a.className="alert";},4000);}
+
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  uid=session.user.id;
+  document.getElementById("uEmail").textContent=session.user.email;
+  buildFilterOptions();
+  await loadPosts();
+})();
+
+function buildFilterOptions(){
+  const reds=["TikTok","Instagram","Facebook","LinkedIn","YouTube","Threads","WhatsApp","X"];
+  const enf=["LOMAZ HOME","Marca personal","Fusion"];
+  const fr=document.getElementById("fRed"); reds.forEach(r=>{const o=document.createElement("option");o.value=r;o.textContent=r;fr.appendChild(o);});
+  const fe=document.getElementById("fEnfoque"); enf.forEach(e=>{const o=document.createElement("option");o.value=e;o.textContent=e;fe.appendChild(o);});
+}
+
+async function loadPosts(){
+  const{data,error}=await sb.from(TABLE).select("*").eq("asesor_id",uid).order("fecha",{ascending:true,nullsFirst:false});
+  if(error){document.getElementById("tableHost").innerHTML='<div class="empty">Error: '+error.message+'</div>';return;}
+  posts=data||[];
+  updateKPIs();render();renderCalendar();
+}
+
+function filtered(){
+  const r=document.getElementById("fRed").value;
+  const e=document.getElementById("fEnfoque").value;
+  const s=document.getElementById("fEstado").value;
+  const q=(document.getElementById("fSearch").value||"").toLowerCase();
+  return posts.filter(p=>{
+    if(r&&p.red_social!==r)return false;
+    if(e&&p.enfoque_marca!==e)return false;
+    if(s&&p.estado!==s)return false;
+    if(q){const blob=((p.titulo||"")+" "+(p.hook||"")+" "+(p.copy||"")+" "+(p.responsable||"")).toLowerCase();if(!blob.includes(q))return false;}
+    return true;
+  });
+}
+
+function esc(t){return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fmtFecha(f){if(!f)return "Sin fecha";const d=new Date(f+"T00:00:00");return d.toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"});}
+
+function render(){
+  const host=document.getElementById("tableHost");
+  const list=filtered();
+  if(!list.length){host.innerHTML='<div class="empty">No hay publicaciones que coincidan. Crea tu primera con el boton "+ Nueva".</div>';return;}
+  let h='<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Red</th><th>Enfoque</th><th>Pilar</th><th>Titulo / Tema</th><th>Preview</th><th>Estado</th><th>Resp.</th><th></th></tr></thead><tbody>';
+  list.forEach(p=>{
+    const ic=RED_ICON[p.red_social]||"";
+    const prev=esc((p.hook||p.copy||"").slice(0,120))+((p.hook||p.copy||"").length>120?"...":"");
+    h+='<tr>'
+      +'<td style="white-space:nowrap">'+fmtFecha(p.fecha)+(p.hora?'<div style="font-size:.7rem;color:var(--txt-mute)">'+esc(p.hora)+'</div>':'')+'</td>'
+      +'<td><span class="rs">'+ic+' '+esc(p.red_social||"")+'</span></td>'
+      +'<td style="font-size:.78rem">'+esc(p.enfoque_marca||"")+'</td>'
+      +'<td style="font-size:.78rem">'+esc(p.pilar_contenido||"")+'</td>'
+      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin titulo)")+'</strong></td>'
+      +'<td><div class="tprev">'+prev+'</div></td>'
+      +'<td><span class="badge '+(EST_BADGE[p.estado]||"b-borr")+'">'+esc(p.estado||"Borrador")+'</span></td>'
+      +'<td style="font-size:.76rem;color:var(--txt-soft)">'+esc(p.responsable||"")+'</td>'
+      +'<td style="white-space:nowrap"><span class="ico-act" onclick="openEditor(\''+p.id+'\')">\u270E</span><span class="ico-act del" onclick="openDel(\''+p.id+'\')">\u2716</span></td>'
+      +'</tr>';
+  });
+  h+='</tbody></table></div>';
+  host.innerHTML=h;
+}
+
+function updateKPIs(){
+  const total=posts.length;
+  document.getElementById("kVol").textContent=total;
+  document.getElementById("kBorr").textContent=posts.filter(p=>p.estado==="Borrador").length;
+  document.getElementById("kProg").textContent=posts.filter(p=>p.estado==="Programado").length;
+  document.getElementById("kPub").textContent=posts.filter(p=>p.estado==="Publicado").length;
+  const byRed={};posts.forEach(p=>{if(p.red_social)byRed[p.red_social]=(byRed[p.red_social]||0)+1;});
+  document.getElementById("kRedes").textContent=Object.keys(byRed).length;
+  document.getElementById("kRedesMini").innerHTML=Object.keys(byRed).sort((a,b)=>byRed[b]-byRed[a]).slice(0,4).map(r=>'<span><b>'+byRed[r]+'</b> '+r+'</span>').join("");
+  const byMarca={};posts.forEach(p=>{if(p.enfoque_marca)byMarca[p.enfoque_marca]=(byMarca[p.enfoque_marca]||0)+1;});
+  const mk=Object.keys(byMarca).sort((a,b)=>byMarca[b]-byMarca[a]);
+  document.getElementById("kMarcaTop").textContent=mk.length?mk[0]:"\u2014";
+  document.getElementById("kMarcaMini").innerHTML=mk.map(m=>'<span><b>'+(total?Math.round(byMarca[m]/total*100):0)+'%</b> '+m+'</span>').join("")||"\u2014";
+  const byPilar={};posts.forEach(p=>{if(p.pilar_contenido)byPilar[p.pilar_contenido]=(byPilar[p.pilar_contenido]||0)+1;});
+  const pk=Object.keys(byPilar).sort((a,b)=>byPilar[b]-byPilar[a]);
+  document.getElementById("kPilarTop").textContent=pk.length?(byPilar[pk[0]]):"\u2014";
+  document.getElementById("kPilarMini").innerHTML=pk.slice(0,3).map(p=>'<span><b>'+byPilar[p]+'</b> '+p+'</span>').join("")||"\u2014";
+}
+
+function switchTab(name){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===name));
+  document.getElementById("panel-plan").classList.toggle("active",name==="plan");
+  document.getElementById("panel-cal").classList.toggle("active",name==="cal");
+  if(name==="cal")renderCalendar();
+}
+function clearFilters(){document.getElementById("fRed").value="";document.getElementById("fEnfoque").value="";document.getElementById("fEstado").value="";document.getElementById("fSearch").value="";render();}
+
+function calMove(d){calRef.setMonth(calRef.getMonth()+d);renderCalendar();}
+function renderCalendar(){
+  const y=calRef.getFullYear(),m=calRef.getMonth();
+  const meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  document.getElementById("calMonth").textContent=meses[m]+" "+y;
+  const first=new Date(y,m,1);const startDow=(first.getDay()+6)%7;
+  const days=new Date(y,m+1,0).getDate();
+  const dows=["Lun","Mar","Mie","Jue","Vie","Sab","Dom"];
+  let h="";dows.forEach(d=>h+='<div class="cal-dow">'+d+'</div>');
+  for(let i=0;i<startDow;i++)h+='<div class="cal-cell empty-cell"></div>';
+  const today=new Date();const isCurMonth=today.getFullYear()===y&&today.getMonth()===m;
+  for(let d=1;d<=days;d++){
+    const ds=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const evs=posts.filter(p=>p.fecha===ds);
+    const todayCls=(isCurMonth&&today.getDate()===d)?" today":"";
+    h+='<div class="cal-cell'+todayCls+'"><div class="cal-daynum">'+d+'</div>';
+    evs.slice(0,4).forEach(p=>{const c=EST_COLOR[p.estado]||"#a8a29e";h+='<div class="cal-evt" style="border-left-color:'+c+'" title="'+esc(p.titulo||"")+'" onclick="openEditor(\''+p.id+'\')">'+(RED_ICON[p.red_social]||"")+' '+esc((p.titulo||p.red_social||"").slice(0,16))+'</div>';});
+    if(evs.length>4)h+='<div style="font-size:.62rem;color:var(--gold)">+'+(evs.length-4)+' mas</div>';
+    h+='</div>';
+  }
+  document.getElementById("calGrid").innerHTML=h;
+}
+
+function openEditor(id){
+  document.getElementById("ePostId").value=id||"";
+  const t=document.getElementById("editorTitle");
+  if(id){
+    const p=posts.find(x=>x.id===id);if(!p)return;
+    t.innerHTML="Editar <em>publicacion</em>";
+    document.getElementById("eFecha").value=p.fecha||"";
+    document.getElementById("eHora").value=p.hora||"";
+    document.getElementById("eEstado").value=p.estado||"Borrador";
+    document.getElementById("eRed").value=p.red_social||"Instagram";
+    document.getElementById("eEnfoque").value=p.enfoque_marca||"LOMAZ HOME";
+    document.getElementById("ePilar").value=p.pilar_contenido||"Educacion y Autoridad";
+    document.getElementById("eTitulo").value=p.titulo||"";
+    document.getElementById("eHook").value=p.hook||"";
+    document.getElementById("eCopy").value=p.copy||"";
+    document.getElementById("eResp").value=p.responsable||"";
+  }else{
+    t.innerHTML="Nueva <em>publicacion</em>";
+    ["eFecha","eHora","eTitulo","eHook","eCopy","eResp"].forEach(i=>document.getElementById(i).value="");
+    document.getElementById("eEstado").value="Borrador";
+    document.getElementById("eRed").value="Instagram";
+    document.getElementById("eEnfoque").value="LOMAZ HOME";
+    document.getElementById("ePilar").value="Educacion y Autoridad";
+  }
+  document.getElementById("editorOverlay").classList.add("show");
+}
+function closeEditor(){document.getElementById("editorOverlay").classList.remove("show");}
+
+async function savePost(){
+  const id=document.getElementById("ePostId").value;
+  const rec={
+    fecha:document.getElementById("eFecha").value||null,
+    hora:document.getElementById("eHora").value||null,
+    estado:document.getElementById("eEstado").value,
+    red_social:document.getElementById("eRed").value,
+    enfoque_marca:document.getElementById("eEnfoque").value,
+    pilar_contenido:document.getElementById("ePilar").value,
+    titulo:document.getElementById("eTitulo").value||null,
+    hook:document.getElementById("eHook").value||null,
+    copy:document.getElementById("eCopy").value||null,
+    responsable:document.getElementById("eResp").value||null
+  };
+  const btn=document.getElementById("btnSave");btn.disabled=true;btn.textContent="Guardando...";
+  let error;
+  if(id){const r=await sb.from(TABLE).update(rec).eq("id",id);error=r.error;}
+  else{rec.asesor_id=uid;const r=await sb.from(TABLE).insert(rec);error=r.error;}
+  btn.disabled=false;btn.textContent="Guardar";
+  if(error){showAlert("Error al guardar: "+error.message,"error");return;}
+  closeEditor();showAlert("Publicacion guardada correctamente.","success");
+  await loadPosts();
+}
+
+function openDel(id){delId=id;document.getElementById("delOverlay").classList.add("show");
+  document.getElementById("btnConfDel").onclick=async function(){
+    const{error}=await sb.from(TABLE).delete().eq("id",delId);
+    if(error){showAlert("Error al eliminar: "+error.message,"error");return;}
+    closeDel();showAlert("Publicacion eliminada.","success");await loadPosts();
+  };
+}
+function closeDel(){document.getElementById("delOverlay").classList.remove("show");delId=null;}
+
+document.addEventListener("click",function(e){if(e.target.classList&&e.target.classList.contains("overlay"))e.target.classList.remove("show");});
+<\/script>
+</body>
+</html>
