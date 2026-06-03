@@ -103,6 +103,31 @@ select option{background:var(--navy-2);color:var(--txt)}
 textarea{resize:vertical;min-height:70px}
 .modal-btns{display:flex;justify-content:flex-end;gap:.7rem;margin-top:1.2rem}
 @media(max-width:900px){.kpi-row{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.cal-cell{min-height:70px}}
+
+/* === Agente de Marketing IA === */
+.src-box{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:.9rem 1rem;margin-bottom:1rem}
+.src-box .src-row{display:grid;grid-template-columns:160px 1fr;gap:.8rem;align-items:end}
+.src-meta{font-size:.74rem;color:var(--txt-soft);margin-top:.6rem;line-height:1.5;display:none}
+.src-meta.show{display:block}
+.src-meta b{color:var(--gold-l)}
+.agent-wrap{display:grid;grid-template-columns:340px 1fr;gap:1.2rem}
+.agent-card{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.4rem;box-shadow:var(--sh-soft);position:relative;overflow:hidden}
+.agent-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4}
+.agent-card h3{font-family:var(--serif);font-size:1.3rem;color:#fff;margin-bottom:.3rem}
+.agent-card h3 em{font-style:italic;color:var(--gold)}
+.agent-card .hint{font-size:.78rem;color:var(--txt-soft);margin-bottom:1rem;line-height:1.5}
+.agent-out{min-height:320px}
+.gen-block{background:rgba(13,27,46,.55);border:1px solid var(--line);border-radius:var(--r-sm);padding:1rem 1.1rem;margin-bottom:1rem;position:relative}
+.gen-block .gb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.gen-block .gb-label{font-size:.66rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold);font-weight:600}
+.gen-block .gb-body{font-size:.86rem;color:var(--txt);line-height:1.55;white-space:pre-wrap}
+.gen-block .gb-copy{cursor:pointer;color:var(--txt-soft);font-size:.7rem;border:1px solid var(--line);border-radius:6px;padding:.2rem .55rem;transition:all .2s}
+.gen-block .gb-copy:hover{border-color:var(--gold);color:var(--gold)}
+.hashtags{color:var(--gold-l);font-size:.82rem}
+.agent-empty{text-align:center;padding:3rem 1rem;color:var(--txt-mute);font-style:italic;font-family:var(--serif);font-size:1.05rem}
+.ai-key-row{display:flex;gap:.5rem;align-items:center;margin-top:.8rem;font-size:.74rem;color:var(--txt-mute)}
+.ai-key-row input{font-size:.78rem;padding:.5rem .7rem}
+@media(max-width:900px){.agent-wrap{grid-template-columns:1fr}.src-box .src-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -150,6 +175,7 @@ textarea{resize:vertical;min-height:70px}
 <div class="tabs">
 <div class="tab active" data-panel="plan" onclick="switchTab('plan')">&#128203; Planificador</div>
 <div class="tab" data-panel="cal" onclick="switchTab('cal')">&#128197; Calendario visual</div>
+<div class="tab" data-panel="agente" onclick="switchTab('agente')">&#129302; Agente de Marketing IA</div>
 </div>
 
 <div class="panel active" id="panel-plan">
@@ -179,6 +205,37 @@ textarea{resize:vertical;min-height:70px}
 </div>
 </div>
 
+<div class="panel" id="panel-agente">
+<div class="src-box">
+<div class="src-row">
+<div class="fg" style="margin:0"><label>Fuente de contenido</label>
+<select id="agSrcType" onchange="onAgSrcType()"><option value="propiedad">Propiedad del portafolio</option><option value="articulo">Articulo del blog</option><option value="libre">Tema libre</option></select>
+</div>
+<div class="fg" style="margin:0"><label id="agSrcLabel">Elige una propiedad</label>
+<select id="agSrcItem" onchange="onAgSrcItem()"><option value="">Cargando...</option></select>
+</div>
+</div>
+<div class="src-meta" id="agMeta"></div>
+</div>
+<div class="agent-wrap">
+<div class="agent-card">
+<h3>Agente de <em>Marketing</em></h3>
+<div class="hint">Genero hooks, copys, hashtags y CTA listos para publicar, con el tono de autoridad de LOMAZ HOME. Elige la fuente, la red y el enfoque, y pulsa Generar.</div>
+<div class="fg"><label>Red social</label><select id="agRed"><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>LinkedIn</option><option>YouTube</option><option>Threads</option><option>WhatsApp</option><option>X</option></select></div>
+<div class="fg"><label>Enfoque de marca</label><select id="agEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
+<div class="fg"><label>Pilar / Objetivo</label><select id="agPilar"><option>Portafolio Inmobiliario</option><option>Educacion y Autoridad</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
+<div class="fg" id="agTemaWrap" style="display:none"><label>Tema libre</label><input type="text" id="agTema" placeholder="Ej: 5 errores al vender tu casa"></div>
+<button class="btn btn-primary" style="width:100%;margin-top:.4rem" onclick="generarContenido()">&#10024; Generar contenido</button>
+<div class="ai-key-row">
+<span title="Opcional: si configuras una clave de OpenAI, el agente usara IA avanzada. Sin clave, usa el motor local.">&#9881; IA avanzada (opcional)</span>
+<input type="password" id="agKey" placeholder="OpenAI API key (opcional)" style="flex:1" onchange="saveAgKey()">
+</div>
+</div>
+<div class="agent-card">
+<div class="agent-out" id="agOut"><div class="agent-empty">Aun no has generado contenido. Elige una fuente y pulsa &laquo;Generar contenido&raquo;.</div></div>
+</div>
+</div>
+</div>
 <div class="overlay" id="editorOverlay">
 <div class="modal">
 <h3 id="editorTitle">Nueva <em>publicacion</em></h3>
@@ -192,6 +249,15 @@ textarea{resize:vertical;min-height:70px}
 <div class="fg"><label>Red social</label><select id="eRed"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>YouTube</option><option>Threads</option><option>WhatsApp</option><option>X</option></select></div>
 <div class="fg"><label>Enfoque de marca</label><select id="eEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
 <div class="fg"><label>Pilar de contenido</label><select id="ePilar"><option>Educacion y Autoridad</option><option>Portafolio Inmobiliario</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
+</div>
+<div class="src-box" style="margin-bottom:1rem">
+<div class="src-row">
+<div class="fg" style="margin:0"><label>Autollenar desde</label>
+<select id="eSrcType" onchange="onEditorSrcType()"><option value="">(Manual)</option><option value="propiedad">Propiedad del portafolio</option><option value="articulo">Articulo del blog</option></select></div>
+<div class="fg" style="margin:0"><label>Selecciona</label>
+<select id="eSrcItem"><option value="">&mdash;</option></select></div>
+</div>
+<button type="button" class="btn btn-secondary" style="margin-top:.7rem" onclick="autollenarDesdeFuente()">&#8595; Traer datos al formulario</button>
 </div>
 <div class="fg full"><label>Titulo / Tema central</label><input type="text" id="eTitulo" placeholder="Ej: Tour exclusivo penthouse..."></div>
 <div class="fg full"><label>Hook (gancho de apertura)</label><textarea id="eHook" placeholder="La primera linea que detiene el scroll..."></textarea></div>
@@ -237,6 +303,7 @@ function showAlert(msg,type){const a=document.getElementById("alert");a.textCont
   uid=session.user.id;
   document.getElementById("uEmail").textContent=session.user.email;
   buildFilterOptions();
+  loadFuentes();
   await loadPosts();
 })();
 
@@ -318,6 +385,7 @@ function switchTab(name){
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===name));
   document.getElementById("panel-plan").classList.toggle("active",name==="plan");
   document.getElementById("panel-cal").classList.toggle("active",name==="cal");
+  var ag=document.getElementById("panel-agente");if(ag)ag.classList.toggle("active",name==="agente");
   if(name==="cal")renderCalendar();
 }
 function clearFilters(){document.getElementById("fRed").value="";document.getElementById("fEnfoque").value="";document.getElementById("fEstado").value="";document.getElementById("fSearch").value="";render();}
@@ -407,6 +475,229 @@ function openDel(id){delId=id;document.getElementById("delOverlay").classList.ad
 function closeDel(){document.getElementById("delOverlay").classList.remove("show");delId=null;}
 
 document.addEventListener("click",function(e){if(e.target.classList&&e.target.classList.contains("overlay"))e.target.classList.remove("show");});
+
+/* ====== AGENTE DE MARKETING: datos + generador ====== */
+let _props=[], _arts=[], _agKey='';
+
+const BLOG_ARTS=[
+ {t:'Como arrendar un apartamento en Bogota: guia paso a paso',c:'Arrendamiento',u:'blog.html',e:'Documentos, contrato y firma: cada etapa del arriendo en la capital.'},
+ {t:'Requisitos para comprar vivienda en Colombia en 2026',c:'Compraventa',u:'blog.html',e:'Capacidad de endeudamiento, subsidios y documentos antes de comprar.'},
+ {t:'Credito hipotecario en Colombia: tasas, plazos y como aplicar',c:'Financiacion',u:'blog.html',e:'Comparativa de tasas de los principales bancos y como solicitarlo.'},
+ {t:'Gastos notariales en una compraventa: cuanto debes pagar',c:'Tramites',u:'blog.html',e:'Escritura, registro e impuestos: quien paga que en la transaccion.'},
+ {t:'Subsidio Mi Casa Ya 2026: requisitos, montos y como aplicar',c:'Financiacion',u:'blog.html',e:'El programa de subsidios para vivienda nueva en Colombia.'},
+ {t:'Documentos indispensables para vender una propiedad en Colombia',c:'Compraventa',u:'blog.html',e:'Certificado de tradicion, paz y salvo predial y mas.'},
+ {t:'Cuanto cuesta el metro cuadrado en Bogota por barrio en 2026',c:'Mercado',u:'blog.html',e:'Analisis de precios por zona para decidir con datos.'},
+ {t:'Los mejores barrios para vivir en Bogota en 2026',c:'Zonas',u:'blog.html',e:'Seguridad, accesibilidad y calidad de vida por barrio.'},
+ {t:'Impuesto predial Bogota 2026: como calcular y donde pagar',c:'Tramites',u:'blog.html',e:'Fechas, descuentos por pronto pago y paso a paso.'},
+ {t:'Arriendo seguro en Bogota: como protegerte',c:'Arrendamiento',u:'blog.html',e:'Poliza de arrendamiento, contratos y clausulas clave.'}
+];
+
+async function loadFuentes(){
+  _arts=BLOG_ARTS.slice();
+  try{
+    const{data,error}=await sb.from('propiedades').select('id,clave,titulo,descripcion,tipo_operacion,tipo_propiedad,precio,moneda,ciudad,departamento,barrio,estrato,habitaciones,banos,garajes,m2_construccion,m2_terreno,amenidades,tiene_piscina,acepta_mascotas').eq('asesor_id',uid).order('id',{ascending:false}).limit(200);
+    if(!error)_props=data||[];
+  }catch(e){_props=[];}
+  fillFuenteSelectors();
+  _agKey=localStorage.getItem('lomaz_ag_openai')||'';
+  var k=document.getElementById('agKey');if(k&&_agKey)k.value=_agKey;
+}
+
+function precioFmt(p,m){if(!p)return '';var s=Number(p).toLocaleString('es-CO');return (m==='USD'?'USD ':'$')+s;}
+function opTxt(o){o=(o||'').toLowerCase();if(o.indexOf('arrend')>=0||o.indexOf('arriend')>=0||o.indexOf('renta')>=0)return 'arriendo';return 'venta';}
+function propLabel(p){var parts=[p.titulo||('Propiedad '+(p.clave||p.id))];var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ');if(loc)parts.push(loc);return parts.join(' - ');}
+
+function fillFuenteSelectors(){
+  // editor modal selector starts empty until type chosen; agent selector filled on type change too
+  onAgSrcType();
+}
+
+function fillItemSelect(sel, type, withDash){
+  var opts = withDash ? '<option value="">&mdash;</option>' : '';
+  if(type==='propiedad'){
+    if(!_props.length)opts+='<option value="">(No tienes propiedades aun)</option>';
+    _props.forEach(function(p){opts+='<option value="'+p.id+'">'+escAttr(propLabel(p))+'</option>';});
+  }else if(type==='articulo'){
+    _arts.forEach(function(a,i){opts+='<option value="'+i+'">'+escAttr(a.t)+'</option>';});
+  }else{opts+='<option value="">&mdash;</option>';}
+  sel.innerHTML=opts;
+}
+function escAttr(s){return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+/* ----- Agent tab source handling ----- */
+function onAgSrcType(){
+  var type=document.getElementById('agSrcType').value;
+  var lbl=document.getElementById('agSrcLabel');
+  var sel=document.getElementById('agSrcItem');
+  var temaWrap=document.getElementById('agTemaWrap');
+  document.getElementById('agMeta').className='src-meta';
+  if(type==='libre'){temaWrap.style.display='';sel.parentElement.style.display='none';return;}
+  temaWrap.style.display='none';sel.parentElement.style.display='';
+  lbl.textContent= type==='propiedad'?'Elige una propiedad':'Elige un articulo';
+  fillItemSelect(sel,type,false);
+  onAgSrcItem();
+}
+function onAgSrcItem(){
+  var type=document.getElementById('agSrcType').value;
+  var val=document.getElementById('agSrcItem').value;
+  var meta=document.getElementById('agMeta');
+  if(type==='propiedad'){
+    var p=_props.find(function(x){return String(x.id)===String(val);});
+    if(!p){meta.className='src-meta';return;}
+    var bits=[];if(p.tipo_propiedad)bits.push('<b>'+p.tipo_propiedad+'</b>');bits.push('en '+opTxt(p.tipo_operacion));if(p.precio)bits.push(precioFmt(p.precio,p.moneda));var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ');if(loc)bits.push(loc);
+    var feat=[];if(p.habitaciones)feat.push(p.habitaciones+' hab');if(p.banos)feat.push(p.banos+' banos');if(p.garajes)feat.push(p.garajes+' garaje(s)');if(p.m2_construccion)feat.push(p.m2_construccion+' m2');
+    meta.innerHTML=bits.join(' &middot; ')+(feat.length?'<br>'+feat.join(' &middot; '):'');meta.className='src-meta show';
+  }else if(type==='articulo'){
+    var a=_arts[parseInt(val,10)];if(!a){meta.className='src-meta';return;}
+    meta.innerHTML='<b>'+a.c+'</b> &middot; '+a.e;meta.className='src-meta show';
+  }
+}
+function saveAgKey(){var v=document.getElementById('agKey').value.trim();_agKey=v;localStorage.setItem('lomaz_ag_openai',v);}
+
+/* ----- Editor modal source handling ----- */
+function onEditorSrcType(){var type=document.getElementById('eSrcType').value;var sel=document.getElementById('eSrcItem');fillItemSelect(sel,type,true);}
+function autollenarDesdeFuente(){
+  var type=document.getElementById('eSrcType').value;var val=document.getElementById('eSrcItem').value;
+  if(!type||!val){showAlert('Elige una fuente y un elemento para autollenar.','error');return;}
+  if(type==='propiedad'){
+    var p=_props.find(function(x){return String(x.id)===String(val);});if(!p)return;
+    var g=generarParaPropiedad(p, document.getElementById('eRed').value||'Instagram');
+    if(!document.getElementById('eTitulo').value)document.getElementById('eTitulo').value=g.titulo;
+    document.getElementById('eHook').value=g.hook;
+    document.getElementById('eCopy').value=g.copy+'\n\n'+g.hashtags;
+    document.getElementById('ePilar').value='Portafolio Inmobiliario';
+  }else if(type==='articulo'){
+    var a=_arts[parseInt(val,10)];if(!a)return;
+    var g=generarParaArticulo(a, document.getElementById('eRed').value||'Instagram');
+    if(!document.getElementById('eTitulo').value)document.getElementById('eTitulo').value=g.titulo;
+    document.getElementById('eHook').value=g.hook;
+    document.getElementById('eCopy').value=g.copy+'\n\n'+g.hashtags;
+    document.getElementById('ePilar').value='Educacion y Autoridad';
+  }
+  showAlert('Datos traidos al formulario. Revisalos y guarda.','success');
+}
+
+
+/* ====== MOTOR DE GENERACION LOCAL (sin API) ====== */
+const HASH_BASE='#LomazHome #Inmobiliaria #BienesRaices #Bogota #Colombia';
+const CTA_RED={
+ Instagram:'Escribe la palabra clave por mensaje directo para recibir la ficha completa y agendar tu visita.',
+ Facebook:'Comenta o envianos un mensaje y un asesor de LOMAZ HOME te contactara hoy mismo.',
+ TikTok:'Sigue a LOMAZ HOME y guarda este video. Escribenos para mas detalles.',
+ LinkedIn:'Conecta conmigo o escribeme por mensaje para una asesoria profesional.',
+ YouTube:'Mira el recorrido completo y suscribete al canal de LOMAZ HOME.',
+ Threads:'Responde este hilo o escribenos para conocer mas oportunidades.',
+ WhatsApp:'Responde QUIERO DETALLES y te envio la ficha tecnica al instante.',
+ X:'Da RT y escribeme por mensaje directo para los detalles.'
+};
+function emojiRed(r){return ({Instagram:'\u{1F4F8}',Facebook:'\u{1F465}',TikTok:'\u{1F3B5}',LinkedIn:'\u{1F4BC}',YouTube:'\u{1F3AC}',Threads:'\u{1F9F5}',WhatsApp:'\u{1F4AC}',X:'\u{2716}'})[r]||'';}
+
+function hashtagsPropiedad(p){
+ var tags=['#LomazHome','#Inmobiliaria','#BienesRaices'];
+ if(p.ciudad)tags.push('#'+String(p.ciudad).replace(/\s+/g,''));
+ if(p.barrio)tags.push('#'+String(p.barrio).replace(/\s+/g,''));
+ if(p.tipo_propiedad)tags.push('#'+String(p.tipo_propiedad).replace(/\s+/g,''));
+ tags.push(opTxt(p.tipo_operacion)==='arriendo'?'#Arriendo':'#Venta');
+ tags.push('#Inversion','#Colombia');
+ return tags.slice(0,11).join(' ');
+}
+
+function generarParaPropiedad(p,red){
+ var op=opTxt(p.tipo_operacion);
+ var tipo=p.tipo_propiedad||'Inmueble';
+ var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ')||'Bogota';
+ var precio=p.precio?precioFmt(p.precio,p.moneda):'';
+ var feats=[];
+ if(p.habitaciones)feats.push(p.habitaciones+' habitaciones');
+ if(p.banos)feats.push(p.banos+' banos');
+ if(p.garajes)feats.push(p.garajes+' garaje(s)');
+ if(p.m2_construccion)feats.push(p.m2_construccion+' m2 construidos');
+ if(p.m2_terreno)feats.push(p.m2_terreno+' m2 de terreno');
+ if(p.estrato)feats.push('estrato '+p.estrato);
+ if(p.tiene_piscina)feats.push('piscina');
+ if(p.acepta_mascotas)feats.push('pet friendly');
+ var titulo=(op==='arriendo'?'En arriendo':'En venta')+': '+tipo+' en '+loc;
+ var em=emojiRed(red);
+ var hook=em+' '+tipo+' en '+loc+(precio?' por '+precio:'')+'. Una oportunidad que no veras dos veces.';
+ var cuerpo=[];
+ cuerpo.push('Te presentamos este '+tipo.toLowerCase()+' en '+op+', ubicado en '+loc+'.');
+ if(feats.length)cuerpo.push('Caracteristicas: '+feats.join(', ')+'.');
+ if(p.descripcion)cuerpo.push(String(p.descripcion).slice(0,220).trim()+(String(p.descripcion).length>220?'...':''));
+ cuerpo.push('En LOMAZ HOME evaluamos cada detalle para que tomes la mejor decision. '+(CTA_RED[red]||CTA_RED.Instagram));
+ var copy=cuerpo.join('\n\n');
+ if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Plano general del '+tipo.toLowerCase()+'] '+hook+'\n[Recorrido] '+(feats.length?'Destacamos: '+feats.join(', ')+'.':'')+'\n[Cierre] '+(CTA_RED[red]||'');}
+ if(red==='LinkedIn'){copy='Oportunidad de '+(op==='arriendo'?'arriendo':'inversion')+' en '+loc+'.\n\n'+cuerpo.slice(1).join('\n\n');}
+ return {titulo:titulo,hook:hook,copy:copy,hashtags:hashtagsPropiedad(p),cta:(CTA_RED[red]||'')};
+}
+
+function generarParaArticulo(a,red){
+ var em=emojiRed(red);
+ var titulo=a.t;
+ var hook=em+' '+a.t+' \u2014 lo que muchos ignoran y a ti te puede ahorrar dinero.';
+ var copy=[a.e,'En este contenido de LOMAZ HOME te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guia completa en nuestro blog.'].join('\n\n');
+ if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Hook a camara] '+a.t+'\n[Desarrollo] '+a.e+'\n[Cierre] '+(CTA_RED[red]||'');}
+ var tags='#LomazHome #'+a.c.replace(/\s+/g,'')+' #Inmobiliaria #Bogota #Colombia #Inversion #ConsejosInmobiliarios';
+ return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
+}
+
+function generarParaTema(tema,red,pilar){
+ var em=emojiRed(red);
+ var titulo=tema||'Contenido de marca';
+ var hook=em+' '+(tema||'Hablemos de bienes raices')+': la perspectiva que tu competencia no te da.';
+ var copy=['Desde LOMAZ HOME compartimos nuestra vision sobre '+(tema||'el mercado inmobiliario')+'.','Nuestra experiencia asesorando compradores, vendedores e inversionistas nos permite darte criterio real, no formulas genericas.',(CTA_RED[red]||CTA_RED.Instagram)].join('\n\n');
+ var tags=HASH_BASE+' #Inversion #ConsejosInmobiliarios';
+ return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
+}
+
+function renderGen(g,red){
+ var out=document.getElementById('agOut');
+ function block(label,body,cls){return '<div class="gen-block"><div class="gb-head"><span class="gb-label">'+label+'</span><span class="gb-copy" onclick="copiarTexto(this)">Copiar</span></div><div class="gb-body '+(cls||'')+'">'+(body||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</div></div>';}
+ var html='';
+ html+=block('Titulo / Tema',g.titulo);
+ html+=block('Hook (gancho)',g.hook);
+ html+=block('Copy / Guion',g.copy);
+ html+=block('Hashtags',g.hashtags,'hashtags');
+ html+=block('CTA',g.cta);
+ html+='<button class="btn btn-primary" style="width:100%;margin-top:.3rem" onclick="usarEnPublicacion()">&#10003; Usar en una publicacion nueva</button>';
+ out.innerHTML=html;
+ window.__lastGen=g;window.__lastRed=red;
+}
+function copiarTexto(el){var body=el.closest('.gen-block').querySelector('.gb-body');var txt=body.innerText;navigator.clipboard.writeText(txt).then(function(){el.textContent='Copiado';setTimeout(function(){el.textContent='Copiar';},1500);});}
+
+function usarEnPublicacion(){
+ var g=window.__lastGen;if(!g)return;
+ openEditor();
+ setTimeout(function(){
+  document.getElementById('eRed').value=window.__lastRed||'Instagram';
+  document.getElementById('eEnfoque').value=document.getElementById('agEnfoque').value;
+  document.getElementById('ePilar').value=document.getElementById('agPilar').value;
+  document.getElementById('eTitulo').value=g.titulo;
+  document.getElementById('eHook').value=g.hook;
+  document.getElementById('eCopy').value=g.copy+'\n\n'+g.hashtags;
+ },60);
+}
+
+async function generarContenido(){
+ var red=document.getElementById('agRed').value;
+ var type=document.getElementById('agSrcType').value;
+ var pilar=document.getElementById('agPilar').value;
+ var out=document.getElementById('agOut');
+ var g=null;
+ if(type==='propiedad'){var p=_props.find(function(x){return String(x.id)===String(document.getElementById('agSrcItem').value);});if(!p){showAlert('Elige una propiedad.','error');return;}g=generarParaPropiedad(p,red);}
+ else if(type==='articulo'){var a=_arts[parseInt(document.getElementById('agSrcItem').value,10)];if(!a){showAlert('Elige un articulo.','error');return;}g=generarParaArticulo(a,red);}
+ else {g=generarParaTema(document.getElementById('agTema').value,red,pilar);}
+ // Optional: OpenAI refinement
+ if(_agKey){out.innerHTML='<div class="agent-empty">Generando con IA avanzada...</div>';try{var refined=await refinarConIA(g,red,pilar);if(refined)g=refined;}catch(e){/* fallback to local */}}
+ renderGen(g,red);
+}
+
+async function refinarConIA(g,red,pilar){
+ var prompt='Eres el agente de marketing de LOMAZ HOME, inmobiliaria boutique en Bogota. Mejora este contenido para '+red+', objetivo '+pilar+', con tono de autoridad, cercano y profesional, en espanol de Colombia. Devuelve JSON con claves titulo, hook, copy, hashtags, cta. Base:\nTitulo: '+g.titulo+'\nHook: '+g.hook+'\nCopy: '+g.copy+'\nHashtags: '+g.hashtags+'\nCTA: '+g.cta;
+ var r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_agKey},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],temperature:0.7})});
+ if(!r.ok)return null;var d=await r.json();var txt=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;if(!txt)return null;
+ var m=txt.match(/\{[\s\S]*\}/);if(!m)return null;try{var o=JSON.parse(m[0]);return {titulo:o.titulo||g.titulo,hook:o.hook||g.hook,copy:o.copy||g.copy,hashtags:o.hashtags||g.hashtags,cta:o.cta||g.cta};}catch(e){return null;}
+}
+
 </script>
 </body>
 </html>
