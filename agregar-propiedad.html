@@ -214,9 +214,9 @@ textarea{resize:vertical;min-height:90px}
 <div class="step-panel" id="panel2">
 <div class="card"><h3>&#128205; <em>Ubicacion</em></h3>
 <div class="form-grid">
-<div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar</option><option value="Cundinamarca">Cundinamarca</option><option value="Antioquia">Antioquia</option><option value="Valle del Cauca">Valle del Cauca</option><option value="Atlantico">Atlantico</option><option value="Bolivar">Bolivar</option><option value="Santander">Santander</option><option value="Cordoba">Cordoba</option><option value="Narino">Narino</option><option value="Tolima">Tolima</option><option value="Huila">Huila</option><option value="Risaralda">Risaralda</option><option value="Caldas">Caldas</option><option value="Quindio">Quindio</option><option value="Meta">Meta</option><option value="Otro">Otro</option></select></div>
-<div class="form-group"><label>CIUDAD *</label><input type="text" id="ciudad" placeholder="Ej: Bogota, Medellin, Cali..."/></div>
-<div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" placeholder="Ej: El Poblado, Chapinero Alto..."/></div>
+<div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar departamento...</option></select></div>
+<div class="form-group"><label>CIUDAD *</label><select id="ciudad"><option value="">Seleccione un departamento primero...</option></select></div>
+<div class="form-group" id="grupo_localidad" style="display:none;"><label>LOCALIDAD (Bogotá)</label><select id="localidad"><option value="">Seleccione localidad...</option></select></div><div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" list="barriosList" placeholder="Escribe para buscar el barrio..." autocomplete="off"/><datalist id="barriosList"></datalist></div>
 <div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
 <div class="form-group full"><label>UBICACI&Oacute;N EN EL MAPA</label><div style="display:flex;gap:8px;margin-bottom:8px"><button type="button" id="btnGeocode" class="btn-secondary" style="white-space:nowrap">&#128269; Buscar direcci&oacute;n en el mapa</button><span id="geoStatus" style="font-size:12px;color:#888;align-self:center"></span></div><div id="mapa" style="height:320px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"></div><small style="color:#888;font-weight:400;display:block;margin-top:6px">Escribe la ciudad, barrio y direcci&oacute;n arriba, luego pulsa "Buscar". Tambi&eacute;n puedes arrastrar el marcador o hacer clic en el mapa para ajustar el punto exacto. La latitud y longitud se calculan autom&aacute;ticamente.</small></div><div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="latitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
 <div class="form-group"><label>LONGITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="longitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
@@ -784,6 +784,66 @@ try {
 
 // Finca Raiz QA esta listo - no override
 
+
+/* __LOMAZ_GEO__ Selects dependientes Departamento/Ciudad/Localidad/Barrio */
+(function(){
+  var GEO=null, BARRIOS_NORM=null;
+  function $(id){return document.getElementById(id);}
+  function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+  function opt(val,txt){var o=document.createElement('option');o.value=val;o.textContent=txt||val;return o;}
+  function loadData(){
+    if(GEO) return Promise.resolve(GEO);
+    return fetch('data-colombia.json').then(function(r){return r.json();}).then(function(d){GEO=d;return d;});
+  }
+  function fillDepartamentos(){
+    var sel=$('departamento'); if(!sel) return; var cur=sel.value;
+    sel.innerHTML=''; sel.appendChild(opt('','Seleccionar departamento...'));
+    GEO.departamentos.forEach(function(x){sel.appendChild(opt(x.d,x.d));});
+    if(cur) sel.value=cur;
+  }
+  function fillCiudades(depto, keep){
+    var sel=$('ciudad'); if(!sel) return; sel.innerHTML='';
+    var dep=GEO.departamentos.filter(function(x){return norm(x.d)===norm(depto);})[0];
+    if(!dep){ sel.appendChild(opt('','Seleccione un departamento primero...')); return; }
+    sel.appendChild(opt('','Seleccionar ciudad/municipio...'));
+    dep.c.forEach(function(c){sel.appendChild(opt(c,c));});
+    if(keep){ for(var i=0;i<sel.options.length;i++){ if(norm(sel.options[i].value)===norm(keep)){ sel.value=sel.options[i].value; break; } } }
+  }
+  function fillBarriosDatalist(){
+    var dl=$('barriosList'); if(!dl||!GEO.bogota) return; if(dl.childElementCount>0) return;
+    var frag=document.createDocumentFragment();
+    GEO.bogota.barrios.forEach(function(b){var o=document.createElement('option');o.value=b;frag.appendChild(o);});
+    dl.appendChild(frag);
+  }
+  function fillLocalidades(keep){
+    var sel=$('localidad'); if(!sel||!GEO.bogota) return; sel.innerHTML=''; sel.appendChild(opt('','Seleccione localidad...'));
+    GEO.bogota.localidades.forEach(function(l){sel.appendChild(opt(l,l));});
+    if(keep){ for(var i=0;i<sel.options.length;i++){ if(norm(sel.options[i].value)===norm(keep)){ sel.value=sel.options[i].value; break; } } }
+  }
+  function isBogota(ciudad){return norm(ciudad)==='bogota'||norm(ciudad)==='bogota d.c'||norm(ciudad).indexOf('bogota')===0;}
+  function onCiudadChange(){
+    var ciudad=$('ciudad')?$('ciudad').value:''; var grupo=$('grupo_localidad');
+    if(isBogota(ciudad)){ if(grupo) grupo.style.display=''; fillLocalidades(); fillBarriosDatalist(); }
+    else { if(grupo) grupo.style.display='none'; }
+  }
+  function wire(){
+    var dep=$('departamento'); if(dep){ dep.addEventListener('change',function(){ fillCiudades(dep.value); onCiudadChange(); }); }
+    var ci=$('ciudad'); if(ci){ ci.addEventListener('change', onCiudadChange); }
+  }
+  // API publica para auto-llenado desde Importar
+  window.__LOMAZ_SET_UBICACION=function(depto,ciudad,barrio,localidad){
+    return loadData().then(function(){
+      if(depto){ for(var i=0;i<$('departamento').options.length;i++){ if(norm($('departamento').options[i].value)===norm(depto)){ $('departamento').value=$('departamento').options[i].value; break; } } }
+      fillCiudades(depto, ciudad);
+      onCiudadChange();
+      if(localidad && $('localidad')) { for(var j=0;j<$('localidad').options.length;j++){ if(norm($('localidad').options[j].value)===norm(localidad)){ $('localidad').value=$('localidad').options[j].value; break; } } }
+      if(barrio && $('barrio')) $('barrio').value=barrio;
+    });
+  };
+  function init(){ loadData().then(function(){ fillDepartamentos(); fillBarriosDatalist(); wire(); onCiudadChange(); }).catch(function(e){ console.warn('No se pudo cargar data-colombia.json', e); }); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+
 /* __LOMAZ_IMPORT__ Importar desde Captación */
 (function(){
   var API_URL = "https://script.google.com/macros/s/AKfycbwOaGBYgtt_3Y3CHoybd9J1yWTyVwVOC4i6nGSZ5vzyyUFIwU4R3OpbBk_ko8mQ2DEI/exec";
@@ -814,9 +874,8 @@ try {
     setVal("antiguedad", num(g(p,"Años Construido")));
     setVal("piso", num(g(p,"Piso")));
     setVal("tipo_piso", mapPiso(g(p,"Tipo Piso")));
-    setVal("departamento", mapDepto(ciudad));
-    setVal("ciudad", ciudad);
-    setVal("barrio", barrio);
+    var __depto = mapDepto(ciudad);
+    if(typeof window.__LOMAZ_SET_UBICACION==="function"){ window.__LOMAZ_SET_UBICACION(__depto, ciudad, barrio); } else { setVal("departamento", __depto); setVal("ciudad", ciudad); setVal("barrio", barrio); }
     setVal("direccion", String(g(p,"Dirección")||"").trim());
     setVal("como_llegar", String(g(p,"Lugares de Interés")||"").trim());
     var desc=[ String(g(p,"Lo Más Destacado")||"").trim(), String(g(p,"Info Adicional")||"").trim() ].filter(Boolean).join("\n\n"); setVal("descripcion", desc);
