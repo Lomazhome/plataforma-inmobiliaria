@@ -73,6 +73,49 @@ td strong{font-weight:600;color:#fff}
 .column,.kanban-col{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r);padding:1rem;min-width:280px;flex:1}
 .column h4{font-family:var(--serif);color:var(--gold);font-size:1.05rem;margin-bottom:1rem}
 @media(max-width:900px){.form-grid,.grid-2,.form-grid-3,.grid-3{grid-template-columns:1fr}.topbar{padding:.75rem 1rem}}
+
+/* ===== CRM Agent + Agenda (Lomaz Home) ===== */
+.crm-tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin:0 0 1.6rem;flex-wrap:wrap}
+.crm-tab{padding:.85rem 1.4rem;cursor:pointer;font-size:.8rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--sans)}
+.crm-tab:hover{color:var(--gold)}
+.crm-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.crm-view{display:none}
+.crm-view.active{display:block}
+.agent-grid{display:grid;grid-template-columns:340px 1fr;gap:1.3rem}
+@media(max-width:900px){.agent-grid{grid-template-columns:1fr}}
+.agent-panel{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.4rem}
+.agent-panel h3{font-family:var(--serif);font-size:1.25rem;color:#fff;margin-bottom:1rem}
+.agent-panel h3 em{font-style:italic;color:var(--gold)}
+.agent-out{background:rgba(13,27,46,.55);border:1px solid var(--line);border-radius:var(--r-sm);padding:1.1rem;min-height:120px;white-space:pre-wrap;font-size:.9rem;line-height:1.55;color:var(--txt)}
+.agent-card{background:rgba(13,27,46,.5);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-sm);padding:1rem 1.1rem;margin-bottom:.85rem}
+.agent-card .ac-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:.4rem}
+.agent-card .ac-name{font-weight:600;color:#fff}
+.agent-card .ac-body{font-size:.86rem;color:var(--txt-soft);line-height:1.5}
+.agent-card .ac-actions{display:flex;gap:.5rem;margin-top:.7rem;flex-wrap:wrap}
+.score-pill{display:inline-block;padding:.22rem .7rem;border-radius:12px;font-size:.68rem;font-weight:700;letter-spacing:.5px}
+.score-hot{background:rgba(220,53,69,.15);color:#ff8a93;border:1px solid rgba(220,53,69,.4)}
+.score-warm{background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.4)}
+.score-cold{background:rgba(120,140,170,.12);color:#9fb0c8;border:1px solid rgba(120,140,170,.3)}
+.btn-mini{padding:.4rem .85rem;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt-soft);transition:all .2s;letter-spacing:.4px}
+.btn-mini:hover{border-color:var(--gold);color:var(--gold)}
+.btn-mini.gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy);border:none}
+.agent-msg{background:rgba(13,27,46,.55);border:1px solid var(--line);border-radius:var(--r-sm);padding:1rem;font-size:.9rem;line-height:1.55;white-space:pre-wrap;color:var(--txt);min-height:90px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.4rem}
+@media(max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+.kpi-box{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;text-align:center}
+.kpi-box .n{font-family:var(--serif);font-size:2rem;color:#fff;line-height:1}
+.kpi-box .l{font-size:.68rem;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:.4rem}
+.cita-card{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:1rem 1.1rem;margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.cita-when{font-family:var(--serif);font-size:1.05rem;color:var(--gold);min-width:120px}
+.cita-when small{display:block;font-family:var(--sans);font-size:.72rem;color:var(--txt-soft);letter-spacing:.5px;margin-top:.2rem}
+.cita-body{flex:1}
+.cita-body .ct{font-weight:600;color:#fff;margin-bottom:.2rem}
+.cita-body .cs{font-size:.82rem;color:var(--txt-soft)}
+.badge-tipo{background:rgba(201,169,110,.12);color:var(--gold);border:1px solid rgba(201,169,110,.3);padding:.18rem .6rem;border-radius:10px;font-size:.66rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.agenda-form{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.2rem}
+@media(max-width:700px){.agenda-form{grid-template-columns:1fr}}
+.agent-key-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.9rem;font-size:.78rem;color:var(--txt-soft)}
+.agent-key-row input{flex:1;min-width:160px}
 </style><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head><body>
 <div class="topbar">
@@ -96,7 +139,13 @@ td strong{font-weight:600;color:#fff}
   <div class="page-header">
     <div><div class="page-title">&#128101; CRM Clientes</div><div class="page-sub">Gestiona tus clientes y su búsqueda de inmuebles</div></div>
   </div>
-  <div class="stats-row">
+  <div class="crm-tabs">
+<button class="crm-tab active" data-v="clientes" onclick="crmTab('clientes')">&#128101; Clientes</button>
+<button class="crm-tab" data-v="agente" onclick="crmTab('agente')">&#129302; Agente CRM</button>
+<button class="crm-tab" data-v="agenda" onclick="crmTab('agenda')">&#128197; Agenda / Citas</button>
+</div>
+<div class="crm-view active" id="viewClientes">
+<div class="stats-row">
     <div class="stat gold"><div class="stat-n" id="sTotal">0</div><div class="stat-l">Total clientes</div></div>
     <div class="stat green"><div class="stat-n" id="sActivos">0</div><div class="stat-l">Activos</div></div>
     <div class="stat blue"><div class="stat-n" id="sCompra">0</div><div class="stat-l">Compradores</div></div>
@@ -114,6 +163,78 @@ td strong{font-weight:600;color:#fff}
     <div id="tblCont"><div style="text-align:center;padding:40px;color:#aaa;">Cargando...</div></div>
   </div>
   <div class="pagination" id="pag"></div>
+</div>
+</div><!-- /viewClientes -->
+
+<div class="crm-view" id="viewAgente">
+<div class="kpi-row">
+<div class="kpi-box"><div class="n" id="agK1">0</div><div class="l">Leads sin contactar</div></div>
+<div class="kpi-box"><div class="n" id="agK2">0</div><div class="l">Oportunidades calientes</div></div>
+<div class="kpi-box"><div class="n" id="agK3">0</div><div class="l">Citas esta semana</div></div>
+<div class="kpi-box"><div class="n" id="agK4">0</div><div class="l">Clientes activos</div></div>
+</div>
+<div class="agent-grid">
+<div class="agent-panel">
+<h3>&#129302; Agente <em>de ventas</em></h3>
+<p style="font-size:.84rem;color:var(--txt-soft);line-height:1.5;margin-bottom:1rem">Analiza tu embudo (leads + clientes), prioriza las oportunidades y te dice el siguiente paso. Selecciona un contacto para redactar un mensaje de seguimiento o agendar una cita.</p>
+<label>Enfoque del análisis</label>
+<select id="agFocus">
+<option value="prioridad">Prioridad (calientes primero)</option>
+<option value="nuevos">Leads nuevos sin contactar</option>
+<option value="seguimiento">Pendientes de seguimiento</option>
+<option value="todos">Todo el embudo</option>
+</select>
+<button class="btn-primary" style="width:100%;margin-top:1rem" onclick="agentAnalizar()">Analizar embudo</button>
+<div class="agent-key-row">
+<span>&#129521; Motor:</span>
+<select id="agEngine" style="flex:0 0 auto;width:auto;padding:.4rem .6rem"><option value="local">Local (sin clave)</option><option value="openai">OpenAI (avanzado)</option></select>
+</div>
+<div class="agent-key-row" id="agKeyRow" style="display:none">
+<input type="password" id="agOpenaiKey" placeholder="Tu clave OpenAI (sk-...)">
+<button class="btn-mini" onclick="agentSaveKey()">Guardar</button>
+</div>
+</div>
+<div class="agent-panel">
+<h3>Resultados <em>del análisis</em></h3>
+<div id="agResults"><div class="empty" style="padding:1.5rem">Pulsa "Analizar embudo" para que el agente priorice tus oportunidades.</div></div>
+</div>
+</div>
+<div class="agent-panel" id="agMsgPanel" style="margin-top:1.3rem;display:none">
+<h3>&#9997;&#65039; Mensaje <em>sugerido</em> <span id="agMsgFor" style="font-size:.85rem;color:var(--txt-soft);font-style:normal"></span></h3>
+<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.9rem">
+<select id="agMsgCanal" style="width:auto" onchange="agentRedraft()"><option value="whatsapp">WhatsApp</option><option value="email">Correo</option><option value="llamada">Guion de llamada</option></select>
+<select id="agMsgTono" style="width:auto" onchange="agentRedraft()"><option value="cercano">Tono cercano</option><option value="formal">Tono formal</option><option value="directo">Tono directo</option></select>
+</div>
+<div class="agent-msg" id="agMsgOut"></div>
+<div style="display:flex;gap:.6rem;margin-top:.9rem;flex-wrap:wrap">
+<button class="btn-mini gold" onclick="agentCopy()">Copiar mensaje</button>
+<button class="btn-mini" id="agWaBtn" onclick="agentWhats()">Abrir WhatsApp</button>
+<button class="btn-mini" onclick="agentToAgenda()">Agendar cita con este contacto</button>
+</div>
+</div>
+</div>
+
+<div class="crm-view" id="viewAgenda">
+<div class="agent-panel">
+<h3>&#128197; Nueva <em>cita</em></h3>
+<div class="agenda-form">
+<div class="fg"><label>Título *</label><input type="text" id="czTitulo" placeholder="Ej: Visita Casa El Poblado"></div>
+<div class="fg"><label>Tipo</label><select id="czTipo"><option>Visita</option><option>Llamada</option><option>Reunión</option><option>Firma</option><option>Avalúo</option><option>Seguimiento</option></select></div>
+<div class="fg"><label>Fecha y hora *</label><input type="datetime-local" id="czFecha"></div>
+<div class="fg"><label>Duración (min)</label><input type="number" id="czDur" value="60" min="15" step="15"></div>
+<div class="fg"><label>Cliente / Lead</label><select id="czContacto"><option value="">-- Sin asignar --</option></select></div>
+<div class="fg"><label>Propiedad</label><select id="czProp"><option value="">-- Ninguna --</option></select></div>
+<div class="fg"><label>Ubicación</label><input type="text" id="czUbic" placeholder="Dirección o enlace"></div>
+<div class="fg"><label>Teléfono de contacto</label><input type="tel" id="czTel" placeholder="3001234567"></div>
+<div class="fg span2"><label>Notas</label><textarea id="czNotas" placeholder="Detalles, recordatorios..."></textarea></div>
+</div>
+<button class="btn-primary" onclick="citaSave()">Guardar cita</button>
+<span id="czMsg" style="margin-left:1rem;font-size:.85rem"></span>
+</div>
+<div class="agent-panel" style="margin-top:1.3rem">
+<h3>&#128338; Próximas <em>citas</em></h3>
+<div id="agendaList"><div class="empty" style="padding:1.5rem">Cargando agenda...</div></div>
+</div>
 </div>
 <div class="overlay hidden" id="formModal">
   <div class="modal">
@@ -320,5 +441,239 @@ function showFormAlert(msg,type){const a=document.getElementById("formAlert");a.
 
 function openDel(id){delId=id;document.getElementById("delModal").classList.remove("hidden");document.getElementById("btnConfDel").onclick=async function(){const{error}=await sb.from("clientes").delete().eq("id",delId);if(error){alert("Error: "+error.message);return;}closeDelModal();await loadClients();};}
 function closeDelModal(){document.getElementById("delModal").classList.add("hidden");delId=null;}
+
+/* ===================== CRM AGENT + AGENDA (Lomaz Home) ===================== */
+let agLeads=[], agClientes=[], agProps=[], agCitas=[], agLoaded=false, agSel=null;
+
+function crmTab(v){
+  document.querySelectorAll('.crm-tab').forEach(b=>b.classList.toggle('active', b.dataset.v===v));
+  document.querySelectorAll('.crm-view').forEach(p=>p.classList.remove('active'));
+  var el=document.getElementById('view'+v.charAt(0).toUpperCase()+v.slice(1));
+  if(el)el.classList.add('active');
+  if((v==='agente'||v==='agenda') && !agLoaded){ agLoadData(); }
+  if(v==='agenda'){ renderAgenda(); }
+}
+
+async function agLoadData(){
+  try{
+    if(!window.uid){ const {data:{session}}=await sb.auth.getSession(); if(session) window.uid=session.user.id; }
+    var u = window.uid || (typeof uid!=='undefined'?uid:null);
+    const [lq,cq,pq,zq] = await Promise.all([
+      sb.from('leads').select('id,nombre,email,telefono,mensaje,estado,notas,cliente_id,propiedad_id,created_at,propiedades(titulo,ciudad)').eq('asesor_id',u).order('created_at',{ascending:false}),
+      sb.from('clientes').select('*').eq('asesor_id',u).order('created_at',{ascending:false}),
+      sb.from('propiedades').select('id,titulo,ciudad,precio,tipo_operacion').eq('asesor_id',u).order('created_at',{ascending:false}),
+      sb.from('citas').select('*').eq('asesor_id',u).order('fecha_hora',{ascending:true})
+    ]);
+    agLeads=lq.data||[]; agClientes=cq.data||[]; agProps=pq.data||[]; agCitas=zq.data||[];
+    agLoaded=true;
+    agFillSelects();
+    agUpdateKpis();
+  }catch(e){ console.error('agLoadData',e); }
+}
+
+function agUpdateKpis(){
+  const sinContactar=agLeads.filter(l=>l.estado==='Nuevo'||!l.estado).length;
+  const calientes=agLeads.filter(l=>agScore(l).level==='hot').length;
+  const now=new Date(); const wk=new Date(now); wk.setDate(now.getDate()+7);
+  const citasWk=agCitas.filter(c=>{var d=new Date(c.fecha_hora);return d>=now&&d<=wk;}).length;
+  const activos=agClientes.filter(c=>c.estado==='Activo').length;
+  setT('agK1',sinContactar); setT('agK2',calientes); setT('agK3',citasWk); setT('agK4',activos);
+}
+function setT(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+/* ---- scoring: turns funnel signals into a priority ---- */
+function agScore(l){
+  let s=0; const r=[];
+  const est=(l.estado||'Nuevo');
+  if(est==='Nuevo'){s+=40;r.push('Lead nuevo sin contactar');}
+  else if(est==='Contactado'){s+=25;r.push('Ya contactado, necesita seguimiento');}
+  else if(est==='Visita programada'){s+=35;r.push('Visita programada — confirmar');}
+  else if(est==='En negociación'){s+=45;r.push('En negociación activa');}
+  else if(est==='Cerrado ganado'){s+=0;}
+  else if(est==='Perdido'){s-=20;}
+  // recency
+  const days=(Date.now()-new Date(l.created_at).getTime())/86400000;
+  if(days<2){s+=20;r.push('Contacto muy reciente');}
+  else if(days<7){s+=10;}
+  else if(days>21 && est!=='Cerrado ganado' && est!=='Perdido'){s+=8;r.push('Lleva semanas sin avanzar — reactivar');}
+  if(l.propiedad_id){s+=10;r.push('Interesado en una propiedad concreta');}
+  if(l.telefono){s+=5;}
+  let level= s>=55?'hot':(s>=30?'warm':'cold');
+  return {score:s, level, reasons:r};
+}
+
+function agSortedLeads(focus){
+  let arr=agLeads.slice();
+  if(focus==='nuevos') arr=arr.filter(l=>(l.estado||'Nuevo')==='Nuevo');
+  else if(focus==='seguimiento') arr=arr.filter(l=>['Contactado','Visita programada','En negociación'].includes(l.estado));
+  else arr=arr.filter(l=>l.estado!=='Cerrado ganado'&&l.estado!=='Perdido');
+  arr.forEach(l=>l.__sc=agScore(l));
+  arr.sort((a,b)=>b.__sc.score-a.__sc.score);
+  return arr;
+}
+
+async function agentAnalizar(){
+  if(!agLoaded) await agLoadData();
+  const focus=document.getElementById('agFocus').value;
+  const cont=document.getElementById('agResults');
+  const arr=agSortedLeads(focus);
+  if(!arr.length){cont.innerHTML='<div class="empty" style="padding:1.5rem">No hay oportunidades en este filtro. Cuando lleguen leads desde tus propiedades aparecerán aquí.</div>';return;}
+  let h='';
+  arr.slice(0,12).forEach(l=>{
+    const sc=l.__sc; const cls= sc.level==='hot'?'score-hot':(sc.level==='warm'?'score-warm':'score-cold');
+    const lbl= sc.level==='hot'?'CALIENTE':(sc.level==='warm'?'TIBIO':'FRÍO');
+    const prop=l.propiedades?(l.propiedades.titulo||''):'';
+    const reason= sc.reasons[0]||'Mantener contacto';
+    const next= agNextAction(l);
+    h+='<div class="agent-card"><div class="ac-head"><span class="ac-name">'+esc(l.nombre||'Sin nombre')+'</span><span class="score-pill '+cls+'">'+lbl+'</span></div>'+
+       '<div class="ac-body">'+(l.telefono?('&#128222; '+esc(l.telefono)+' &nbsp; '):'')+(prop?('&#127968; '+esc(prop)):'')+
+       '<br>&#128161; '+esc(reason)+'<br>&#10145;&#65039; <strong style="color:#e8d5b0">'+esc(next)+'</strong></div>'+
+       '<div class="ac-actions"><button class="btn-mini gold" onclick="agentMsg(\''+l.id+'\')">Redactar mensaje</button>'+
+       '<button class="btn-mini" onclick="agentAgendaFrom(\''+l.id+'\')">Agendar cita</button></div></div>';
+  });
+  cont.innerHTML=h;
+}
+
+function agNextAction(l){
+  const est=l.estado||'Nuevo';
+  if(est==='Nuevo') return 'Llamar/escribir hoy para presentarte y calificar el interés.';
+  if(est==='Contactado') return 'Enviar opciones de inmueble y proponer una visita.';
+  if(est==='Visita programada') return 'Confirmar la visita y enviar recordatorio.';
+  if(est==='En negociación') return 'Hacer seguimiento de la oferta y resolver objeciones.';
+  return 'Reactivar el contacto con una novedad o nueva propiedad.';
+}
+
+/* ---- message drafting ---- */
+function agentMsg(id){
+  agSel=agLeads.find(l=>l.id===id); if(!agSel)return;
+  document.getElementById('agMsgPanel').style.display='block';
+  document.getElementById('agMsgFor').textContent='para '+(agSel.nombre||'contacto');
+  document.getElementById('agMsgPanel').scrollIntoView({behavior:'smooth',block:'center'});
+  agentRedraft();
+}
+async function agentRedraft(){
+  if(!agSel)return;
+  const canal=document.getElementById('agMsgCanal').value;
+  const tono=document.getElementById('agMsgTono').value;
+  const out=document.getElementById('agMsgOut');
+  const engine=document.getElementById('agEngine').value;
+  if(engine==='openai' && localStorage.getItem('LH_OPENAI_KEY')){
+    out.textContent='Generando con OpenAI...';
+    try{ out.textContent=await agentOpenAI(agSel,canal,tono); return; }
+    catch(e){ out.textContent='(OpenAI falló: '+e.message+') — usando motor local.\n\n'+agLocalMsg(agSel,canal,tono); return; }
+  }
+  out.textContent=agLocalMsg(agSel,canal,tono);
+}
+function agLocalMsg(l,canal,tono){
+  const nombre=(l.nombre||'').split(' ')[0]||'';
+  const prop=l.propiedades?l.propiedades.titulo:'';
+  const saludo= tono==='formal'?('Estimado/a '+(l.nombre||'')) : (tono==='directo'?('Hola '+nombre) : ('Hola '+nombre+', un gusto saludarte'));
+  const marca='Lomaz Home';
+  let cuerpo;
+  if(prop) cuerpo='Te escribo de '+marca+' por tu interés en '+prop+'. Me encantaría contarte los detalles y coordinar una visita cuando te quede cómodo.';
+  else cuerpo='Te escribo de '+marca+'. Vi tu interés y quiero ayudarte a encontrar el inmueble ideal según lo que buscas.';
+  const cierre= tono==='formal'?'Quedo atento a su respuesta. Cordialmente.' : '¿Te parece si coordinamos una llamada corta esta semana? Quedo pendiente.';
+  if(canal==='email'){
+    return 'Asunto: '+(prop?(prop+' — información y visita'):'Tu búsqueda de inmueble con '+marca)+'\n\n'+saludo+',\n\n'+cuerpo+'\n\n'+cierre+'\n\n— Equipo '+marca;
+  }
+  if(canal==='llamada'){
+    return 'GUION DE LLAMADA\n1) Saludo: '+saludo+'.\n2) Motivo: '+cuerpo+'\n3) Calificar: presupuesto, zona y tiempos.\n4) Cierre: '+cierre;
+  }
+  return saludo+' 👋\n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+marca;
+}
+async function agentOpenAI(l,canal,tono){
+  const key=localStorage.getItem('LH_OPENAI_KEY'); if(!key)throw new Error('sin clave');
+  const prop=l.propiedades?l.propiedades.titulo:'';
+  const prompt='Eres un asesor inmobiliario de la marca Lomaz Home. Redacta un mensaje de '+canal+' con tono '+tono+' (en español, Colombia) para el contacto '+(l.nombre||'')+(prop?(', interesado en la propiedad: '+prop):'')+'. Estado actual del lead: '+(l.estado||'Nuevo')+'. Objetivo: avanzar a una visita o llamada. Máximo 90 palabras, cálido y profesional, sin inventar datos.';
+  const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:300})});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const j=await r.json(); return (j.choices&&j.choices[0]&&j.choices[0].message.content||'').trim();
+}
+function agentCopy(){const txt=document.getElementById('agMsgOut').textContent;navigator.clipboard.writeText(txt).then(()=>{var b=event.target;var o=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=o,1500);});}
+function agentWhats(){
+  if(!agSel)return; var tel=(agSel.telefono||'').replace(/[^0-9]/g,'');
+  if(tel && tel.length<=10) tel='57'+tel;
+  const txt=encodeURIComponent(document.getElementById('agMsgOut').textContent);
+  window.open('https://wa.me/'+tel+'?text='+txt,'_blank');
+}
+function agentToAgenda(){ if(agSel) agentAgendaFrom(agSel.id); }
+function agentSaveKey(){const v=document.getElementById('agOpenaiKey').value.trim();if(v){localStorage.setItem('LH_OPENAI_KEY',v);document.getElementById('agOpenaiKey').value='';alert('Clave guardada localmente en este navegador.');}}
+
+/* ---- agenda ---- */
+function agFillSelects(){
+  const cs=document.getElementById('czContacto'); const ps=document.getElementById('czProp');
+  if(cs){ cs.innerHTML='<option value="">-- Sin asignar --</option>';
+    agClientes.forEach(c=>{var o=document.createElement('option');o.value='cli:'+c.id;o.textContent='Cliente: '+(c.nombre||'')+(c.telefono?(' ('+c.telefono+')'):'');cs.appendChild(o);});
+    agLeads.forEach(l=>{var o=document.createElement('option');o.value='lead:'+l.id;o.textContent='Lead: '+(l.nombre||'')+(l.telefono?(' ('+l.telefono+')'):'');cs.appendChild(o);});
+  }
+  if(ps){ ps.innerHTML='<option value="">-- Ninguna --</option>';
+    agProps.forEach(p=>{var o=document.createElement('option');o.value=p.id;o.textContent=(p.titulo||'Propiedad')+(p.ciudad?(' - '+p.ciudad):'');ps.appendChild(o);});
+  }
+}
+function agentAgendaFrom(id){
+  const l=agLeads.find(x=>x.id===id); 
+  crmTab('agenda');
+  if(l){
+    var cs=document.getElementById('czContacto'); if(cs)cs.value='lead:'+l.id;
+    document.getElementById('czTel').value=l.telefono||'';
+    document.getElementById('czTitulo').value=(l.propiedades?('Visita '+l.propiedades.titulo):('Cita con '+(l.nombre||'')));
+    if(l.propiedad_id){var ps=document.getElementById('czProp');if(ps)ps.value=l.propiedad_id;}
+  }
+  document.getElementById('czTitulo').scrollIntoView({behavior:'smooth',block:'center'});
+}
+async function citaSave(){
+  const titulo=document.getElementById('czTitulo').value.trim();
+  const fecha=document.getElementById('czFecha').value;
+  const msg=document.getElementById('czMsg');
+  if(!titulo||!fecha){msg.style.color='#ff8a93';msg.textContent='Título y fecha son obligatorios.';return;}
+  var u = window.uid || (typeof uid!=='undefined'?uid:null);
+  const cv=document.getElementById('czContacto').value;
+  let cliente_id=null, lead_id=null;
+  if(cv.startsWith('cli:'))cliente_id=cv.slice(4); else if(cv.startsWith('lead:'))lead_id=cv.slice(5);
+  const pv=document.getElementById('czProp').value;
+  const payload={asesor_id:u,titulo,tipo:document.getElementById('czTipo').value,
+    fecha_hora:new Date(fecha).toISOString(),duracion_min:Number(document.getElementById('czDur').value)||60,
+    cliente_id,lead_id,propiedad_id:pv?Number(pv):null,
+    ubicacion:document.getElementById('czUbic').value.trim()||null,
+    contacto_telefono:document.getElementById('czTel').value.trim()||null,
+    notas:document.getElementById('czNotas').value.trim()||null,estado:'Programada'};
+  msg.style.color='var(--txt-soft)';msg.textContent='Guardando...';
+  const {data,error}=await sb.from('citas').insert([payload]).select();
+  if(error){msg.style.color='#ff8a93';msg.textContent='Error: '+error.message;return;}
+  msg.style.color='#7dd87d';msg.textContent='✓ Cita agendada';
+  if(data&&data[0])agCitas.push(data[0]);
+  ['czTitulo','czFecha','czUbic','czTel','czNotas'].forEach(id=>document.getElementById(id).value='');
+  agUpdateKpis(); renderAgenda();
+}
+function renderAgenda(){
+  const cont=document.getElementById('agendaList'); if(!cont)return;
+  const now=new Date();
+  const up=agCitas.filter(c=>new Date(c.fecha_hora)>=new Date(now.getTime()-3600000)).sort((a,b)=>new Date(a.fecha_hora)-new Date(b.fecha_hora));
+  if(!up.length){cont.innerHTML='<div class="empty" style="padding:1.5rem">No hay citas próximas. Crea una arriba.</div>';return;}
+  let h='';
+  up.forEach(c=>{
+    const d=new Date(c.fecha_hora);
+    const fecha=d.toLocaleDateString('es-CO',{weekday:'short',day:'2-digit',month:'short'});
+    const hora=d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+    let quien=''; if(c.cliente_id){var cc=agClientes.find(x=>x.id===c.cliente_id);if(cc)quien=cc.nombre;} 
+    if(!quien&&c.lead_id){var ll=agLeads.find(x=>x.id===c.lead_id);if(ll)quien=ll.nombre;}
+    h+='<div class="cita-card"><div class="cita-when">'+esc(hora)+'<small>'+esc(fecha)+'</small></div>'+
+       '<div class="cita-body"><div class="ct">'+esc(c.titulo)+' <span class="badge-tipo">'+esc(c.tipo||'Visita')+'</span></div>'+
+       '<div class="cs">'+(quien?('&#128100; '+esc(quien)+' &nbsp; '):'')+(c.contacto_telefono?('&#128222; '+esc(c.contacto_telefono)+' &nbsp; '):'')+(c.ubicacion?('&#128205; '+esc(c.ubicacion)):'')+'</div>'+
+       (c.notas?('<div class="cs" style="margin-top:.3rem;font-style:italic">'+esc(c.notas)+'</div>'):'')+'</div>'+
+       (c.contacto_telefono?('<button class="btn-mini" onclick="citaWhats(\''+(c.contacto_telefono||'')+'\',\''+esc(c.titulo).replace(/\x27/g,"")+'\')">WhatsApp</button>'):'')+
+       '</div>';
+  });
+  cont.innerHTML=h;
+}
+function citaWhats(tel,titulo){tel=(tel||'').replace(/[^0-9]/g,'');if(tel&&tel.length<=10)tel='57'+tel;window.open('https://wa.me/'+tel+'?text='+encodeURIComponent('Hola, te recuerdo nuestra cita: '+titulo),'_blank');}
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var es=document.getElementById('agEngine');
+  if(es)es.addEventListener('change',function(){document.getElementById('agKeyRow').style.display=this.value==='openai'?'flex':'none';});
+});
+
 </script>
 </body></html>
