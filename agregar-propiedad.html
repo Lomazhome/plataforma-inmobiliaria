@@ -458,12 +458,15 @@ const v = id => (document.getElementById(id)||{}).value || "";
 const fotosList = v("fotos_url").trim() ? v("fotos_url").trim().split(',').map(u=>u.trim()).filter(u=>u) : null;
 const data={
 tipo_operacion: v("tipo_operacion"),
+    tipo_negocio: v("tipo_operacion"),
 tipo_propiedad: v("tipo_propiedad"),
 titulo: v("titulo").trim(),
 precio: parseFloat(v("precio"))||0,
 precio_admin: parseFloat(v("precio_admin"))||0,
 m2_construccion: parseFloat(v("m2_construccion"))||0,
+    area_construida: parseFloat(v("m2_construccion"))||null,
 m2_terreno: parseFloat(v("m2_terreno"))||null,
+    area_total: parseFloat(v("m2_terreno"))||null,
 habitaciones: parseInt(v("habitaciones"))||0,
 banos: parseInt(v("banos"))||0,
 garajes: parseInt(v("garajes"))||0,
@@ -489,7 +492,7 @@ fotos: fotosList,
 foto_principal: fotosList && fotosList[0] ? fotosList[0] : null,
 video_url: v("video_url").trim()||null,
 tour_virtual_url: v("recorrido_virtual").trim()||null,
-estado: v("status_propiedad") || "activo",
+estado: v("status_propiedad") || "activa",
 moneda: "COP",
 asesor_id: currentUser.id
 };
