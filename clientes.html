@@ -304,7 +304,7 @@ const PER=20;
   const {data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href="login.html";return;}
   uid=session.user.id;
-  document.getElementById("uEmail").textContent=session.user.email;
+  var __ue=document.getElementById("user-email");if(__ue)__ue.textContent=session.user.email;
   await loadClients();
 })();
 
