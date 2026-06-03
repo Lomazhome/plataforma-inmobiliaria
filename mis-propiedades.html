@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mis Propiedades - Lomaz Home</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jhsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--navy:#0D1B2E;--navy-2:#162540;--navy-3:#1d2e4d;--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--sh-card:0 8px 32px rgba(0,0,0,.35);--sh-soft:0 4px 16px rgba(0,0,0,.25);--r-sm:8px;--r:12px;--r-lg:16px;}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -197,7 +197,7 @@ let deleteId = null;
 (async function init() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = "login.html"; return; }
-  document.getElementById("userName").textContent = session.user.email;
+  {const _un=document.getElementById("userName"); if(_un) _un.textContent = session.user.email;}
   await loadProps(session.user.id);
 })();
 
