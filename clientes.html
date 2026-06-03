@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clientes - Lomaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--navy:#0D1B2E;--navy-2:#162540;--gold:#c9a96e;--gold-d:#a07840;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px;--r-lg:16px;}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -234,6 +235,7 @@ td strong{font-weight:600;color:#fff}
 </div>
 
 <div class="crm-view" id="viewAgenda">
+<div class="agent-panel" id="gcalPanel" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap"><div style="flex:1;min-width:220px"><h3 style="margin-bottom:.3rem">&#128197; Google <em>Calendar</em> <span id="gcalStatus" style="font-size:.78rem;font-style:normal;color:var(--txt-soft);margin-left:.5rem">&#9679; Sin conectar</span></h3><p style="font-size:.82rem;color:var(--txt-soft);line-height:1.5;margin:0">Conecta tu cuenta de Google para que cada cita se cree tambien como evento en tu calendario. La conexion la autorizas tu con un clic.</p></div><div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap"><button class="btn-mini gold" id="gcalConnectBtn" onclick="gcalConnect()">Conectar Google Calendar</button><button class="btn-mini" id="gcalDisconnectBtn" onclick="gcalDisconnect()" style="display:none">Desconectar</button></div><div class="agent-key-row" id="gcalCfgRow" style="width:100%;display:none"><span>&#128273; Client ID de Google:</span><input type="text" id="gcalClientId" placeholder="xxxxx.apps.googleusercontent.com"><button class="btn-mini" onclick="gcalSaveClientId()">Guardar ID</button><a href="#" onclick="gcalToggleHelp();return false;" style="font-size:.76rem;color:var(--gold)">&#191;Como obtenerlo?</a></div><div id="gcalHelp" style="width:100%;display:none;font-size:.8rem;color:var(--txt-soft);line-height:1.6;background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:8px;padding:1rem;margin-top:.6rem"><strong style="color:var(--gold)">Pasos (una sola vez):</strong><br>1. Entra a <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--gold)">console.cloud.google.com</a> y crea un proyecto.<br>2. En "APIs y servicios" &#8594; habilita <strong>Google Calendar API</strong>.<br>3. En "Credenciales" &#8594; Crear credenciales &#8594; <strong>ID de cliente de OAuth</strong> &#8594; tipo <strong>Aplicacion web</strong>.<br>4. En "Origenes autorizados de JavaScript" agrega: <strong>https://www.lomazhome.com</strong><br>5. Copia el <strong>Client ID</strong> (termina en .apps.googleusercontent.com) y pegalo arriba.</div></div>
 <div class="agent-panel">
 <h3>&#128197; Nueva <em>cita</em></h3>
 <div class="agenda-form">
@@ -474,7 +476,7 @@ function crmTab(v){
   var el=document.getElementById('view'+v.charAt(0).toUpperCase()+v.slice(1));
   if(el)el.classList.add('active');
   if((v==='agente'||v==='agenda') && !agLoaded){ agLoadData(); }
-  if(v==='agenda'){ renderAgenda(); }
+  if(v==='agenda'){ renderAgenda(); if(typeof gcalRenderStatus==='function') gcalRenderStatus(); }
 }
 
 async function agLoadData(){
@@ -766,7 +768,7 @@ function buildShareBox(c){
           '<button class="btn-mini" onclick="citaCopyMsg(\'O\')">Copiar</button>'+
         '</div>'+
       '</div>'+
-    '</div></div>';
+    '</div>'+'<div style="margin-top:1rem;text-align:right"><button class="btn-mini gold" onclick="citaAddToGcal()">📅 Añadir a Google Calendar</button></div>'+'</div>';
   box.innerHTML=h; box.style.display='block';
   box.scrollIntoView({behavior:'smooth',block:'center'});
 }
@@ -779,6 +781,94 @@ function citaCopyMsg(which){
   if(!window.__lastCita)return;
   var txt=which==='P'?window.__lastCita.msgP:window.__lastCita.msgO;
   navigator.clipboard.writeText(txt).then(function(){var b=event.target;var o=b.textContent;b.textContent='¡Copiado!';setTimeout(function(){b.textContent=o;},1500);});
+}
+
+
+/* ===================== GOOGLE CALENDAR (Lomaz Home) ===================== */
+var gcalToken=null, gcalTokenClient=null, gcalTokenExp=0;
+function gcalClientId(){ return localStorage.getItem('LH_GCAL_CLIENT_ID')||''; }
+function gcalSaveClientId(){
+  var v=(document.getElementById('gcalClientId').value||'').trim();
+  if(!v){ alert('Pega tu Client ID de Google.'); return; }
+  localStorage.setItem('LH_GCAL_CLIENT_ID',v);
+  gcalTokenClient=null;
+  alert('Client ID guardado. Ahora pulsa "Conectar Google Calendar".');
+  gcalRenderStatus();
+}
+function gcalToggleHelp(){ var h=document.getElementById('gcalHelp'); if(h) h.style.display = h.style.display==='none'?'block':'none'; }
+function gcalRenderStatus(){
+  var st=document.getElementById('gcalStatus');
+  var cBtn=document.getElementById('gcalConnectBtn');
+  var dBtn=document.getElementById('gcalDisconnectBtn');
+  var cfg=document.getElementById('gcalCfgRow');
+  var connected = !!gcalToken && Date.now()<gcalTokenExp;
+  var cidInput=document.getElementById('gcalClientId'); if(cidInput && !cidInput.value && gcalClientId()) cidInput.value=gcalClientId();
+  if(!gcalClientId()){ if(cfg) cfg.style.display='flex'; } else if(cfg && !connected){ cfg.style.display='flex'; }
+  if(st) st.innerHTML = connected ? '🟢 Conectado' : '⚪ Sin conectar';
+  if(cBtn) cBtn.style.display = connected ? 'none' : 'inline-block';
+  if(dBtn) dBtn.style.display = connected ? 'inline-block' : 'none';
+}
+function gcalConnect(){
+  var cid=gcalClientId();
+  if(!cid){ var cfg=document.getElementById('gcalCfgRow'); if(cfg) cfg.style.display='flex'; alert('Primero pega y guarda tu Client ID de Google.'); return; }
+  if(!(window.google && google.accounts && google.accounts.oauth2)){ alert('La libreria de Google aun se esta cargando, intenta de nuevo en unos segundos.'); return; }
+  if(!gcalTokenClient){
+    gcalTokenClient=google.accounts.oauth2.initTokenClient({
+      client_id:cid,
+      scope:'https://www.googleapis.com/auth/calendar.events',
+      callback:function(resp){
+        if(resp && resp.access_token){
+          gcalToken=resp.access_token;
+          gcalTokenExp=Date.now()+((resp.expires_in||3600)*1000)-60000;
+          gcalRenderStatus();
+        } else { alert('No se pudo conectar con Google.'); }
+      }
+    });
+  }
+  gcalTokenClient.requestAccessToken({prompt: gcalToken?'':'consent'});
+}
+function gcalDisconnect(){
+  if(gcalToken && window.google && google.accounts && google.accounts.oauth2){ try{ google.accounts.oauth2.revoke(gcalToken,function(){}); }catch(e){} }
+  gcalToken=null; gcalTokenExp=0; gcalRenderStatus();
+}
+function gcalConnected(){ return !!gcalToken && Date.now()<gcalTokenExp; }
+async function gcalCrearEvento(c){
+  if(!gcalConnected()) throw new Error('No conectado a Google Calendar');
+  var start=new Date(c.fecha_hora);
+  var end=new Date(start.getTime()+((c.duracion_min||60)*60000));
+  var desc=[];
+  if(citaNombreProspecto(c)) desc.push('Prospecto: '+citaNombreProspecto(c)+(c.contacto_telefono?(' ('+c.contacto_telefono+')'):''));
+  if(c.propietario_nombre) desc.push('Propietario: '+c.propietario_nombre+(c.propietario_telefono?(' ('+c.propietario_telefono+')'):''));
+  if(citaPropTitulo(c)) desc.push('Inmueble: '+citaPropTitulo(c));
+  if(c.notas) desc.push('Notas: '+c.notas);
+  desc.push('Agendado desde Lomaz Home CRM');
+  var ev={
+    summary:c.titulo,
+    description:desc.join('\n'),
+    start:{dateTime:start.toISOString()},
+    end:{dateTime:end.toISOString()},
+    reminders:{useDefault:true}
+  };
+  if(c.ubicacion) ev.location=c.ubicacion;
+  var r=await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+gcalToken,'Content-Type':'application/json'},
+    body:JSON.stringify(ev)
+  });
+  if(!r.ok){ var t=await r.text(); throw new Error('Calendar HTTP '+r.status+': '+t.substring(0,120)); }
+  return await r.json();
+}
+async function citaAddToGcal(){
+  if(!window.__lastCita){ return; }
+  var btn=event && event.target; if(btn){ btn.disabled=true; btn.textContent='Creando...'; }
+  try{
+    if(!gcalConnected()){ gcalConnect(); if(btn){btn.disabled=false;btn.textContent='Conecta Google y reintenta';} return; }
+    var ev=await gcalCrearEvento(window.__lastCita.c);
+    if(btn){ btn.textContent='✓ En Google Calendar'; }
+  }catch(e){
+    alert('No se pudo crear el evento: '+e.message);
+    if(btn){ btn.disabled=false; btn.textContent='Anadir a Google Calendar'; }
+  }
 }
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
