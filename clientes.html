@@ -157,7 +157,7 @@ td strong{font-weight:600;color:#fff}
 </div>
 <div class="container">
   <div class="page-header">
-    <div><div class="page-title">&#128101; CRM Clientes</div><div class="page-sub">Gestiona tus clientes y su bÃÂºsqueda de inmuebles</div></div>
+    <div><div class="page-title">&#128101; CRM Clientes</div><div class="page-sub">Gestiona tus clientes y su búsqueda de inmuebles</div></div>
   </div>
   <div class="crm-tabs">
 <button class="crm-tab active" data-v="clientes" onclick="crmTab('clientes')">&#128101; Clientes</button>
@@ -197,7 +197,7 @@ td strong{font-weight:600;color:#fff}
 <div class="agent-panel">
 <h3>&#129302; Agente <em>de ventas</em></h3>
 <p style="font-size:.84rem;color:var(--txt-soft);line-height:1.5;margin-bottom:1rem">Analiza tu embudo (leads + clientes), prioriza las oportunidades y te dice el siguiente paso. Selecciona un contacto para redactar un mensaje de seguimiento o agendar una cita.</p>
-<label>Enfoque del anÃÂ¡lisis</label>
+<label>Enfoque del análisis</label>
 <select id="agFocus">
 <option value="prioridad">Prioridad (calientes primero)</option>
 <option value="nuevos">Leads nuevos sin contactar</option>
@@ -215,7 +215,7 @@ td strong{font-weight:600;color:#fff}
 </div>
 </div>
 <div class="agent-panel">
-<h3>Resultados <em>del anÃÂ¡lisis</em></h3>
+<h3>Resultados <em>del análisis</em></h3>
 <div id="agResults"><div class="empty" style="padding:1.5rem">Pulsa "Analizar embudo" para que el agente priorice tus oportunidades.</div></div>
 </div>
 </div>
@@ -235,21 +235,21 @@ td strong{font-weight:600;color:#fff}
 </div>
 
 <div class="crm-view" id="viewAgenda">
-<div class="agent-panel" id="gcalPanel" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap"><div style="flex:1;min-width:220px"><h3 style="margin-bottom:.3rem">&#128197; Google <em>Calendar</em> <span id="gcalStatus" style="font-size:.78rem;font-style:normal;color:var(--txt-soft);margin-left:.5rem">&#9679; Sin conectar</span></h3><p style="font-size:.82rem;color:var(--txt-soft);line-height:1.5;margin:0">Conecta tu cuenta de Google para que cada cita se cree tambien como evento en tu calendario. La conexion la autorizas tu con un clic.</p></div><div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap"><button class="btn-mini gold" id="gcalConnectBtn" onclick="gcalConnect()">Conectar Google Calendar</button><button class="btn-mini" id="gcalDisconnectBtn" onclick="gcalDisconnect()" style="display:none">Desconectar</button></div><div class="agent-key-row" id="gcalCfgRow" style="width:100%;display:none"><span>&#128273; Client ID de Google:</span><input type="text" id="gcalClientId" placeholder="xxxxx.apps.googleusercontent.com"><button class="btn-mini" onclick="gcalSaveClientId()">Guardar ID</button><a href="#" onclick="gcalToggleHelp();return false;" style="font-size:.76rem;color:var(--gold)">&#191;Como obtenerlo?</a></div><div id="gcalHelp" style="width:100%;display:none;font-size:.8rem;color:var(--txt-soft);line-height:1.6;background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:8px;padding:1rem;margin-top:.6rem"><strong style="color:var(--gold)">Pasos (una sola vez):</strong><br>1. Entra a <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--gold)">console.cloud.google.com</a> y crea un proyecto.<br>2. En "APIs y servicios" &#8594; habilita <strong>Google Calendar API</strong>.<br>3. En "Credenciales" &#8594; Crear credenciales &#8594; <strong>ID de cliente de OAuth</strong> &#8594; tipo <strong>Aplicacion web</strong>.<br>4. En "Origenes autorizados de JavaScript" agrega: <strong>https://www.lomazhome.com</strong><br>5. Copia el <strong>Client ID</strong> (termina en .apps.googleusercontent.com) y pegalo arriba.</div></div>
+<div class="agent-panel" id="gcalPanel" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap"><div style="flex:1;min-width:220px"><h3 style="margin-bottom:.3rem">&#128197; Google <em>Calendar</em> <span id="gcalStatus" style="font-size:.78rem;font-style:normal;color:var(--txt-soft);margin-left:.5rem">&#9679; Sin conectar</span></h3><p style="font-size:.82rem;color:var(--txt-soft);line-height:1.5;margin:0">Conecta tu cuenta de Google para que cada cita se cree también como evento en tu calendario. La conexión la autorizas tu con un clic.</p></div><div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap"><button class="btn-mini gold" id="gcalConnectBtn" onclick="gcalConnect()">Conectar Google Calendar</button><button class="btn-mini" id="gcalDisconnectBtn" onclick="gcalDisconnect()" style="display:none">Desconectar</button></div><div class="agent-key-row" id="gcalCfgRow" style="width:100%;display:none"><span>&#128273; Client ID de Google:</span><input type="text" id="gcalClientId" placeholder="xxxxx.apps.googleusercontent.com"><button class="btn-mini" onclick="gcalSaveClientId()">Guardar ID</button><a href="#" onclick="gcalToggleHelp();return false;" style="font-size:.76rem;color:var(--gold)">&#191;Cómo obtenerlo?</a></div><div id="gcalHelp" style="width:100%;display:none;font-size:.8rem;color:var(--txt-soft);line-height:1.6;background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:8px;padding:1rem;margin-top:.6rem"><strong style="color:var(--gold)">Pasos (una sola vez):</strong><br>1. Entra a <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--gold)">console.cloud.google.com</a> y crea un proyecto.<br>2. En "APIs y servicios" &#8594; habilita <strong>Google Calendar API</strong>.<br>3. En "Credenciales" &#8594; Crear credenciales &#8594; <strong>ID de cliente de OAuth</strong> &#8594; tipo <strong>Aplicacion web</strong>.<br>4. En "Origenes autorizados de JavaScript" agrega: <strong>https://www.lomazhome.com</strong><br>5. Copia el <strong>Client ID</strong> (termina en .apps.googleusercontent.com) y pegalo arriba.</div></div>
 <div class="agent-panel">
 <h3>&#128197; Nueva <em>cita</em></h3>
 <div class="agenda-form">
-<div class="fg"><label>TÃÂ­tulo *</label><input type="text" id="czTitulo" placeholder="Ej: Visita Casa El Poblado"></div>
-<div class="fg"><label>Tipo</label><select id="czTipo"><option>Visita</option><option>Llamada</option><option>ReuniÃÂ³n</option><option>Firma</option><option>AvalÃÂºo</option><option>Seguimiento</option></select></div>
+<div class="fg"><label>Título *</label><input type="text" id="czTitulo" placeholder="Ej: Visita Casa El Poblado"></div>
+<div class="fg"><label>Tipo</label><select id="czTipo"><option>Visita</option><option>Llamada</option><option>Reunión</option><option>Firma</option><option>Avalúo</option><option>Seguimiento</option></select></div>
 <div class="fg"><label>Fecha y hora *</label><input type="datetime-local" id="czFecha"></div>
-<div class="fg"><label>DuraciÃÂ³n (min)</label><input type="number" id="czDur" value="60" min="15" step="15"></div>
+<div class="fg"><label>Duración (min)</label><input type="number" id="czDur" value="60" min="15" step="15"></div>
 <div class="fg"><label>Nombre del prospecto</label><input type="text" id="czNombre" placeholder="Quien asiste a la cita"></div>
 <div class="fg"><label>Cliente / Lead</label><select id="czContacto"><option value="">-- Sin asignar --</option></select></div>
 <div class="fg"><label>Propiedad</label><select id="czProp"><option value="">-- Ninguna --</option></select></div>
-<div class="fg"><label>UbicaciÃÂ³n</label><input type="text" id="czUbic" placeholder="DirecciÃÂ³n o enlace"></div>
-<div class="fg"><label>TelÃÂ©fono de contacto</label><input type="tel" id="czTel" placeholder="3001234567"></div>
-<div class="fg"><label>Propietario (nombre)</label><input type="text" id="czPropNom" placeholder="DueÃÂ±o del inmueble"></div>
-<div class="fg"><label>TelÃÂ©fono del propietario</label><input type="tel" id="czPropTel" placeholder="3001234567"></div>
+<div class="fg"><label>Ubicación</label><input type="text" id="czUbic" placeholder="Dirección o enlace"></div>
+<div class="fg"><label>Teléfono de contacto</label><input type="tel" id="czTel" placeholder="3001234567"></div>
+<div class="fg"><label>Propietario (nombre)</label><input type="text" id="czPropNom" placeholder="Dueño del inmueble"></div>
+<div class="fg"><label>Teléfono del propietario</label><input type="tel" id="czPropTel" placeholder="3001234567"></div>
 <div class="fg span2"><label>Notas</label><textarea id="czNotas" placeholder="Detalles, recordatorios..."></textarea></div>
 </div>
 <button class="btn-primary" onclick="citaSave()">Guardar cita</button>
@@ -257,7 +257,7 @@ td strong{font-weight:600;color:#fff}
 <div id="czShareBox" style="display:none;margin-top:1.3rem"></div>
 </div>
 <div class="agent-panel" style="margin-top:1.3rem">
-<h3>&#128338; PrÃÂ³ximas <em>citas</em></h3>
+<h3>&#128338; Próximas <em>citas</em></h3>
 <div id="agendaList"><div class="empty" style="padding:1.5rem">Cargando agenda...</div></div>
 </div>
 </div>
@@ -266,23 +266,23 @@ td strong{font-weight:600;color:#fff}
     <h3 id="modalTitle">Nuevo cliente</h3>
     <div id="formAlert" class="hidden"></div>
     <div class="form-grid">
-      <div class="fg"><label>Nombre completo <span class="req">*</span></label><input type="text" id="fNombre" placeholder="Ej: MarÃÂ­a GarcÃÂ­a" maxlength="100"></div>
-      <div class="fg"><label>TelÃÂ©fono <span class="req">*</span></label><input type="tel" id="fTelefono" placeholder="Ej: 3001234567" maxlength="20"></div>
-      <div class="fg"><label>Correo electrÃÂ³nico</label><input type="email" id="fEmail" placeholder="Ej: maria@gmail.com"></div>
-      <div class="fg"><label>CÃÂ³dula / NIT</label><input type="text" id="fCedula" placeholder="Ej: 1234567890" maxlength="20"></div>
-      <div class="fg"><label>Fecha de nacimiento <span style="color:#a8a29e;font-size:11px">(para saludo de cumpleaÃÂ±os)</span></label><input type="date" id="fFechaNac"></div>
-      <div class="fg"><label>Canales de saludo de cumpleaÃÂ±os</label><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:8px 0"><label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:13px;color:#d4cfc7;cursor:pointer"><input type="checkbox" id="fPrefEmail" checked style="width:16px;height:16px"> Correo electrÃÂ³nico</label><label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:13px;color:#d4cfc7;cursor:pointer"><input type="checkbox" id="fPrefWa" checked style="width:16px;height:16px"> WhatsApp</label></div></div>
-      <div class="fg"><label>Tipo de bÃÂºsqueda <span class="req">*</span></label><select id="fTipoBus"><option value="">Seleccionar...</option><option value="Compra">Compra</option><option value="Arriendo">Arriendo</option><option value="Ambos">Ambos</option></select></div>
+      <div class="fg"><label>Nombre completo <span class="req">*</span></label><input type="text" id="fNombre" placeholder="Ej: María García" maxlength="100"></div>
+      <div class="fg"><label>Teléfono <span class="req">*</span></label><input type="tel" id="fTelefono" placeholder="Ej: 3001234567" maxlength="20"></div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" id="fEmail" placeholder="Ej: maria@gmail.com"></div>
+      <div class="fg"><label>Códula / NIT</label><input type="text" id="fCedula" placeholder="Ej: 1234567890" maxlength="20"></div>
+      <div class="fg"><label>Fecha de nacimiento <span style="color:#a8a29e;font-size:11px">(para saludo de cumpleaños)</span></label><input type="date" id="fFechaNac"></div>
+      <div class="fg"><label>Canales de saludo de cumpleaños</label><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:8px 0"><label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:13px;color:#d4cfc7;cursor:pointer"><input type="checkbox" id="fPrefEmail" checked style="width:16px;height:16px"> Correo electrónico</label><label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:13px;color:#d4cfc7;cursor:pointer"><input type="checkbox" id="fPrefWa" checked style="width:16px;height:16px"> WhatsApp</label></div></div>
+      <div class="fg"><label>Tipo de búsqueda <span class="req">*</span></label><select id="fTipoBus"><option value="">Seleccionar...</option><option value="Compra">Compra</option><option value="Arriendo">Arriendo</option><option value="Ambos">Ambos</option></select></div>
       <div class="fg"><label>Estado del cliente</label><select id="fEstadoCli"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option><option value="Cerrado">Cerrado</option></select></div>
-      <div class="fg"><label>Tipo de inmueble de interÃÂ©s</label><select id="fTipoInm"><option value="">Cualquiera</option><option value="Apartamento">Apartamento</option><option value="Casa">Casa</option><option value="Casa Campestre">Casa Campestre</option><option value="Finca">Finca</option><option value="Lote">Lote</option><option value="Local Comercial">Local Comercial</option><option value="Oficina">Oficina</option></select></div>
-      <div class="fg"><label>Ciudad de interÃÂ©s</label><input type="text" id="fCiudad" placeholder="Ej: MedellÃÂ­n"></div>
-      <div class="fg"><label>Barrio / Zona de interÃÂ©s</label><input type="text" id="fBarrio" placeholder="Ej: El Poblado, Laureles"></div>
-      <div class="fg"><label>Estrato de interÃÂ©s</label><select id="fEstrato"><option value="">Cualquiera</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
-      <div class="fg"><label>Presupuesto mÃÂ­nimo (COP)</label><input type="number" id="fPresMin" placeholder="Ej: 100000000" min="0"></div>
-      <div class="fg"><label>Presupuesto mÃÂ¡ximo (COP)</label><input type="number" id="fPresMax" placeholder="Ej: 500000000" min="0"></div>
-      <div class="fg"><label>Habitaciones mÃÂ­nimas</label><select id="fHab"><option value="">Cualquiera</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
-      <div class="fg"><label>BaÃÂ±os mÃÂ­nimos</label><select id="fBan"><option value="">Cualquiera</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
-      <div class="fg"><label>CÃÂ³mo nos conociste</label><select id="fFuente"><option value="">Seleccionar...</option><option value="Referido">Referido</option><option value="Redes sociales">Redes sociales</option><option value="Portal inmobiliario">Portal inmobiliario</option><option value="Busqueda Google">BÃÂºsqueda Google</option><option value="Valla/Aviso">Valla / Aviso</option><option value="Llamada directa">Llamada directa</option><option value="Otro">Otro</option></select></div>
+      <div class="fg"><label>Tipo de inmueble de interés</label><select id="fTipoInm"><option value="">Cualquiera</option><option value="Apartamento">Apartamento</option><option value="Casa">Casa</option><option value="Casa Campestre">Casa Campestre</option><option value="Finca">Finca</option><option value="Lote">Lote</option><option value="Local Comercial">Local Comercial</option><option value="Oficina">Oficina</option></select></div>
+      <div class="fg"><label>Ciudad de interés</label><input type="text" id="fCiudad" placeholder="Ej: Medellín"></div>
+      <div class="fg"><label>Barrio / Zona de interés</label><input type="text" id="fBarrio" placeholder="Ej: El Poblado, Laureles"></div>
+      <div class="fg"><label>Estrato de interés</label><select id="fEstrato"><option value="">Cualquiera</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+      <div class="fg"><label>Presupuesto mínimo (COP)</label><input type="number" id="fPresMin" placeholder="Ej: 100000000" min="0"></div>
+      <div class="fg"><label>Presupuesto máximo (COP)</label><input type="number" id="fPresMax" placeholder="Ej: 500000000" min="0"></div>
+      <div class="fg"><label>Habitaciones mínimas</label><select id="fHab"><option value="">Cualquiera</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
+      <div class="fg"><label>Baños mínimos</label><select id="fBan"><option value="">Cualquiera</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
+      <div class="fg"><label>Cómo nos conociste</label><select id="fFuente"><option value="">Seleccionar...</option><option value="Referido">Referido</option><option value="Redes sociales">Redes sociales</option><option value="Portal inmobiliario">Portal inmobiliario</option><option value="Busqueda Google">Búsqueda Google</option><option value="Valla/Aviso">Valla / Aviso</option><option value="Llamada directa">Llamada directa</option><option value="Otro">Otro</option></select></div>
       <div class="fg"><label>Prioridad</label><select id="fPrioridad"><option value="Media">Media</option><option value="Alta">Alta</option><option value="Baja">Baja</option></select></div>
       <div class="fg span2"><label>Observaciones / Notas</label><textarea id="fObs" placeholder="Anota detalles importantes sobre este cliente, sus preferencias, reuniones, etc."></textarea></div>
     </div>
@@ -295,8 +295,8 @@ td strong{font-weight:600;color:#fff}
 <div class="overlay hidden" id="delModal">
   <div class="modal del-modal">
     <h3>&#128465;&#65039; Eliminar cliente</h3>
-    <p>ÃÂ¿EstÃÂ¡s seguro de que quieres eliminar este cliente? Se perderÃÂ¡n todos sus datos.</p>
-    <div class="modal-btns"><button class="btn-cancel" onclick="closeDelModal()">Cancelar</button><button class="btn-danger" id="btnConfDel">SÃÂ­, eliminar</button></div>
+    <p>¿Estás seguro de que quieres eliminar este cliente? Se perderán todos sus datos.</p>
+    <div class="modal-btns"><button class="btn-cancel" onclick="closeDelModal()">Cancelar</button><button class="btn-danger" id="btnConfDel">Sí, eliminar</button></div>
   </div>
 </div>
 <script>
@@ -347,10 +347,10 @@ function clearFilter(){document.getElementById("fSearch").value="";document.getE
 function renderTable(){
   const cont=document.getElementById("tblCont");
   document.getElementById("cntBadge").textContent=filtered.length+" cliente"+(filtered.length!==1?"s":"");
-  if(!filtered.length){cont.innerHTML=`<div class="empty"><span class="ic">&#128101;</span><p>No hay clientes aÃÂºn. <strong style="color:#e8b86d;cursor:pointer" onclick="openAdd()">+ Agregar primer cliente</strong></p></div>`;return;}
+  if(!filtered.length){cont.innerHTML=`<div class="empty"><span class="ic">&#128101;</span><p>No hay clientes aún. <strong style="color:#e8b86d;cursor:pointer" onclick="openAdd()">+ Agregar primer cliente</strong></p></div>`;return;}
   const start=(curPage-1)*PER;
   const pg=filtered.slice(start,start+PER);
-  let h=`<table><thead><tr><th>Cliente</th><th>Contacto</th><th>BÃÂºsqueda</th><th>Presupuesto</th><th>Estado</th><th>Fuente</th><th>Acciones</th></tr></thead><tbody>`;
+  let h=`<table><thead><tr><th>Cliente</th><th>Contacto</th><th>Búsqueda</th><th>Presupuesto</th><th>Estado</th><th>Fuente</th><th>Acciones</th></tr></thead><tbody>`;
   pg.forEach(c=>{
     const ini=(c.nombre||"?")[0].toUpperCase();
     const bTipo=`<span class="badge badge-${(c.tipo||"compra").toLowerCase()}">${c.tipo||"-"}</span>`;
@@ -358,7 +358,7 @@ function renderTable(){
     const pMin=c.presupuesto_min?("$"+Number(c.presupuesto_min).toLocaleString("es-CO")):"";
     const pMax=c.presupuesto_max?("$"+Number(c.presupuesto_max).toLocaleString("es-CO")):"";
     const pres=pMin||pMax?(pMin&&pMax?pMin+" - "+pMax:pMin||pMax):"-";
-    const subInfo=[c.tipo_inmueble_interes,c.ciudad,c.habitaciones_min?(c.habitaciones_min+"hab+"):""].filter(Boolean).join(" ÃÂ· ");
+    const subInfo=[c.tipo_inmueble_interes,c.ciudad,c.habitaciones_min?(c.habitaciones_min+"hab+"):""].filter(Boolean).join(" · ");
     h+=`<tr>
       <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">${ini}</div><div><div class="client-name">${c.nombre||"-"}</div><div class="client-sub">${subInfo||"Sin preferencia"}</div></div></div></td>
       <td><div style="font-size:13px">${c.telefono||"-"}</div><div style="font-size:12px;color:#888">${c.email||""}</div></td>
@@ -435,7 +435,7 @@ async function saveClient(){
   const nombre=document.getElementById("fNombre").value.trim();
   const tel=document.getElementById("fTelefono").value.trim();
   const tipoBus=document.getElementById("fTipoBus").value;
-  if(!nombre||!tel||!tipoBus){showFormAlert("Completa: Nombre, TelÃÂ©fono y Tipo de bÃÂºsqueda son obligatorios.","err");return;}
+  if(!nombre||!tel||!tipoBus){showFormAlert("Completa: Nombre, Teléfono y Tipo de búsqueda son obligatorios.","err");return;}
   const btn=document.getElementById("btnSave");
   btn.disabled=true;btn.textContent="Guardando...";
   const payload={
@@ -512,15 +512,15 @@ function agScore(l){
   const est=(l.estado||'Nuevo');
   if(est==='Nuevo'){s+=40;r.push('Lead nuevo sin contactar');}
   else if(est==='Contactado'){s+=25;r.push('Ya contactado, necesita seguimiento');}
-  else if(est==='Visita programada'){s+=35;r.push('Visita programada Ã¢ÂÂ confirmar');}
-  else if(est==='En negociaciÃÂ³n'){s+=45;r.push('En negociaciÃÂ³n activa');}
+  else if(est==='Visita programada'){s+=35;r.push('Visita programada — confirmar');}
+  else if(est==='En negociación'){s+=45;r.push('En negociación activa');}
   else if(est==='Cerrado ganado'){s+=0;}
   else if(est==='Perdido'){s-=20;}
   // recency
   const days=(Date.now()-new Date(l.created_at).getTime())/86400000;
   if(days<2){s+=20;r.push('Contacto muy reciente');}
   else if(days<7){s+=10;}
-  else if(days>21 && est!=='Cerrado ganado' && est!=='Perdido'){s+=8;r.push('Lleva semanas sin avanzar Ã¢ÂÂ reactivar');}
+  else if(days>21 && est!=='Cerrado ganado' && est!=='Perdido'){s+=8;r.push('Lleva semanas sin avanzar — reactivar');}
   if(l.propiedad_id){s+=10;r.push('Interesado en una propiedad concreta');}
   if(l.telefono){s+=5;}
   let level= s>=55?'hot':(s>=30?'warm':'cold');
@@ -530,7 +530,7 @@ function agScore(l){
 function agSortedLeads(focus){
   let arr=agLeads.slice();
   if(focus==='nuevos') arr=arr.filter(l=>(l.estado||'Nuevo')==='Nuevo');
-  else if(focus==='seguimiento') arr=arr.filter(l=>['Contactado','Visita programada','En negociaciÃÂ³n'].includes(l.estado));
+  else if(focus==='seguimiento') arr=arr.filter(l=>['Contactado','Visita programada','En negociación'].includes(l.estado));
   else arr=arr.filter(l=>l.estado!=='Cerrado ganado'&&l.estado!=='Perdido');
   arr.forEach(l=>l.__sc=agScore(l));
   arr.sort((a,b)=>b.__sc.score-a.__sc.score);
@@ -542,11 +542,11 @@ async function agentAnalizar(){
   const focus=document.getElementById('agFocus').value;
   const cont=document.getElementById('agResults');
   const arr=agSortedLeads(focus);
-  if(!arr.length){cont.innerHTML='<div class="empty" style="padding:1.5rem">No hay oportunidades en este filtro. Cuando lleguen leads desde tus propiedades aparecerÃÂ¡n aquÃÂ­.</div>';return;}
+  if(!arr.length){cont.innerHTML='<div class="empty" style="padding:1.5rem">No hay oportunidades en este filtro. Cuando lleguen leads desde tus propiedades aparecerán aquí.</div>';return;}
   let h='';
   arr.slice(0,12).forEach(l=>{
     const sc=l.__sc; const cls= sc.level==='hot'?'score-hot':(sc.level==='warm'?'score-warm':'score-cold');
-    const lbl= sc.level==='hot'?'CALIENTE':(sc.level==='warm'?'TIBIO':'FRÃÂO');
+    const lbl= sc.level==='hot'?'CALIENTE':(sc.level==='warm'?'TIBIO':'FRÍO');
     const prop=l.propiedades?(l.propiedades.titulo||''):'';
     const reason= sc.reasons[0]||'Mantener contacto';
     const next= agNextAction(l);
@@ -561,10 +561,10 @@ async function agentAnalizar(){
 
 function agNextAction(l){
   const est=l.estado||'Nuevo';
-  if(est==='Nuevo') return 'Llamar/escribir hoy para presentarte y calificar el interÃÂ©s.';
+  if(est==='Nuevo') return 'Llamar/escribir hoy para presentarte y calificar el interés.';
   if(est==='Contactado') return 'Enviar opciones de inmueble y proponer una visita.';
   if(est==='Visita programada') return 'Confirmar la visita y enviar recordatorio.';
-  if(est==='En negociaciÃÂ³n') return 'Hacer seguimiento de la oferta y resolver objeciones.';
+  if(est==='En negociación') return 'Hacer seguimiento de la oferta y resolver objeciones.';
   return 'Reactivar el contacto con una novedad o nueva propiedad.';
 }
 
@@ -585,7 +585,7 @@ async function agentRedraft(){
   if(engine==='openai' && localStorage.getItem('LH_OPENAI_KEY')){
     out.textContent='Generando con OpenAI...';
     try{ out.textContent=await agentOpenAI(agSel,canal,tono); return; }
-    catch(e){ out.textContent='(OpenAI fallÃÂ³: '+e.message+') Ã¢ÂÂ usando motor local.\n\n'+agLocalMsg(agSel,canal,tono); return; }
+    catch(e){ out.textContent='(OpenAI falló: '+e.message+') — usando motor local.\n\n'+agLocalMsg(agSel,canal,tono); return; }
   }
   out.textContent=agLocalMsg(agSel,canal,tono);
 }
@@ -595,26 +595,26 @@ function agLocalMsg(l,canal,tono){
   const saludo= tono==='formal'?('Estimado/a '+(l.nombre||'')) : (tono==='directo'?('Hola '+nombre) : ('Hola '+nombre+', un gusto saludarte'));
   const marca='Lomaz Home';
   let cuerpo;
-  if(prop) cuerpo='Te escribo de '+marca+' por tu interÃÂ©s en '+prop+'. Me encantarÃÂ­a contarte los detalles y coordinar una visita cuando te quede cÃÂ³modo.';
-  else cuerpo='Te escribo de '+marca+'. Vi tu interÃÂ©s y quiero ayudarte a encontrar el inmueble ideal segÃÂºn lo que buscas.';
-  const cierre= tono==='formal'?'Quedo atento a su respuesta. Cordialmente.' : 'ÃÂ¿Te parece si coordinamos una llamada corta esta semana? Quedo pendiente.';
+  if(prop) cuerpo='Te escribo de '+marca+' por tu interés en '+prop+'. Me encantaría contarte los detalles y coordinar una visita cuando te quede cómodo.';
+  else cuerpo='Te escribo de '+marca+'. Vi tu interés y quiero ayudarte a encontrar el inmueble ideal según lo que buscas.';
+  const cierre= tono==='formal'?'Quedo atento a su respuesta. Cordialmente.' : '¿Te parece si coordinamos una llamada corta esta semana? Quedo pendiente.';
   if(canal==='email'){
-    return 'Asunto: '+(prop?(prop+' Ã¢ÂÂ informaciÃÂ³n y visita'):'Tu bÃÂºsqueda de inmueble con '+marca)+'\n\n'+saludo+',\n\n'+cuerpo+'\n\n'+cierre+'\n\nÃ¢ÂÂ Equipo '+marca;
+    return 'Asunto: '+(prop?(prop+' — información y visita'):'Tu búsqueda de inmueble con '+marca)+'\n\n'+saludo+',\n\n'+cuerpo+'\n\n'+cierre+'\n\n— Equipo '+marca;
   }
   if(canal==='llamada'){
     return 'GUION DE LLAMADA\n1) Saludo: '+saludo+'.\n2) Motivo: '+cuerpo+'\n3) Calificar: presupuesto, zona y tiempos.\n4) Cierre: '+cierre;
   }
-  return saludo+' Ã°ÂÂÂ\n\n'+cuerpo+'\n\n'+cierre+'\n\nÃ¢ÂÂ '+marca;
+  return saludo+' 👋\n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+marca;
 }
 async function agentOpenAI(l,canal,tono){
   const key=localStorage.getItem('LH_OPENAI_KEY'); if(!key)throw new Error('sin clave');
   const prop=l.propiedades?l.propiedades.titulo:'';
-  const prompt='Eres un asesor inmobiliario de la marca Lomaz Home. Redacta un mensaje de '+canal+' con tono '+tono+' (en espaÃÂ±ol, Colombia) para el contacto '+(l.nombre||'')+(prop?(', interesado en la propiedad: '+prop):'')+'. Estado actual del lead: '+(l.estado||'Nuevo')+'. Objetivo: avanzar a una visita o llamada. MÃÂ¡ximo 90 palabras, cÃÂ¡lido y profesional, sin inventar datos.';
+  const prompt='Eres un asesor inmobiliario de la marca Lomaz Home. Redacta un mensaje de '+canal+' con tono '+tono+' (en español, Colombia) para el contacto '+(l.nombre||'')+(prop?(', interesado en la propiedad: '+prop):'')+'. Estado actual del lead: '+(l.estado||'Nuevo')+'. Objetivo: avanzar a una visita o llamada. Máximo 90 palabras, cálido y profesional, sin inventar datos.';
   const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:300})});
   if(!r.ok)throw new Error('HTTP '+r.status);
   const j=await r.json(); return (j.choices&&j.choices[0]&&j.choices[0].message.content||'').trim();
 }
-function agentCopy(){const txt=document.getElementById('agMsgOut').textContent;navigator.clipboard.writeText(txt).then(()=>{var b=event.target;var o=b.textContent;b.textContent='ÃÂ¡Copiado!';setTimeout(()=>b.textContent=o,1500);});}
+function agentCopy(){const txt=document.getElementById('agMsgOut').textContent;navigator.clipboard.writeText(txt).then(()=>{var b=event.target;var o=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=o,1500);});}
 function agentWhats(){
   if(!agSel)return; var tel=(agSel.telefono||'').replace(/[^0-9]/g,'');
   if(tel && tel.length<=10) tel='57'+tel;
@@ -651,7 +651,7 @@ async function citaSave(){
   const titulo=document.getElementById('czTitulo').value.trim();
   const fecha=document.getElementById('czFecha').value;
   const msg=document.getElementById('czMsg');
-  if(!titulo||!fecha){msg.style.color='#ff8a93';msg.textContent='TÃÂ­tulo y fecha son obligatorios.';return;}
+  if(!titulo||!fecha){msg.style.color='#ff8a93';msg.textContent='Título y fecha son obligatorios.';return;}
   var u = window.uid || (typeof uid!=='undefined'?uid:null);
   const cv=document.getElementById('czContacto').value;
   let cliente_id=null, lead_id=null;
@@ -669,7 +669,7 @@ propietario_telefono:document.getElementById('czPropTel').value.trim()||null,
   msg.style.color='var(--txt-soft)';msg.textContent='Guardando...';
   const {data,error}=await sb.from('citas').insert([payload]).select();
   if(error){msg.style.color='#ff8a93';msg.textContent='Error: '+error.message;return;}
-  msg.style.color='#7dd87d';msg.textContent='Ã¢ÂÂ Cita agendada';
+  msg.style.color='#7dd87d';msg.textContent='✓ Cita agendada';
   if(data&&data[0])agCitas.push(data[0]);
   if(data&&data[0]) buildShareBox(data[0]);
 ['czTitulo','czFecha','czUbic','czTel','czNotas','czNombre','czPropNom','czPropTel'].forEach(id=>{var _e=document.getElementById(id);if(_e)_e.value='';});
@@ -679,7 +679,7 @@ function renderAgenda(){
   const cont=document.getElementById('agendaList'); if(!cont)return;
   const now=new Date();
   const up=agCitas.filter(c=>new Date(c.fecha_hora)>=new Date(now.getTime()-3600000)).sort((a,b)=>new Date(a.fecha_hora)-new Date(b.fecha_hora));
-  if(!up.length){cont.innerHTML='<div class="empty" style="padding:1.5rem">No hay citas prÃÂ³ximas. Crea una arriba.</div>';return;}
+  if(!up.length){cont.innerHTML='<div class="empty" style="padding:1.5rem">No hay citas próximas. Crea una arriba.</div>';return;}
   let h='';
   up.forEach(c=>{
     const d=new Date(c.fecha_hora);
@@ -721,21 +721,21 @@ function citaMsgProspecto(c){
   var nom=(citaNombreProspecto(c)||'').split(' ')[0]||'';
   var prop=citaPropTitulo(c)||c.titulo||'el inmueble';
   var cuando=citaFmtFecha(c.fecha_hora);
-  var lugar=c.ubicacion?('\nÃ°ÂÂÂ Lugar: '+c.ubicacion):'';
-  return 'Hola '+nom+'! Ã°ÂÂÂ Te confirmo tu '+(c.tipo||'Visita').toLowerCase()+' con Lomaz Home.\n\n'+
-    'Ã°ÂÂÂ  Inmueble: '+prop+'\nÃ°ÂÂÂ Fecha: '+cuando+lugar+'\n\n'+
-    'Cualquier cosa me avisas. ÃÂ¡Nos vemos! Ã¢ÂÂ Lomaz Home';
+  var lugar=c.ubicacion?('\n📍 Lugar: '+c.ubicacion):'';
+  return 'Hola '+nom+'! 👋 Te confirmo tu '+(c.tipo||'Visita').toLowerCase()+' con Lomaz Home.\n\n'+
+    '🏠 Inmueble: '+prop+'\n📅 Fecha: '+cuando+lugar+'\n\n'+
+    'Cualquier cosa me avisas. ¡Nos vemos! — Lomaz Home';
 }
 function citaMsgPropietario(c){
   var nom=(c.propietario_nombre||'').split(' ')[0]||'';
   var prop=citaPropTitulo(c)||c.titulo||'su inmueble';
   var cuando=citaFmtFecha(c.fecha_hora);
   var prospecto=citaNombreProspecto(c);
-  var lugar=c.ubicacion?('\nÃ°ÂÂÂ Lugar: '+c.ubicacion):'';
-  return 'Hola '+nom+'! Ã°ÂÂÂ Le escribo de Lomaz Home. Hemos coordinado una '+(c.tipo||'visita').toLowerCase()+' para su inmueble.\n\n'+
-    'Ã°ÂÂÂ  Inmueble: '+prop+'\nÃ°ÂÂÂ Fecha: '+cuando+lugar+
-    (prospecto?('\nÃ°ÂÂÂ¤ Interesado: '+prospecto):'')+'\n\n'+
-    'Quedo atento para confirmar. Gracias. Ã¢ÂÂ Lomaz Home';
+  var lugar=c.ubicacion?('\n📍 Lugar: '+c.ubicacion):'';
+  return 'Hola '+nom+'! 👋 Le escribo de Lomaz Home. Hemos coordinado una '+(c.tipo||'visita').toLowerCase()+' para su inmueble.\n\n'+
+    '🏠 Inmueble: '+prop+'\n📅 Fecha: '+cuando+lugar+
+    (prospecto?('\n👤 Interesado: '+prospecto):'')+'\n\n'+
+    'Quedo atento para confirmar. Gracias. — Lomaz Home';
 }
 function citaWaLink(tel,msg){
   tel=(tel||'').replace(/[^0-9]/g,''); if(tel&&tel.length<=10) tel='57'+tel;
@@ -749,14 +749,14 @@ function buildShareBox(c){
   var telP=c.contacto_telefono||'';
   var telO=c.propietario_telefono||'';
   var h='<div class="agent-panel" style="border-left:3px solid var(--gold)">'+
-    '<h3>Ã¢ÂÂ Cita agendada Ã¢ÂÂ <em>mensajes listos</em></h3>'+
-    '<p style="font-size:.84rem;color:var(--txt-soft);margin-bottom:1rem">El agente ya redactÃÂ³ los mensajes para ambas partes. RevÃÂ­salos y pulsa enviar; se abrirÃÂ¡ WhatsApp con el texto listo.</p>'+
+    '<h3>✅ Cita agendada — <em>mensajes listos</em></h3>'+
+    '<p style="font-size:.84rem;color:var(--txt-soft);margin-bottom:1rem">El agente ya redactó los mensajes para ambas partes. Revísalos y pulsa enviar; se abrirá WhatsApp con el texto listo.</p>'+
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">'+
       '<div>'+
         '<label>Mensaje al prospecto</label>'+
         '<div class="agent-msg" id="czMsgPText">'+esc(msgP)+'</div>'+
         '<div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">'+
-          '<button class="btn-mini gold" onclick="citaSendWa(\'P\')"'+(telP?'':' disabled title="Sin telÃÂ©fono"')+'>Enviar al prospecto</button>'+
+          '<button class="btn-mini gold" onclick="citaSendWa(\'P\')"'+(telP?'':' disabled title="Sin teléfono"')+'>Enviar al prospecto</button>'+
           '<button class="btn-mini" onclick="citaCopyMsg(\'P\')">Copiar</button>'+
         '</div>'+
       '</div>'+
@@ -764,11 +764,11 @@ function buildShareBox(c){
         '<label>Mensaje al propietario</label>'+
         '<div class="agent-msg" id="czMsgOText">'+esc(msgO)+'</div>'+
         '<div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">'+
-          '<button class="btn-mini gold" onclick="citaSendWa(\'O\')"'+(telO?'':' disabled title="Sin telÃÂ©fono"')+'>Enviar al propietario</button>'+
+          '<button class="btn-mini gold" onclick="citaSendWa(\'O\')"'+(telO?'':' disabled title="Sin teléfono"')+'>Enviar al propietario</button>'+
           '<button class="btn-mini" onclick="citaCopyMsg(\'O\')">Copiar</button>'+
         '</div>'+
       '</div>'+
-    '</div>'+'<div style="margin-top:1rem;text-align:right"><button class="btn-mini gold" onclick="citaAddToGcal()">Ã°ÂÂÂ AÃÂ±adir a Google Calendar</button></div>'+'</div>';
+    '</div>'+'<div style="margin-top:1rem;text-align:right"><button class="btn-mini gold" onclick="citaAddToGcal()">📅 Añadir a Google Calendar</button></div>'+'</div>';
   box.innerHTML=h; box.style.display='block';
   box.scrollIntoView({behavior:'smooth',block:'center'});
 }
@@ -780,7 +780,7 @@ function citaSendWa(which){
 function citaCopyMsg(which){
   if(!window.__lastCita)return;
   var txt=which==='P'?window.__lastCita.msgP:window.__lastCita.msgO;
-  navigator.clipboard.writeText(txt).then(function(){var b=event.target;var o=b.textContent;b.textContent='ÃÂ¡Copiado!';setTimeout(function(){b.textContent=o;},1500);});
+  navigator.clipboard.writeText(txt).then(function(){var b=event.target;var o=b.textContent;b.textContent='¡Copiado!';setTimeout(function(){b.textContent=o;},1500);});
 }
 
 
@@ -804,7 +804,7 @@ function gcalRenderStatus(){
   var connected = !!gcalToken && Date.now()<gcalTokenExp;
   var cidInput=document.getElementById('gcalClientId'); if(cidInput && !cidInput.value && gcalClientId()) cidInput.value=gcalClientId();
   if(!gcalClientId()){ if(cfg) cfg.style.display='flex'; } else if(cfg && !connected){ cfg.style.display='flex'; }
-  if(st) st.innerHTML = connected ? 'Ã°ÂÂÂ¢ Conectado' : 'Ã¢ÂÂª Sin conectar';
+  if(st) st.innerHTML = connected ? '🟢 Conectado' : '⚪ Sin conectar';
   if(cBtn) cBtn.style.display = connected ? 'none' : 'inline-block';
   if(dBtn) dBtn.style.display = connected ? 'inline-block' : 'none';
 }
@@ -812,7 +812,7 @@ function gcalSilentConnect(){try{if(gcalConnected())return;var cid=gcalClientId;
 function gcalConnect(){
   var cid=gcalClientId();
   if(!cid){ var cfg=document.getElementById('gcalCfgRow'); if(cfg) cfg.style.display='flex'; alert('Primero pega y guarda tu Client ID de Google.'); return; }
-  if(!(window.google && google.accounts && google.accounts.oauth2)){ alert('La libreria de Google aun se esta cargando, intenta de nuevo en unos segundos.'); return; }
+  if(!(window.google && google.accounts && google.accounts.oauth2)){ alert('La librería de Google aún se está cargando, intenta de nuevo en unos segundos.'); return; }
   if(!gcalTokenClient){
     gcalTokenClient=google.accounts.oauth2.initTokenClient({
       client_id:cid,
@@ -866,7 +866,7 @@ async function citaAddToGcal(){
   try{
     if(!gcalConnected()){ gcalConnect(); if(btn){btn.disabled=false;btn.textContent='Conecta Google y reintenta';} return; }
     var ev=await gcalCrearEvento(window.__lastCita.c);
-    if(btn){ btn.textContent='Ã¢ÂÂ En Google Calendar'; }
+    if(btn){ btn.textContent='✓ En Google Calendar'; }
   }catch(e){
     alert('No se pudo crear el evento: '+e.message);
     if(btn){ btn.disabled=false; btn.textContent='Anadir a Google Calendar'; }
