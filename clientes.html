@@ -808,7 +808,7 @@ function gcalRenderStatus(){
   if(cBtn) cBtn.style.display = connected ? 'none' : 'inline-block';
   if(dBtn) dBtn.style.display = connected ? 'inline-block' : 'none';
 }
-function gcalSilentConnect(){try{if(gcalConnected())return;var cid=gcalClientId;if(!cid)return;if(!(window.google&&google.accounts&&google.accounts.oauth2))return;if(!gcalTokenClient){gcalTokenClient=google.accounts.oauth2.initTokenClient({client_id:cid,scope:'https://www.googleapis.com/auth/calendar.events',callback:function(resp){if(resp&&resp.access_token){gcalToken=resp.access_token;gcalTokenExp=Date.now()+((resp.expires_in||3600)*1000)-60000;gcalRenderStatus();}},error_callback:function(){}});}gcalTokenClient.requestAccessToken({prompt:'none'});}catch(e){}}
+function gcalSilentConnect(){try{if(gcalConnected())return;var cid=gcalClientId();if(!cid)return;if(!(window.google&&google.accounts&&google.accounts.oauth2))return;if(!gcalTokenClient){gcalTokenClient=google.accounts.oauth2.initTokenClient({client_id:cid,scope:'https://www.googleapis.com/auth/calendar.events',callback:function(resp){if(resp&&resp.access_token){gcalToken=resp.access_token;gcalTokenExp=Date.now()+((resp.expires_in||3600)*1000)-60000;gcalRenderStatus();}},error_callback:function(){}});}gcalTokenClient.requestAccessToken({prompt:'none'});}catch(e){}}
 function gcalConnect(){
   var cid=gcalClientId();
   if(!cid){ var cfg=document.getElementById('gcalCfgRow'); if(cfg) cfg.style.display='flex'; alert('Primero pega y guarda tu Client ID de Google.'); return; }
