@@ -170,6 +170,24 @@ textarea{resize:vertical;min-height:90px}
 </div>
 
 <div class="step-panel active" id="panel1">
+        <div style="margin:0 0 18px 0;padding:14px 16px;border:1px dashed #c8a24a;border-radius:12px;background:#fffaf0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:220px;">
+            <div style="font-weight:700;color:#7a5b12;">¿El cliente ya envió su predio?</div>
+            <div style="font-size:13px;color:#8a6d2a;">Importa los datos automáticamente desde el formulario de captación.</div>
+          </div>
+          <button type="button" id="btnImportarCaptacion" style="background:#c8a24a;color:#fff;border:none;padding:11px 18px;border-radius:9px;font-weight:700;cursor:pointer;white-space:nowrap;">📥 Importar desde Captación</button>
+        </div>
+        <div id="modalCaptacion" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;">
+          <div style="background:#fff;max-width:640px;width:100%;border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <h3 style="margin:0;">Inmuebles recibidos</h3>
+              <button type="button" id="cerrarModalCaptacion" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;line-height:1;">&times;</button>
+            </div>
+            <p style="margin:0 0 14px;font-size:13px;color:#666;">Selecciona el inmueble que quieres publicar. Los datos disponibles se llenarán solos; los faltantes te los resaltaremos.</p>
+            <div id="listaCaptacion"><div style="text-align:center;padding:30px;color:#999;">Cargando…</div></div>
+          </div>
+        </div>
+
 <div class="card"><h3>&#128203; Informacion <em>Basica</em></h3>
 <div class="form-grid">
 <div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
@@ -765,6 +783,82 @@ try {
 };
 
 // Finca Raiz QA esta listo - no override
+
+/* __LOMAZ_IMPORT__ Importar desde Captación */
+(function(){
+  var API_URL = "https://script.google.com/macros/s/AKfycbwOaGBYgtt_3Y3CHoybd9J1yWTyVwVOC4i6nGSZ5vzyyUFIwU4R3OpbBk_ko8mQ2DEI/exec";
+  var cache = null;
+  function $(id){ return document.getElementById(id); }
+  function num(val){ if(val===null||val===undefined) return ""; var s=String(val).replace(/[^0-9]/g,""); return s===""?"":parseInt(s,10); }
+  function intFromPlus(val){ if(val===null||val===undefined||val==="") return ""; var s=String(val).replace(/[^0-9]/g,""); return s===""?"":parseInt(s,10); }
+  function setVal(id,val){ var el=$(id); if(!el) return; if(val===""||val===null||val===undefined) return; if(el.tagName==="SELECT"){ var ok=false; for(var i=0;i<el.options.length;i++){ if(String(el.options[i].value).toLowerCase()===String(val).toLowerCase()){ el.value=el.options[i].value; ok=true; break; } } if(!ok) return; } else { el.value=val; } el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
+  function mapTipo(t){ t=String(t||"").toLowerCase(); if(t.indexOf("apart")>-1) return "apartamento"; if(t.indexOf("casa")>-1) return "casa"; if(t.indexOf("local")>-1) return "local"; if(t.indexOf("ofic")>-1) return "oficina"; if(t.indexOf("bodega")>-1) return "bodega"; if(t.indexOf("lote")>-1||t.indexOf("rural")>-1) return "lote"; if(t.indexOf("finca")>-1) return "finca"; if(t.indexOf("parqu")>-1) return "parqueadero"; if(t.indexOf("consult")>-1) return "consultorio"; return ""; }
+  function mapOperacion(m){ m=String(m||"").toLowerCase(); if(m.indexOf("arriendo")>-1 && m.indexOf("venta")===-1) return "arriendo"; if(m.indexOf("venta")>-1) return "venta"; return ""; }
+  function mapDepto(ciudad){ var c=String(ciudad||"").toLowerCase().trim(); var m={ "bogota":"Cundinamarca","bogotá":"Cundinamarca","medellin":"Antioquia","medellín":"Antioquia","cali":"Valle del Cauca","barranquilla":"Atlantico","cartagena":"Bolivar","bucaramanga":"Santander" }; return m[c]||"Otro"; }
+  function mapPiso(tp){ tp=String(tp||"").toLowerCase(); if(tp.indexOf("cerám")>-1||tp.indexOf("ceram")>-1) return "ceramica"; if(tp.indexOf("porcel")>-1) return "porcelanato"; if(tp.indexOf("mader")>-1) return "madera"; if(tp.indexOf("marmol")>-1||tp.indexOf("mármol")>-1) return "marmol"; if(tp.indexOf("alfomb")>-1) return "alfombra"; if(tp.indexOf("vinil")>-1) return "vinilo"; if(tp.indexOf("lamin")>-1) return "laminado"; return ""; }
+  function g(p,k){ return p[k]!==undefined?p[k]:""; }
+  function autofill(p){
+    var faltan=[];
+    var tipoOp=mapOperacion(g(p,"Modalidad")); setVal("tipo_operacion",tipoOp); if(!tipoOp) faltan.push("Tipo de negocio");
+    var tipoProp=mapTipo(g(p,"Tipo Inmueble")); setVal("tipo_propiedad",tipoProp); if(!tipoProp) faltan.push("Tipo de propiedad (revisar: "+g(p,"Tipo Inmueble")+")");
+    var barrio=String(g(p,"Barrio")||"").trim(); var ciudad=String(g(p,"Ciudad")||"").trim();
+    var titulo=[ (tipoProp||g(p,"Tipo Inmueble")), barrio?("en "+barrio):"", ciudad?("- "+ciudad):"" ].filter(Boolean).join(" "); setVal("titulo", titulo.charAt(0).toUpperCase()+titulo.slice(1));
+    var precio=num(g(p,"Precio Venta ($)")); if(tipoOp==="arriendo"){ var c=num(g(p,"Canon Arriendo ($)")); if(c) precio=c; } setVal("precio",precio); if(!precio) faltan.push("Precio (revisar valor del Sheet)");
+    setVal("precio_admin", num(g(p,"Administración Plena ($)")));
+    setVal("m2_construccion", num(g(p,"Área Principal (m²)")));
+    setVal("m2_terreno", num(g(p,"Área Lote (m²)")));
+    setVal("habitaciones", intFromPlus(g(p,"Habitaciones")));
+    setVal("banos", intFromPlus(g(p,"Baños")));
+    setVal("garajes", num(g(p,"Parqueaderos")));
+    setVal("estrato", num(g(p,"Estrato")));
+    setVal("antiguedad", num(g(p,"Años Construido")));
+    setVal("piso", num(g(p,"Piso")));
+    setVal("tipo_piso", mapPiso(g(p,"Tipo Piso")));
+    setVal("departamento", mapDepto(ciudad));
+    setVal("ciudad", ciudad);
+    setVal("barrio", barrio);
+    setVal("direccion", String(g(p,"Dirección")||"").trim());
+    setVal("como_llegar", String(g(p,"Lugares de Interés")||"").trim());
+    var desc=[ String(g(p,"Lo Más Destacado")||"").trim(), String(g(p,"Info Adicional")||"").trim() ].filter(Boolean).join("\n\n"); setVal("descripcion", desc);
+    if(!String(g(p,"Dirección")||"").trim()) faltan.push("Dirección"); else { if(typeof __geocodeDireccion==="function"){ try{ __geocodeDireccion(); }catch(e){} } }
+    return faltan;
+  }
+  function tarjeta(p,idx){
+    var nombre=String(g(p,"Propietario / Empresa")||"(sin nombre)").trim();
+    var tipo=String(g(p,"Tipo Inmueble")||"").trim();
+    var ciudad=String(g(p,"Ciudad")||"").trim();
+    var dir=String(g(p,"Dirección")||"").trim();
+    var modalidad=String(g(p,"Modalidad")||"").trim();
+    var d=document.createElement("div");
+    d.style.cssText="border:1px solid #e5e5e5;border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:.15s;";
+    d.onmouseover=function(){ d.style.borderColor="#c8a24a"; d.style.background="#fffaf0"; };
+    d.onmouseout=function(){ d.style.borderColor="#e5e5e5"; d.style.background="#fff"; };
+    d.innerHTML="<div style=\"font-weight:700;color:#222;\">"+nombre+"</div>"+
+      "<div style=\"font-size:13px;color:#666;margin-top:3px;\">"+[tipo,ciudad,dir].filter(Boolean).join(" · ")+"</div>"+
+      "<div style=\"font-size:12px;color:#c8a24a;margin-top:4px;text-transform:capitalize;\">"+modalidad+"</div>";
+    d.onclick=function(){
+      var faltan=autofill(p);
+      $("modalCaptacion").style.display="none";
+      if(faltan.length){ alert("✅ Datos importados.\n\n⚠️ Faltan o revisar estos campos antes de publicar:\n• "+faltan.join("\n• ")); }
+      else { alert("✅ Datos importados correctamente. Revisa y sube las fotos/videos manualmente."); }
+    };
+    return d;
+  }
+  function abrir(){
+    var modal=$("modalCaptacion"); modal.style.display="flex";
+    var lista=$("listaCaptacion");
+    function render(props){ lista.innerHTML=""; if(!props||!props.length){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#999;\">No hay inmuebles registrados aún.</div>"; return; } props.forEach(function(p,i){ lista.appendChild(tarjeta(p,i)); }); }
+    if(cache){ render(cache); return; }
+    lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#999;\">Cargando…</div>";
+    fetch(API_URL).then(function(r){ return r.json(); }).then(function(d){ if(d&&d.ok){ cache=d.properties; render(cache); } else { lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">Error al cargar.</div>"; } }).catch(function(e){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">No se pudo conectar con Captación.</div>"; });
+  }
+  function init(){
+    var b=$("btnImportarCaptacion"); if(b) b.addEventListener("click",abrir);
+    var c=$("cerrarModalCaptacion"); if(c) c.addEventListener("click",function(){ $("modalCaptacion").style.display="none"; });
+    var m=$("modalCaptacion"); if(m) m.addEventListener("click",function(e){ if(e.target===m) m.style.display="none"; });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
 </script>
 </body>
 </html>
