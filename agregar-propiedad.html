@@ -370,7 +370,10 @@ function __applyTipoFields(){ const tp=((document.getElementById("tipo_propiedad
     lote:["m2_terreno"],
     "local comercial":["m2_construccion","banos","garajes","estrato","antiguedad"],
     local:["m2_construccion","banos","garajes","estrato","antiguedad"],
-    bodega:["m2_construccion","m2_terreno","banos","garajes","antiguedad"]
+    bodega:["m2_construccion","m2_terreno","banos","garajes","antiguedad"],
+    parqueadero:["m2_construccion"],
+    consultorio:["m2_construccion","banos","estrato","antiguedad","piso","precio_admin"],
+    habitacion:["m2_construccion","banos","estrato","antiguedad","piso","precio_admin"]
   };
   const all=["m2_construccion","m2_terreno","habitaciones","banos","garajes","estrato","antiguedad","piso","precio_admin"];
   if(!tp){ all.forEach(function(id){ const g=__fieldGroup(id); if(g) g.style.display=""; }); return; }
