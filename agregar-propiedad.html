@@ -358,6 +358,26 @@ textarea{resize:vertical;min-height:90px}
 const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
 const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const sb=window.supabase.createClient(SURL,SKEY);
+// ===== Campos dinamicos segun tipo de propiedad =====
+function __fieldGroup(id){ const e=document.getElementById(id); return e? e.closest(".form-group") : null; }
+function __applyTipoFields(){ const tp=((document.getElementById("tipo_propiedad")||{}).value||"").toLowerCase();
+  // Mapa: campos relevantes por tipo. Los no listados se ocultan.
+  const cfg={
+    apartamento:["m2_construccion","habitaciones","banos","garajes","estrato","antiguedad","piso","precio_admin"],
+    oficina:["m2_construccion","banos","garajes","estrato","antiguedad","piso","precio_admin"],
+    casa:["m2_construccion","m2_terreno","habitaciones","banos","garajes","estrato","antiguedad"],
+    finca:["m2_construccion","m2_terreno","habitaciones","banos","garajes","antiguedad"],
+    lote:["m2_terreno"],
+    "local comercial":["m2_construccion","banos","garajes","estrato","antiguedad"],
+    local:["m2_construccion","banos","garajes","estrato","antiguedad"],
+    bodega:["m2_construccion","m2_terreno","banos","garajes","antiguedad"]
+  };
+  const all=["m2_construccion","m2_terreno","habitaciones","banos","garajes","estrato","antiguedad","piso","precio_admin"];
+  if(!tp){ all.forEach(function(id){ const g=__fieldGroup(id); if(g) g.style.display=""; }); return; }
+  const show=cfg[tp]||all;
+  all.forEach(function(id){ const g=__fieldGroup(id); if(g) g.style.display = (show.indexOf(id)>=0? "" : "none"); });
+}
+document.addEventListener("DOMContentLoaded",function(){ const t=document.getElementById("tipo_propiedad"); if(t){ t.addEventListener("change",__applyTipoFields); __applyTipoFields(); } });
 // ===== Mapa + geocodificacion (Leaflet + Nominatim, sin API key) =====
 window.__map=null; window.__marker=null;
 function __setLatLng(lat,lng){ const la=document.getElementById("latitud"); const lo=document.getElementById("longitud"); if(la) la.value=Number(lat).toFixed(7); if(lo) lo.value=Number(lng).toFixed(7); }
