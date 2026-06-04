@@ -919,5 +919,95 @@ try {
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
 })();
 </script>
+
+
+<script>
+(function(){
+  var EDIT_ID = new URLSearchParams(location.search).get('id');
+  if(!EDIT_ID) return;
+  window.__EDIT_ID = EDIT_ID;
+  function gv(id){ var e=document.getElementById(id); return e?e.value:''; }
+  function sv(id,val){
+    var e=document.getElementById(id); if(!e) return;
+    if(val===null||val===undefined) val='';
+    e.value=val;
+    e.dispatchEvent(new Event('input',{bubbles:true}));
+    e.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  async function getClient(){
+    if(window.__editClient) return window.__editClient;
+    var cfg = await (await fetch('/config.js')).text();
+    var url = cfg.match(/https:\/\/[a-z0-9]+\.supabase\.co/)[0];
+    var key = cfg.match(/eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+/)[0];
+    window.__editClient = window.supabase.createClient(url,key);
+    return window.__editClient;
+  }
+  async function prefill(){
+    try{
+      var c = await getClient();
+      var res = await c.from('propiedades').select('*').eq('id', EDIT_ID).single();
+      if(res.error){ console.error('edit prefill', res.error); return; }
+      var r = res.data; window.__EDIT_ROW = r;
+      sv('titulo', r.titulo); sv('precio', r.precio); sv('precio_admin', r.precio_admin);
+      sv('m2_construccion', r.m2_construccion!=null?r.m2_construccion:r.area_construida);
+      sv('m2_terreno', r.m2_terreno!=null?r.m2_terreno:r.area_total);
+      sv('habitaciones', r.habitaciones); sv('banos', r.banos);
+      sv('garajes', r.garajes!=null?r.garajes:r.parqueaderos);
+      sv('estrato', r.estrato); sv('antiguedad', r.antiguedad); sv('piso', r.piso);
+      sv('niveles', r.pisos_totales); sv('descripcion', r.descripcion);
+      sv('direccion', r.direccion); sv('latitud', r.latitud); sv('longitud', r.longitud);
+      sv('video_url', r.video_url); sv('recorrido_virtual', r.tour_virtual_url);
+      sv('tipo_operacion', r.tipo_operacion); sv('tipo_propiedad', r.tipo_propiedad);
+      sv('status_propiedad', r.estado);
+      sv('acepta_credito', r.acepta_creditos ? 'si' : 'no');
+      sv('deposito', r.deposito ? 'true':'false'); sv('tipo_piso', r.tipo_piso);
+      sv('departamento', r.departamento);
+      setTimeout(function(){ sv('ciudad', r.ciudad); setTimeout(function(){ sv('barrio', r.barrio); }, 250); }, 350);
+      var h1 = document.querySelector('.page-title') || document.querySelector('h1');
+      if(h1){ h1.innerHTML = h1.innerHTML.replace(/Agregar/i,'Editar'); }
+      document.title = 'Editar Propiedad - Lomaz Home';
+    }catch(e){ console.error('prefill err', e); }
+  }
+  function installSaveOverride(){
+    var orig = window.publicarPropiedad;
+    if(typeof orig !== 'function'){ setTimeout(installSaveOverride, 300); return; }
+    if(orig.__editWrapped) return;
+    async function wrapped(){
+      try{
+        var c = await getClient();
+        var data = {
+          tipo_operacion: gv('tipo_operacion'), tipo_negocio: gv('tipo_operacion'),
+          tipo_propiedad: gv('tipo_propiedad'), titulo: gv('titulo').trim(),
+          precio: parseFloat(gv('precio'))||0, precio_admin: parseFloat(gv('precio_admin'))||0,
+          m2_construccion: parseFloat(gv('m2_construccion'))||0,
+          area_construida: parseFloat(gv('m2_construccion'))||null,
+          m2_terreno: parseFloat(gv('m2_terreno'))||null,
+          area_total: parseFloat(gv('m2_terreno'))||null,
+          habitaciones: parseInt(gv('habitaciones'))||0, banos: parseInt(gv('banos'))||0,
+          garajes: parseInt(gv('garajes'))||0, parqueaderos: parseInt(gv('garajes'))||0,
+          estrato: parseInt(gv('estrato'))||1, antiguedad: parseInt(gv('antiguedad'))||0,
+          piso: parseInt(gv('piso'))||0, pisos_totales: parseInt(gv('niveles'))||null,
+          acepta_creditos: gv('acepta_credito')==='si', deposito: gv('deposito')==='true',
+          tipo_piso: gv('tipo_piso')||null, descripcion: gv('descripcion').trim(),
+          departamento: gv('departamento'), ciudad: gv('ciudad').trim(),
+          barrio: gv('barrio').trim(), direccion: gv('direccion').trim()||null,
+          latitud: parseFloat(gv('latitud'))||null, longitud: parseFloat(gv('longitud'))||null,
+          video_url: gv('video_url').trim()||null, tour_virtual_url: gv('recorrido_virtual').trim()||null,
+          estado: gv('status_propiedad')||'activa', updated_at: new Date().toISOString()
+        };
+        var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
+        if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
+        alert('Cambios guardados correctamente.');
+        location.href='mis-propiedades.html';
+      }catch(e){ alert('Error: '+e.message); }
+    }
+    wrapped.__editWrapped = true;
+    window.publicarPropiedad = wrapped;
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(function(){ prefill(); installSaveOverride(); }, 600); });
+  } else { setTimeout(function(){ prefill(); installSaveOverride(); }, 600); }
+})();
+</script>
 </body>
 </html>
