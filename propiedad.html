@@ -121,16 +121,8 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#
   var p=null;
   try{ var r=await SB.from('propiedades').select('*').eq('id',ID).single(); p=r.data; }catch(e){}
   if(!p){app.innerHTML='<div class="center-msg">No se encontro la propiedad o no esta disponible.</div>';return;}
-  function fmtPrice(n){n=Number(n)||0;if(n>=1e9)return '</script>
-</body>
-</html>+(n/1e9).toFixed(n%1e9===0?0:1).replace('.0','')+' Mil M';if(n>=1e6)return '</script>
-</body>
-</html>+(n/1e6).toFixed(n%1e6===0?0:1).replace('.0','')+'M';return '</script>
-</body>
-</html>+n.toLocaleString('es-CO');}
-  function full(n){return '</script>
-</body>
-</html>+(Number(n)||0).toLocaleString('es-CO');}
+  function fmtPrice(n){n=Number(n)||0;if(n>=1e9)return '$'+(n/1e9).toFixed(n%1e9===0?0:1).replace('.0','')+' Mil M';if(n>=1e6)return '$'+(n/1e6).toFixed(n%1e6===0?0:1).replace('.0','')+'M';return '$'+n.toLocaleString('es-CO');}
+  function full(n){return '$'+(Number(n)||0).toLocaleString('es-CO');}
   function cap(s){s=(s||'').toString();return s.charAt(0).toUpperCase()+s.slice(1);}
   function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
   var op=(p.tipo_negocio||p.tipo_operacion||p.negocio||'venta');
