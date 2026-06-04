@@ -4,195 +4,202 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Detalle Propiedad | Lomaz Home</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff}
-nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(201,164,132,.2);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:1.4rem;font-weight:900;color:#fff;text-decoration:none}
-.logo span{color:#c9a484}
-.nl{display:flex;gap:2rem;list-style:none}
-.nl a{color:#ccc;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.nl a:hover{color:#c9a484}
-.ncta{background:#c9a484;color:#000;padding:.5rem 1.2rem;border-radius:4px;font-weight:700;font-size:.75rem;text-decoration:none}
-.page{padding:90px 0 4rem;max-width:1200px;margin:0 auto}
-.breadcrumb{padding:1rem 2rem;font-size:.75rem;color:#555}
-.breadcrumb a{color:#c9a484;text-decoration:none}
-.breadcrumb span{margin:0 .5rem}
-.hero-gallery{background:#111;height:420px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:0 2rem;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
-.gallery-main{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6rem;color:rgba(255,255,255,.1)}
-.gallery-badge{position:absolute;top:1.5rem;left:1.5rem;background:#c9a484;color:#000;padding:.4rem 1rem;border-radius:6px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
-.gallery-ref{position:absolute;top:1.5rem;right:1.5rem;background:rgba(0,0,0,.7);color:#c9a484;padding:.4rem 1rem;border-radius:6px;font-size:.75rem;font-weight:600;border:1px solid rgba(201,164,132,.3)}
-.content{display:grid;grid-template-columns:1fr 360px;gap:2rem;padding:2rem}
-.main-col{}
-.price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap}
-.price{font-size:2.2rem;font-weight:900;color:#c9a484}
-.neg-badge{background:rgba(201,164,132,.15);color:#c9a484;border:1px solid rgba(201,164,132,.3);padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;text-transform:uppercase}
-.prop-title{font-size:1.4rem;font-weight:700;margin-bottom:.5rem;line-height:1.3}
-.prop-loc{font-size:.9rem;color:#666;margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem}
-.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1.5rem}
-.feat-item{text-align:center}
-.feat-icon{font-size:1.6rem;margin-bottom:.4rem}
-.feat-val{font-size:1rem;font-weight:700;color:#fff}
-.feat-label{font-size:.7rem;color:#666;text-transform:uppercase;letter-spacing:1px;margin-top:.2rem}
-.section-title{font-size:1rem;font-weight:700;color:#c9a484;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(201,164,132,.2)}
-.desc-text{color:#aaa;line-height:1.8;font-size:.9rem;margin-bottom:2rem}
-.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:2rem}
-.detail-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center}
-.detail-label{font-size:.75rem;color:#666;text-transform:uppercase;letter-spacing:1px}
-.detail-val{font-size:.85rem;font-weight:600;color:#fff}
-.map-container{height:300px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08);margin-bottom:2rem}
-.sidebar{}
-.contact-card{background:rgba(255,255,255,.04);border:1px solid rgba(201,164,132,.2);border-radius:12px;padding:1.5rem;position:sticky;top:90px}
-.contact-title{font-size:1rem;font-weight:700;margin-bottom:.3rem}
-.contact-sub{font-size:.8rem;color:#666;margin-bottom:1.5rem}
-.form-group{margin-bottom:1rem}
-.form-group label{display:block;font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem}
-.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.85rem;outline:none;resize:vertical}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#c9a484}
-.form-group input::placeholder,.form-group textarea::placeholder{color:#444}
-.btn-contact{width:100%;background:#c9a484;color:#000;border:none;border-radius:6px;padding:.9rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:background .3s;margin-top:.5rem}
-.btn-contact:hover{background:#b8906e}
-.btn-contact:disabled{background:#444;color:#777;cursor:not-allowed}
-.msg-ok{display:none;background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.3);color:#00c864;padding:.8rem;border-radius:6px;text-align:center;font-size:.82rem;margin-top:.8rem}
-.msg-err{display:none;background:rgba(255,50,50,.1);border:1px solid rgba(255,50,50,.3);color:#ff6b6b;padding:.8rem;border-radius:6px;text-align:center;font-size:.82rem;margin-top:.8rem}
-.whatsapp-btn{width:100%;background:#25d366;color:#fff;border:none;border-radius:6px;padding:.8rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none}
-.whatsapp-btn:hover{background:#1da851}
-.loading-state{text-align:center;padding:8rem 2rem;color:#666}
-.loading-state h2{color:#c9a484;margin-bottom:1rem}
-.not-found{text-align:center;padding:8rem 2rem}
-.not-found h2{color:#c9a484;margin-bottom:1rem}
-.not-found a{color:#c9a484}
-@media(max-width:900px){.content{grid-template-columns:1fr}.features-grid{grid-template-columns:repeat(2,1fr)}.contact-card{position:static}.nl{display:none}.details-grid{grid-template-columns:1fr}}
+:root{--navy:#0D1B2E;--navy2:#162540;--gold:#c9a96e;--ink:#1a2438;--line:rgba(201,169,110,.18);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#0a1422;color:#e8edf5;line-height:1.6;}
+.serif{font-family:'Cormorant Garamond',serif;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px;}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(10,20,34,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;}
+.brand{font-weight:800;font-size:1.35rem;letter-spacing:.5px;}
+.brand b{color:var(--gold);}
+nav.top .links{display:flex;gap:30px;align-items:center;font-size:.82rem;letter-spacing:1.5px;font-weight:600;}
+nav.top .links a{color:#c5cfe0;transition:.2s;}
+nav.top .links a:hover{color:var(--gold);}
+.btn-login{border:1px solid var(--gold);color:var(--gold)!important;padding:8px 20px;border-radius:8px;letter-spacing:1px;}
+.btn-login:hover{background:var(--gold);color:var(--navy)!important;}
+.crumb{font-size:.78rem;color:#7a89a3;padding:18px 0 6px;letter-spacing:.5px;}
+.crumb a:hover{color:var(--gold);}
+.crumb span{color:#a9b6cd;}
+.gallery{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--navy2);margin-bottom:14px;}
+.gallery .main{position:relative;height:480px;background:#0b1626;display:flex;align-items:center;justify-content:center;}
+.gallery .main img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery .ph{font-size:84px;opacity:.5;}
+.badge-op{position:absolute;top:18px;left:18px;background:var(--gold);color:var(--navy);font-weight:700;font-size:.72rem;letter-spacing:1.5px;padding:7px 16px;border-radius:8px;z-index:5;text-transform:uppercase;}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(13,27,46,.7);border:1px solid var(--line);color:#fff;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:.2s;}
+.gnav:hover{background:var(--gold);color:var(--navy);}
+.gnav.prev{left:16px;} .gnav.next{right:16px;}
+.gcount{position:absolute;bottom:16px;right:16px;background:rgba(13,27,46,.8);padding:6px 14px;border-radius:20px;font-size:.78rem;letter-spacing:.5px;z-index:5;}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-bottom:30px;}
+.thumbs img{width:100%;height:74px;object-fit:cover;border-radius:9px;cursor:pointer;opacity:.55;border:2px solid transparent;transition:.2s;}
+.thumbs img:hover{opacity:1;}
+.thumbs img.active{opacity:1;border-color:var(--gold);}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:34px;align-items:start;padding-bottom:60px;}
+@media(max-width:920px){.layout{grid-template-columns:1fr;}}
+h1.title{font-size:2.5rem;font-weight:600;line-height:1.15;margin-bottom:8px;color:#fff;}
+.loc{color:#9fb0cc;font-size:1rem;margin-bottom:18px;}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 26px;}
+.tag{background:var(--navy2);border:1px solid var(--line);color:#cdd8ea;font-size:.74rem;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:30px;}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--navy2);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:34px;}
+.fact{padding:22px 14px;text-align:center;border-right:1px solid var(--line);}
+.fact:last-child{border-right:none;}
+.fact .ic{font-size:1.5rem;}
+.fact .v{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:#fff;margin-top:4px;}
+.fact .l{font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;color:#8696b2;margin-top:2px;}
+@media(max-width:560px){.facts{grid-template-columns:repeat(2,1fr);}.fact:nth-child(2n){border-right:none;}}
+.sec{margin-bottom:38px;}
+.sec h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:#fff;margin-bottom:6px;}
+.sec .rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:18px;}
+.desc{color:#bdc9dd;font-size:1.02rem;white-space:pre-wrap;}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:560px){.specs{grid-template-columns:1fr;}}
+.spec{display:flex;justify-content:space-between;align-items:center;background:var(--navy2);border:1px solid var(--line);border-radius:11px;padding:13px 18px;}
+.spec .k{color:#8696b2;font-size:.82rem;letter-spacing:.5px;text-transform:uppercase;}
+.spec .vv{color:#fff;font-weight:600;}
+.amen{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
+.amen .a{display:flex;align-items:center;gap:9px;color:#cdd8ea;font-size:.92rem;background:var(--navy2);border:1px solid var(--line);border-radius:9px;padding:10px 14px;}
+.amen .a::before{content:'\2713';color:var(--gold);font-weight:700;}
+#map{height:330px;border-radius:14px;border:1px solid var(--line);}
+.noaddr{color:#8696b2;font-style:italic;}
+.side{position:sticky;top:90px;display:flex;flex-direction:column;gap:18px;}
+.card{background:linear-gradient(160deg,var(--navy2),var(--navy));border:1px solid var(--line);border-radius:18px;padding:26px;}
+.card .price2{font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.card .neg{font-size:.8rem;color:#8696b2;margin-bottom:18px;}
+.advisor{display:flex;align-items:center;gap:13px;margin-bottom:16px;}
+.advisor .av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8a7038);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--navy);font-weight:700;}
+.advisor .nm{font-weight:600;color:#fff;}
+.advisor .rl{font-size:.76rem;color:#8696b2;letter-spacing:.5px;}
+.btn{display:block;width:100%;text-align:center;padding:14px;border-radius:11px;font-weight:600;font-size:.92rem;letter-spacing:.5px;cursor:pointer;border:none;transition:.2s;margin-bottom:11px;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:#d8bd88;}
+.btn-wa{background:#25D366;color:#fff;}
+.btn-wa:hover{filter:brightness(1.08);}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:#cdd8ea;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.miniref{font-size:.72rem;color:#6b7a96;text-align:center;letter-spacing:1px;margin-top:6px;}
+.center-msg{text-align:center;padding:120px 20px;color:#8696b2;}
+.spinner{width:40px;height:40px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 18px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#6b7a96;font-size:.82rem;}
 </style>
 </head>
 <body>
-<nav>
-<a href="/" class="logo">Lomaz<span>Home</span></a>
-<ul class="nl">
-<li><a href="/">Inicio</a></li>
-<li><a href="/propiedades.html">Propiedades</a></li>
-</ul>
-<a href="/login.html" class="ncta">Ingresar</a>
-</nav>
-<div id="app" class="page">
-<div class="loading-state"><h2>Cargando propiedad...</h2><p>Obteniendo informacion...</p></div>
+<nav class="top"><div class="wrap">
+  <a href="/" class="brand">Lomaz<b>Home</b></a>
+  <div class="links">
+    <a href="/">INICIO</a>
+    <a href="/propiedades.html">PROPIEDADES</a>
+    <a href="/login.html" class="btn-login">Ingresar</a>
+  </div>
+</div></nav>
+<div class="wrap">
+  <div id="app"><div class="center-msg"><div class="spinner"></div>Cargando propiedad...</div></div>
 </div>
+<footer>&copy; <span id="yr"></span> Lomaz Home &middot; Inmobiliaria</footer>
 <script>
-const SU="https://lniouebpuuuqctrgxoiw.supabase.co",SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
-const {createClient}=supabase;
-const db=createClient(SU,SK);
-function fmt(p){if(!p)return"Precio a convenir";if(p>=1e9)return"$"+(p/1e9).toFixed(1)+" Mil M";if(p>=1e6)return"$"+Math.round(p/1e6)+"M";return"$"+p.toLocaleString()}
-function icon(t){const m={"Casa":"&#127968;","Apartamento":"&#127963;","Local Comercial":"&#127978;","Oficina":"&#127970;","Bodega":"&#127979;","Lote":"&#127807;","Finca":"&#127806;"};return m[t]||"&#127968;"}
-function val(v,suffix){return(v!==null&&v!==undefined&&v!=="")?v+(suffix||""):"N/A"}
-async function loadProp(){
-const params=new URLSearchParams(window.location.search);
-const id=params.get("id");
-const app=document.getElementById("app");
-if(!id){app.innerHTML='<div class="not-found"><h2>Propiedad no encontrada</h2><p>No se especifico un ID valido. <a href="/propiedades.html">Ver todas las propiedades</a></p></div>';return}
-try{
-const{data:p,error}=await db.from("propiedades").select("*").eq("id",id).single();
-if(error||!p){app.innerHTML='<div class="not-found"><h2>Propiedad no encontrada</h2><p>Esta propiedad no existe o fue eliminada. <a href="/propiedades.html">Ver otras propiedades</a></p></div>';return}
-document.title=(p.titulo||p.tipo_propiedad||"Propiedad")+" | Lomaz Home";
-const lat=p.latitud||4.7110;
-const lng=p.longitud||-74.0721;
-app.innerHTML=
-`<div class="breadcrumb"><a href="/">Inicio</a><span>›</span><a href="/propiedades.html">Propiedades</a><span>›</span>${p.titulo||p.tipo_propiedad||"Propiedad"}</div>
-<div class="hero-gallery">
-<div class="gallery-main">${icon(p.tipo_propiedad)}</div>
-<div class="gallery-badge">${p.tipo_negocio||"Venta"}</div>
-${p.codigo_interno?`<div class="gallery-ref">REF: ${p.codigo_interno}</div>`:""}
-</div>
-<div class="content">
-<div class="main-col">
-<div class="price-row">
-<div class="price">${fmt(p.precio)}</div>
-${p.canon_administracion?`<div class="neg-badge">Adm: ${fmt(p.canon_administracion)}/mes</div>`:""}
-</div>
-<div class="prop-title">${p.titulo||((p.tipo_propiedad||"Propiedad")+" en "+(p.tipo_negocio||"Venta"))}</div>
-<div class="prop-loc">&#128205; ${[p.barrio,p.ciudad,p.departamento].filter(Boolean).join(", ")||"Colombia"}</div>
-<div class="features-grid">
-<div class="feat-item"><div class="feat-icon">&#127968;</div><div class="feat-val">${val(p.habitaciones)}</div><div class="feat-label">Habitaciones</div></div>
-<div class="feat-item"><div class="feat-icon">&#128704;</div><div class="feat-val">${val(p.banos)}</div><div class="feat-label">Banos</div></div>
-<div class="feat-item"><div class="feat-icon">&#128663;</div><div class="feat-val">${val(p.garajes)}</div><div class="feat-label">Garajes</div></div>
-<div class="feat-item"><div class="feat-icon">&#128207;</div><div class="feat-val">${val(p.area_construida,"m2")}</div><div class="feat-label">Area</div></div>
-</div>
-<div class="section-title">Descripcion</div>
-<div class="desc-text">${p.descripcion||"Sin descripcion disponible para esta propiedad."}</div>
-<div class="section-title">Caracteristicas</div>
-<div class="details-grid">
-<div class="detail-item"><span class="detail-label">Tipo</span><span class="detail-val">${val(p.tipo_propiedad)}</span></div>
-<div class="detail-item"><span class="detail-label">Negocio</span><span class="detail-val">${val(p.tipo_negocio)}</span></div>
-<div class="detail-item"><span class="detail-label">Estrato</span><span class="detail-val">${val(p.estrato)}</span></div>
-<div class="detail-item"><span class="detail-label">Piso</span><span class="detail-val">${val(p.piso)}</span></div>
-<div class="detail-item"><span class="detail-label">Area construida</span><span class="detail-val">${val(p.area_construida,"m2")}</span></div>
-<div class="detail-item"><span class="detail-label">Area privada</span><span class="detail-val">${val(p.area_privada,"m2")}</span></div>
-<div class="detail-item"><span class="detail-label">Antiguedad</span><span class="detail-val">${val(p.antiguedad)} anos</span></div>
-<div class="detail-item"><span class="detail-label">Estado</span><span class="detail-val">${val(p.estado_propiedad||p.estado)}</span></div>
-</div>`,
-`<div class="section-title">Ubicacion</div>
-<div id="map" class="map-container"></div>`,
-`</div>`,
-`<div class="sidebar">
-<div class="contact-card">
-<div class="contact-title">Solicitar Informacion</div>
-<div class="contact-sub">Uno de nuestros asesores te contactara</div>
-<div class="form-group"><label>Nombre *</label><input type="text" id="l-nombre" placeholder="Tu nombre completo"/></div>
-<div class="form-group"><label>Telefono *</label><input type="tel" id="l-tel" placeholder="Ej: 3001234567"/></div>
-<div class="form-group"><label>Email</label><input type="email" id="l-email" placeholder="tu@email.com"/></div>
-<div class="form-group"><label>Mensaje</label><textarea id="l-msg" rows="3" placeholder="Escribeme aqui..."></textarea></div>
-<button class="btn-contact" onclick="enviarLead('${p.id}','${p.titulo||p.tipo_propiedad||"Propiedad"}','${p.asesor_id||""}')">Solicitar Informacion</button>
-<a href="https://wa.me/57${p.telefono_contacto||"3000000000"}?text=Hola,%20me%20interesa%20la%20propiedad%20${encodeURIComponent(p.titulo||p.tipo_propiedad||"Propiedad")}%20en%20Lomaz%20Home" target="_blank" class="whatsapp-btn">&#128172; WhatsApp</a>
-<div id="msg-ok" class="msg-ok">Solicitud enviada. Te contactaremos pronto.</div>
-<div id="msg-err" class="msg-err">Error al enviar. Intenta de nuevo.</div>
-</div>
-</div>`,
-`</div></div>`;
-// Init map
-setTimeout(()=>{
-const mapEl=document.getElementById("map");
-if(mapEl&&typeof L!=="undefined"){
-const map=L.map("map").setView([lat,lng],15);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"OpenStreetMap"}).addTo(map);
-L.marker([lat,lng]).addTo(map).bindPopup(p.titulo||p.tipo_propiedad||"Propiedad").openPopup();
-}
-},500);
-}catch(e){app.innerHTML=`<div class="not-found"><h2>Error</h2><p>${e.message}</p><p><a href="/propiedades.html">Volver a propiedades</a></p></div>`}
-}
-async function enviarLead(propId,propTitulo,asesorId){
-const nombre=document.getElementById("l-nombre").value.trim();
-const tel=document.getElementById("l-tel").value.trim();
-const email=document.getElementById("l-email").value.trim();
-const msg=document.getElementById("l-msg").value.trim();
-const ok=document.getElementById("msg-ok");
-const err=document.getElementById("msg-err");
-const btn=document.querySelector(".btn-contact");
-if(!nombre||!tel){err.textContent="Nombre y telefono son obligatorios.";err.style.display="block";ok.style.display="none";return}
-btn.disabled=true;btn.textContent="Enviando...";
-try{
-const{error}=await db.from("leads").insert({
-nombre_contacto:nombre,
-telefono:tel,
-email:email||null,
-mensaje:msg||("Me interesa la propiedad: "+propTitulo),
-propiedad_id:propId,
-asesor_id:asesorId||null,
-estado:"Nuevo",
-fuente:"Web"
-});
-if(error)throw error;
-ok.style.display="block";err.style.display="none";
-btn.textContent="Solicitud Enviada";
-["l-nombre","l-tel","l-email","l-msg"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});
-}catch(e){
-err.textContent="Error: "+e.message;err.style.display="block";ok.style.display="none";
-btn.disabled=false;btn.textContent="Solicitar Informacion";
-}
-}
-loadProp();
+(async function(){
+  var yr=document.getElementById('yr'); if(yr) yr.textContent=new Date().getFullYear();
+  var app=document.getElementById('app');
+  function qp(n){return new URLSearchParams(window.location.search).get(n);}
+  var ID=qp('id');
+  if(!ID){app.innerHTML='<div class="center-msg">Propiedad no especificada.</div>';return;}
+  var SB=null;
+  try{
+    var cfg=await (await fetch('/config.js')).text();
+    var SURL=(cfg.match(/https:\/\/[a-z0-9]+\.supabase\.co/)||[])[0];
+    var SKEY=(cfg.match(/eyJ[\w.\-]+/)||[])[0];
+    SB=window.supabase.createClient(SURL,SKEY);
+  }catch(e){}
+  var p=null;
+  try{ var r=await SB.from('propiedades').select('*').eq('id',ID).single(); p=r.data; }catch(e){}
+  if(!p){app.innerHTML='<div class="center-msg">No se encontro la propiedad o no esta disponible.</div>';return;}
+  function fmtPrice(n){n=Number(n)||0;if(n>=1e9)return '</script>
+</body>
+</html>+(n/1e9).toFixed(n%1e9===0?0:1).replace('.0','')+' Mil M';if(n>=1e6)return '</script>
+</body>
+</html>+(n/1e6).toFixed(n%1e6===0?0:1).replace('.0','')+'M';return '</script>
+</body>
+</html>+n.toLocaleString('es-CO');}
+  function full(n){return '</script>
+</body>
+</html>+(Number(n)||0).toLocaleString('es-CO');}
+  function cap(s){s=(s||'').toString();return s.charAt(0).toUpperCase()+s.slice(1);}
+  function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+  var op=(p.tipo_negocio||p.tipo_operacion||p.negocio||'venta');
+  var locTxt=[p.barrio,p.ciudad,p.departamento].filter(Boolean).join(', ');
+  var fotos=Array.isArray(p.fotos)?p.fotos.slice():[];
+  if(!fotos.length && p.foto_principal) fotos=[p.foto_principal];
+  if(!fotos.length && Array.isArray(p.imagenes)) fotos=p.imagenes.slice();
+  var amen=Array.isArray(p.amenidades)?p.amenidades:[];
+  var area=p.m2_construccion||p.area_construida||p.area_privada||p.m2_terreno||0;
+  var galInner;
+  if(fotos.length){
+    galInner='<div class="main"><span class="badge-op">'+esc(op).toUpperCase()+'</span><img id="mainImg" src="'+esc(fotos[0])+'" alt="foto"/>'+(fotos.length>1?'<div class="gnav prev" onclick="GAL(-1)">&#8249;</div><div class="gnav next" onclick="GAL(1)">&#8250;</div>':'')+'<div class="gcount"><span id="gIdx">1</span> / '+fotos.length+'</div></div>';
+  }else{ galInner='<div class="main"><span class="badge-op">'+esc(op).toUpperCase()+'</span><span class="ph">&#127968;</span></div>'; }
+  var thumbs='';
+  if(fotos.length>1){ thumbs='<div class="thumbs">'+fotos.map(function(f,i){return '<img src="'+esc(f)+'" class="'+(i===0?'active':'')+'" onclick="GAL_SET('+i+')"/>';}).join('')+'</div>'; }
+  var specRows=[
+    ['Tipo', cap(p.tipo_propiedad||p.tipo||'-')],['Negocio', cap(op)],['Estrato', p.estrato||'-'],['Piso', (p.piso!=null?p.piso:'-')],
+    ['Area construida', (p.m2_construccion||p.area_construida)?((p.m2_construccion||p.area_construida)+' m\u00b2'):'-'],
+    ['Area privada', p.area_privada?(p.area_privada+' m\u00b2'):'-'],['Area terreno', p.m2_terreno?(p.m2_terreno+' m\u00b2'):'-'],
+    ['Habitaciones', (p.habitaciones!=null?p.habitaciones:'-')],['Banos', (p.banos!=null?p.banos:'-')],
+    ['Garajes', (p.garajes!=null?p.garajes:(p.parqueaderos!=null?p.parqueaderos:'-'))],
+    ['Antiguedad', (p.antiguedad!=null?p.antiguedad+' anos':(p.edad_inmueble!=null?p.edad_inmueble:'-'))],
+    ['Tipo de piso', cap(p.tipo_piso||'-')],['Administracion', (p.administracion||p.precio_admin)?full(p.administracion||p.precio_admin):'-'],
+    ['Acepta creditos', p.acepta_creditos?'Si':'No'],['Acepta mascotas', p.acepta_mascotas?'Si':'No'],
+    ['Estado', cap(p.estado||p.estado_propiedad||'-')]
+  ].filter(function(r){return r[1]!=='-' && r[1]!=='' && r[1]!=null;});
+  var specsHtml=specRows.map(function(r){return '<div class="spec"><span class="k">'+esc(r[0])+'</span><span class="vv">'+esc(r[1])+'</span></div>';}).join('');
+  var amenHtml = amen.length? '<div class="sec"><h2>Amenidades</h2><div class="rule"></div><div class="amen">'+amen.map(function(a){return '<div class="a">'+esc(a)+'</div>';}).join('')+'</div></div>' : '';
+  var hasGeo = p.latitud && p.longitud && !p.ocultar_mapa;
+  var addrLine = p.ocultar_calle? '' : (p.direccion||p.calle_carrera||'');
+  var mapHtml = hasGeo ? '<div class="sec"><h2>Ubicacion</h2><div class="rule"></div>'+(addrLine?'<p class="desc" style="margin-bottom:14px">\ud83d\udccd '+esc(addrLine)+'</p>':'')+'<div id="map"></div></div>' : '<div class="sec"><h2>Ubicacion</h2><div class="rule"></div><p class="noaddr">'+esc(locTxt||'Ubicacion no disponible')+'</p></div>';
+  var waMsg=encodeURIComponent('Hola, estoy interesado en la propiedad: '+(p.titulo||'')+' ('+window.location.href+')');
+  var sideHtml='<div class="side"><div class="card"><div class="price2">'+fmtPrice(p.precio)+'</div><div class="neg">'+full(p.precio)+(p.precio_negociable?' \u00b7 Negociable':'')+'</div><div class="advisor"><div class="av">LH</div><div><div class="nm">Asesor Lomaz Home</div><div class="rl">Inmobiliaria Lomaz</div></div></div><a class="btn btn-wa" target="_blank" href="https://wa.me/?text='+waMsg+'">Contactar por WhatsApp</a><button class="btn btn-gold" onclick="DESCARGAR()">Descargar Ficha Tecnica (PDF)</button><button class="btn btn-ghost" onclick="navigator.share?navigator.share({title:document.title,url:location.href}):(navigator.clipboard.writeText(location.href),alert(\'Enlace copiado\'))">Compartir</button><div class="miniref">REF: LH-'+esc(p.codigo_interno||p.id)+'</div></div></div>';
+  app.innerHTML=
+    '<div class="crumb"><a href="/">Inicio</a> \u203a <a href="/propiedades.html">Propiedades</a> \u203a <span>'+esc(p.titulo||'')+'</span></div>'+
+    '<div class="gallery">'+galInner+'</div>'+thumbs+
+    '<div class="layout"><div class="content">'+
+      '<h1 class="title serif">'+esc(p.titulo||'')+'</h1>'+
+      '<div class="loc">\ud83d\udccd '+esc(locTxt)+'</div>'+
+      '<div class="tags"><span class="tag">'+esc(op)+'</span><span class="tag">'+esc(p.tipo_propiedad||p.tipo||'')+'</span>'+(p.estado?'<span class="tag">'+esc(p.estado)+'</span>':'')+'</div>'+
+      '<div class="facts">'+
+        '<div class="fact"><div class="ic">\ud83d\udecf\ufe0f</div><div class="v">'+(p.habitaciones||0)+'</div><div class="l">Habitaciones</div></div>'+
+        '<div class="fact"><div class="ic">\ud83d\udec1</div><div class="v">'+(p.banos||0)+'</div><div class="l">Banos</div></div>'+
+        '<div class="fact"><div class="ic">\ud83d\ude97</div><div class="v">'+(p.garajes||p.parqueaderos||0)+'</div><div class="l">Garajes</div></div>'+
+        '<div class="fact"><div class="ic">\ud83d\udcd0</div><div class="v">'+(area||0)+'</div><div class="l">m\u00b2 Area</div></div>'+
+      '</div>'+
+      (p.descripcion?'<div class="sec"><h2>Descripcion</h2><div class="rule"></div><div class="desc">'+esc(p.descripcion)+'</div></div>':'')+
+      '<div class="sec"><h2>Caracteristicas</h2><div class="rule"></div><div class="specs">'+specsHtml+'</div></div>'+
+      amenHtml+ mapHtml+
+    '</div>'+sideHtml+'</div>';
+  var gi=0;
+  window.GAL=function(d){GAL_SET((gi+d+fotos.length)%fotos.length);};
+  window.GAL_SET=function(i){gi=i;var im=document.getElementById('mainImg');if(im)im.src=fotos[i];var gx=document.getElementById('gIdx');if(gx)gx.textContent=(i+1);document.querySelectorAll('.thumbs img').forEach(function(t,k){t.classList.toggle('active',k===i);});};
+  if(hasGeo && window.L){
+    try{ var map=L.map('map',{scrollWheelZoom:false}).setView([p.latitud,p.longitud],15); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'\u00a9 OpenStreetMap'}).addTo(map); L.marker([p.latitud,p.longitud]).addTo(map); setTimeout(function(){map.invalidateSize();},300); }catch(e){}
+  }
+  window.DESCARGAR=async function(){ var fotoData=''; if(fotos.length){ try{ var bl=await (await fetch(fotos[0])).blob(); fotoData=await new Promise(function(rs){var fr=new FileReader();fr.onload=function(){rs(fr.result);};fr.onerror=function(){rs('');};fr.readAsDataURL(bl);}); }catch(e){} }
+    var rows=specRows.map(function(r){return '<tr><td style="color:#666;padding:7px 14px;border-bottom:1px solid #eee">'+esc(r[0])+'</td><td style="padding:7px 14px;border-bottom:1px solid #eee;font-weight:600;text-align:right">'+esc(r[1])+'</td></tr>';}).join('');
+    var amenList=amen.length?'<h3 style="color:#0D1B2E;margin:18px 0 8px;font-size:14px">Amenidades</h3><div style="font-size:11px;color:#333;columns:2">'+amen.map(function(a){return '\u2713 '+esc(a);}).join('<br/>')+'</div>':'';
+    var fotoHdr=fotoData?'<img src="'+fotoData+'" style="width:100%;height:230px;object-fit:cover;border-radius:8px;margin-bottom:14px"/>':'';
+    var ficha=document.createElement('div');
+    ficha.style.cssText='width:760px;padding:34px;font-family:Arial,sans-serif;color:#222;background:#fff';
+    ficha.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #c9a96e;padding-bottom:14px;margin-bottom:18px"><div style="font-size:24px;font-weight:800;color:#0D1B2E">Lomaz<span style="color:#c9a96e">Home</span></div><div style="text-align:right;font-size:11px;color:#888">FICHA TECNICA<br/>REF: LH-'+esc(p.codigo_interno||p.id)+'</div></div>'+fotoHdr+'<h1 style="font-size:21px;color:#0D1B2E;margin-bottom:4px">'+esc(p.titulo||'')+'</h1><div style="color:#666;font-size:12px;margin-bottom:6px">\ud83d\udccd '+esc(locTxt)+(addrLine?' \u00b7 '+esc(addrLine):'')+'</div><div style="font-size:26px;font-weight:800;color:#c9a96e;margin-bottom:18px">'+full(p.precio)+'<span style="font-size:12px;color:#999;font-weight:400"> \u00b7 '+esc(cap(op))+'</span></div>'+(p.descripcion?'<h3 style="color:#0D1B2E;margin:6px 0 6px;font-size:14px">Descripcion</h3><p style="font-size:12px;color:#333;margin-bottom:16px;white-space:pre-wrap">'+esc(p.descripcion)+'</p>':'')+'<h3 style="color:#0D1B2E;margin:6px 0 6px;font-size:14px">Caracteristicas</h3><table style="width:100%;border-collapse:collapse;font-size:12px">'+rows+'</table>'+amenList+'<div style="margin-top:26px;border-top:1px solid #eee;padding-top:12px;font-size:11px;color:#888;display:flex;justify-content:space-between"><span>Lomaz Home \u00b7 Inmobiliaria</span><span>Generado '+new Date().toLocaleDateString('es-CO')+'</span></div>';
+    document.body.appendChild(ficha);
+    var fn='Ficha-LH-'+(p.codigo_interno||p.id)+'.pdf';
+    html2pdf().set({margin:0,filename:fn,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,useCORS:true,allowTaint:false},jsPDF:{unit:'pt',format:'a4',orientation:'portrait'}}).from(ficha).save().then(function(){ficha.remove();}).catch(function(){ficha.remove();});
+  };
+  document.title=(p.titulo||'Propiedad')+' | Lomaz Home';
+})();
 </script>
 </body>
 </html>
