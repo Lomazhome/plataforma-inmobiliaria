@@ -179,16 +179,38 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#
   if(hasGeo && window.L){
     try{ var map=L.map('map',{scrollWheelZoom:false}).setView([p.latitud,p.longitud],15); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'\u00a9 OpenStreetMap'}).addTo(map); L.marker([p.latitud,p.longitud]).addTo(map); setTimeout(function(){map.invalidateSize();},300); }catch(e){}
   }
-  window.DESCARGAR=async function(){ var fotoData=''; if(fotos.length){ try{ var bl=await (await fetch(fotos[0])).blob(); fotoData=await new Promise(function(rs){var fr=new FileReader();fr.onload=function(){rs(fr.result);};fr.onerror=function(){rs('');};fr.readAsDataURL(bl);}); }catch(e){} }
-    var rows=specRows.map(function(r){return '<tr><td style="color:#666;padding:7px 14px;border-bottom:1px solid #eee">'+esc(r[0])+'</td><td style="padding:7px 14px;border-bottom:1px solid #eee;font-weight:600;text-align:right">'+esc(r[1])+'</td></tr>';}).join('');
-    var amenList=amen.length?'<h3 style="color:#0D1B2E;margin:18px 0 8px;font-size:14px">Amenidades</h3><div style="font-size:11px;color:#333;columns:2">'+amen.map(function(a){return '\u2713 '+esc(a);}).join('<br/>')+'</div>':'';
-    var fotoHdr=fotoData?'<img src="'+fotoData+'" style="width:100%;height:230px;object-fit:cover;border-radius:8px;margin-bottom:14px"/>':'';
+  window.DESCARGAR=async function(){
+    var btn=document.querySelector('.btn-gold'); var prev=btn?btn.textContent:''; if(btn){btn.textContent='Generando PDF...';btn.disabled=true;}
+    async function toDU(u){try{var r=await fetch(u,{mode:'cors'});var b=await r.blob();return await new Promise(function(rs){var f=new FileReader();f.onload=function(){rs(f.result);};f.onerror=function(){rs('');};f.readAsDataURL(b);});}catch(e){return '';}}
+    var DU=[]; var list=(fotos&&fotos.length)?fotos.slice(0,12):[];
+    for(var i=0;i<list.length;i++){var d=await toDU(list[i]); if(d)DU.push(d);}
+    var rows=specRows.map(function(r){return '<tr><td style="color:#666;padding:7px 14px;border-bottom:1px solid #eee">'+esc(r[0])+'</td><td style="padding:7px 14px;border-bottom:1px solid #eee;font-weight:700;text-align:right">'+esc(r[1])+'</td></tr>';}).join('');
+    var amenHtml=''; if(amenList&&amenList.length){amenHtml='<h3 style="color:#0D1B2E;border-bottom:2px solid #c9a96e;padding-bottom:6px;font-size:14px;margin-top:18px">AMENIDADES</h3><div style="columns:3;font-size:12px;color:#444;line-height:1.9">'+amenList.map(function(a){return '<div>\u2713 '+esc(a)+'</div>';}).join('')+'</div>';}
+    var fotoHdr=DU[0]?'<img src="'+DU[0]+'" style="width:100%;height:300px;object-fit:cover;border-radius:8px;margin-bottom:16px">':'';
+    var catalog=DU.slice(1).map(function(u){return '<div style="width:48%;display:inline-block;margin:1%;height:160px;border-radius:6px;overflow:hidden;background:#eee;vertical-align:top"><img src="'+u+'" style="width:100%;height:100%;object-fit:cover"></div>';}).join('');
+    var catHtml=catalog?'<h3 style="color:#0D1B2E;border-bottom:2px solid #c9a96e;padding-bottom:6px;font-size:14px;margin-top:18px">CATALOGO DE FOTOS</h3><div style="text-align:center">'+catalog+'</div>':'';
+    var loc=[p.barrio,p.ciudad,p.departamento].filter(Boolean).map(esc).join(', ');
+    var precioTxt=(p.precio!=null)?('$'+Number(p.precio).toLocaleString('es-CO')):'';
     var ficha=document.createElement('div');
-    ficha.style.cssText='width:760px;padding:34px;font-family:Arial,sans-serif;color:#222;background:#fff';
-    ficha.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #c9a96e;padding-bottom:14px;margin-bottom:18px"><div style="font-size:24px;font-weight:800;color:#0D1B2E">Lomaz<span style="color:#c9a96e">Home</span></div><div style="text-align:right;font-size:11px;color:#888">FICHA TECNICA<br/>REF: LH-'+esc(p.codigo_interno||p.id)+'</div></div>'+fotoHdr+'<h1 style="font-size:21px;color:#0D1B2E;margin-bottom:4px">'+esc(p.titulo||'')+'</h1><div style="color:#666;font-size:12px;margin-bottom:6px">\ud83d\udccd '+esc(locTxt)+(addrLine?' \u00b7 '+esc(addrLine):'')+'</div><div style="font-size:26px;font-weight:800;color:#c9a96e;margin-bottom:18px">'+full(p.precio)+'<span style="font-size:12px;color:#999;font-weight:400"> \u00b7 '+esc(cap(op))+'</span></div>'+(p.descripcion?'<h3 style="color:#0D1B2E;margin:6px 0 6px;font-size:14px">Descripcion</h3><p style="font-size:12px;color:#333;margin-bottom:16px;white-space:pre-wrap">'+esc(p.descripcion)+'</p>':'')+'<h3 style="color:#0D1B2E;margin:6px 0 6px;font-size:14px">Caracteristicas</h3><table style="width:100%;border-collapse:collapse;font-size:12px">'+rows+'</table>'+amenList+'<div style="margin-top:26px;border-top:1px solid #eee;padding-top:12px;font-size:11px;color:#888;display:flex;justify-content:space-between"><span>Lomaz Home \u00b7 Inmobiliaria</span><span>Generado '+new Date().toLocaleDateString('es-CO')+'</span></div>';
+    ficha.style.cssText='width:760px;padding:34px;font-family:Arial,sans-serif;color:#222;background:#fff;position:relative';
+    ficha.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #c9a96e;padding-bottom:14px;margin-bottom:18px"><div style="font-size:24px;font-weight:800;color:#0D1B2E">LoMaz<span style="color:#c9a96e">Home</span></div><div style="text-align:right;font-size:11px;color:#888">FICHA TECNICA<br>REF: '+esc(p.codigo_interno||('LH-'+p.id))+'</div></div>'
+      +fotoHdr
+      +'<h1 style="font-size:22px;color:#0D1B2E;margin:0 0 4px">'+esc(p.titulo||'Propiedad')+'</h1>'
+      +(loc?'<div style="color:#777;margin-bottom:6px">\ud83d\udccd '+loc+'</div>':'')
+      +(precioTxt?'<div style="font-size:26px;font-weight:800;color:#c9a96e;margin-bottom:16px">'+precioTxt+'</div>':'')
+      +'<h3 style="color:#0D1B2E;border-bottom:2px solid #c9a96e;padding-bottom:6px;font-size:14px">CARACTERISTICAS</h3>'
+      +'<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:18px">'+rows+'</table>'
+      +(p.descripcion?'<h3 style="color:#0D1B2E;border-bottom:2px solid #c9a96e;padding-bottom:6px;font-size:14px">DESCRIPCION</h3><p style="font-size:13px;line-height:1.6;color:#444;margin-bottom:6px">'+esc(p.descripcion)+'</p>':'')
+      +amenHtml
+      +catHtml
+      +'<div style="margin-top:24px;border-top:1px solid #eee;padding-top:12px;font-size:10px;color:#888;text-align:center">Propiedad sujeta a disponibilidad. Precio sujeto a cambios sin previo aviso. La informacion y medidas son aproximadas. LoMaz Home \u00b7 Inmobiliaria \u00b7 Generado '+new Date().toLocaleDateString('es-CO')+'</div>';
     document.body.appendChild(ficha);
+    try{ var imgs=Array.prototype.slice.call(ficha.querySelectorAll('img')); await Promise.all(imgs.map(function(im){return im.decode?im.decode().catch(function(){}):Promise.resolve();})); }catch(e){}
+    await new Promise(function(r){setTimeout(r,250);});
     var fn='Ficha-LH-'+(p.codigo_interno||p.id)+'.pdf';
-    html2pdf().set({margin:0,filename:fn,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,useCORS:true,allowTaint:false},jsPDF:{unit:'pt',format:'a4',orientation:'portrait'}}).from(ficha).save().then(function(){ficha.remove();}).catch(function(){ficha.remove();});
+    try{ await window.html2pdf().set({margin:[8,8,8,8],filename:fn,image:{type:'jpeg',quality:.92},html2canvas:{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(ficha).save(); }catch(e){ alert('No se pudo generar la ficha: '+e.message); }
+    ficha.remove();
+    if(btn){btn.textContent=prev;btn.disabled=false;}
   };
   document.title=(p.titulo||'Propiedad')+' | Lomaz Home';
 })();
