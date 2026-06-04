@@ -170,7 +170,24 @@ td strong{font-weight:600;color:#fff}
       color: #fff;
     }
     .btn-danger:hover{ background: #a93226; }
-  </style>
+  
+/* ===== FIX: estilos faltantes para stats y filtros (Mis Propiedades) ===== */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.5rem 0 2rem}
+.stat-card{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.25rem 1.5rem;position:relative;overflow:hidden;box-shadow:var(--sh-soft);transition:all .3s ease}
+.stat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:.5}
+.stat-card.green::before{background:#4ade80}
+.stat-card.blue::before{background:#60a5fa}
+.stat-card.gold::before{background:var(--gold)}
+.stat-card:hover{transform:translateY(-3px);border-color:var(--line-strong)}
+.stat-num{font-family:var(--serif);font-size:2.2rem;font-weight:600;color:#fff;line-height:1.1}
+.stat-label{font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt-soft);font-weight:600;margin-top:.35rem}
+.filters-bar{display:flex;flex-wrap:wrap;gap:.85rem;align-items:center;margin:1.5rem 0}
+.filters-bar #searchInput{flex:2 1 260px}
+.filters-bar select{flex:1 1 160px;min-width:150px}
+.btn-clear{background:transparent;border:1px solid var(--line-strong);color:var(--gold);padding:.7rem 1.4rem;border-radius:var(--r-sm);cursor:pointer;font-size:.8rem;font-weight:600;letter-spacing:.5px;transition:all .25s ease;font-family:var(--sans);white-space:nowrap}
+.btn-clear:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+</style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
