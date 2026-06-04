@@ -63,6 +63,7 @@ a{color:inherit;text-decoration:none}
 .section-divider{height:1px;background:linear-gradient(90deg,var(--gold) 0%,transparent 50%);margin:0 0 1.25rem;opacity:.4}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.1rem;margin-bottom:2.5rem}
 .stat{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem;position:relative;overflow:hidden;transition:all .3s ease;box-shadow:var(--sh-soft)}
+.stat[onclick]:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .stat::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.5}
 .stat:hover{transform:translateY(-2px);border-color:rgba(201,169,110,.25);box-shadow:0 12px 36px rgba(0,0,0,.4)}
 .stat .ico{font-size:1.5rem;margin-bottom:.85rem;display:inline-block;filter:grayscale(.2)}
@@ -144,10 +145,10 @@ a{color:inherit;text-decoration:none}
 <h2 class="section-title">Tu <em>resumen</em></h2>
 <div class="section-divider"></div>
 <div class="stats">
-<div class="stat"><div class="ico">🏢</div><div class="num" id="totalProps">0</div><div class="lbl">Propiedades Activas</div><div class="sub">Total publicadas activas</div></div>
-<div class="stat"><div class="ico">🎯</div><div class="num" id="totalLeads">0</div><div class="lbl">Leads Nuevos (30d)</div><div class="sub up">↑ Ultimos 30 dias</div></div>
-<div class="stat"><div class="ico">👥</div><div class="num" id="totalClientes">0</div><div class="lbl">Clientes Activos</div><div class="sub">Clientes estado activo</div></div>
-<div class="stat"><div class="ico">💰</div><div class="num" id="valorPipeline">$0</div><div class="lbl">Valor en Pipeline</div><div class="sub">Valor inventario activo</div></div>
+<div class="stat" onclick="location.href='mis-propiedades.html'" style="cursor:pointer"><div class="ico">🏢</div><div class="num" id="totalProps">0</div><div class="lbl">Propiedades Activas</div><div class="sub">Total publicadas activas</div></div>
+<div class="stat" onclick="location.href='leads.html'" style="cursor:pointer"><div class="ico">🎯</div><div class="num" id="totalLeads">0</div><div class="lbl">Leads Nuevos (30d)</div><div class="sub up">↑ Ultimos 30 dias</div></div>
+<div class="stat" onclick="location.href='clientes.html'" style="cursor:pointer"><div class="ico">👥</div><div class="num" id="totalClientes">0</div><div class="lbl">Clientes Activos</div><div class="sub">Clientes estado activo</div></div>
+<div class="stat" onclick="location.href='pipeline.html'" style="cursor:pointer"><div class="ico">💰</div><div class="num" id="valorPipeline">$0</div><div class="lbl">Valor en Pipeline</div><div class="sub">Valor inventario activo</div></div>
 </div>
 <h2 class="section-title">Accesos <em>rapidos</em></h2>
 <div class="section-divider"></div>
