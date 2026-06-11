@@ -53,7 +53,7 @@ async function cargar(){
     const rmap={}; (roles||[]).forEach(r=>rmap[r.id]=r.nombre);
       const { data: asesores } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url,rol_id,activo").eq("activo",true).order("nombre_completo");
         const grid=document.getElementById("grid");
-          const lista = (asesores||[]).filter(a=>rmap[a.rol_id]!=="admin");
+                    const lista = (asesores||[]).filter(a=>a.rol_id!==1 && rmap[a.rol_id]!=="admin");
             if(!lista.length){ document.getElementById("empty").style.display="block"; return; }
               grid.innerHTML = lista.map(a=>{
                   const foto = a.avatar_url ? `<img class="foto" src="${esc(a.avatar_url)}" alt="${esc(a.nombre_completo)}">` : `<div class="foto">&#128100;</div>`;
