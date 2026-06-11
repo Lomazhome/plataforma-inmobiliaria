@@ -303,14 +303,14 @@ let deleteId = null;
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = "login.html"; return; }
   {const _un=document.getElementById("userName"); if(_un) _un.textContent = session.user.email;}
-  await loadProps(session.user.id);
+  window._userEmail=session.user.email; window._isAdmin=(session.user.email==='salomontor11@gmail.com'); await loadProps(session.user.id);
 })();
 
 async function loadProps(uid) {
   const { data, error } = await sb
     .from("propiedades")
     .select("id,titulo,tipo_negocio,tipo_propiedad,precio,estado,ciudad,barrio,area_construida,habitaciones,foto_principal,created_at")
-    .eq("asesor_id", uid)
+          .filter("asesor_id", window._isAdmin?"not.is":"eq", window._isAdmin?null:uid)
     .order("created_at", { ascending: false });
   if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon">&#10060;</span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
   allProps = data || [];
@@ -383,6 +383,7 @@ html += `<div class="prop-card">
 <div><div class="prop-card-price">${price}</div><div class="prop-card-date">${fecha}</div></div>
 <div class="prop-card-actions">
 <a href="propiedad.html?id=${p.id}" class="pc-act view" target="_blank">Ver</a>
+${(p.estado==="activa")?`<button class="pc-act" onclick="cambiarEstado('${p.id}','pausada')" style="background:#b8860b;color:#fff">Pausar</button>`:`<button class="pc-act" onclick="cambiarEstado('${p.id}','activa')" style="background:#1a7f37;color:#fff">Publicar</button>`}
 <button class="pc-act" onclick="editProp('${p.id}')">Editar</button>
 <button class="pc-act del" onclick="confirmDelete('${p.id}')">Eliminar</button>
 </div>
@@ -414,7 +415,14 @@ function changePage(n) {
   renderPagination();
   window.scrollTo(0, 0);
 }
-
+async function cambiarEstado(id, nuevo) {
+  const { error } = await sb.from("propiedades").update({ estado: nuevo, updated_at: new Date().toISOString() }).eq("id", id);
+    if (error) { alert("Error al cambiar estado: " + error.message); return; }
+      const p = allProps.find(x => String(x.id) === String(id));
+        if (p) p.estado = nuevo;
+          updateStats();
+            filterProps();
+            }
 function editProp(id) {
   window.location.href = "agregar-propiedad.html?id=" + id;
 }
