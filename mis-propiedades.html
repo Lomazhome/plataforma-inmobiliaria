@@ -314,6 +314,12 @@ async function loadProps(uid) {
     .order("created_at", { ascending: false });
   if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon">&#10060;</span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
   allProps = data || [];
+    if (window._isAdmin && allProps.length) {
+        const { data: perfs } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url");
+            const pmap = {};
+                (perfs || []).forEach(x => { pmap[x.id] = x; });
+                    allProps.forEach(p => { const a = pmap[p.asesor_id]; p._asesorNombre = a ? a.nombre_completo : "Sin asignar"; p._asesorFoto = a ? a.avatar_url : ""; });
+                      }
   updateStats();
   filterProps();
 }
@@ -378,6 +384,7 @@ html += `<div class="prop-card">
 <div class="prop-card-title"><a href="propiedad.html?id=${p.id}" target="_blank">${p.titulo||"Sin t\u00edtulo"}</a></div>
 <div class="prop-card-loc">${loc}</div>
 <div class="prop-card-badges">${badgeN}${badgeT}${badgeE}</div>
+${window._isAdmin?`<div class="prop-card-asesor" style="margin-top:6px;font-size:.82rem;color:#b8860b;font-weight:600">Asesor: ${p._asesorNombre||"Sin asignar"}</div>`:""}
 </div>
 <div class="prop-card-right">
 <div><div class="prop-card-price">${price}</div><div class="prop-card-date">${fecha}</div></div>
