@@ -3,65 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nuestro Equipo de Asesores | LoMaz Home</title>
+<title>Nuestro Equipo | LoMaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <style>
 :root{--navy:#0f2038;--gold:#b8860b;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f2038;}
-.topbar{background:var(--navy);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
-.topbar .logo{font-size:1.4rem;font-weight:700;}
+.topbar{background:var(--navy);color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.topbar .logo{font-size:1.3rem;font-weight:700;}
 .topbar .logo span{color:var(--gold);}
-.topbar a{color:#fff;text-decoration:none;font-size:.9rem;}
-.head{background:var(--navy);color:#fff;text-align:center;padding:54px 20px;}
-.head .tag{color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:.8rem;font-weight:600;}
-.head h1{font-size:2.4rem;margin:10px 0;}
-.head p{opacity:.85;max-width:600px;margin:0 auto;}
-.wrap{max-width:1100px;margin:0 auto;padding:40px 20px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px;}
-.tarjeta{background:#fff;border-radius:16px;padding:28px 20px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.08);text-decoration:none;color:inherit;transition:transform .2s;display:block;}
-.tarjeta:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.14);}
-.tarjeta .foto{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);margin:0 auto 16px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:var(--gold);}
-.tarjeta .nombre{font-weight:700;font-size:1.15rem;margin-bottom:4px;}
-.tarjeta .rol{color:var(--gold);font-size:.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
-.tarjeta .ver{margin-top:14px;display:inline-block;color:var(--navy);font-weight:600;font-size:.85rem;border:1px solid var(--navy);padding:7px 16px;border-radius:7px;}
-.empty{text-align:center;color:#667085;padding:50px;}
-.foot{text-align:center;color:#667085;padding:30px;font-size:.85rem;}
-</style>
-</head>
-<body>
-<div class="topbar">
-<div class="logo">LoMaz<span>Home</span></div>
-<a href="propiedades.html">Ver portafolio &rarr;</a>
-</div>
-<div class="head">
-<div class="tag">LoMaz Home Inmobiliaria</div>
-<h1>Nuestro Equipo</h1>
-<p>Conoce a los asesores que te acompanaran a encontrar tu propiedad ideal.</p>
-</div>
-<div class="wrap">
-<div id="grid" class="grid"></div>
-<div id="empty" class="empty" style="display:none">Pronto publicaremos el perfil de nuestro equipo.</div>
-</div>
-<div class="foot">LoMaz Home Inmobiliaria &middot; (57) 300 330 0343 &middot; www.lomazhome.com</div>
-<script>
-const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
-async function cargar(){
-  const { data: roles } = await sb.from("roles").select("id,nombre");
-    const rmap={}; (roles||[]).forEach(r=>rmap[r.id]=r.nombre);
-      const { data: asesores } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url,rol_id,activo").eq("activo",true).order("nombre_completo");
-        const grid=document.getElementById("grid");
-                    const lista = (asesores||[]).filter(a=>a.rol_id!==1 && rmap[a.rol_id]!=="admin");
-            if(!lista.length){ document.getElementById("empty").style.display="block"; return; }
-              grid.innerHTML = lista.map(a=>{
-                  const foto = a.avatar_url ? `<img class="foto" src="${esc(a.avatar_url)}" alt="${esc(a.nombre_completo)}">` : `<div class="foto">&#128100;</div>`;
-                      const rolN = rmap[a.rol_id] || "Asesor";
-                          return `<a class="tarjeta" href="asesor.html?id=${esc(a.id)}">${foto}<div class="nombre">${esc(a.nombre_completo)}</div><div class="rol">${esc(rolN)}</div><div class="ver">Ver perfil</div></a>`;
-                            }).join("");
-                            }
-                            cargar();
-                            </script>
-                            </body>
-                            </html> 
+.topbar a{color:#fff;text-decoration:none;font-size:.85rem;}
+.head{background:var(--navy);color:#fff;text-align:center;padding:48px 18px;}
+.head .tag{color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:.78rem;font-weight:600;}
+.head h1{font-size:2rem;margin:10px 0;line-height:1.15;}
+.head p{opacity:.85;max-width:560px;margin:0 auto;font-size:.95rem;}
+.wrap{max-width:1000px;margin:0 auto;padding:48px 16px 24px;}
+
+/* ===== ORGANIGRAMA ===== */
+.org{display:flex;flex-direction:column;align-items:center;}
+.org-level{display:flex;justify-content:center;flex-wrap:wrap;gap:24px;width:100%;}
+.org-connector{width:2px;height:34px;background:var(--gold);opacity:.55;}
+.org-branch{position:relative;width:100%;display:flex;justify-content:center;}
+.node{background:#fff;border-radius:16px;padding:24px 18px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.08);text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;display:block;width:230px;max-width:84vw;}
+.node:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.14);}
+.node--lead{border:2px solid var(--gold);}
+.foto{width:104px;height:104px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);margin:0 auto 14px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:var(--gold);font-weight:700;}
+.node--lead .foto{width:120px;height:120px;}
+.nombre{font-weight:700;font-size:1.1rem;margin-bottom:5px;}
+.rol{color:var(--gold);font-size:.74rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.ver{margin-top:14px;display:inline-block;color:var(--navy);font-weight:600;font-size:.8rem;border:1px solid var(--navy);padding:7px 16px;border-radius:7px;}
+.empty{text-align:center;color:#667085;padding:40px;}
+.foot{text-align:center;color:#667085;padding:30px 16px;font-size:.8rem;}
+
+@media(max-width:640px){
+  .head h1{font-size:1.6rem;}
+    .wrap{padding:32px 14px 16px;}
+      .org-level{flex-direction:column;align-items:center;gap:18px;}
+        .org-branch .org-level{gap:18px;}
+          .node{width:100%;max-width:340px;}
+          }
+          </style>
+          </head>
+          <body>
+          <div class="topbar">
+            <div class="logo">LoMaz<span>Home</span></div>
+              <a href="index.html#nosotros">&larr; Volver a Nosotros</a>
+              </div>
+              <div class="head">
+                <div class="tag">LoMaz Home Inmobiliaria</div>
+                  <h1>Nuestro Equipo</h1>
+                    <p>Conoce a las personas que hacen posible cada proceso, organizadas por su rol dentro de la inmobiliaria.</p>
+                    </div>
+                    <div class="wrap">
+                      <div id="org" class="org"></div>
+                        <div id="empty" class="empty" style="display:none">Pronto publicaremos el perfil de nuestro equipo.</div>
+                        </div>
+                        <div class="foot">LoMaz Home Inmobiliaria &middot; (57) 300 330 0343 &middot; www.lomazhome.com</div>
+                        <script>
+                        const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+                        function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
+                        const ROL_LABEL = {1:"Director / Fundador",2:"Asesor Senior",3:"Asesor Junior",4:"Coordinacion",5:"Aliado Externo"};
+                        function inicial(n){var p=(n||"").trim().split(/\s+/).filter(w=>/[A-Za-z\u00c0-\u017f]/.test(w));return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase();}
+                        function nodo(a,lead){
+                          const foto = a.avatar_url ? '<img class="foto" src="'+esc(a.avatar_url)+'" alt="'+esc(a.nombre_completo)+'">' : '<div class="foto">'+esc(inicial(a.nombre_completo).toUpperCase())+'</div>';
+                            const rolN = ROL_LABEL[a.rol_id] || "Asesor";
+                              return '<a class="node'+(lead?' node--lead':'')+'" href="asesor.html?id='+esc(a.id)+'">'+foto+'<div class="nombre">'+esc(a.nombre_completo)+'</div><div class="rol">'+esc(rolN)+'</div><div class="ver">Ver perfil</div></a>';
+                              }
+                              async function cargar(){
+                                const { data: asesores } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url,rol_id,activo").eq("activo",true).order("rol_id").order("nombre_completo");
+                                  const lista = (asesores||[]);
+                                    const org = document.getElementById("org");
+                                      if(!lista.length){ document.getElementById("empty").style.display="block"; return; }
+                                        const lider = lista.filter(a=>a.rol_id===1);
+                                          const resto = lista.filter(a=>a.rol_id!==1);
+                                            let html = "";
+                                              if(lider.length){
+                                                  html += '<div class="org-level">'+lider.map(a=>nodo(a,true)).join("")+'</div>';
+                                                      if(resto.length) html += '<div class="org-connector"></div>';
+                                                        }
+                                                          if(resto.length){
+                                                              html += '<div class="org-branch"><div class="org-level">'+resto.map(a=>nodo(a,false)).join("")+'</div></div>';
+                                                                }
+                                                                  org.innerHTML = html;
+                                                                  }
+                                                                  cargar();
+                                                                  </script>
+                                                                  </body>
+                                                                  </html>>
