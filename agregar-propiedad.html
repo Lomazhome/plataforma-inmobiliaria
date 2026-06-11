@@ -965,7 +965,7 @@ try {
       setTimeout(function(){ sv('ciudad', r.ciudad); setTimeout(function(){ sv('barrio', r.barrio); }, 250); }, 350);
       var h1 = document.querySelector('.page-title') || document.querySelector('h1');
       if(h1){ h1.innerHTML = h1.innerHTML.replace(/Agregar/i,'Editar'); }
-      document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); }
+      document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); }
     }catch(e){ console.error('prefill err', e); }
   }
   function installSaveOverride(){
@@ -993,7 +993,7 @@ try {
           barrio: gv('barrio').trim(), direccion: gv('direccion').trim()||null,
           latitud: parseFloat(gv('latitud'))||null, longitud: parseFloat(gv('longitud'))||null,
           video_url: gv('video_url').trim()||null, tour_virtual_url: gv('recorrido_virtual').trim()||null,
-          estado: gv('status_propiedad')||'activa', fotos:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u):null), foto_principal:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u)[0]:null), updated_at: new Date().toISOString()
+          estado: gv('status_propiedad')||'activa', fotos:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u):null), foto_principal:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u)[0]:null), amenidades: [].slice.call(document.querySelectorAll('input[name="char"]:checked')).map(function(c){return c.value;}), caracteristicas: [].slice.call(document.querySelectorAll('input[name="char"]:checked')).map(function(c){return c.value;}), updated_at: new Date().toISOString()
         };
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
