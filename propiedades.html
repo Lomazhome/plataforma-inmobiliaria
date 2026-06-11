@@ -372,7 +372,7 @@ function applyFilters(){
   });
   if(state.sort==="precio_asc")filtered.sort((a,b)=>a.precio-b.precio);
   else if(state.sort==="precio_desc")filtered.sort((a,b)=>b.precio-a.precio);
-  else filtered.sort((a,b)=>new Date(b.creado_en||0)-new Date(a.creado_en||0));
+  else filtered.sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
   renderProps(filtered);
 }
 function fmtPrice(n){if(!n||n===0)return"Consultar";return"$"+Number(n).toLocaleString("es-CO");}
@@ -426,7 +426,7 @@ function renderProps(props){
 }
 async function loadProps(){
   try{
-    const{data,error}=await sb.from("propiedades").select("id,titulo,tipo_operacion,tipo_propiedad,precio,barrio,ciudad,habitaciones,banos,m2_construccion,foto_principal,fotos,estado,creado_en").eq("estado","publicado").order("creado_en",{ascending:false}).limit(100);
+    const{data,error}=await sb.from("propiedades").select("id,titulo,tipo_operacion,tipo_propiedad,precio,barrio,ciudad,habitaciones,banos,m2_construccion,foto_principal,fotos,estado,created_at").eq("estado","publicado").order("created_at",{ascending:false}).limit(100);
     if(error)throw error;
     allProps=data||[];
     // Check URL params
