@@ -119,6 +119,23 @@ tr:hover td{background:#fafbfc}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn 0.4s ease forwards}
+@media(max-width:860px){
+.admin-wrap{flex-direction:column}
+.sidebar{position:static;width:100%;height:auto}
+.sidebar-nav{display:flex;flex-wrap:wrap;padding:8px;flex:none}
+.sidebar-nav .nav-section-title,.sidebar-nav .nav-title{width:100%}
+.nav-item{border-left:none!important;padding:8px 12px}
+.main{margin-left:0;width:100%}
+body{padding:0}
+.topbar{padding:12px 14px;flex-wrap:wrap;gap:8px}
+.topbar-title{font-size:17px}
+.topbar-actions{flex-wrap:wrap}
+.content{padding:16px 12px}
+.content table{display:block;overflow-x:auto;white-space:nowrap;max-width:100%}
+.stats-grid{gap:12px}
+img,video,iframe{max-width:100%}
+*{min-width:0}
+}
 </style>
 </head>
 <body>
