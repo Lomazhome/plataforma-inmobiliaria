@@ -993,7 +993,7 @@ try {
           barrio: gv('barrio').trim(), direccion: gv('direccion').trim()||null,
           latitud: parseFloat(gv('latitud'))||null, longitud: parseFloat(gv('longitud'))||null,
           video_url: gv('video_url').trim()||null, tour_virtual_url: gv('recorrido_virtual').trim()||null,
-          estado: gv('status_propiedad')||'activa', updated_at: new Date().toISOString()
+          estado: gv('status_propiedad')||'activa', fotos:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u):null), foto_principal:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u)[0]:null), updated_at: new Date().toISOString()
         };
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }

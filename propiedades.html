@@ -385,7 +385,7 @@ function renderProps(props){
     return;
   }
   grid.innerHTML=props.map(p=>{
-    const img=p.imagen_principal||"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format";
+    const img=p.foto_principal||(p.fotos&&p.fotos[0])||"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format";
     const badge=p.tipo_operacion==="arriendo"?"arriendo":"venta";
     const badgeTxt=p.tipo_operacion==="arriendo"?"Arriendo":"Venta";
     const title=p.titulo||p.tipo_propiedad||"Propiedad";
@@ -426,7 +426,7 @@ function renderProps(props){
 }
 async function loadProps(){
   try{
-    const{data,error}=await sb.from("propiedades").select("id,titulo,tipo_operacion,tipo_propiedad,precio,barrio,ciudad,habitaciones,banos,m2_construccion,imagen_principal,estado,creado_en").eq("estado","publicado").order("creado_en",{ascending:false}).limit(100);
+    const{data,error}=await sb.from("propiedades").select("id,titulo,tipo_operacion,tipo_propiedad,precio,barrio,ciudad,habitaciones,banos,m2_construccion,foto_principal,fotos,estado,creado_en").eq("estado","publicado").order("creado_en",{ascending:false}).limit(100);
     if(error)throw error;
     allProps=data||[];
     // Check URL params
