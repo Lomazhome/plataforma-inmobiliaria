@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestro Equipo de Asesores | LoMaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+:root{--navy:#0f2038;--gold:#b8860b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f2038;}
+.topbar{background:var(--navy);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .logo{font-size:1.4rem;font-weight:700;}
+.topbar .logo span{color:var(--gold);}
+.topbar a{color:#fff;text-decoration:none;font-size:.9rem;}
+.head{background:var(--navy);color:#fff;text-align:center;padding:54px 20px;}
+.head .tag{color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:.8rem;font-weight:600;}
+.head h1{font-size:2.4rem;margin:10px 0;}
+.head p{opacity:.85;max-width:600px;margin:0 auto;}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 20px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px;}
+.tarjeta{background:#fff;border-radius:16px;padding:28px 20px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.08);text-decoration:none;color:inherit;transition:transform .2s;display:block;}
+.tarjeta:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.14);}
+.tarjeta .foto{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);margin:0 auto 16px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:var(--gold);}
+.tarjeta .nombre{font-weight:700;font-size:1.15rem;margin-bottom:4px;}
+.tarjeta .rol{color:var(--gold);font-size:.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+.tarjeta .ver{margin-top:14px;display:inline-block;color:var(--navy);font-weight:600;font-size:.85rem;border:1px solid var(--navy);padding:7px 16px;border-radius:7px;}
+.empty{text-align:center;color:#667085;padding:50px;}
+.foot{text-align:center;color:#667085;padding:30px;font-size:.85rem;}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="logo">LoMaz<span>Home</span></div>
+<a href="propiedades.html">Ver portafolio &rarr;</a>
+</div>
+<div class="head">
+<div class="tag">LoMaz Home Inmobiliaria</div>
+<h1>Nuestro Equipo</h1>
+<p>Conoce a los asesores que te acompanaran a encontrar tu propiedad ideal.</p>
+</div>
+<div class="wrap">
+<div id="grid" class="grid"></div>
+<div id="empty" class="empty" style="display:none">Pronto publicaremos el perfil de nuestro equipo.</div>
+</div>
+<div class="foot">LoMaz Home Inmobiliaria &middot; (57) 300 330 0343 &middot; www.lomazhome.com</div>
+<script>
+const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
+async function cargar(){
+  const { data: roles } = await sb.from("roles").select("id,nombre");
+    const rmap={}; (roles||[]).forEach(r=>rmap[r.id]=r.nombre);
+      const { data: asesores } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url,rol_id,activo").eq("activo",true).order("nombre_completo");
+        const grid=document.getElementById("grid");
+          const lista = (asesores||[]).filter(a=>rmap[a.rol_id]!=="admin");
+            if(!lista.length){ document.getElementById("empty").style.display="block"; return; }
+              grid.innerHTML = lista.map(a=>{
+                  const foto = a.avatar_url ? `<img class="foto" src="${esc(a.avatar_url)}" alt="${esc(a.nombre_completo)}">` : `<div class="foto">&#128100;</div>`;
+                      const rolN = rmap[a.rol_id] || "Asesor";
+                          return `<a class="tarjeta" href="asesor.html?id=${esc(a.id)}">${foto}<div class="nombre">${esc(a.nombre_completo)}</div><div class="rol">${esc(rolN)}</div><div class="ver">Ver perfil</div></a>`;
+                            }).join("");
+                            }
+                            cargar();
+                            </script>
+                            </body>
+                            </html>
