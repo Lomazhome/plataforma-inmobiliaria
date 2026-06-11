@@ -926,7 +926,7 @@ async function submitForm(e) {
     try {
       if (window.emailjs) {
         if (!window.__emailjsInit) { emailjs.init({ publicKey: 'hBVvEpA8xiEWqTQ5_' }); window.__emailjsInit = true; }
-        await emailjs.send('service_ujc360n', 'mrqaapf', {
+        await emailjs.send('service_ujc360n', 'template_bh5qez7', {
           nombre: data.nombre,
           telefono: data.telefono,
           email: data.email || '(sin correo)',
