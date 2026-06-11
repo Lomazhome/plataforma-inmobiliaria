@@ -923,6 +923,19 @@ async function submitForm(e) {
   try {
     const { error } = await db.from('leads').insert([data]);
     if (error) throw error;
+    try {
+      if (window.emailjs) {
+        if (!window.__emailjsInit) { emailjs.init({ publicKey: 'hBVvEpA8xiEWqTQ5_' }); window.__emailjsInit = true; }
+        await emailjs.send('service_ujc360n', 'mrqaapf', {
+          nombre: data.nombre,
+          telefono: data.telefono,
+          email: data.email || '(sin correo)',
+          interes: data.interes || '(no especificado)',
+          mensaje: data.mensaje || '(sin mensaje)',
+          fuente: 'Formulario inicio'
+        });
+      }
+    } catch (mailErr) { console.warn('EmailJS (inicio):', mailErr); }
     form.style.display = 'none';
     document.getElementById('formSuccess').classList.add('show');
     showToast('✓ Consulta enviada. Te contactamos pronto.');
