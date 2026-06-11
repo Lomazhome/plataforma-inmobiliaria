@@ -264,7 +264,7 @@ async function handleForm(e){
         email: data.email || '(sin correo)',
         interes: data.tipo_consulta || '(no especificado)',
         mensaje: data.mensaje || '(sin mensaje)',
-        fuente: 'Formulario contacto'
+        fuente: 'Formulario contacto', name: data.nombre, message: 'Telefono: '+data.telefono+' | Correo: '+(data.email||'(sin correo)')+' | Interes: '+(data.tipo_consulta||'(no especificado)')+' | Mensaje: '+(data.mensaje||'(sin mensaje)')+' | Origen: Formulario contacto'
       });
     }
   }catch(me){ console.warn('EmailJS (contacto):', me); }

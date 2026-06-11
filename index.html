@@ -932,7 +932,7 @@ async function submitForm(e) {
           email: data.email || '(sin correo)',
           interes: data.interes || '(no especificado)',
           mensaje: data.mensaje || '(sin mensaje)',
-          fuente: 'Formulario inicio'
+          fuente: 'Formulario inicio', name: data.nombre, message: 'Telefono: '+data.telefono+' | Correo: '+(data.email||'(sin correo)')+' | Interes: '+(data.interes||'(no especificado)')+' | Mensaje: '+(data.mensaje||'(sin mensaje)')+' | Origen: Formulario inicio'
         });
       }
     } catch (mailErr) { console.warn('EmailJS (inicio):', mailErr); }
