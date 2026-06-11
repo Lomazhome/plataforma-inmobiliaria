@@ -157,7 +157,7 @@ textarea{resize:vertical;min-height:90px}
 <div class="container">
 <div class="page-title">Agregar <em>Propiedad</em></div>
 <div class="page-sub">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
-<div id="alert" class="alert" style="display:none"></div>
+<div id="alert" class="alert" style="display:none"></div><button type="button" id="btnGuardarFlotante" onclick="if(typeof publicarPropiedad==='function'){publicarPropiedad();}" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:linear-gradient(135deg,#c9a96e,#b08d57);color:#fff;border:none;padding:14px 26px;border-radius:30px;font-size:15px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;">💾 Guardar cambios</button>
 
 <div class="wizard-steps" id="wizard">
 <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info basica</div></div>
@@ -947,7 +947,7 @@ try {
       var c = await getClient();
       var res = await c.from('propiedades').select('*').eq('id', EDIT_ID).single();
       if(res.error){ console.error('edit prefill', res.error); return; }
-      var r = res.data; window.__EDIT_ROW = r;
+      var r = res.data; window.__EDIT_ROW = r; try{ var __gb=document.getElementById('btnGuardarFlotante'); if(__gb) __gb.style.display='inline-block'; }catch(__e){}
       sv('titulo', r.titulo); sv('precio', r.precio); sv('precio_admin', r.precio_admin);
       sv('m2_construccion', r.m2_construccion!=null?r.m2_construccion:r.area_construida);
       sv('m2_terreno', r.m2_terreno!=null?r.m2_terreno:r.area_total);
@@ -997,8 +997,8 @@ try {
         };
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
-        alert('Cambios guardados correctamente.');
-        location.href='mis-propiedades.html';
+        showAlert('✅ Cambios guardados correctamente.','success'); window.scrollTo({top:0,behavior:'smooth'});
+        /* permanece en el editor tras guardar */
       }catch(e){ alert('Error: '+e.message); }
     }
     wrapped.__editWrapped = true;
