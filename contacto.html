@@ -119,7 +119,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 @media(max-width:900px){.nav-links{display:none;}.nav-ham{display:flex;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--navy);padding:5rem 2rem 2rem;z-index:300;}.contact-section{grid-template-columns:1fr;gap:3rem;}.cf-row{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}}
 @media(max-width:600px){.footer-grid{grid-template-columns:1fr;}.aria-panel{width:100%;right:-100%;}.aria-panel.open{right:0;}}
 </style>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script></head>
 <body>
 <nav>
   <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
@@ -255,6 +255,19 @@ async function handleForm(e){
       notas:(data.tipo_consulta||"")+" | "+(data.presupuesto||"")+" | zona:"+(data.zona||"")+" | "+(data.mensaje||""),
       origen:"contacto_web"
     }]);
+  try {
+    if (window.emailjs) {
+      if (!window.__emailjsInit) { emailjs.init({ publicKey: 'hBVvEpA8xiEWqTQ5_' }); window.__emailjsInit = true; }
+      await emailjs.send('service_ujc360n', 'mrqaapf', {
+        nombre: data.nombre,
+        telefono: data.telefono,
+        email: data.email || '(sin correo)',
+        interes: data.tipo_consulta || '(no especificado)',
+        mensaje: data.mensaje || '(sin mensaje)',
+        fuente: 'Formulario contacto'
+      });
+    }
+  }catch(me){ console.warn('EmailJS (contacto):', me); }
   }catch(err){}
   e.target.reset();
   btn.textContent="Enviar mensaje →";btn.disabled=false;
