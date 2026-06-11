@@ -97,7 +97,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#
   <div class="links">
     <a href="/">INICIO</a>
     <a href="/propiedades.html">PROPIEDADES</a>
-    <a href="/login.html" class="btn-login">Ingresar</a>
+    <a href="/login.html" class="btn-login" id="navLoginBtn">Ingresar</a>
   </div>
 </div></nav>
 <div class="wrap">
@@ -116,7 +116,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#
     var cfg=await (await fetch('/config.js')).text();
     var SURL=(cfg.match(/https:\/\/[a-z0-9]+\.supabase\.co/)||[])[0];
     var SKEY=(cfg.match(/eyJ[\w.\-]+/)||[])[0];
-    SB=window.supabase.createClient(SURL,SKEY);
+    SB=window.supabase.createClient(SURL,SKEY); try{ var __ur=await SB.auth.getUser(); var __u=__ur&&__ur.data?__ur.data.user:null; if(__u){ var __lb=document.getElementById('navLoginBtn'); if(__lb){ __lb.textContent='Mi Panel'; __lb.setAttribute('href','/dashboard.html'); } } }catch(__se){}
   }catch(e){}
   var p=null;
   try{ var r=await SB.from('propiedades').select('*').eq('id',ID).single(); p=r.data; }catch(e){}
