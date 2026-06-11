@@ -143,9 +143,9 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#
     ['Tipo', cap(p.tipo_propiedad||p.tipo||'-')],['Negocio', cap(op)],['Estrato', p.estrato||'-'],['Piso', (p.piso!=null?p.piso:'-')],
     ['Area construida', (p.m2_construccion||p.area_construida)?((p.m2_construccion||p.area_construida)+' m\u00b2'):'-'],
     ['Area privada', p.area_privada?(p.area_privada+' m\u00b2'):'-'],['Area terreno', p.m2_terreno?(p.m2_terreno+' m\u00b2'):'-'],
-    ['Habitaciones', (p.habitaciones!=null?p.habitaciones:'-')],['Banos', (p.banos!=null?p.banos:'-')],
+    ['Habitaciones', (p.habitaciones!=null?p.habitaciones:'-')],['Baños', (p.banos!=null?p.banos:'-')],
     ['Garajes', (p.garajes!=null?p.garajes:(p.parqueaderos!=null?p.parqueaderos:'-'))],
-    ['Antiguedad', (p.antiguedad!=null?p.antiguedad+' anos':(p.edad_inmueble!=null?p.edad_inmueble:'-'))],
+    ['Antigüedad', (p.antiguedad!=null?p.antiguedad+' años':(p.edad_inmueble!=null?p.edad_inmueble:'-'))],
     ['Tipo de piso', cap(p.tipo_piso||'-')],['Administracion', (p.administracion||p.precio_admin)?full(p.administracion||p.precio_admin):'-'],
     ['Acepta creditos', p.acepta_creditos?'Si':'No'],['Acepta mascotas', p.acepta_mascotas?'Si':'No'],
     ['Estado', cap(p.estado||p.estado_propiedad||'-')]
@@ -166,7 +166,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:#
       '<div class="tags"><span class="tag">'+esc(op)+'</span><span class="tag">'+esc(p.tipo_propiedad||p.tipo||'')+'</span>'+(p.estado?'<span class="tag">'+esc(p.estado)+'</span>':'')+'</div>'+
       '<div class="facts">'+
         '<div class="fact"><div class="ic">\ud83d\udecf\ufe0f</div><div class="v">'+(p.habitaciones||0)+'</div><div class="l">Habitaciones</div></div>'+
-        '<div class="fact"><div class="ic">\ud83d\udec1</div><div class="v">'+(p.banos||0)+'</div><div class="l">Banos</div></div>'+
+        '<div class="fact"><div class="ic">\ud83d\udec1</div><div class="v">'+(p.banos||0)+'</div><div class="l">Baños</div></div>'+
         '<div class="fact"><div class="ic">\ud83d\ude97</div><div class="v">'+(p.garajes||p.parqueaderos||0)+'</div><div class="l">Garajes</div></div>'+
         '<div class="fact"><div class="ic">\ud83d\udcd0</div><div class="v">'+(area||0)+'</div><div class="l">m\u00b2 Area</div></div>'+
       '</div>'+

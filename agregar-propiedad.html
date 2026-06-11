@@ -200,10 +200,10 @@ textarea{resize:vertical;min-height:90px}
 <div class="form-group"><label>AREA CONSTRUIDA (m2) *</label><input type="number" id="m2_construccion" placeholder="Ej: 120"/></div>
 <div class="form-group"><label>AREA DE TERRENO (m2)</label><input type="number" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
 <div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
-<div class="form-group"><label>BANOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>BAÑOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
 <div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div>
 <div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
-<div class="form-group"><label>ANTIGUEDAD (anos)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
+<div class="form-group"><label>ANTIGÜEDAD (años)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
 <div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
 <div class="form-group"><label>ACEPTA CREDITO</label><select id="acepta_credito"><option value="si">Si</option><option value="no">No</option></select></div>
 <div class="form-group full"><label>DESCRIPCION DETALLADA *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
@@ -290,7 +290,7 @@ textarea{resize:vertical;min-height:90px}
 <label class="char-item"><input type="checkbox" name="char" value="Mezanine"/> <span>Mezanine</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Estudio"/> <span>Estudio</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Cuarto servicio"/> <span>Cuarto servicio</span></label>
-<label class="char-item"><input type="checkbox" name="char" value="Bano servicio"/> <span>Bano servicio</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Baño servicio"/> <span>Baño servicio</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Lavanderia"/> <span>Lavanderia</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Closets"/> <span>Closets</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Vestier"/> <span>Vestier</span></label>
@@ -492,7 +492,7 @@ const rows=[
 ["Administracion","$"+Number(v("precio_admin")||0).toLocaleString("es-CO")],
 ["Area construida", v("m2_construccion")+" m2"],
 ["Habitaciones", v("habitaciones")],
-["Banos", v("banos")],
+["Baños", v("banos")],
 ["Parqueaderos", v("garajes")],
 ["Ciudad", v("ciudad")],
 ["Barrio", v("barrio")],
@@ -716,7 +716,7 @@ try {
   var admin = propData.precio_admin > 0 ? NL + 'Administracion: $' + Number(propData.precio_admin).toLocaleString('es-CO') : '';
   var ubic = [propData.barrio, propData.ciudad, propData.departamento].filter(Boolean).join(', ');
   var habs = propData.habitaciones ? NL + 'Habitaciones: ' + propData.habitaciones : '';
-  var banos = propData.banos ? NL + 'Banos: ' + propData.banos : '';
+  var banos = propData.banos ? NL + 'Baños: ' + propData.banos : '';
   var parq = propData.garajes ? NL + 'Parqueaderos: ' + propData.garajes : '';
   var m2 = propData.m2_construccion ? NL + 'Area: ' + propData.m2_construccion + ' m2' : '';
   var estrato = propData.estrato ? NL + 'Estrato: ' + propData.estrato : '';
