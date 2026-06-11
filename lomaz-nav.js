@@ -296,10 +296,7 @@ const NAV = [
     {i:'🔄',l:'Compra de Cartera',s:'Refinanciación',h:'calculadora.html#cartera'},
     {i:'🧮',l:'Suite Completa',s:'Todas las calculadoras',h:'calculadora.html'},
   ]},
-  {l:'Equipo',h:'asesores.html',d:[
-        {i:'👥',l:'Nuestros Asesores',s:'Conoce al equipo',h:'asesores.html'},
-          ]},
-            {l:'Nosotros',h:'index.html#nosotros',d:[
+  {l:'Nosotros',h:'index.html#nosotros',d:[
     {i:'🏛️',l:'Nuestra Historia',s:'Quiénes somos',h:'index.html#nosotros'},
     {i:'👥',l:'El Equipo',s:'Asesores especializados',h:'asesores.html'},
     {i:'🤝',l:'Valores y Filosofía',s:'Lo que nos mueve',h:'index.html#valores'},
