@@ -964,20 +964,4 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="lomaz-nav.js" defer></script>
   <script src="lomaz-social-orbit.js" defer></script>
 </body>
-</html>// Notificación automática por correo (EmailJS) — no bloqueante
-try {
-  if (window.emailjs && !window.__emailjsInit) {
-    window.emailjs.init({ publicKey: 'hbVvEpA8xiEWqTQ5_' });
-    window.__emailjsInit = true;
-  }
-  if (window.emailjs) {
-    window.emailjs.send('service_ujc360n', 'mrqaapf', {
-      nombre: nombre,
-      telefono: telefono,
-      email: email || '(sin correo)',
-      interes: interes || '(no especificado)',
-      mensaje: mensaje || '(sin mensaje)'
-    }).catch(function(err){ console.warn('EmailJS:', err); });
-  }
-} catch(e) { console.warn('EmailJS error:', e); }
-
+</html>
