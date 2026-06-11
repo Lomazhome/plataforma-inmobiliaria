@@ -57,13 +57,13 @@ const asesorId = params.get("id");
 function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
 async function cargar(){
   if(!asesorId){ document.getElementById("hero").innerHTML='<div style="color:#fff">Asesor no especificado.</div>'; return; }
-    const { data: perf } = await sb.from("perfiles_usuarios").select("id,nombre_completo,telefono,avatar_url,bio,rol_id").eq("id",asesorId).maybeSingle();
+    const { data: perf } = await sb.from("perfiles_usuarios").select("id,nombre_completo,telefono,avatar_url,notas,rol_id").eq("id",asesorId).maybeSingle();
       const { data: roles } = await sb.from("roles").select("id,nombre");
         const rmap={}; (roles||[]).forEach(r=>rmap[r.id]=r.nombre);
           const nombre = perf? perf.nombre_completo : "Asesor LoMaz Home";
             const rolN = perf&&perf.rol_id? (rmap[perf.rol_id]||"Asesor") : "Asesor";
               const foto = perf&&perf.avatar_url ? `<img class="foto" src="${esc(perf.avatar_url)}" alt="${esc(nombre)}">` : `<div class="foto">&#128100;</div>`;
-                const bio = perf&&perf.bio ? `<div class="bio">${esc(perf.bio)}</div>` : "";
+                const bio = perf&&perf.notas ? `<div class="bio">${esc(perf.notas)}</div>` : "";
                   const waNum = "573003300343";
                     document.getElementById("hero").innerHTML = foto +
                         `<div><h1>${esc(nombre)}</h1><div class="rol">${esc(rolN)}</div>`+
