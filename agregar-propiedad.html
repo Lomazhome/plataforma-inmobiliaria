@@ -133,6 +133,22 @@ textarea{resize:vertical;min-height:90px}
 .wizard-steps .step-label{font-size:.62rem}
 .char-grid{grid-template-columns:1fr}
 }
+@media(max-width:560px){
+.topbar{flex-wrap:wrap;gap:.4rem .6rem;padding:.6rem .85rem}
+.topbar-right{gap:.55rem;min-width:0;flex:1 1 auto;justify-content:flex-end}
+.topbar-right .user-email,.topbar-right .admin-email,.topbar-right span{font-size:.72rem;max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-back{padding:.4rem .6rem;font-size:.72rem;white-space:nowrap}
+.brand-text{font-size:1.15rem}
+.container,.main,.wrap{padding:0 .8rem}
+.card{padding:1rem .85rem}
+.wizard-steps{padding:.85rem .25rem}
+.wizard-steps .step{min-width:52px}
+.wizard-steps .step-label{font-size:.56rem}
+.form-actions,.wizard-nav{flex-wrap:wrap;gap:.5rem}
+.form-actions button,.wizard-nav button,.btn-primary,.btn-secondary{width:100%}
+img,video,iframe{max-width:100%}
+*{min-width:0}
+}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
