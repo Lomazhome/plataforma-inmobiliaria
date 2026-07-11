@@ -361,6 +361,7 @@ async function publishSelected(){
 }
 
 async function simulatePublish(portal,prop,tok){
+  if(portal==="metro"){const{data:{session}}=await sb.auth.getSession();const resp=await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token},body:JSON.stringify({propertyId:prop.id})});const data=await resp.json().catch(()=>({}));if(resp.status===201){return{success:true,id:(data.respuesta&&(data.respuesta.transactionId||data.respuesta.transaction_id))||("m2_"+Date.now())};}const errMsg=(data&&(data.error||(data.respuesta&&(data.respuesta.message||JSON.stringify(data.respuesta)))))||("Error HTTP "+resp.status);throw new Error(errMsg);}
   await new Promise(r=>setTimeout(r,600));
   const payload={
     title:prop.titulo,
