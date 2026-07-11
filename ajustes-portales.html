@@ -72,40 +72,41 @@ input:focus{border-color:#c9a484}
   <div class="page-sub">Configura las credenciales de cada portal para activar la publicacion automatica de propiedades.</div>
   <div id="alert" class="alert" style="display:none"></div>
   <div class="portal-card" id="card-metrocuadrado">
-    <div class="portal-header">
-      <div class="portal-info">
-        <div class="portal-icon">&#127970;</div>
-        <div>
-          <div class="portal-name">Metrocuadrado</div>
-          <div class="portal-desc">Portal #1 de Colombia - El Tiempo / Portafolio</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:.8rem">
-        <span class="portal-status-badge badge-disconnected" id="badge-metrocuadrado">Sin configurar</span>
-        <button class="btn-toggle" onclick="togglePortal('metrocuadrado')">Configurar &#9660;</button>
-      </div>
-    </div>
-    <div class="portal-body" id="body-metrocuadrado">
-      <div class="section-title">Credenciales de acceso</div>
-      <div class="form-group"><label>API KEY (clave de integracion)</label>
-        <div class="input-row">
-          <input type="password" id="metro-apikey" placeholder="Pega aqui tu API Key de Metrocuadrado" autocomplete="off"/>
-          <button class="btn-save" onclick="savePortal('metrocuadrado')">Guardar</button>
-          <button class="btn-test" onclick="testPortal('metrocuadrado')">Probar</button>
-        </div>
-      </div>
-      <div class="form-group"><label>ID DE CUENTA (opcional)</label><input type="text" id="metro-accountid" placeholder="Tu ID de cuenta en Metrocuadrado"/></div>
-      <div class="test-result" id="test-metrocuadrado"></div>
-      <div class="info-box">
-        <strong>Como obtener tu API Key:</strong><br/>
-        1. Ingresa a <a href="https://www.metrocuadrado.com" target="_blank">metrocuadrado.com</a> con tu cuenta de inmobiliaria<br/>
-        2. Ve a Mi Cuenta &gt; Configuracion &gt; Integraciones &gt; API<br/>
-        3. Genera una nueva API Key y copia el valor<br/>
-        4. Pega la key aqui y guarda. La integracion se activara automaticamente.<br/><br/>
-        <strong>Nota:</strong> Metrocuadrado requiere cuenta de inmobiliaria verificada (plan de pago). <a href="https://www.metrocuadrado.com/inmobiliarias" target="_blank">Ver planes &rarr;</a>
-      </div>
-    </div>
+  <div class="portal-header">
+  <div class="portal-info">
+  <div class="portal-icon">&#127970;</div>
+  <div>
+  <div class="portal-name">Metrocuadrado</div>
+  <div class="portal-desc">Portal #1 de Colombia - Integracion API real</div>
   </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.8rem">
+  <span class="portal-status-badge badge-disconnected" id="badge-metrocuadrado">Sin configurar</span>
+  <button class="btn-toggle" onclick="togglePortal('metrocuadrado')">Configurar &#9660;</button>
+  </div>
+  </div>
+  <div class="portal-body" id="body-metrocuadrado">
+  <div class="section-title">Credenciales del Integrador</div>
+  <div class="form-group"><label>AMBIENTE</label>
+  <select id="metro-ambiente">
+  <option value="dev">Desarrollo (DEV / pruebas)</option>
+  <option value="prod">Produccion (PROD)</option>
+  </select>
+  </div>
+  <div class="form-group"><label>USUARIO (correo asignado por Metrocuadrado)</label><input type="text" id="metro-username" placeholder="correo@asignado.com" autocomplete="off"/></div>
+  <div class="form-group"><label>CONTRASENA</label>
+  <div class="input-row">
+  <input type="password" id="metro-password" placeholder="Contrasena asignada" autocomplete="off"/>
+  <button class="btn-save" onclick="savePortal('metrocuadrado')">Guardar</button>
+  <button class="btn-test" onclick="testPortal('metrocuadrado')">Probar</button>
+  </div>
+  </div>
+  <div class="form-group"><label>IDENTIFICACION (NIT del integrador)</label><input type="text" id="metro-identification" placeholder="NIT sin puntos ni guiones"/></div>
+  <div class="test-result" id="test-metrocuadrado"></div>
+  <div class="info-box">
+  <strong>Como obtener tus credenciales:</strong><br/>
+  1. Solicita la integracion a tu comercial de Metrocuadrado via Metro Tickets.<br/>
+  2. Te entregaran usuario, contrasena e identificacion (NIT) para el ambiente DEV.<br/>
   <div class="portal-card" id="card-fincaraiz">
     <div class="portal-header">
       <div class="portal-info">
@@ -285,7 +286,7 @@ function showAlert(msg,type){
   setTimeout(()=>a.style.display="none",5000);
 }
 const FIELDS={
-  metrocuadrado:{key:"metro-apikey",secondary:"metro-accountid",keyName:"api_key",secName:"account_id"},
+    metrocuadrado:{key:"metro-password",secondary:"metro-username",keyName:"password",secName:"username"},
   fincaraiz:{key:"fincaraiz-token",secondary:"fincaraiz-clientid",keyName:"access_token",secName:"client_id"},
   proppit:{key:"proppit-token",secondary:"proppit-usuario",keyName:"api_token",secName:"usuario"},
   marketplace:{key:"fb-token",secondary:"fb-pageid",keyName:"page_access_token",secName:"page_id"},
@@ -309,6 +310,7 @@ async function loadCredentials(){
     if(f.secondary&&c[f.secName]){
       const el2=document.getElementById(f.secondary);
       if(el2)el2.value=c[f.secName];
+      if(c.portal==="metrocuadrado"){const identEl=document.getElementById("metro-identification");if(identEl&&c.identification)identEl.value=c.identification;const ambEl=document.getElementById("metro-ambiente");if(ambEl&&c.ambiente)ambEl.value=c.ambiente;}
     }
   }
 }
@@ -326,6 +328,7 @@ async function savePortal(portal){
   };
   record[f.keyName]=keyVal;
   if(f.secondary&&secVal)record[f.secName]=secVal;
+  if(portal==="metrocuadrado"){const identVal=document.getElementById("metro-identification")?.value?.trim();const ambVal=document.getElementById("metro-ambiente")?.value||"dev";if(identVal)record.identification=identVal;record.ambiente=ambVal;}
   const{error}=await sb.from("configuracion_portales").upsert(record,{onConflict:"portal"});
   if(error){showAlert("Error al guardar: "+error.message,"error");return;}
   const badge=document.getElementById("badge-"+portal);
