@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Portales | Lomaz Home</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/chss2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -301,7 +301,7 @@ function renderPropList(){
       <input type="checkbox" class="prop-check" id="pc-${p.id}" onclick="event.stopPropagation();togglePropSelect('${p.id}')" />
       <div class="prop-item-info">
         <div class="prop-item-title">${p.titulo||"Sin titulo"}</div>
-        <div class="prop-item-sub">${p.tipo_negocio||""} · ${p.ciudad||""} · ${p.tipo_inmueble||""}</div>
+        <div class="prop-item-sub">${p.tipo_negocio||""} · ${p.ciudad||""} · ${p.tipo_propiedad||""}</div>
       </div>
       <div class="prop-item-price">${fmtPrice(p.precio)}</div>
     </div>`).join("");
@@ -367,7 +367,7 @@ async function simulatePublish(portal,prop,tok){
     title:prop.titulo,
     price:prop.precio,
     type:prop.tipo_negocio,
-    property_type:prop.tipo_inmueble,
+    property_type:prop.tipo_propiedad,
     city:prop.ciudad,
     neighborhood:prop.barrio,
     area:prop.area_construida,
@@ -406,7 +406,7 @@ async function init(){
     if(getToken(p))updatePortalUI(p,true);
   });
   // Load properties
-  const {data:props}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,tipo_inmueble,ciudad,barrio,area_construida,habitaciones,banos,parqueaderos,descripcion,fotos").eq("asesor_id",currentUser.id).eq("estado","activa").order("created_at",{ascending:false});
+  const {data:props}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,tipo_propiedad,ciudad,barrio,area_construida,habitaciones,banos,parqueaderos,descripcion,fotos").eq("asesor_id",currentUser.id).eq("estado","activa").order("created_at",{ascending:false});
   myProps=props||[];
   renderPropList();
   // Add log entry for connected portals
