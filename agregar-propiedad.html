@@ -749,12 +749,14 @@ if(selS) selS.addEventListener("change", function(){ mcSetHidden("metro_sector_i
 });
 window.publicarEnMetrocuadrado = async function(propId){
 try{
-var sess = await sb.auth.getSession();
-var token = sess.data.session ? sess.data.session.access_token : "";
+var tk = await sb.rpc("mc_create_ticket", {p_property_id: propId});
+if(tk.error){
+return {ok:false, msg:"No se pudo generar ticket: "+tk.error.message};
+}
 var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish", {
 method:"POST",
-headers:{"Content-Type":"application/json", Authorization:"Bearer "+token},
-body: JSON.stringify({propertyId: propId})
+headers:{"Content-Type":"application/json", Authorization:"Bearer "+SB_KEY},
+body: JSON.stringify({propertyId: propId, ticket: tk.data})
 });
 var json = await resp.json().catch(function(){return {};});
 if(resp.status === 201){
