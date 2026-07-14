@@ -371,7 +371,7 @@ img,video,iframe{max-width:100%}
 <p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Selecciona los portales adicionales:</p>
 <div class="portales-grid">
 <div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
-<div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado')"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div>
+<div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
 <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
 <div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
@@ -544,6 +544,14 @@ document.getElementById("logEntries").innerHTML="";
 document.getElementById("publishLog").style.display="none";
 const amenidades=[...document.querySelectorAll("input[name=char]:checked")].map(c=>c.value);
 const v = id => (document.getElementById(id)||{}).value || "";
+if(document.getElementById("ch-metrocuadrado") && document.getElementById("ch-metrocuadrado").checked){
+if(!v("metro_city_id")||!v("metro_zone_id")||!v("metro_sector_id")){
+showAlert("Para publicar en Metrocuadrado selecciona Region, Ciudad, Zona y Sector en la seccion de Portales.","error");
+btn.disabled=false;btn.textContent="Publicar Propiedad";
+return;
+}
+}
+
 // Mapeo correcto a columnas reales de la tabla 'propiedades'
 const fotosList = v("fotos_url").trim() ? v("fotos_url").trim().split(',').map(u=>u.trim()).filter(u=>u) : null;
 const data={
@@ -584,6 +592,9 @@ video_url: v("video_url").trim()||null,
 tour_virtual_url: v("recorrido_virtual").trim()||null,
 estado: v("status_propiedad") || "activa",
 moneda: "COP",
+metro_city_id: (document.getElementById("ch-metrocuadrado")&&document.getElementById("ch-metrocuadrado").checked && v("metro_city_id")) ? parseInt(v("metro_city_id")) : null,
+metro_zone_id: (document.getElementById("ch-metrocuadrado")&&document.getElementById("ch-metrocuadrado").checked && v("metro_zone_id")) ? parseInt(v("metro_zone_id")) : null,
+metro_sector_id: (document.getElementById("ch-metrocuadrado")&&document.getElementById("ch-metrocuadrado").checked && v("metro_sector_id")) ? parseInt(v("metro_sector_id")) : null,
 asesor_id: currentUser.id
 };
 addLog("loading","Lomaz Home","Guardando propiedad en la plataforma...");
@@ -635,6 +646,14 @@ if(result.ok){setPortalStatus("marketplace","ok","Listo p/ pegar");addLog("succe
 else{setPortalStatus("marketplace","error","Error");addLog("error","Facebook Marketplace",result.msg);}
 continue;
 }
+if(p.id === "metrocuadrado"){
+const result = await window.publicarEnMetrocuadrado(prop.id);
+const estado = result.ok ? "publicado" : "error";
+await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"metrocuadrado",estado,mensaje:result.msg,asesor_id:currentUser.id});
+if(result.ok){setPortalStatus("metrocuadrado","ok","Publicado");addLog("success","Metrocuadrado",result.msg);}
+else{setPortalStatus("metrocuadrado","error","Error");addLog("error","Metrocuadrado",result.msg);}
+continue;
+}
 if(p.id === "fincaraiz"){
 const result = await window.publicarEnFincaraiz(data, prop.id);
 const estado = result.ok ? "publicado" : "pendiente_credenciales";
@@ -658,6 +677,97 @@ else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,ms
 btn.textContent="Publicado en Lomaz Home";
 showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
 }
+
+let __metroCache = {regions:null};
+function mcSetHidden(id,val){ var e=document.getElementById(id); if(e) e.value = val||""; }
+function mcFillSelect(sel, items, valKey, textKey, placeholder){
+sel.innerHTML = '<option value="">'+placeholder+'</option>' + items.map(function(it){
+var val = it[valKey] !== undefined ? it[valKey] : (it.id !== undefined ? it.id : "");
+var txt = it[textKey] !== undefined ? it[textKey] : (it.name || it.nombre || String(val));
+return '<option value="'+val+'">'+txt+'</option>';
+}).join("");
+}
+function mcExtractArray(data){
+if(Array.isArray(data)) return data;
+if(data && Array.isArray(data.data)) return data.data;
+if(data && Array.isArray(data.result)) return data.result;
+if(data && Array.isArray(data.rows)) return data.rows;
+if(data && typeof data === "object"){
+var vals = Object.values(data).find(function(v){return Array.isArray(v);});
+if(vals) return vals;
+}
+return [];
+}
+async function mcCatalog(tipo, params){
+var sess = await sb.auth.getSession();
+var token = sess.data.session ? sess.data.session.access_token : "";
+var qs = params ? ("?"+new URLSearchParams(params).toString()) : "";
+var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/catalog/"+tipo+qs, {headers:{Authorization:"Bearer "+token}});
+var json = await resp.json().catch(function(){return null;});
+if(!resp.ok) throw new Error((json&&(json.error||json.message))||("Error "+resp.status));
+return mcExtractArray(json);
+}
+async function toggleMetroMapa(cb){
+var row = document.getElementById("mapaMetroRow");
+if(!row) return;
+row.style.display = cb.checked ? "flex" : "none";
+if(cb.checked && !__metroCache.regions){
+var selR = document.getElementById("metro_region");
+try{
+var regiones = await mcCatalog("regions");
+__metroCache.regions = regiones;
+mcFillSelect(selR, regiones, "id", "name", "Selecciona region...");
+}catch(e){ selR.innerHTML = '<option value="">Error cargando</option>'; console.error("metro regions",e); }
+}
+}
+document.addEventListener("DOMContentLoaded", function(){
+var selR = document.getElementById("metro_region");
+var selC = document.getElementById("metro_city_sel");
+var selZ = document.getElementById("metro_zone_sel");
+var selS = document.getElementById("metro_sector_sel");
+if(selR) selR.addEventListener("change", async function(){
+mcSetHidden("metro_city_id",""); mcSetHidden("metro_zone_id",""); mcSetHidden("metro_sector_id","");
+selC.innerHTML='<option value="">Cargando...</option>'; selZ.innerHTML='<option value="">Selecciona ciudad...</option>'; selS.innerHTML='<option value="">Selecciona zona...</option>';
+if(!selR.value) { selC.innerHTML='<option value="">Selecciona region...</option>'; return; }
+try{ var ciudades = await mcCatalog("cities", {regionId: selR.value}); mcFillSelect(selC, ciudades, "id","name","Selecciona ciudad..."); }catch(e){ selC.innerHTML='<option value="">Error cargando</option>'; console.error("metro cities",e); }
+});
+if(selC) selC.addEventListener("change", async function(){
+mcSetHidden("metro_city_id", selC.value);
+mcSetHidden("metro_zone_id",""); mcSetHidden("metro_sector_id","");
+selZ.innerHTML='<option value="">Cargando...</option>'; selS.innerHTML='<option value="">Selecciona zona...</option>';
+if(!selC.value) { selZ.innerHTML='<option value="">Selecciona ciudad...</option>'; return; }
+try{ var zonas = await mcCatalog("zones", {cityId: selC.value}); mcFillSelect(selZ, zonas, "id","name","Selecciona zona..."); }catch(e){ selZ.innerHTML='<option value="">Error cargando</option>'; console.error("metro zones",e); }
+});
+if(selZ) selZ.addEventListener("change", async function(){
+mcSetHidden("metro_zone_id", selZ.value);
+mcSetHidden("metro_sector_id","");
+selS.innerHTML='<option value="">Cargando...</option>';
+if(!selZ.value) { selS.innerHTML='<option value="">Selecciona zona...</option>'; return; }
+try{ var sectores = await mcCatalog("sectors", {zoneId: selZ.value}); mcFillSelect(selS, sectores, "id","name","Selecciona sector..."); }catch(e){ selS.innerHTML='<option value="">Error cargando</option>'; console.error("metro sectors",e); }
+});
+if(selS) selS.addEventListener("change", function(){ mcSetHidden("metro_sector_id", selS.value); });
+});
+window.publicarEnMetrocuadrado = async function(propId){
+try{
+var sess = await sb.auth.getSession();
+var token = sess.data.session ? sess.data.session.access_token : "";
+var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish", {
+method:"POST",
+headers:{"Content-Type":"application/json", Authorization:"Bearer "+token},
+body: JSON.stringify({propertyId: propId})
+});
+var json = await resp.json().catch(function(){return {};});
+if(resp.status === 201){
+var tid = (json.respuesta && (json.respuesta.transactionId || json.respuesta.transaction_id)) || "";
+return {ok:true, msg:"Publicado en Metrocuadrado correctamente."+(tid?(" Transaction ID: "+tid):"")};
+}
+var errMsg = (json && (json.error || (json.respuesta && (json.respuesta.message || JSON.stringify(json.respuesta))))) || ("Error HTTP "+resp.status);
+return {ok:false, msg: errMsg};
+}catch(e){
+return {ok:false, msg:"Error de red: "+e.message};
+}
+};
+
 // === LoMaz Home: Override seguro (mayo 2026) - Finca Raiz via Edge Function ===
 window.publicarEnFincaraiz = async function(propData, propId){
 try {
