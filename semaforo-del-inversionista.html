@@ -6,6 +6,7 @@
 <title>Semáforo del Inversionista - LoMaz Home</title>
 <meta name="robots" content="noindex, nofollow"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
@@ -181,7 +182,9 @@ table.acm-table tr.bad-row{opacity:.55;text-decoration:line-through}
 <div class="gate-logo">Lo<em>Maz</em> Home</div>
 <div class="gate-tag">Te damos lo más para encontrar tu hogar</div>
 <div class="gate-title">Semáforo del Inversionista</div>
-<input type="password" id="gateInput" placeholder="Clave de acceso" autocomplete="off"/>
+<p style="font-size:.75rem;color:var(--gray);margin-bottom:14px">Ingresa con tu usuario y contraseña de asesor LoMaz Home.</p>
+<input type="email" id="gateEmail" placeholder="Correo electrónico" autocomplete="email"/>
+<input type="password" id="gatePassword" placeholder="Contraseña" autocomplete="current-password"/>
 <button id="gateBtn" type="button">Ingresar</button>
 <div class="gate-error" id="gateError"></div>
 </div>
@@ -230,12 +233,13 @@ table.acm-table tr.bad-row{opacity:.55;text-decoration:line-through}
 <div class="field full"><div class="hint">Úsalos solo si los comparables NO incluyen garaje/depósito, para no duplicar valor.</div></div>
 </div></div>
 <div class="card"><div class="section-band">Elaborado por</div>
+<p class="sub">Estos datos se toman automáticamente de tu cuenta de asesor y son los que firman el informe.</p>
 <div class="grid">
-<div class="field"><label>Nombre</label><input id="f_elabNombre" type="text"/></div>
-<div class="field"><label>Cargo</label><input id="f_elabCargo" type="text"/></div>
-<div class="field"><label>Registro profesional (opcional)</label><input id="f_elabRegistro" type="text"/></div>
-<div class="field"><label>Teléfono</label><input id="f_elabTelefono" type="text"/></div>
-<div class="field full"><label>Email</label><input id="f_elabEmail" type="email"/></div>
+<div class="field"><label>Nombre</label><input id="f_elabNombre" type="text" readonly style="background:var(--gray-l)"/></div>
+<div class="field"><label>Cargo</label><input id="f_elabCargo" type="text" readonly style="background:var(--gray-l)"/></div>
+<div class="field"><label>Registro profesional</label><input id="f_elabRegistro" type="text" readonly style="background:var(--gray-l)"/></div>
+<div class="field"><label>Teléfono</label><input id="f_elabTelefono" type="text" readonly style="background:var(--gray-l)"/></div>
+<div class="field full"><label>Email</label><input id="f_elabEmail" type="email" readonly style="background:var(--gray-l)"/></div>
 </div></div>
 <div class="nav-btns"><div></div><button class="btn btn-gold" type="button" onclick="goStep(2)">Siguiente &#8594;</button></div>
 </div>
@@ -280,14 +284,13 @@ table.acm-table tr.bad-row{opacity:.55;text-decoration:line-through}
 <div class="toast" id="toast"></div>
 <style>.step-panel{display:none}.step-panel.active{display:block;animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}</style>
 <script>
-var ACCESS_CODE = "LOMAZ2026";
 var DRAFT_KEY = "lomaz_semaforo_draft_v1";
 var state = null;
 function defaultState(){
   return {
     step: 1,
     prop: { solicitante:"", propietario:"", direccion:"", edificio:"", barrio:"", localidad:"", upz:"", ciudad:"Bogotá D.C.", estrato:"", matricula:"", chip:"", escritura:"", coeficiente:"", areaConstruida:"", areaPrivada:"", garajes:0, depositos:0, antiguedad:"", vidaUtil:100, estadoConservacion:"", acabadosNivel:"", fechaVisita:"", fechaEstudio:"", valorGarajeUnit:0, valorDepositoUnit:0,
-      elabNombre:"Salomón Torres Barrera", elabCargo:"Agente inmobiliario — LoMaz Home", elabRegistro:"", elabTelefono:"322 414 1474", elabEmail:"salomontor11@gmail.com" },
+      elabNombre:"", elabCargo:"", elabRegistro:"", elabTelefono:"", elabEmail:"" },
     comparables: [],
     photos: []
   };
@@ -438,19 +441,71 @@ function toast(msg, type){
   toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 3200);
 }
 
-/* ===== GATE ===== */
-function checkGate(){
-  var val = document.getElementById('gateInput').value;
-  if(val.toUpperCase() === ACCESS_CODE){
-    sessionStorage.setItem('semaforo_unlocked','1');
-    document.getElementById('gate').style.display='none';
-    document.getElementById('app').style.display='flex';
-    initApp();
-  } else {
-    document.getElementById('gateError').textContent = 'Clave incorrecta. Intenta de nuevo.';
-  }
+/* ===== GATE / AUTENTICACIÓN DE ASESOR ===== */
+var SB_URL = "https://lniouebpuuuqctrgxoiw.supabase.co";
+var SB_KEY = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+var sb = window.supabase.createClient(SB_URL, SB_KEY);
+var currentAsesorProfile = null;
+
+function setGateLoading(loading){
+var btn = document.getElementById('gateBtn');
+btn.disabled = loading;
+btn.textContent = loading ? 'Verificando...' : 'Ingresar';
+}
+function showGateError(msg){ document.getElementById('gateError').textContent = msg || ''; }
+
+async function loginAsesor(){
+var email = document.getElementById('gateEmail').value.trim();
+var pass = document.getElementById('gatePassword').value;
+if(!email || !pass){ showGateError('Completa tu correo y contraseña.'); return; }
+showGateError(''); setGateLoading(true);
+var res = await sb.auth.signInWithPassword({ email: email, password: pass });
+if(res.error){
+showGateError('Correo o contraseña incorrectos.');
+setGateLoading(false);
+return;
+}
+await onLoginSuccess(res.data.session);
+setGateLoading(false);
 }
 
+async function fetchAsesorProfile(session){
+var perfil = { nombre: session.user.email, cargo: 'Asesor inmobiliario — LoMaz Home', licencia: '', telefono: '', email: session.user.email };
+try{
+var resp = await sb.from('asesores').select('nombre,apellido,cargo,licencia,telefono,whatsapp').eq('user_id', session.user.id).single();
+var data = resp.data;
+if(data){
+var nombreCompleto = ((data.nombre||'') + ' ' + (data.apellido||'')).trim();
+if(nombreCompleto) perfil.nombre = nombreCompleto;
+if(data.cargo && data.cargo.trim()) perfil.cargo = data.cargo.trim() + ' — LoMaz Home';
+perfil.licencia = data.licencia || '';
+perfil.telefono = data.telefono || data.whatsapp || '';
+}
+}catch(e){ console.warn('No se pudo cargar perfil de asesor', e); }
+return perfil;
+}
+
+function applyAsesorToState(){
+if(!currentAsesorProfile || !state) return;
+state.prop.elabNombre = currentAsesorProfile.nombre;
+state.prop.elabCargo = currentAsesorProfile.cargo;
+state.prop.elabRegistro = currentAsesorProfile.licencia;
+state.prop.elabTelefono = currentAsesorProfile.telefono;
+state.prop.elabEmail = currentAsesorProfile.email;
+}
+
+async function onLoginSuccess(session){
+currentAsesorProfile = await fetchAsesorProfile(session);
+document.getElementById('gate').style.display='none';
+document.getElementById('app').style.display='flex';
+initApp();
+}
+
+async function cerrarSesionAsesor(){
+await sb.auth.signOut();
+currentAsesorProfile = null;
+location.reload();
+}
 /* ===== WIZARD NAV ===== */
 var STEP_NAMES = {1:'Inmueble',2:'Comparables',3:'Resultados',4:'Fotos',5:'Informe'};
 function updateProgress(){
@@ -843,8 +898,21 @@ async function descargarPDF(){
     }catch(e){}
   }
   var infoLines = [['Solicitante',p.solicitante],['Dirección',p.direccion],['Edificio / Conjunto',p.edificio],['Barrio',p.barrio],['Localidad',p.localidad],['Ciudad',p.ciudad]];
-  infoLines.forEach(function(row){ ensure(16); doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,30,30); doc.text(row[0]+':', margin, y); doc.setFont('helvetica','normal'); doc.text(row[1]||'-', margin+130, y); y+=16; });
-  y+=8;
+infoLines.forEach(function(row){
+var label = row[0] + ':';
+doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,30,30);
+var labelW = doc.getTextWidth(label);
+var vx = margin + Math.max(130, labelW+12);
+var maxValW = Math.max(60, pageW-margin-vx);
+doc.setFont('helvetica','normal');
+var valLines = doc.splitTextToSize(String(row[1]||'-'), maxValW);
+ensure(14*valLines.length+4);
+doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30); doc.text(label, margin, y);
+doc.setFont('helvetica','normal');
+valLines.forEach(function(vl, li){ doc.text(vl, vx, y+li*13); });
+y += 14*valLines.length+2;
+});
+y+=8;
   doc.setFont('helvetica','italic'); doc.setFontSize(11); doc.setTextColor(31,48,80);
   doc.text('Bogotá D.C., ' + formatFecha(p.fechaEstudio), pageW/2, y, {align:'center'});
   doc.addPage(); y=76;
@@ -861,33 +929,38 @@ async function descargarPDF(){
   para('El inmueble objeto de estudio se ubica en ' + (p.direccion||'') + ', barrio ' + (p.barrio||'-') + ', ' + (p.ciudad||'') + '. Cuenta con un área privada de ' + formatArea(p.areaPrivada) + ' y un área construida de ' + formatArea(p.areaConstruida) + ', con estrato ' + (p.estrato||'-') + ', estado de conservación ' + (p.estadoConservacion||'-').toString().toLowerCase() + ' y nivel de acabados ' + (p.acabadosNivel||'-').toString().toLowerCase() + '.');
   heading('2. Identificación del inmueble');
   var vidaRem = Math.max(0, (parseFloat(p.vidaUtil)||100) - (parseFloat(p.antiguedad)||0));
-  var idRows = [
-    ['Propietario', p.propietario||'-', 'Matrícula inmobiliaria', p.matricula||'-'],
-    ['CHIP', p.chip||'-', 'Escritura pública', p.escritura||'-'],
-    ['Localidad', p.localidad||'-', 'UPZ', p.upz||'-'],
-    ['Coeficiente copropiedad', (p.coeficiente?p.coeficiente+'%':'-'), 'Estrato', p.estrato||'-'],
-    ['Área construida', formatArea(p.areaConstruida), 'Área privada', formatArea(p.areaPrivada)],
-    ['Garajes', String(p.garajes||0), 'Depósitos', String(p.depositos||0)],
-    ['Antigüedad', (p.antiguedad||0)+' años', 'Vida útil', (p.vidaUtil||100)+' años'],
-    ['Vida remanente', vidaRem+' años', 'Estado de conservación', p.estadoConservacion||'-'],
-    ['Nivel de acabados', p.acabadosNivel||'-', 'Fecha de visita', formatFecha(p.fechaVisita)],
-    ['Fecha del estudio', formatFecha(p.fechaEstudio), '', '']
-  ];
-  idRows.forEach(function(row){
-    ensure(16);
-    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(107,114,128);
-    doc.text(row[0].toUpperCase(), margin, y);
-    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(30,30,30);
-    doc.text(String(row[1]), margin+120, y);
-    if(row[2]){
-      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(107,114,128);
-      doc.text(row[2].toUpperCase(), margin+260, y);
-      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(30,30,30);
-      doc.text(String(row[3]), margin+380, y);
-    }
-    y+=16;
-  });
-  y+=10;
+  var vidaRem = Math.max(0, (parseFloat(p.vidaUtil)||100) - (parseFloat(p.antiguedad)||0));
+var idPairs = [
+[['Propietario', p.propietario||'-'], ['Matrícula inmobiliaria', p.matricula||'-']],
+[['CHIP', p.chip||'-'], ['Escritura pública', p.escritura||'-']],
+[['Localidad', p.localidad||'-'], ['UPZ', p.upz||'-']],
+[['Coeficiente copropiedad', (p.coeficiente?p.coeficiente+'%':'-')], ['Estrato', p.estrato||'-']],
+[['Área construida', formatArea(p.areaConstruida)], ['Área privada', formatArea(p.areaPrivada)]],
+[['Garajes', String(p.garajes||0)], ['Depósitos', String(p.depositos||0)]],
+[['Antigüedad', (p.antiguedad||0)+' años'], ['Vida útil', (p.vidaUtil||100)+' años']],
+[['Vida remanente', vidaRem+' años'], ['Estado de conservación', p.estadoConservacion||'-']],
+[['Nivel de acabados', p.acabadosNivel||'-'], ['Fecha de visita', formatFecha(p.fechaVisita)]],
+[['Fecha del estudio', formatFecha(p.fechaEstudio)], null]
+];
+var idColW = (contentW-20)/2;
+idPairs.forEach(function(pair){
+doc.setFont('helvetica','normal'); doc.setFontSize(10);
+var cellLines = pair.map(function(cell){ return cell ? doc.splitTextToSize(String(cell[1]), idColW) : []; });
+var maxLines = Math.max(cellLines[0].length, cellLines[1] ? cellLines[1].length : 0, 1);
+var rowH = 12 + maxLines*12 + 6;
+ensure(rowH);
+pair.forEach(function(cell, idx2){
+if(!cell) return;
+var bx = margin + idx2*(idColW+20);
+doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(107,114,128);
+doc.text(cell[0].toUpperCase(), bx, y);
+doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(30,30,30);
+var lines = doc.splitTextToSize(String(cell[1]), idColW);
+lines.forEach(function(ln, li){ doc.text(ln, bx, y+12+li*12); });
+});
+y += rowH;
+});
+y+=6;
   heading('3. Metodología valuatoria');
   para('El presente Análisis Comparativo de Mercado se desarrolla aplicando el método de comparación o de mercado, conforme a lo establecido en el Decreto 1420 de 1998 y la Resolución 620 de 2008 del Instituto Geográfico Agustín Codazzi (IGAC), mediante el cual se estima el valor de un inmueble a partir de precios de ofertas o transacciones recientes de bienes similares en su entorno, aplicando factores de homogeneización por área, condiciones físicas y condiciones de negociación.');
   para('En palabras simples: comparamos su inmueble con otros similares que están a la venta en la zona, y se hacen ajustes justos por tamaño, estado y forma de negociación, para determinar cuánto vale realmente el inmueble hoy.', {italic:true, color:[107,114,128]});
@@ -1001,38 +1074,40 @@ async function descargarPDF(){
 }
 /* ===== INIT ===== */
 function initApp(){
-  var draft = loadDraft();
-  state = draft || defaultState();
-  if(!state.prop) state = defaultState();
-  if(state.comparables.length===0){ for(var i=0;i<3;i++){ state.comparables.push(newComparable()); } }
-  bindStep1(); bindStep2(); bindStep4();
-  populateFormFromProp();
-  renderComparables();
-  renderPhotos();
-  showStep(state.step || 1);
-  if(draft) toast('Borrador recuperado.', 'ok');
+var draft = loadDraft();
+state = draft || defaultState();
+if(!state.prop) state = defaultState();
+applyAsesorToState();
+if(state.comparables.length===0){ for(var i=0;i<3;i++){ state.comparables.push(newComparable()); } }
+bindStep1(); bindStep2(); bindStep4();
+populateFormFromProp();
+renderComparables();
+renderPhotos();
+showStep(state.step || 1);
+if(draft) toast('Borrador recuperado.', 'ok');
 }
 function nuevoACM(){
-  if(!confirm('¿Deseas iniciar un nuevo ACM? Se perderá el borrador actual.')) return;
-  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
-  state = defaultState();
-  for(var i=0;i<3;i++){ state.comparables.push(newComparable()); }
-  populateFormFromProp();
-  renderComparables();
-  renderPhotos();
-  showStep(1);
-  toast('Nuevo ACM iniciado.', 'ok');
+if(!confirm('¿Deseas iniciar un nuevo ACM? Se perderá el borrador actual.')) return;
+try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+state = defaultState();
+applyAsesorToState();
+for(var i=0;i<3;i++){ state.comparables.push(newComparable()); }
+populateFormFromProp();
+renderComparables();
+renderPhotos();
+showStep(1);
+toast('Nuevo ACM iniciado.', 'ok');
 }
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('gateBtn').addEventListener('click', checkGate);
-  document.getElementById('gateInput').addEventListener('keydown', function(e){ if(e.key==='Enter') checkGate(); });
-  document.getElementById('btnNuevo').addEventListener('click', nuevoACM);
-  document.getElementById('btnSalir').addEventListener('click', function(){ sessionStorage.removeItem('semaforo_unlocked'); location.reload(); });
-  if(sessionStorage.getItem('semaforo_unlocked')==='1'){
-    document.getElementById('gate').style.display='none';
-    document.getElementById('app').style.display='flex';
-    initApp();
-  }
+document.addEventListener('DOMContentLoaded', async function(){
+document.getElementById('gateBtn').addEventListener('click', loginAsesor);
+document.getElementById('gatePassword').addEventListener('keydown', function(e){ if(e.key==='Enter') loginAsesor(); });
+document.getElementById('gateEmail').addEventListener('keydown', function(e){ if(e.key==='Enter') loginAsesor(); });
+document.getElementById('btnNuevo').addEventListener('click', nuevoACM);
+document.getElementById('btnSalir').addEventListener('click', cerrarSesionAsesor);
+try{
+var sess = await sb.auth.getSession();
+if(sess && sess.data && sess.data.session){ await onLoginSuccess(sess.data.session); }
+}catch(e){ console.warn('No se pudo verificar sesión', e); }
 });
 </script>
 </body>
