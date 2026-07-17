@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/semaforo-del-inversionista",
+      "destination": "/semaforo-del-inversionista.html"
+    }
+  ]
+}
