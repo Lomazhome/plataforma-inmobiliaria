@@ -94,6 +94,10 @@ td strong{font-weight:600;color:#fff}
 .pg-header:first-child{text-align:left}
 .empty-state{text-align:center;padding:3rem;color:var(--txt-mute);font-size:.9rem;font-style:italic;font-family:var(--serif)}
 .action-buttons{display:flex;gap:.4rem;flex-wrap:wrap}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:200;padding:1.5rem}
+.modal-box{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:2rem;max-width:560px;width:100%;box-shadow:var(--sh-card)}
+.modal-box h3{font-family:var(--serif);font-size:1.4rem;font-weight:500;color:#fff;margin-bottom:1.4rem}
+.modal-box h3 em{font-style:italic;color:var(--gold)}
 @media (max-width:900px){
 .form-grid{grid-template-columns:1fr}
 .topbar{padding:.75rem 1rem}
@@ -143,6 +147,8 @@ td strong{font-weight:600;color:#fff}
 <div class="form-group"><label>Correo electronico *</label><input type="email" id="c-email" placeholder="asesor@empresa.com"/></div>
 <div class="form-group"><label>Contrasena temporal *</label><input type="password" id="c-password" placeholder="Min 8 caracteres"/></div>
 <div class="form-group"><label>Telefono</label><input type="tel" id="c-telefono" placeholder="+57 300 000 0000"/></div>
+<div class="form-group"><label>Cargo / Titulo</label><input type="text" id="c-cargo" placeholder="Asesor de LoMaz Home" value="Asesor de LoMaz Home"/></div>
+<div class="form-group"><label>Registro profesional / Licencia</label><input type="text" id="c-licencia" placeholder="Numero de matricula o registro (opcional)"/></div>
 <div class="form-group"><label>Rol asignado *</label><select id="c-rol"><option value="">Seleccionar rol...</option></select></div>
 <div class="form-group full"><label>Notas internas</label><input type="text" id="c-notas" placeholder="Zona asignada, especialidad, observaciones..."/></div>
 </div>
@@ -163,7 +169,7 @@ td strong{font-weight:600;color:#fff}
 <button class="btn-sm btn-neutral" onclick="cargarUsuarios()">&#x21bb; Actualizar</button>
 </div>
 <div class="table-wrap"><table id="tabla-usuarios">
-<thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Creado</th><th>Acciones</th></tr></thead>
+<thead><tr><th>Usuario</th><th>Cargo</th><th>Rol</th><th>Estado</th><th>Creado</th><th>Acciones</th></tr></thead>
 <tbody id="tbody-usuarios"><tr><td colspan="6" class="empty-state">Cargando usuarios...</td></tr></tbody>
 </table></div></div></div>
 <div class="tab-panel" id="panel-roles">
@@ -186,7 +192,23 @@ td strong{font-weight:600;color:#fff}
 <button class="btn-sm btn-primary btn-create" onclick="guardarPermisos()">Guardar Permisos</button>
 </div></div></div>
 </div>
-</div><script>
+</div><div id="modalEditar" class="modal-overlay" style="display:none">
+<div class="modal-box">
+<h3>Editar <em>Usuario</em></h3>
+<div class="form-grid">
+<div class="form-group"><label>Nombre completo</label><input type="text" id="e-nombre"/></div>
+<div class="form-group"><label>Telefono</label><input type="tel" id="e-telefono"/></div>
+<div class="form-group"><label>Cargo / Titulo</label><input type="text" id="e-cargo"/></div>
+<div class="form-group"><label>Registro profesional / Licencia</label><input type="text" id="e-licencia"/></div>
+<div class="form-group full"><label>Rol asignado</label><select id="e-rol"></select></div>
+</div>
+<div class="form-actions">
+<button class="btn-sm btn-primary" onclick="guardarEdicionUsuario()">Guardar Cambios</button>
+<button class="btn-sm btn-neutral" onclick="cerrarModalEditar()">Cancelar</button>
+</div>
+</div>
+</div>
+<script>
 const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
 const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const sb=window.supabase.createClient(SURL,SKEY);
@@ -235,6 +257,8 @@ const nombre=document.getElementById("c-nombre").value.trim();
 const email=document.getElementById("c-email").value.trim();
 const password=document.getElementById("c-password").value;
 const telefono=document.getElementById("c-telefono").value.trim();
+const cargo=document.getElementById("c-cargo").value.trim();
+const licencia=document.getElementById("c-licencia").value.trim();
 const rolId=document.getElementById("c-rol").value;
 const notas=document.getElementById("c-notas").value.trim();
 if(!nombre||!email||!password||!rolId){showAlert("Completa todos los campos obligatorios","error");return;}
@@ -253,6 +277,12 @@ showAlert("Error al crear usuario: "+msg,"error");
 return;
 }
 if(data&&data.error){ showAlert("Error: "+data.error,"error"); return; }
+try{
+const {data:perfilNuevo}=await sb.from("perfiles_usuarios").select("id").eq("nombre_completo",nombre).order("created_at",{ascending:false}).limit(1).single();
+if(perfilNuevo && perfilNuevo.id){
+await sb.from("perfiles_usuarios").update({cargo: cargo || "Asesor de LoMaz Home", licencia: licencia || null}).eq("id", perfilNuevo.id);
+}
+}catch(e){ console.warn("No se pudo asignar cargo/licencia inicial", e); }
 showAlert("Usuario creado exitosamente: "+nombre,"success");
 limpiarFormCrear();
 await cargarUsuarios();
@@ -264,8 +294,9 @@ if(btn){btn.disabled=false;btn.textContent="Crear Usuario";}
 }
 
 function limpiarFormCrear(){
-["c-nombre","c-email","c-password","c-telefono","c-notas"].forEach(id=>document.getElementById(id).value="");
+["c-nombre","c-email","c-password","c-telefono","c-licencia","c-notas"].forEach(id=>document.getElementById(id).value="");
 document.getElementById("c-rol").value="";
+document.getElementById("c-cargo").value="Asesor de LoMaz Home";
 }
 
 async function cargarUsuarios(){
@@ -283,7 +314,7 @@ const color=p.roles && p.roles.color ? p.roles.color : "#c9a96e";
 const rolNombre=p.roles && p.roles.nombre ? p.roles.nombre : "Sin rol";
 return '<tr>'+
 '<td><strong>'+(p.nombre_completo||"Sin nombre")+'</strong><br/><span style="color:var(--txt-mute);font-size:.75rem">'+(p.telefono||"")+'</span></td>'+
-'<td style="color:var(--txt-soft);font-size:.82rem">'+p.id.substring(0,8)+'...</td>'+
+'<td style="color:var(--txt-soft);font-size:.82rem">'+(p.cargo||"Asesor de LoMaz Home")+'</td>'+
 '<td><span class="badge-rol" style="background:'+color+'22;color:'+color+';border:1px solid '+color+'55">'+rolNombre+'</span></td>'+
 '<td><span class="status-dot '+(p.activo?"dot-active":"dot-inactive")+'"></span>'+(p.activo?"Activo":"Inactivo")+'</td>'+
 '<td style="color:var(--txt-soft);font-size:.8rem">'+new Date(p.created_at).toLocaleDateString("es-CO")+'</td>'+
@@ -308,14 +339,42 @@ if(error)showAlert("Error: "+error.message,"error");
 else{showAlert("Estado del usuario actualizado","success");await cargarUsuarios();}
 }
 
-async function editarUsuario(userId){
+let usuarioEditandoId=null;
+function editarUsuario(userId){
 const usuario=todosUsuarios.find(u=>u.id===userId);
 if(!usuario)return;
-const nuevoRol=prompt("Cambiar rol (ingresa el ID del rol):\n"+todosRoles.map(r=>r.id+": "+r.nombre).join("\n"),usuario.rol_id);
-if(!nuevoRol)return;
-const{error}=await sb.from("perfiles_usuarios").update({rol_id:parseInt(nuevoRol)}).eq("id",userId);
-if(error)showAlert("Error: "+error.message,"error");
-else{showAlert("Rol actualizado correctamente","success");await cargarUsuarios();}
+usuarioEditandoId=userId;
+document.getElementById("e-nombre").value=usuario.nombre_completo||"";
+document.getElementById("e-telefono").value=usuario.telefono||"";
+document.getElementById("e-cargo").value=usuario.cargo||"Asesor de LoMaz Home";
+document.getElementById("e-licencia").value=usuario.licencia||"";
+const sel=document.getElementById("e-rol");
+sel.innerHTML=todosRoles.map(r=>'<option value="'+r.id+'"'+(r.id===usuario.rol_id?" selected":"")+'>'+r.nombre+'</option>').join("");
+document.getElementById("modalEditar").style.display="flex";
+}
+function cerrarModalEditar(){
+document.getElementById("modalEditar").style.display="none";
+usuarioEditandoId=null;
+}
+async function guardarEdicionUsuario(){
+if(!usuarioEditandoId)return;
+const nombre=document.getElementById("e-nombre").value.trim();
+const telefono=document.getElementById("e-telefono").value.trim();
+const cargo=document.getElementById("e-cargo").value.trim();
+const licencia=document.getElementById("e-licencia").value.trim();
+const rolId=parseInt(document.getElementById("e-rol").value);
+if(!nombre){showAlert("El nombre es obligatorio","error");return;}
+const{error}=await sb.from("perfiles_usuarios").update({
+nombre_completo:nombre,
+telefono:telefono,
+cargo: cargo || "Asesor de LoMaz Home",
+licencia: licencia || null,
+rol_id:rolId
+}).eq("id",usuarioEditandoId);
+if(error){showAlert("Error: "+error.message,"error");return;}
+showAlert("Usuario actualizado correctamente","success");
+cerrarModalEditar();
+await cargarUsuarios();
 }
 
 async function resetPass(userId){
