@@ -472,14 +472,15 @@ setGateLoading(false);
 async function fetchAsesorProfile(session){
 var perfil = { nombre: session.user.email, cargo: 'Asesor de LoMaz Home', licencia: '', telefono: '3003300343', email: session.user.email };
 try{
-var resp = await sb.from('perfiles_usuarios').select('nombre_completo,telefono').eq('id', session.user.id).single();
+var resp = await sb.from('perfiles_usuarios').select('nombre_completo,telefono,cargo,licencia').eq('id', session.user.id).single();
 var data = resp.data;
-if(data && data.nombre_completo && data.nombre_completo.trim()){
-perfil.nombre = data.nombre_completo.trim();
+if(data){
+if(data.nombre_completo && data.nombre_completo.trim()) perfil.nombre = data.nombre_completo.trim();
+perfil.cargo = (data.cargo && data.cargo.trim()) ? data.cargo.trim() : 'Asesor de LoMaz Home';
+perfil.telefono = (data.telefono && data.telefono.trim()) ? data.telefono.trim() : '3003300343';
+perfil.licencia = data.licencia || '';
 }
 }catch(e){ console.warn('No se puede cargar perfil de asesor', e); }
-perfil.cargo = 'Asesor de LoMaz Home';
-perfil.telefono = '3003300343';
 return perfil;
 }
 function applyAsesorToState(){
