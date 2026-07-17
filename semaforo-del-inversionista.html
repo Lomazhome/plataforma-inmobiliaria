@@ -470,21 +470,18 @@ setGateLoading(false);
 }
 
 async function fetchAsesorProfile(session){
-var perfil = { nombre: session.user.email, cargo: 'Asesor inmobiliario — LoMaz Home', licencia: '', telefono: '', email: session.user.email };
+var perfil = { nombre: session.user.email, cargo: 'Asesor de LoMaz Home', licencia: '', telefono: '3003300343', email: session.user.email };
 try{
-var resp = await sb.from('asesores').select('nombre,apellido,cargo,licencia,telefono,whatsapp').eq('user_id', session.user.id).single();
+var resp = await sb.from('perfiles_usuarios').select('nombre_completo,telefono').eq('id', session.user.id).single();
 var data = resp.data;
-if(data){
-var nombreCompleto = ((data.nombre||'') + ' ' + (data.apellido||'')).trim();
-if(nombreCompleto) perfil.nombre = nombreCompleto;
-if(data.cargo && data.cargo.trim()) perfil.cargo = data.cargo.trim() + ' — LoMaz Home';
-perfil.licencia = data.licencia || '';
-perfil.telefono = data.telefono || data.whatsapp || '';
+if(data && data.nombre_completo && data.nombre_completo.trim()){
+perfil.nombre = data.nombre_completo.trim();
 }
-}catch(e){ console.warn('No se pudo cargar perfil de asesor', e); }
+}catch(e){ console.warn('No se puede cargar perfil de asesor', e); }
+perfil.cargo = 'Asesor de LoMaz Home';
+perfil.telefono = '3003300343';
 return perfil;
 }
-
 function applyAsesorToState(){
 if(!currentAsesorProfile || !state) return;
 state.prop.elabNombre = currentAsesorProfile.nombre;
