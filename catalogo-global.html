@@ -459,7 +459,7 @@ function _dmCap(s){if(!s)return '';s=String(s).replace(/_/g,' ');return s.charAt
 function verDetalle(id){
   var p=(allProps||[]).find(function(x){return String(x.id)===String(id);});
   if(!p){alert('No se encontró la propiedad.');return;}
-  var owner=(pmap&&pmap[p.asesor_id])?pmap[p.asesor_id]:'Sin asignar';
+  var owner=p._asesorNombre||'Sin asignar';
   document.getElementById('dm-title').textContent=p.titulo||'Sin título';
   var rows=[];
   function row(lbl,val){if(val===null||val===undefined||val===''||val==='No especificado')return;rows.push('<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid #eef2f7;"><span style="color:#7b8aa0;font-size:.82rem;">'+_dmEsc(lbl)+'</span><span style="color:#1a2b45;font-weight:600;font-size:.9rem;text-align:right;">'+_dmEsc(val)+'</span></div>');}
