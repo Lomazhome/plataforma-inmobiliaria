@@ -209,7 +209,7 @@ document.getElementById("userEmail").textContent=nombre;
 document.getElementById("avatarInitial").textContent=primerNombre.charAt(0).toUpperCase();
 }
 const rolNombre=perfil.roles && perfil.roles.nombre ? perfil.roles.nombre : null;
-document.getElementById("userRole").textContent=fmtRol(rolNombre);if(rolNombre && /admin/i.test(rolNombre)){const navGU=document.getElementById("navGestionUsuarios");if(navGU)navGU.style.display="flex";}
+document.getElementById("userRole").textContent=fmtRol(rolNombre);if(rolNombre && /admin|servicio_tecnico/i.test(rolNombre)){const navGU=document.getElementById("navGestionUsuarios");if(navGU)navGU.style.display="flex";}
 }
 }catch(e){console.error("perfil",e);}
 
