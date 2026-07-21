@@ -321,7 +321,7 @@ return '<tr>'+
 '<td><div class="action-buttons">'+
 '<button class="btn-sm btn-neutral" onclick="editarUsuario(\''+p.id+'\')">Editar</button>'+
 '<button class="btn-sm '+(p.activo?"btn-danger":"btn-success")+'" onclick="toggleActivo(\''+p.id+'\','+(!p.activo)+')">'+(p.activo?"Desactivar":"Activar")+'</button>'+
-'<button class="btn-sm btn-neutral" onclick="resetPass(\''+p.id+'\')">Reset Pass</button>'+
+'<button class="btn-sm btn-neutral" onclick="resetPass(\''+p.id+'\')">Reset Pass</button>'+'<button class="btn-sm btn-danger" onclick="eliminarUsuario(\''+p.id+'\')">Eliminar</button>'+
 '</div></td>'+
 '</tr>';
 }).join("");
@@ -333,7 +333,7 @@ const filtrados=todosUsuarios.filter(u=>(u.nombre_completo||"").toLowerCase().in
 renderTablaUsuarios(filtrados);
 }
 
-async function toggleActivo(userId,nuevoEstado){
+async function eliminarUsuario(userId){ if(!confirm('¿Estas seguro? Esta accion es permanente. Los inmuebles y clientes del usuario pasaran al administrador.')) return; const { data, error } = await sb.functions.invoke('admin-eliminar-usuario', { body: { id: userId } }); if(error){ showAlert('Error al eliminar: '+error.message, 'error'); return; } if(data && data.error){ showAlert('No se pudo eliminar: '+data.error, 'error'); return; } showAlert('Usuario eliminado. Sus registros pasaron al administrador.', 'success'); await cargarUsuarios(); } async function toggleActivo(userId,nuevoEstado){
 const{error}=await sb.from("perfiles_usuarios").update({activo:nuevoEstado}).eq("id",userId);
 if(error)showAlert("Error: "+error.message,"error");
 else{showAlert("Estado del usuario actualizado","success");await cargarUsuarios();}
