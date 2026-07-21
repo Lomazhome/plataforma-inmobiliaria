@@ -131,6 +131,7 @@ a{color:inherit;text-decoration:none}
 <div class="sidebar-section">Analisis</div>
 <a href="calculadora.html"><span class="icon">📝</span>Calculadora</a>
 <div class="sidebar-section">Cuenta</div>
+<a href="admin-usuarios.html" id="navGestionUsuarios" style="display:none"><span class="icon">🔑</span>Gestión de Usuarios</a>
 <a href="perfil-asesor.html"><span class="icon">⚙</span>Mi Perfil</a>
 <a href="index.html"><span class="icon">🌐</span>Ver Sitio Web</a>
 </nav>
@@ -208,7 +209,7 @@ document.getElementById("userEmail").textContent=nombre;
 document.getElementById("avatarInitial").textContent=primerNombre.charAt(0).toUpperCase();
 }
 const rolNombre=perfil.roles && perfil.roles.nombre ? perfil.roles.nombre : null;
-document.getElementById("userRole").textContent=fmtRol(rolNombre);
+document.getElementById("userRole").textContent=fmtRol(rolNombre);if(rolNombre && /admin/i.test(rolNombre)){const navGU=document.getElementById("navGestionUsuarios");if(navGU)navGU.style.display="flex";}
 }
 }catch(e){console.error("perfil",e);}
 
