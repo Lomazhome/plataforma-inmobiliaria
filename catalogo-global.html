@@ -294,6 +294,7 @@ const U = "https://lniouebpuuuqctrgxoiw.supabase.co";
 const sb = supabase.createClient(U, K);
 
 let allProps = [];
+let pmap={};
 let filtered = [];
 let currentPage = 1;
 const PER_PAGE = 15;
@@ -316,7 +317,7 @@ async function loadProps(uid) {
   allProps = data || [];
     if (window._isAdmin && allProps.length) {
         const { data: perfs } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url");
-            const pmap = {};
+            pmap = {};
                 (perfs || []).forEach(x => { pmap[x.id] = x; });
                     allProps.forEach(p => { const a = pmap[p.asesor_id]; p._asesorNombre = a ? a.nombre_completo : "Sin asignar"; p._asesorFoto = a ? a.avatar_url : ""; });
                       }
