@@ -390,7 +390,7 @@ ${true?`<div class="prop-card-asesor" style="margin-top:6px;font-size:.82rem;col
 <div class="prop-card-right">
 <div><div class="prop-card-price">${price}</div><div class="prop-card-date">${fecha}</div></div>
 <div class="prop-card-actions">
-<button class="pc-act view" onclick="verDetalle('${p.id}')">VER</button>
+<a href="propiedad.html?id=${p.id}" class="pc-act view" target="_blank">VER</a>
 
 
 
@@ -453,53 +453,8 @@ function closeModal() {
   deleteId = null;
 }
 
-function _dmEsc(v){if(v===null||v===undefined)return '';return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function _dmPrice(v,mon){if(v===null||v===undefined||v==='')return 'No especificado';var n=Number(v);if(isNaN(n))return _dmEsc(v);return (mon||'COP')+' $'+n.toLocaleString('es-CO');}
-function _dmCap(s){if(!s)return '';s=String(s).replace(/_/g,' ');return s.charAt(0).toUpperCase()+s.slice(1);}
-function verDetalle(id){
-  var p=(allProps||[]).find(function(x){return String(x.id)===String(id);});
-  if(!p){alert('No se encontró la propiedad.');return;}
-  var owner=p._asesorNombre||'Sin asignar';
-  document.getElementById('dm-title').textContent=p.titulo||'Sin título';
-  var rows=[];
-  function row(lbl,val){if(val===null||val===undefined||val===''||val==='No especificado')return;rows.push('<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid #eef2f7;"><span style="color:#7b8aa0;font-size:.82rem;">'+_dmEsc(lbl)+'</span><span style="color:#1a2b45;font-weight:600;font-size:.9rem;text-align:right;">'+_dmEsc(val)+'</span></div>');}
-  var img=p.foto_principal?'<img src="'+_dmEsc(p.foto_principal)+'" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:14px;" onerror="this.style.display=\'none\'">':'';
-  var body=img;
-  if(p.descripcion){body+='<p style="color:#42546e;font-size:.9rem;line-height:1.5;margin:0 0 14px;">'+_dmEsc(p.descripcion)+'</p>';}
-  row('Publicado por',owner);
-  row('Precio',_dmPrice(p.precio,p.moneda));
-  row('Negocio',_dmCap(p.tipo_negocio||p.tipo_operacion));
-  row('Tipo',_dmCap(p.tipo_propiedad));
-  row('Estado',_dmCap(p.estado));
-  row('Ciudad',p.ciudad);
-  row('Barrio',p.barrio);
-  row('Dirección',p.direccion);
-  row('Área construida',p.area_construida?p.area_construida+' m²':'');
-  row('Área total',p.area_total?p.area_total+' m²':'');
-  row('Habitaciones',p.habitaciones);
-  row('Baños',p.banos);
-  row('Parqueaderos',p.parqueaderos);
-  row('Estrato',p.estrato);
-  if(p.created_at){row('Publicado el',new Date(p.created_at).toLocaleDateString('es-CO'));}
-  document.getElementById('dm-body').innerHTML=body+rows.join('');
-  document.getElementById('detalleModal').classList.remove('hidden');
-}
-function cerrarDetalle(){document.getElementById('detalleModal').classList.add('hidden');}
 
 </script>
-
-<div id="detalleModal" class="modal-overlay hidden" onclick="if(event.target===this)cerrarDetalle()">
-  <div class="modal" style="max-width:640px;width:92%;max-height:88vh;overflow-y:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px;">
-      <h3 id="dm-title" style="margin:0;font-size:1.15rem;color:#0f2544;">Detalle</h3>
-      <span style="background:#eef2f7;color:#5b6b82;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">SOLO LECTURA</span>
-    </div>
-    <div id="dm-body"></div>
-    <div class="modal-btns" style="margin-top:16px;">
-      <button class="btn btn-cancel" onclick="cerrarDetalle()">Cerrar</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
