@@ -149,6 +149,11 @@ textarea{resize:vertical;min-height:90px}
 img,video,iframe{max-width:100%}
 *{min-width:0}
 }
+
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:rgba(201,169,110,.12);color:var(--gold);border:1px solid rgba(201,169,110,.45);border-radius:10px;padding:11px 18px;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;line-height:1;transition:background .18s,transform .12s,box-shadow .18s;white-space:nowrap}
+.btn-secondary:hover{background:rgba(201,169,110,.2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(201,169,110,.18)}
+.btn-secondary:active{transform:translateY(0)}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -676,6 +681,8 @@ else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,ms
 }
 btn.textContent="Publicado en Lomaz Home";
 showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
+  btn.textContent="Redirigiendo a Mis Propiedades...";
+  setTimeout(function(){ window.location.href="mis-propiedades.html"; }, 2500);
 }
 
 let __metroCache = {regions:null};
