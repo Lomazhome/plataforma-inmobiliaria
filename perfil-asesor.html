@@ -280,61 +280,88 @@ async function loadStats(){
 }
 
 async function loadProfile(){
-  const {data,error}=await sb.from("asesores").select("*").eq("user_id",currentUser.id).single();
+  const {data,error}=await sb.from("perfiles_usuarios").select("*").eq("id",currentUser.id).single();
   if(error||!data)return;
   currentProfile=data;
-  const n=(data.nombre||"")+" "+(data.apellido||"");
-  document.getElementById("profileName").textContent=n.trim()||currentUser.email;
-  if(data.foto_url){
-    document.getElementById("bigAvatar").innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
-    var __ta=document.getElementById("topAvatar");if(__ta)__ta.innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
+  const dp=data.datos_perfil||{};
+  const full=(data.nombre_completo||"").trim();
+  const spc=full.indexOf(" ");
+  const nombre=spc<0?full:full.slice(0,spc);
+  const apellido=spc<0?"":full.slice(spc+1);
+  document.getElementById("profileName").textContent=full||currentUser.email;
+  const av=data.avatar_url||dp.foto_url;
+  if(av){
+    document.getElementById("bigAvatar").innerHTML=`<img src="${av}" alt="foto"/>`;
+    var __ta=document.getElementById("topAvatar");if(__ta)__ta.innerHTML=`<img src="${av}" alt="foto"/>`;
   }
-  // Info personal
-  const fields={pNombre:"nombre",pApellido:"apellido",pTelefono:"telefono",pWhatsapp:"whatsapp",pCiudad:"ciudad",pDireccion:"direccion"};
-  Object.entries(fields).forEach(([id,key])=>{if(data[key])document.getElementById(id).value=data[key];});
-  // Info profesional
-  const proFields={pAgencia:"agencia",pCargo:"cargo",pExperiencia:"anos_experiencia",pLicencia:"licencia",pZona:"zona_trabajo",pEspecialidad:"especialidad",pBio:"bio",pInstagram:"instagram",pFacebook:"facebook",pLinkedin:"linkedin",pWebsite:"website"};
-  Object.entries(proFields).forEach(([id,key])=>{if(data[key]!==undefined&&data[key]!==null){const el=document.getElementById(id);if(el)el.value=data[key];}});
+  const setV=(id,val)=>{const el=document.getElementById(id);if(el&&val!=null&&val!=="")el.value=val;};
+  setV("pNombre",nombre);
+  setV("pApellido",apellido);
+  setV("pTelefono",data.telefono);
+  setV("pWhatsapp",dp.whatsapp);
+  setV("pCiudad",dp.ciudad);
+  setV("pDireccion",dp.direccion);
+  setV("pAgencia",dp.agencia);
+  setV("pCargo",data.cargo);
+  setV("pExperiencia",dp.anos_experiencia);
+  setV("pLicencia",data.licencia);
+  setV("pZona",dp.zona_trabajo);
+  setV("pEspecialidad",dp.especialidad);
+  setV("pBio",data.notas!=null?data.notas:dp.bio);
+  setV("pInstagram",dp.instagram);
+  setV("pFacebook",dp.facebook);
+  setV("pLinkedin",dp.linkedin);
+  setV("pWebsite",dp.website);
 }
 
 async function saveInfo(){
   const nombre=document.getElementById("pNombre").value.trim();
   const apellido=document.getElementById("pApellido").value.trim();
   if(!nombre){showAlert("El nombre es obligatorio","error");return;}
-  const payload={
-    user_id:currentUser.id,
-    nombre,
-    apellido,
-    telefono:document.getElementById("pTelefono").value.trim(),
+  const nombre_completo=(nombre+" "+apellido).trim();
+  const dpExtra={
     whatsapp:document.getElementById("pWhatsapp").value.trim(),
     ciudad:document.getElementById("pCiudad").value.trim(),
-    direccion:document.getElementById("pDireccion").value.trim(),
+    direccion:document.getElementById("pDireccion").value.trim()
+  };
+  const dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
+  const payload={
+    id:currentUser.id,
+    nombre_completo,
+    telefono:document.getElementById("pTelefono").value.trim(),
+    datos_perfil:Object.assign({},dpBase,dpExtra),
     updated_at:new Date().toISOString()
   };
-  const {error}=await sb.from("asesores").upsert(payload,{onConflict:"user_id"});
+  const {error}=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id);
   if(error){showAlert("Error: "+error.message,"error");return;}
-  document.getElementById("profileName").textContent=(nombre+" "+apellido).trim();
+  if(currentProfile){currentProfile.nombre_completo=nombre_completo;currentProfile.telefono=payload.telefono;currentProfile.datos_perfil=payload.datos_perfil;}
+  document.getElementById("profileName").textContent=nombre_completo;
   showAlert("✅ Información personal guardada correctamente","success");
 }
 
 async function savePro(){
-  const payload={
-    user_id:currentUser.id,
+  const dpExtra={
     agencia:document.getElementById("pAgencia").value.trim(),
-    cargo:document.getElementById("pCargo").value.trim(),
     anos_experiencia:parseInt(document.getElementById("pExperiencia").value)||null,
-    licencia:document.getElementById("pLicencia").value.trim(),
     zona_trabajo:document.getElementById("pZona").value.trim(),
     especialidad:document.getElementById("pEspecialidad").value,
-    bio:document.getElementById("pBio").value.trim(),
     instagram:document.getElementById("pInstagram").value.trim(),
     facebook:document.getElementById("pFacebook").value.trim(),
     linkedin:document.getElementById("pLinkedin").value.trim(),
-    website:document.getElementById("pWebsite").value.trim(),
+    website:document.getElementById("pWebsite").value.trim()
+  };
+  const dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
+  const payload={
+    id:currentUser.id,
+    cargo:document.getElementById("pCargo").value.trim(),
+    licencia:document.getElementById("pLicencia").value.trim(),
+    notas:document.getElementById("pBio").value.trim(),
+    datos_perfil:Object.assign({},dpBase,dpExtra),
     updated_at:new Date().toISOString()
   };
-  const {error}=await sb.from("asesores").upsert(payload,{onConflict:"user_id"});
+  const {error}=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id);
   if(error){showAlert("Error: "+error.message,"error");return;}
+  if(currentProfile){currentProfile.cargo=payload.cargo;currentProfile.licencia=payload.licencia;currentProfile.notas=payload.notas;currentProfile.datos_perfil=payload.datos_perfil;}
   showAlert("✅ Perfil profesional guardado correctamente","success");
 }
 
@@ -343,11 +370,12 @@ async function uploadFoto(input){
   if(!file)return;
   if(file.size>2097152){showAlert("La imagen debe ser menor a 2MB","error");return;}
   const ext=file.name.split(".").pop().toLowerCase();
-  const path=`asesores/${currentUser.id}/avatar.${ext}`;
+  const path=`avatars/${currentUser.id}/avatar.${ext}`;
   const {error:upErr}=await sb.storage.from("fotos-propiedades").upload(path,file,{upsert:true});
   if(upErr){showAlert("Error subiendo imagen: "+upErr.message,"error");return;}
   const {data:{publicUrl}}=sb.storage.from("fotos-propiedades").getPublicUrl(path);
-  const {error}=await sb.from("asesores").upsert({user_id:currentUser.id,foto_url:publicUrl,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+  const {error}=await sb.from("perfiles_usuarios").update({avatar_url:publicUrl,updated_at:new Date().toISOString()}).eq("id",currentUser.id);
+  if(currentProfile)currentProfile.avatar_url=publicUrl;
   if(error){showAlert("Error guardando URL: "+error.message,"error");return;}
   document.getElementById("bigAvatar").innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
   var __ta2=document.getElementById("topAvatar");if(__ta2)__ta2.innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
