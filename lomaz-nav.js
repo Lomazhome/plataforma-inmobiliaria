@@ -310,6 +310,31 @@ const NAV = [
 
 const CV = '<svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>';
 
+function lmFilterZonas(){
+  try{
+    if(!window.supabase||!window.supabase.createClient)return;
+    var _u="https://lniouebpuuuqctrgxoiw.supabase.co";
+    var _k=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+    var sb=window.supabase.createClient(_u,_k);
+    sb.from("propiedades").select("barrio").eq("estado","activa").limit(1000).then(function(r){
+      if(r.error||!r.data)return;
+      var barrios=r.data.map(function(x){return (x.barrio||"").toLowerCase().trim();}).filter(Boolean);
+      var lis=document.querySelectorAll("#lm-nav .lm-item");
+      var zonasLi=null;
+      lis.forEach(function(li){var lk=li.querySelector(".lm-link");if(lk&&/zonas/i.test(lk.textContent))zonasLi=li;});
+      if(!zonasLi)return;
+      var items=zonasLi.querySelectorAll(".lm-dropdown a");
+      var visible=0;
+      items.forEach(function(a){
+        var el=a.querySelector(".dd-label");
+        var z=(el?el.textContent:"").toLowerCase().trim();
+        var match=!!z&&barrios.some(function(b){return b.indexOf(z)>-1||z.indexOf(b)>-1;});
+        if(match){a.style.display="";visible++;}else{a.style.display="none";}
+      });
+      zonasLi.style.display=(visible===0)?"none":"";
+    });
+  }catch(e){}
+}
 function bNav() {
   const cp = location.pathname.split('/').pop()||'index.html';
   const mi = NAV.map(n=>{
@@ -551,6 +576,7 @@ function init() {
   
   // Build UI
   const ne=document.createElement('div'); ne.innerHTML=bNav(); document.body.prepend(ne.firstChild);
+  lmFilterZonas();
   [bFAB,bChat,bMob].forEach(fn=>{const d=document.createElement('div');d.innerHTML=fn();document.body.appendChild(d.firstChild);});
   
   // Body padding
