@@ -166,7 +166,7 @@ nav.scrolled{background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);}
 .results-header{flex-direction:column;align-items:flex-start;}
 }
 
-#main-nav{top:102px;background:var(--navy)!important;z-index:150;}
+#main-nav{position:static!important;background:var(--navy)!important;z-index:1;width:100%;}
 #main-nav.scrolled{background:var(--navy)!important;}
 </style>
 </head>
@@ -338,9 +338,10 @@ function stackNavs(){
   const mn=document.getElementById("main-nav");
   if(!mn)return;
   const lmH=lm?lm.offsetHeight:0;
-  mn.style.top=lmH+"px";
+  mn.style.position="static";
+  mn.style.top="auto";
   mn.classList.add("scrolled");
-  document.body.style.paddingTop=(lmH+mn.offsetHeight)+"px";
+  document.body.style.paddingTop=lmH+"px";
 }
 window.addEventListener("scroll",()=>{
   const n=document.getElementById("main-nav");
