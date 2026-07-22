@@ -24,7 +24,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
 .org{display:flex;flex-direction:column;align-items:center;}
 .org-level{display:flex;justify-content:center;flex-wrap:wrap;gap:24px;width:100%;}
 .org-connector{width:2px;height:34px;background:var(--gold);opacity:.55;}
-.org-branch{position:relative;width:100%;display:flex;justify-content:center;}
+.org-branch{position:relative;width:100%;display:flex;justify-content:center;}.org-group{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;}.org-title{font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);padding:4px 16px;border:1px solid var(--gold);border-radius:20px;background:rgba(184,134,11,.06);}
 .node{background:#fff;border-radius:16px;padding:24px 18px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.08);text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;display:block;width:230px;max-width:84vw;}
 .node:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.14);}
 .node--lead{border:2px solid var(--gold);}
@@ -63,7 +63,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
                         <script>
                         const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
                         function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
-                        const ROL_LABEL = {1:"Director / Fundador",2:"Asesor Senior",3:"Asesor Junior",4:"Coordinacion",5:"Aliado Externo"};
+                        const ROL_LABEL = {1:"Director / Fundador",2:"Asesor Senior",3:"Asesor Junior",4:"Coordinación",5:"Aliado Externo",6:"Servicio Técnico"};
+                        const GRUPOS = [{t:"Dirección",roles:[1],lead:true},{t:"Coordinación",roles:[4]},{t:"Servicio Técnico",roles:[6]},{t:"Asesores",roles:[2,3]},{t:"Aliados Externos",roles:[5]}];
                         function inicial(n){var p=(n||"").trim().split(/\s+/).filter(w=>/[A-Za-z\u00c0-\u017f]/.test(w));return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase();}
                         function nodo(a,lead){
                           const foto = a.avatar_url ? '<img class="foto" src="'+esc(a.avatar_url)+'" alt="'+esc(a.nombre_completo)+'">' : '<div class="foto">'+esc(inicial(a.nombre_completo).toUpperCase())+'</div>';
@@ -75,17 +76,23 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
                                   const lista = (asesores||[]);
                                     const org = document.getElementById("org");
                                       if(!lista.length){ document.getElementById("empty").style.display="block"; return; }
-                                        const lider = lista.filter(a=>a.rol_id===1);
-                                          const resto = lista.filter(a=>a.rol_id!==1);
-                                            let html = "";
-                                              if(lider.length){
-                                                  html += '<div class="org-level">'+lider.map(a=>nodo(a,true)).join("")+'</div>';
-                                                      if(resto.length) html += '<div class="org-connector"></div>';
-                                                        }
-                                                          if(resto.length){
-                                                              html += '<div class="org-branch"><div class="org-level">'+resto.map(a=>nodo(a,false)).join("")+'</div></div>';
-                                                                }
-                                                                  org.innerHTML = html;
+                                        let html = "";
+                                          GRUPOS.forEach((g, gi) => {
+                                            const miembros = lista.filter(a => g.roles.includes(a.rol_id));
+                                            if (!miembros.length) return;
+                                            if (html) html += '<div class="org-connector"></div>';
+                                            html += '<div class="org-group">'
+                                              + '<div class="org-title">' + esc(g.t) + '</div>'
+                                              + '<div class="org-level">' + miembros.map(a => nodo(a, !!g.lead)).join("") + '</div>'
+                                              + '</div>';
+                                          });
+                                          const usados = GRUPOS.reduce((acc, g) => acc.concat(g.roles), []);
+                                          const otros = lista.filter(a => !usados.includes(a.rol_id));
+                                          if (otros.length) {
+                                            if (html) html += '<div class="org-connector"></div>';
+                                            html += '<div class="org-group"><div class="org-title">Equipo</div><div class="org-level">' + otros.map(a => nodo(a, false)).join("") + '</div></div>';
+                                          }
+                                          org.innerHTML = html;
                                                                   }
                                                                   cargar();
                                                                   </script>
