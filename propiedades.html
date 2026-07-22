@@ -165,6 +165,9 @@ nav.scrolled{background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);}
 .aria-panel.open{right:0;}
 .results-header{flex-direction:column;align-items:flex-start;}
 }
+
+#main-nav{top:102px;background:var(--navy)!important;z-index:150;}
+#main-nav.scrolled{background:var(--navy)!important;}
 </style>
 </head>
 <body>
@@ -330,11 +333,23 @@ const _sKey=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2
 const sb=supabase.createClient(_sUrl,_sKey);
 let allProps=[];
 let state={tipo:"todos",tipoInmueble:"",barrio:"",precioMax:20000000,sort:"reciente"};
+function stackNavs(){
+  const lm=document.getElementById("lm-nav");
+  const mn=document.getElementById("main-nav");
+  if(!mn)return;
+  const lmH=lm?lm.offsetHeight:0;
+  mn.style.top=lmH+"px";
+  mn.classList.add("scrolled");
+  document.body.style.paddingTop=(lmH+mn.offsetHeight)+"px";
+}
 window.addEventListener("scroll",()=>{
   const n=document.getElementById("main-nav");
-  if(window.scrollY>80)n.classList.add("scrolled");else n.classList.remove("scrolled");
+  if(n)n.classList.add("scrolled");
 });
-document.getElementById("main-nav").classList.add("scrolled");
+window.addEventListener("resize",stackNavs);
+window.addEventListener("load",()=>{stackNavs();setTimeout(stackNavs,300);setTimeout(stackNavs,1000);});
+stackNavs();
+document.addEventListener("DOMContentLoaded",stackNavs);
 function toggleNav(){document.getElementById("nav-links").classList.toggle("open");}
 function setTipo(btn){
   document.querySelectorAll(".tipo-btn").forEach(b=>b.classList.remove("active"));
