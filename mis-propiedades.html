@@ -309,7 +309,7 @@ let deleteId = null;
 async function loadProps(uid) {
   const { data, error } = await sb
     .from("propiedades")
-    .select("id,titulo,tipo_negocio,tipo_propiedad,precio,estado,ciudad,barrio,area_construida,habitaciones,foto_principal,created_at")
+    .select("id,titulo,tipo_negocio,tipo_propiedad,precio,estado,ciudad,barrio,area_construida,habitaciones,foto_principal,created_at,asesor_id")
           .filter("asesor_id", window._isAdmin?"not.is":"eq", window._isAdmin?null:uid)
     .order("created_at", { ascending: false });
   if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon">&#10060;</span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
