@@ -254,8 +254,8 @@ async function init(){
   currentUser=session.user;
   const email=currentUser.email;
   const initial=email.charAt(0).toUpperCase();
-  document.getElementById("topEmail").textContent=email;
-  document.getElementById("topInitial").textContent=initial;
+  var __te=document.getElementById("user-email");if(__te)__te.textContent=email;
+  var __ti=document.getElementById("topInitial");if(__ti)__ti.textContent=initial;
   document.getElementById("bigInitial").textContent=initial;
   document.getElementById("pEmail").value=email;
   document.getElementById("accountEmail").value=email;
@@ -287,7 +287,7 @@ async function loadProfile(){
   document.getElementById("profileName").textContent=n.trim()||currentUser.email;
   if(data.foto_url){
     document.getElementById("bigAvatar").innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
-    document.getElementById("topAvatar").innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
+    var __ta=document.getElementById("topAvatar");if(__ta)__ta.innerHTML=`<img src="${data.foto_url}" alt="foto"/>`;
   }
   // Info personal
   const fields={pNombre:"nombre",pApellido:"apellido",pTelefono:"telefono",pWhatsapp:"whatsapp",pCiudad:"ciudad",pDireccion:"direccion"};
@@ -350,7 +350,7 @@ async function uploadFoto(input){
   const {error}=await sb.from("asesores").upsert({user_id:currentUser.id,foto_url:publicUrl,updated_at:new Date().toISOString()},{onConflict:"user_id"});
   if(error){showAlert("Error guardando URL: "+error.message,"error");return;}
   document.getElementById("bigAvatar").innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
-  document.getElementById("topAvatar").innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
+  var __ta2=document.getElementById("topAvatar");if(__ta2)__ta2.innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
   showAlert("✅ Foto de perfil actualizada","success");
 }
 
