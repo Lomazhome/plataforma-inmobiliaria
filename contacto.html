@@ -307,8 +307,12 @@ window.addEventListener('load', function() {
     var oldNav=document.querySelector("nav");
     if(!oldNav)return;
     document.body.style.paddingTop="0px";
-    var obs=new IntersectionObserver(function(en){en.forEach(function(e){ if(e.isIntersecting){document.body.classList.remove("nav-show");} else {document.body.classList.add("nav-show");} });},{threshold:0});
-    obs.observe(oldNav);
+    var th=0;
+    function measure(){ th=Math.max(1, oldNav.getBoundingClientRect().height - 4); }
+    function update(){ if(window.scrollY>th){ document.body.classList.add("nav-show"); } else { document.body.classList.remove("nav-show"); } }
+    measure(); update();
+    window.addEventListener("scroll", update, {passive:true});
+    window.addEventListener("resize", function(){ measure(); update(); });
   }
   if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",initNav);}else{initNav();}
   window.addEventListener("load",initNav);
