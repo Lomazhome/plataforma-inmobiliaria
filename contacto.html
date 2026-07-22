@@ -18,7 +18,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{font-family:"Inter",sans-serif;background:var(--white);color:var(--text);min-height:100vh;}
 a{text-decoration:none;color:inherit;}img{max-width:100%;display:block;}
-nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{font-family:"Playfair Display",serif;font-size:1.4rem;color:var(--white);letter-spacing:.02em;}
 .nav-logo span{color:var(--gold);}
 .nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center;}
@@ -118,6 +118,7 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 .footer-admin-link{font-size:.72rem;color:rgba(255,255,255,.4);text-decoration:none;}.footer-admin-link:hover{color:rgba(255,255,255,.7);}
 @media(max-width:900px){.nav-links{display:none;}.nav-ham{display:flex;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--navy);padding:5rem 2rem 2rem;z-index:300;}.contact-section{grid-template-columns:1fr;gap:3rem;}.cf-row{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}}
 @media(max-width:600px){.footer-grid{grid-template-columns:1fr;}.aria-panel{width:100%;right:-100%;}.aria-panel.open{right:0;}}
+#lm-nav{transform:translateY(-105%)!important;transition:transform .28s ease;will-change:transform;} body.nav-show #lm-nav{transform:translateY(0)!important;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script></head>
 <body>
@@ -301,5 +302,16 @@ window.addEventListener('load', function() {
 });
 </script>
 <script src="lomaz-nav.js" defer></script>
+<script>(function(){
+  function initNav(){
+    var oldNav=document.querySelector("nav");
+    if(!oldNav)return;
+    document.body.style.paddingTop="0px";
+    var obs=new IntersectionObserver(function(en){en.forEach(function(e){ if(e.isIntersecting){document.body.classList.remove("nav-show");} else {document.body.classList.add("nav-show");} });},{threshold:0});
+    obs.observe(oldNav);
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",initNav);}else{initNav();}
+  window.addEventListener("load",initNav);
+})();</script>
 </body>
 </html>
