@@ -368,6 +368,29 @@ function setTipo(btn){
   state.tipo=btn.dataset.tipo;
   applyFilters();
 }
+function buildBarrioChips(){
+  var cont=document.getElementById("chips-barrio");
+  if(!cont)return;
+  var counts={};
+  (allProps||[]).forEach(function(p){
+    var b=(p.barrio||"").trim();
+    if(!b)return;
+    counts[b]=(counts[b]||0)+1;
+  });
+  var names=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b,"es");});
+  cont.innerHTML="";
+  function mk(val,label){
+    var btn=document.createElement("button");
+    btn.className="chip";
+    if(val==="")btn.classList.add("active");
+    btn.setAttribute("data-val",val);
+    btn.textContent=label;
+    btn.addEventListener("click",function(){setChip(btn,"barrio");});
+    cont.appendChild(btn);
+  }
+  mk("","Todos");
+  names.forEach(function(n){mk(n,n);});
+}
 function setChip(btn,group){
   const container=document.getElementById("chips-"+group);
   container.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
@@ -455,6 +478,7 @@ async function loadProps(){
     const{data,error}=await sb.from("propiedades").select("id,titulo,tipo_operacion,tipo_propiedad,precio,barrio,ciudad,habitaciones,banos,m2_construccion,foto_principal,fotos,estado,created_at").eq("estado","activa").order("created_at",{ascending:false}).limit(100);
     if(error)throw error;
     allProps=data||[];
+    buildBarrioChips();
     // Check URL params
     const params=new URLSearchParams(window.location.search);
     if(params.get("tipo")){
