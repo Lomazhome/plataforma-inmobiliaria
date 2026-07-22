@@ -171,6 +171,9 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 .has-dropdown:hover .nav-arrow{transform:rotate(180deg)}
 .has-dropdown:hover .nav-dropdown{opacity:1!important;visibility:visible!important;transform:translateX(-50%) translateY(0)!important}
 .nav-dropdown .dropdown-item:hover{background:rgba(196,153,42,.15)!important}
+
+#lm-nav{transform:translateY(-105%)!important;transition:transform .28s ease;will-change:transform;}
+body.nav-show #lm-nav{transform:translateY(0)!important;}
 </style>
 </head>
 <body>
@@ -629,8 +632,8 @@ document.addEventListener("DOMContentLoaded", function() {
     window.__navIO=new IntersectionObserver(function(entries){
       for(var i=0;i<entries.length;i++){
         var e=entries[i];
-        if(e.isIntersecting){lm.style.transform="translateY(-105%)";lm.style.pointerEvents="none";}
-        else{lm.style.transform="translateY(0)";lm.style.pointerEvents="auto";}
+        if(e.isIntersecting){document.body.classList.remove("nav-show");lm.style.pointerEvents="none";}
+        else{document.body.classList.add("nav-show");lm.style.pointerEvents="auto";}
       }
     },{threshold:0});
     window.__navIO.observe(mn);
