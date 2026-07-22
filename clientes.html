@@ -303,21 +303,23 @@ td strong{font-weight:600;color:#fff}
 const K=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const U="https://lniouebpuuuqctrgxoiw.supabase.co";
 const sb=supabase.createClient(U,K);
-let all=[],filtered=[],uid=null,editId=null,delId=null,curPage=1;
+let all=[],filtered=[],uid=null,editId=null,delId=null,curPage=1,isAdmin=false,pmap={};
 const PER=20;
 
 (async()=>{
   const {data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href="login.html";return;}
   uid=session.user.id;
+  try{const{data:__pf}=await sb.from("perfiles_usuarios").select("rol_id").eq("id",uid).single();isAdmin=!!__pf&&[1,4,6].includes(__pf.rol_id);}catch(_e){isAdmin=false;}
   var __ue=document.getElementById("user-email");if(__ue)__ue.textContent=session.user.email;
   await loadClients();
 })();
 
 async function loadClients(){
-  const{data,error}=await sb.from("clientes").select("*").eq("asesor_id",uid).order("created_at",{ascending:false});
+  let __q=sb.from("clientes").select("*");__q=isAdmin?__q.not("asesor_id","is",null):__q.eq("asesor_id",uid);const{data,error}=await __q.order("created_at",{ascending:false});
   if(error){document.getElementById("tblCont").innerHTML=`<div class="empty"><span class="ic">&#10060;</span>Error: ${error.message}</div>`;return;}
   all=data||[];
+  if(isAdmin){try{const ids=[...new Set(all.map(c=>c.asesor_id).filter(Boolean))];if(ids.length){const{data:__pu}=await sb.from("perfiles_usuarios").select("id,nombre_completo").in("id",ids);pmap={};(__pu||[]).forEach(p=>{pmap[p.id]=p.nombre_completo;});}}catch(_e){}all.forEach(c=>{c._asesorNombre=pmap[c.asesor_id]||"Sin asignar";});}
   updateStats();applyFilter();
 }
 
@@ -350,7 +352,7 @@ function renderTable(){
   if(!filtered.length){cont.innerHTML=`<div class="empty"><span class="ic">&#128101;</span><p>No hay clientes aún. <strong style="color:#e8b86d;cursor:pointer" onclick="openAdd()">+ Agregar primer cliente</strong></p></div>`;return;}
   const start=(curPage-1)*PER;
   const pg=filtered.slice(start,start+PER);
-  let h=`<table><thead><tr><th>Cliente</th><th>Contacto</th><th>Búsqueda</th><th>Presupuesto</th><th>Estado</th><th>Fuente</th><th>Acciones</th></tr></thead><tbody>`;
+  let h=`<table><thead><tr><th>Cliente</th><th>Contacto</th><th>Búsqueda</th><th>Presupuesto</th><th>Estado</th><th>Fuente</th>${isAdmin?"<th>Asesor</th>":""}<th>Acciones</th></tr></thead><tbody>`;
   pg.forEach(c=>{
     const ini=(c.nombre||"?")[0].toUpperCase();
     const bTipo=`<span class="badge badge-${(c.tipo||"compra").toLowerCase()}">${c.tipo||"-"}</span>`;
@@ -366,6 +368,7 @@ function renderTable(){
       <td class="price-range">${pres}</td>
       <td>${bEst}</td>
       <td style="font-size:12px;color:#888">${c.fuente||"-"}</td>
+      ${isAdmin?`<td style="font-size:12px;color:#aaa">${c._asesorNombre||"Sin asignar"}</td>`:""}
       <td><div class="actions"><button class="btn-a btn-edit" onclick="openEdit('${c.id}')">Editar</button><button class="btn-a btn-del" onclick="openDel('${c.id}')">Eliminar</button></div></td>
     </tr>`;
   });
