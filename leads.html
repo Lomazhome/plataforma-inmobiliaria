@@ -74,6 +74,32 @@ td strong{font-weight:600;color:#fff}
 .column,.kanban-col{background:rgba(13,27,46,.5);border:1px solid var(--line);border-radius:var(--r);padding:1rem;min-width:280px;flex:1}
 .column h4{font-family:var(--serif);color:var(--gold);font-size:1.05rem;margin-bottom:1rem;letter-spacing:.3px}
 @media(max-width:900px){.form-grid,.grid-2{grid-template-columns:1fr}.form-grid-3,.grid-3{grid-template-columns:1fr}.topbar{padding:.75rem 1rem}.brand-text{font-size:1.3rem}}
+
+/* ===== Modales de leads y botones (estética) ===== */
+.overlay{position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,10,20,.66);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.overlay.hidden{display:none!important}
+.overlay .modal{width:100%;max-width:520px;max-height:88vh;overflow:auto;box-sizing:border-box;background:linear-gradient(180deg,#12233b,#0d1b2e);border:1px solid rgba(201,169,110,.28);border-radius:18px;padding:26px 26px 22px;box-shadow:0 24px 60px rgba(0,0,0,.55);color:var(--txt);position:static}
+.overlay .modal h3{margin:0 0 18px;font-size:1.15rem;font-weight:700;letter-spacing:.2px;color:var(--txt);padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.overlay .modal p{color:rgba(245,241,234,.75);line-height:1.55;margin:0 0 4px}
+.assign-section,.notes-section{margin-top:16px}
+.assign-section label,.notes-section label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+#clienteSelect,#notasInput{width:100%;box-sizing:border-box;background:rgba(13,27,46,.6);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--txt);padding:12px 14px;font-size:.92rem;font-family:inherit;outline:none;transition:border-color .18s,box-shadow .18s}
+#notasInput{min-height:120px;resize:vertical;line-height:1.5}
+#clienteSelect:focus,#notasInput:focus{border-color:rgba(201,169,110,.6);box-shadow:0 0 0 3px rgba(201,169,110,.15)}
+#notasInput::placeholder{color:rgba(245,241,234,.4)}
+.modal-btns{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
+.modal-btns button{font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:11px 20px;border-radius:10px;border:1px solid transparent;transition:transform .12s,filter .18s,background .18s}
+.modal-btns button:hover{transform:translateY(-1px)}
+.btn-save{background:linear-gradient(135deg,#d8b878,#c9a96e);color:#0d1b2e;border-color:transparent;box-shadow:0 6px 18px rgba(201,169,110,.28)}
+.btn-save:hover{filter:brightness(1.06)}
+.btn-cancel{background:rgba(255,255,255,.06);color:var(--txt);border-color:rgba(255,255,255,.14)}
+.btn-cancel:hover{background:rgba(255,255,255,.12)}
+.btn-danger{background:linear-gradient(135deg,#e0454f,#c8323c)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 6px 18px rgba(200,50,60,.3)}
+.btn-danger:hover{filter:brightness(1.06)}
+.btn-clr{background:rgba(255,255,255,.06);color:var(--txt);border:1px solid rgba(255,255,255,.14);padding:12px 20px;border-radius:8px;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;line-height:1;transition:background .18s,transform .12s}
+.btn-clr:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
+.info-grid{display:grid;gap:10px}
+
 </style><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head><body>
 <div class="topbar">
