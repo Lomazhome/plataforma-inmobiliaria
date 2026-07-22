@@ -168,6 +168,8 @@ nav.scrolled{background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);}
 
 #main-nav{position:static!important;background:var(--navy)!important;z-index:1;width:100%;}
 #main-nav.scrolled{background:var(--navy)!important;}
+#lm-nav{transform:translateY(-105%)!important;transition:transform .28s ease;will-change:transform;}
+body.nav-show #lm-nav{transform:translateY(0)!important;}
 </style>
 </head>
 <body>
@@ -349,8 +351,8 @@ function initNavToggle(){
   if(!lm||!mn||window.__navIO)return;
   window.__navIO=new IntersectionObserver(function(entries){
     for(const e of entries){
-      if(e.isIntersecting){lm.style.transform="translateY(-105%)";lm.style.pointerEvents="none";}
-      else{lm.style.transform="translateY(0)";lm.style.pointerEvents="auto";}
+      if(e.isIntersecting){document.body.classList.remove("nav-show");lm.style.pointerEvents="none";}
+      else{document.body.classList.add("nav-show");lm.style.pointerEvents="auto";}
     }
   },{threshold:0});
   window.__navIO.observe(mn);
