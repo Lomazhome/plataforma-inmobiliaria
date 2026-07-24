@@ -217,7 +217,7 @@ let currentUser=null;
 const{data:{session}}=await sb.auth.getSession();
 if(!session){window.location.href="login.html";return;}
 currentUser=session.user;
-document.getElementById("admin-email").textContent=currentUser.email;
+var _ae=document.getElementById("admin-email");if(_ae)_ae.textContent=currentUser.email;
 const{data:perfil}=await sb.from("perfiles_usuarios").select("rol_id,roles(nombre)").eq("id",currentUser.id).single();
 if(!perfil||!perfil.roles||perfil.roles.nombre!=="admin"&&perfil.roles.nombre!=="servicio_tecnico"){
 document.body.innerHTML='<div style="text-align:center;padding:4rem;color:#ff8a93;font-family:Inter,sans-serif;background:#0D1B2E;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center"><h2 style="font-family:Cormorant Garamond,serif;font-size:2rem;color:#c9a96e;margin-bottom:1rem">Acceso denegado</h2><p style="color:#a8a29e;margin-bottom:2rem">Solo el administrador y el equipo de servicio tecnico pueden acceder a esta seccion.</p><a href="dashboard.html" style="color:#c9a96e;text-decoration:none;border:1px solid #c9a96e;padding:.7rem 1.5rem;border-radius:8px">Ir al dashboard</a></div>';
