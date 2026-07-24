@@ -4,24 +4,24 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Portales | Lomaz Home</title>
-<link href="https://fonts.googleapis.com/chss2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
-.topbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,.97);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
-.logo{font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
-.logo span{color:#c9a484}
+:root{--navy:#0D1B2E;--navy-2:#162540;--gold:#c9a96e;--gold-d:#a07840;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px;--r-lg:16px}*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+.topbar{position:fixed;top:0;width:100%;z-index:100;background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px}
+.logo{font-family:var(--serif);font-size:1.5rem;font-weight:500;letter-spacing:.5px;color:#fff;text-decoration:none}
+.logo span{color:#c9a96e}
 .user-info{display:flex;align-items:center;gap:12px}
-.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c9a484,#a07850);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
-.btn-logout{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;transition:all .2s;font-family:Montserrat,sans-serif}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07850);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.btn-logout{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;transition:all .2s;font-family:var(--sans)}
 .btn-logout:hover{background:rgba(255,80,80,.15);border-color:rgba(255,80,80,.3);color:#ff6060}
 .layout{display:flex;min-height:100vh;padding-top:56px}
-.sidebar{width:230px;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.06);padding:20px 0;position:fixed;top:56px;bottom:0;overflow-y:auto}
+.sidebar{width:230px;background:#0A1626;border-right:1px solid var(--line);padding:20px 0;position:fixed;top:56px;bottom:0;overflow-y:auto}
 .sidebar-section{padding:8px 16px 4px;font-size:.65rem;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
 .sidebar a{display:flex;align-items:center;gap:10px;padding:9px 20px;color:#aaa;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;border-left:3px solid transparent}
 .sidebar a:hover{color:#fff;background:rgba(255,255,255,.05)}
-.sidebar a.active{color:#c9a484;background:rgba(201,164,132,.07);border-left-color:#c9a484}
+.sidebar a.active{color:#c9a96e;background:rgba(201,164,132,.07);border-left-color:#c9a96e}
 .sidebar a .icon{width:18px;text-align:center;font-size:1rem}
 .content{margin-left:230px;flex:1;padding:28px;max-width:1100px}
 .page-header{margin-bottom:28px}
@@ -44,40 +44,40 @@ body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:
 .status-badge.off{background:rgba(255,255,255,.06);color:#666}
 .status-badge.pending{background:rgba(255,152,0,.15);color:#ffb74d}
 .token-row{display:flex;gap:8px;margin-top:12px}
-.token-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.78rem;outline:none;transition:border-color .2s}
+.token-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#fff;font-family:var(--sans);font-size:.78rem;outline:none;transition:border-color .2s}
 .token-input:focus{border-color:rgba(201,164,132,.5)}
 .token-input::placeholder{color:#444}
-.btn-connect{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;white-space:nowrap;transition:opacity .2s}
+.btn-connect{background:linear-gradient(135deg,#c9a96e,#a07850);border:none;color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-family:var(--sans);font-size:.78rem;font-weight:700;white-space:nowrap;transition:opacity .2s}
 .btn-connect:hover{opacity:.85}
-.btn-disconnect{background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);color:#ff6060;padding:7px 14px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:600;transition:all .2s}
+.btn-disconnect{background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);color:#ff6060;padding:7px 14px;border-radius:8px;cursor:pointer;font-family:var(--sans);font-size:.75rem;font-weight:600;transition:all .2s}
 .btn-disconnect:hover{background:rgba(255,60,60,.15)}
 .portal-info{font-size:.78rem;color:#666;margin-top:10px;line-height:1.5}
-.portal-info a{color:#c9a484;text-decoration:none}
+.portal-info a{color:#c9a96e;text-decoration:none}
 .portal-info a:hover{text-decoration:underline}
 .portal-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
 .pstat{text-align:center}
-.pstat .val{font-size:1.2rem;font-weight:700;color:#c9a484}
+.pstat .val{font-size:1.2rem;font-weight:700;color:#c9a96e}
 .pstat .lbl{font-size:.65rem;color:#555;text-transform:uppercase;margin-top:2px}
 .section-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:22px;margin-bottom:24px}
 .section-card h3{font-size:.95rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
 .pub-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-.pub-select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;outline:none;cursor:pointer}
+.pub-select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;color:#fff;font-family:var(--sans);font-size:.8rem;outline:none;cursor:pointer}
 .pub-select option{background:#1a1a1a}
-.btn-pub{background:linear-gradient(135deg,#c9a484,#a07850);border:none;color:#fff;padding:10px 22px;border-radius:8px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.82rem;font-weight:700;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-pub{background:linear-gradient(135deg,#c9a96e,#a07850);border:none;color:#fff;padding:10px 22px;border-radius:8px;cursor:pointer;font-family:var(--sans);font-size:.82rem;font-weight:700;transition:all .2s;display:flex;align-items:center;gap:8px}
 .btn-pub:hover{opacity:.88;transform:translateY(-1px)}
 .btn-pub:disabled{opacity:.35;cursor:not-allowed;transform:none}
 .prop-list{display:grid;gap:8px;max-height:320px;overflow-y:auto}
 .prop-item{display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px;transition:all .2s}
 .prop-item:hover{border-color:rgba(201,164,132,.2)}
 .prop-item.selected{border-color:rgba(201,164,132,.4);background:rgba(201,164,132,.06)}
-.prop-check{width:18px;height:18px;accent-color:#c9a484;cursor:pointer;flex-shrink:0}
+.prop-check{width:18px;height:18px;accent-color:#c9a96e;cursor:pointer;flex-shrink:0}
 .prop-item-info{flex:1;min-width:0}
 .prop-item-title{font-size:.82rem;font-weight:600;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prop-item-sub{font-size:.7rem;color:#666;margin-top:2px}
-.prop-item-price{font-size:.82rem;font-weight:700;color:#c9a484;white-space:nowrap}
+.prop-item-price{font-size:.82rem;font-weight:700;color:#c9a96e;white-space:nowrap}
 .portal-toggles{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .ptoggle{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.1);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s;user-select:none}
-.ptoggle.active{border-color:rgba(201,164,132,.4);background:rgba(201,164,132,.1);color:#c9a484}
+.ptoggle.active{border-color:rgba(201,164,132,.4);background:rgba(201,164,132,.1);color:#c9a96e}
 .ptoggle:not(.active){color:#666}
 .ptoggle.disabled{opacity:.35;cursor:not-allowed}
 .log-list{list-style:none;max-height:280px;overflow-y:auto}
@@ -210,8 +210,8 @@ body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <div style="font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em">Mis propiedades:</div>
       <div style="display:flex;gap:8px">
-        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:Montserrat,sans-serif" onclick="selectAllProps(true)">Seleccionar todas</button>
-        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:Montserrat,sans-serif" onclick="selectAllProps(false)">Deseleccionar</button>
+        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:var(--sans)" onclick="selectAllProps(true)">Seleccionar todas</button>
+        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:var(--sans)" onclick="selectAllProps(false)">Deseleccionar</button>
       </div>
     </div>
     <div class="prop-list" id="propList"><div style="text-align:center;padding:20px;color:#555;font-size:.8rem">Cargando propiedades...</div></div>
@@ -295,7 +295,7 @@ function disconnectPortal(portal){
 
 function renderPropList(){
   const list=document.getElementById("propList");
-  if(myProps.length===0){list.innerHTML='<div style="text-align:center;padding:20px;color:#555;font-size:.8rem">No tienes propiedades activas. <a href="agregar-propiedad.html" style="color:#c9a484">Agrega una</a>.</div>';return;}
+  if(myProps.length===0){list.innerHTML='<div style="text-align:center;padding:20px;color:#555;font-size:.8rem">No tienes propiedades activas. <a href="agregar-propiedad.html" style="color:#c9a96e">Agrega una</a>.</div>';return;}
   list.innerHTML=myProps.map(p=>`
     <div class="prop-item" id="pi-${p.id}" onclick="togglePropSelect('${p.id}')">
       <input type="checkbox" class="prop-check" id="pc-${p.id}" onclick="event.stopPropagation();togglePropSelect('${p.id}')" />
