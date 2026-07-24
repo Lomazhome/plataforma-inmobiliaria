@@ -109,6 +109,10 @@ function closeReset(){document.getElementById("resetModal").classList.remove("op
 async function sendReset(){const em=document.getElementById("resetEmail");const err=document.getElementById("resetError");const email=em.value.trim();if(!email){err.textContent="Ingresa tu correo electronico.";err.style.display="block";em.focus();return;}const btn=document.getElementById("resetSend");btn.disabled=true;btn.textContent="Enviando...";const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/login.html"});btn.disabled=false;btn.textContent="Enviar enlace";if(error){err.textContent="Error al enviar: "+error.message;err.style.display="block";}else{closeReset();showAlert("Correo de recuperacion enviado. Revisa tu bandeja de entrada.","success");}}
 function showAlert(msg,type){const a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;a.style.display="block";}
 function hideAlert(){const a=document.getElementById("alert");a.style.display="none";a.className="alert";}
+function openNewPass(){document.getElementById("newPassError").style.display="none";document.getElementById("newPass1").value="";document.getElementById("newPass2").value="";document.getElementById("newPassModal").classList.add("open");setTimeout(function(){document.getElementById("newPass1").focus();},50);}
+function closeNewPass(){document.getElementById("newPassModal").classList.remove("open");history.replaceState(null,"",window.location.pathname);}
+async function saveNewPass(){var p1=document.getElementById("newPass1").value;var p2=document.getElementById("newPass2").value;var err=document.getElementById("newPassError");if(p1.length<6){err.textContent="La contrasena debe tener al menos 6 caracteres.";err.style.display="block";return;}if(p1!==p2){err.textContent="Las contrasenas no coinciden.";err.style.display="block";return;}var btn=document.getElementById("newPassSave");btn.disabled=true;btn.textContent="Guardando...";var res=await sb.auth.updateUser({password:p1});btn.disabled=false;btn.textContent="Guardar contrasena";if(res.error){err.textContent="Error: "+res.error.message;err.style.display="block";}else{document.getElementById("newPassModal").classList.remove("open");history.replaceState(null,"",window.location.pathname);showAlert("Contrasena actualizada. Ya puedes iniciar sesion.","success");}}
+sb.auth.onAuthStateChange(function(event,session){if(event==="PASSWORD_RECOVERY"){openNewPass();}});
 </script>
 <div id="resetModal" class="reset-overlay" onclick="if(event.target===this)closeReset()">
 <div class="reset-card">
@@ -120,6 +124,20 @@ function hideAlert(){const a=document.getElementById("alert");a.style.display="n
 <div class="reset-actions">
 <button type="button" class="reset-cancel" onclick="closeReset()">Cancelar</button>
 <button type="button" id="resetSend" class="reset-send" onclick="sendReset()">Enviar enlace</button>
+</div>
+</div>
+</div>
+<div id="newPassModal" class="reset-overlay">
+<div class="reset-card">
+<h3 class="reset-title">Nueva contrasena</h3>
+<p class="reset-desc">Ingresa tu nueva contrasena para completar el restablecimiento.</p>
+<label class="reset-label" for="newPass1">Nueva contrasena</label>
+<input id="newPass1" class="reset-input" type="password" placeholder="Minimo 6 caracteres" autocomplete="new-password"/>
+<label class="reset-label" for="newPass2" style="margin-top:1rem">Confirmar contrasena</label>
+<input id="newPass2" class="reset-input" type="password" placeholder="Repite la contrasena" autocomplete="new-password"/>
+<div id="newPassError" class="reset-err"></div>
+<div class="reset-actions">
+<button type="button" id="newPassSave" class="reset-send" onclick="saveNewPass()">Guardar contrasena</button>
 </div>
 </div>
 </div>
