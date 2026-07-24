@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Restablecer contrasena | Lomaz Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0D1B2E;--navy-2:#162540;--navy-3:#1d2e4d;--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px;--r-lg:16px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:radial-gradient(ellipse at top,#162540 0%,#0D1B2E 50%,#08111F 100%);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 30%,rgba(201,169,110,.06),transparent 40%),radial-gradient(circle at 80% 70%,rgba(201,169,110,.04),transparent 40%);pointer-events:none}
+.login-box{width:100%;max-width:440px;background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r-lg);padding:3rem 2.5rem;box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(201,169,110,.08);position:relative;z-index:1;overflow:hidden}
+.login-box::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.6}
+.brand{text-align:center;margin-bottom:2.2rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.brand-svg{width:84px;height:84px}
+.brand-text{font-family:var(--serif);font-size:2rem;font-weight:500;letter-spacing:.5px;line-height:1}
+.brand-text .lo{color:var(--gold)}
+.brand-text .ho{color:#fff;font-family:var(--sans);font-size:.8rem;letter-spacing:7px;font-weight:400;display:block;margin-top:4px;text-transform:uppercase}
+.subtitle{color:var(--txt-soft);font-family:var(--serif);font-style:italic;font-size:1rem;margin-top:.5rem;font-weight:400}
+.alert{padding:.85rem 1.1rem;border-radius:var(--r-sm);font-size:.85rem;font-weight:500;margin-bottom:1.2rem;display:none;text-align:center}
+.alert.error{background:rgba(220,53,69,.18);border:1px solid rgba(220,53,69,.6);color:#ff2d3f;font-weight:600;display:block}
+.alert.success{background:rgba(40,167,69,.10);border:1px solid rgba(40,167,69,.35);color:#7dd87d;display:block}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;margin-bottom:.5rem;text-transform:uppercase}
+input{width:100%;background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.9rem 1.1rem;color:var(--txt);font-family:var(--sans);font-size:.95rem;outline:none;transition:all .25s ease}
+input:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
+input::placeholder{color:var(--txt-mute)}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r-sm);padding:1rem;font-family:var(--sans);font-weight:600;font-size:.85rem;cursor:pointer;letter-spacing:1.5px;text-transform:uppercase;transition:all .25s ease;margin-top:.6rem;box-shadow:0 4px 14px rgba(201,169,110,.3)}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(201,169,110,.45)}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.desc{color:var(--txt-soft);font-size:.9rem;line-height:1.5;text-align:center;margin-bottom:1.5rem}
+.back-link{text-align:center;margin-top:1.5rem}
+.back-link a{color:var(--txt-mute);font-size:.82rem;text-decoration:none;font-family:var(--serif);font-style:italic;transition:color .25s ease}
+.back-link a:hover{color:var(--gold)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--navy);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.state{display:none}
+.state.active{display:block}
+@media (max-width:520px){.login-box{padding:2.2rem 1.5rem}.brand-svg{width:68px;height:68px}}
+</style>
+</head>
+<body>
+<div class="login-box">
+<div class="brand">
+<svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M84 60 L80 62 M84 65 L88 67 M85 70 L81 72 M85 75 L89 77 M86 80 L82 82" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/>
+</svg>
+<div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
+<div class="subtitle">Plataforma Inmobiliaria Boutique</div>
+</div>
+<div id="alert" class="alert"></div>
+
+<div id="loadingState" class="state active">
+<p class="desc">Verificando tu enlace de recuperacion...</p>
+<div style="text-align:center"><span class="spinner" style="border-color:var(--gold);border-top-color:transparent"></span></div>
+</div>
+
+<div id="formState" class="state">
+<p class="desc">Ingresa tu nueva contrasena para completar el restablecimiento.</p>
+<div class="form-group"><label>Nueva contrasena</label><input type="password" id="newPass1" placeholder="Minimo 6 caracteres" autocomplete="new-password" onkeydown="if(event.key==='Enter')saveNewPass()"/></div>
+<div class="form-group"><label>Confirmar contrasena</label><input type="password" id="newPass2" placeholder="Repite la contrasena" autocomplete="new-password" onkeydown="if(event.key==='Enter')saveNewPass()"/></div>
+<button class="btn-login" id="btnSave" onclick="saveNewPass()">Guardar contrasena</button>
+</div>
+
+<div id="invalidState" class="state">
+<p class="desc">El enlace de recuperacion no es valido o ha expirado. Solicita uno nuevo desde la pagina de ingreso.</p>
+</div>
+
+<div class="back-link"><a href="/login.html">&larr; Volver al ingreso</a></div>
+</div>
+<script>
+const SURL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SKEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const sb=window.supabase.createClient(SURL,SKEY);
+function show(id){document.querySelectorAll(".state").forEach(function(e){e.classList.remove("active");});document.getElementById(id).classList.add("active");}
+function showAlert(msg,type){var a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;a.style.display="block";}
+function hideAlert(){var a=document.getElementById("alert");a.style.display="none";a.className="alert";}
+var recoveryReady=false;
+sb.auth.onAuthStateChange(function(event,session){if(event==="PASSWORD_RECOVERY"){recoveryReady=true;show("formState");setTimeout(function(){document.getElementById("newPass1").focus();},50);}});
+(async function(){
+  await new Promise(function(r){setTimeout(r,1200);});
+  if(recoveryReady)return;
+  var res=await sb.auth.getSession();
+  if(res.data&&res.data.session){show("formState");setTimeout(function(){document.getElementById("newPass1").focus();},50);}
+  else{show("invalidState");}
+})();
+async function saveNewPass(){
+  var p1=document.getElementById("newPass1").value;
+  var p2=document.getElementById("newPass2").value;
+  hideAlert();
+  if(p1.length<6){showAlert("La contrasena debe tener al menos 6 caracteres.","error");return;}
+  if(p1!==p2){showAlert("Las contrasenas no coinciden.","error");return;}
+  var btn=document.getElementById("btnSave");
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Guardando...';
+  var res=await sb.auth.updateUser({password:p1});
+  if(res.error){showAlert("Error: "+res.error.message,"error");btn.disabled=false;btn.innerHTML="Guardar contrasena";return;}
+  showAlert("Contrasena actualizada. Redirigiendo al ingreso...","success");
+  setTimeout(function(){window.location.href="login.html";},1500);
+}
+</script>
+</body>
+</html>
