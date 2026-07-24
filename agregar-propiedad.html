@@ -955,7 +955,7 @@ try {
   }
   function wire(){
     var dep=$('departamento'); if(dep){ dep.addEventListener('change',function(){ fillCiudades(dep.value); onCiudadChange(); }); }
-    var ci=$('ciudad'); if(ci){ ci.addEventListener('change', onCiudadChange); } var lo=$('localidad'); if(lo){ lo.addEventListener('change', fillBarriosDatalist); } }
+    var ci=$('ciudad'); if(ci){ ci.addEventListener('change', onCiudadChange); } var lo=$('localidad'); if(lo){ lo.addEventListener('change', fillBarriosDatalist); }
   }
   // API publica para auto-llenado desde Importar
   window.__LOMAZ_SET_UBICACION=function(depto,ciudad,barrio,localidad){
