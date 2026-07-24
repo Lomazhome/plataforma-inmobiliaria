@@ -440,7 +440,7 @@ function renderProps(props){
     const title=p.titulo||p.tipo_propiedad||"Propiedad";
     const loc=p.barrio?p.barrio+(p.ciudad?", "+p.ciudad:""):"Bogotá, Colombia";
     return `
-    <article class="prop-card reveal" onclick="window.location='detalle-propiedad.html?id=${p.id}'">
+    <article class="prop-card reveal" onclick="window.location='propiedad.html?id=${p.id}'">
       <div class="prop-card-img">
         <img src="${img}" alt="${title} en ${loc}" loading="lazy"/>
         <span class="prop-badge ${badge}">${badgeTxt}</span>
@@ -461,7 +461,7 @@ function renderProps(props){
             <span class="prop-price-label">${p.tipo_operacion==="arriendo"?"Arriendo mensual":"Precio de venta"}</span>
             <div class="prop-price">${fmtPrice(p.precio)}</div>
           </div>
-          <a class="prop-cta" href="detalle-propiedad.html?id=${p.id}">Ver detalle</a>
+          <a class="prop-cta" href="propiedad.html?id=${p.id}">Ver detalle</a>
         </div>
       </div>
     </article>`;
@@ -566,14 +566,14 @@ function processAria(txt){
   // Arriendo
   if(t.includes("arrendar")||t.includes("arriendo")||t.includes("alquilar")){
     const arr=allProps.filter(p=>p.tipo_operacion==="arriendo").slice(0,3);
-    const list=arr.length>0?arr.map(p=>`&bull; <a href="detalle-propiedad.html?id=${p.id}" style="color:var(--navy);font-weight:600">${p.titulo||p.tipo_propiedad}</a> &mdash; ${fmtPrice(p.precio)}`).join("<br>"):"No hay propiedades en arriendo disponibles en este momento.";
+    const list=arr.length>0?arr.map(p=>`&bull; <a href="propiedad.html?id=${p.id}" style="color:var(--navy);font-weight:600">${p.titulo||p.tipo_propiedad}</a> &mdash; ${fmtPrice(p.precio)}`).join("<br>"):"No hay propiedades en arriendo disponibles en este momento.";
     addBotMsg("Tenemos opciones de arriendo en Bogotá. Aquí algunas destacadas:<br><br>"+list+"<br><br>&#191;Te interesa alguna zona o rango de precio específico?");
     return;
   }
   // Compra/venta
   if(t.includes("comprar")||t.includes("compra")||t.includes("venta")||t.includes("vender")){
     const ven=allProps.filter(p=>p.tipo_operacion==="venta").slice(0,3);
-    const list=ven.length>0?ven.map(p=>`&bull; <a href="detalle-propiedad.html?id=${p.id}" style="color:var(--navy);font-weight:600">${p.titulo||p.tipo_propiedad}</a> &mdash; ${fmtPrice(p.precio)}`).join("<br>"):"No hay propiedades en venta disponibles en este momento.";
+    const list=ven.length>0?ven.map(p=>`&bull; <a href="propiedad.html?id=${p.id}" style="color:var(--navy);font-weight:600">${p.titulo||p.tipo_propiedad}</a> &mdash; ${fmtPrice(p.precio)}`).join("<br>"):"No hay propiedades en venta disponibles en este momento.";
     addBotMsg("Estas son algunas propiedades en venta:<br><br>"+list+"<br><br>&#191;Qué barrio o presupuesto tienes en mente?");
     return;
   }
