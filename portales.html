@@ -23,7 +23,7 @@ body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:
 .sidebar a:hover{color:#fff;background:rgba(255,255,255,.05)}
 .sidebar a.active{color:#c9a96e;background:rgba(201,164,132,.07);border-left-color:#c9a96e}
 .sidebar a .icon{width:18px;text-align:center;font-size:1rem}
-.content{margin-left:230px;flex:1;padding:28px;max-width:1100px}
+.content{margin:0 auto;flex:1;padding:28px;max-width:1100px;width:100%}.btn-back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);color:var(--gold);padding:6px 14px;border-radius:6px;font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s;font-family:var(--sans)}.btn-back:hover{background:rgba(201,169,110,.12);color:#fff}
 .page-header{margin-bottom:28px}
 .page-header h1{font-size:1.5rem;font-weight:700}
 .page-header p{color:#666;font-size:.85rem;margin-top:4px}
@@ -99,7 +99,7 @@ body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:
 </head>
 <body>
 <div class="topbar">
-  <a href="index.html" class="logo">Lomaz <span>Home</span></a>
+  <div style="display:flex;align-items:center;gap:16px"><a href="dashboard.html" class="logo">Lomaz <span>Home</span></a><a href="dashboard.html" class="btn-back">← Volver al Dashboard</a></div>
   <div class="user-info">
     <div class="user-avatar" id="topAvatar">?</div>
     <div><div id="topEmail" style="font-size:.78rem;color:#888">Cargando...</div></div>
@@ -107,23 +107,6 @@ body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:
   </div>
 </div>
 <div class="layout">
-<nav class="sidebar">
-  <div class="sidebar-section">Principal</div>
-  <a href="dashboard.html"><span class="icon">🏠</span>Dashboard</a>
-  <a href="propiedades.html"><span class="icon">🏢</span>Ver Propiedades</a>
-  <div class="sidebar-section">Mis Herramientas</div>
-  <a href="agregar-propiedad.html"><span class="icon">➕</span>Agregar Propiedad</a>
-  <a href="mis-propiedades.html"><span class="icon">📋</span>Mis Propiedades</a>
-  <a href="leads.html"><span class="icon">🎯</span>Leads</a>
-  <a href="clientes.html"><span class="icon">👥</span>Clientes</a>
-  <a href="pipeline.html"><span class="icon">📊</span>Pipeline</a>
-  <div class="sidebar-section">Publicacion</div>
-  <a href="portales.html" class="active"><span class="icon">🌐</span>Portales</a>
-  <div class="sidebar-section">Analisis</div>
-  <a href="calculadora.html"><span class="icon">🧮</span>Calculadora</a>
-  <div class="sidebar-section">Cuenta</div>
-  <a href="perfil-asesor.html"><span class="icon">⚙️</span>Mi Perfil</a>
-</nav>
 <main class="content">
   <div class="page-header">
     <h1>🌐 Integracion de Portales</h1>
