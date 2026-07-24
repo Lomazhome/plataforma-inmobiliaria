@@ -155,10 +155,7 @@ td strong{font-weight:600;color:#fff}
 </svg>
 <div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
 </a>
-<div class="topbar-right">
-<span id="user-email" class="user-email"></span>
-<button class="btn-back" onclick="location.href='dashboard.html'">&larr; Dashboard</button>
-</div>
+<div class="topbar-right"><button class="btn-back" onclick="window.location.href='dashboard.html'">← Dashboard</button><div id="topAvatarMini" title="Perfil" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07840);color:#0D1B2E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(201,169,110,.3)">?</div><script>(function(){try{var k=Object.keys(localStorage).find(function(x){return /sb-.*-auth-token/.test(x)});if(k){var d=JSON.parse(localStorage.getItem(k));var em=(d&&(d.user&&d.user.email||d.currentSession&&d.currentSession.user&&d.currentSession.user.email))||"";if(em){document.getElementById("topAvatarMini").textContent=em.charAt(0).toUpperCase();}}}catch(e){}})();</script></div>
 </div>
 <div class="container">
   <div class="page-header">
