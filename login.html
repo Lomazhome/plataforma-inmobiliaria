@@ -97,7 +97,7 @@ const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.locati
 if(error)showAlert("Error al enviar: "+error.message,"error");
 else showAlert("Correo de recuperacion enviado. Revisa tu bandeja de entrada.","success");
 }
-function showAlert(msg,type){const a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;}
+function showAlert(msg,type){const a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;a.style.display="block";}
 function hideAlert(){const a=document.getElementById("alert");a.style.display="none";a.className="alert";}
 </script>
 </body>
