@@ -414,7 +414,7 @@ function applyFilters(){
   state.sort=document.getElementById("sort-select").value;
   let filtered=allProps.filter(p=>{
     if(state.tipo!=="todos"&&p.tipo_operacion!==state.tipo)return false;
-    if(state.tipoInmueble&&p.tipo_propiedad!==state.tipoInmueble)return false;
+    if(state.tipoInmueble&&(p.tipo_propiedad||"").toLowerCase()!==state.tipoInmueble.toLowerCase())return false;
     if(state.barrio&&(!p.barrio||!p.barrio.toLowerCase().includes(state.barrio.toLowerCase())))return false;
     if(state.precioMax<20000000&&p.precio>state.precioMax)return false;
     return true;
