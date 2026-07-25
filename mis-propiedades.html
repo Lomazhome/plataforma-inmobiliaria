@@ -6,7 +6,7 @@
 <title>Mis Propiedades - Lomaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#0D1B2E;--navy-2:#162540;--navy-3:#1d2e4d;--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--sh-card:0 8px 32px rgba(0,0,0,.35);--sh-soft:0 4px 16px rgba(0,0,0,.25);--r-sm:8px;--r:12px;--r-lg:16px;}
+:root{--navy:#0D1B2E;--navy-2:#162540;--nahvy-3:#1d2e4d;--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--sh-card:0 8px 32px rgba(0,0,0,.35);--sh-soft:0 4px 16px rgba(0,0,0,.25);--r-sm:8px;--r:12px;--r-lg:16px;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -275,6 +275,18 @@ td strong{font-weight:600;color:#fff}
   </div>
   <div class="pagination" id="pagination"></div>
 </div>
+<div class="modal-overlay hidden" id="reasignarModal">
+  <div class="modal" style="max-width:440px;text-align:left">
+    <h3 style="text-align:center">👤 Reasignar asesor</h3>
+    <p style="text-align:center" id="reasignarInfo">Selecciona el asesor al que quieres asignar esta propiedad.</p>
+    <label style="display:block;font-size:.72rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#6b7280;margin-bottom:6px">Asesor destino</label>
+    <select id="reasignarSelect" style="width:100%;padding:.7rem .8rem;border:1px solid #d8dee6;border-radius:8px;font-family:var(--sans);font-size:.95rem;color:#0D1B2E;background:#fff;margin-bottom:20px"></select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeReasignar()">Cancelar</button>
+      <button class="btn-cancel" id="confirmReasignar" style="background:#c9a96e;color:#fff;border:1px solid #a07840 !important">Reasignar</button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay hidden" id="deleteModal">
   <div class="modal">
     <h3>&#128465;&#65039; Eliminar propiedad</h3>
@@ -313,7 +325,7 @@ async function loadProps(uid) {
   allProps = data || [];
     if (window._isAdmin && allProps.length) {
         const { data: perfs } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url");
-            const pmap = {};
+            window._asesores = perfs || []; const pmap = {};
                 (perfs || []).forEach(x => { pmap[x.id] = x; });
                     allProps.forEach(p => { const a = pmap[p.asesor_id]; p._asesorNombre = a ? a.nombre_completo : "Sin asignar"; p._asesorFoto = a ? a.avatar_url : ""; });
                       }
@@ -390,6 +402,7 @@ ${window._isAdmin?`<div class="prop-card-asesor" style="margin-top:6px;font-size
 ${(p.estado==="activa")?`<button class="pc-act" onclick="cambiarEstado('${p.id}','pausada')" style="background:#b8860b;color:#fff">Pausar</button>`:`<button class="pc-act" onclick="cambiarEstado('${p.id}','activa')" style="background:#1a7f37;color:#fff">Publicar</button>`}
 <button class="pc-act" onclick="editProp('${p.id}')">Editar</button>
 <button class="pc-act del" onclick="confirmDelete('${p.id}')">Eliminar</button>
+${window._isAdmin ? `<button class="pc-act" onclick="openReasignar(\'${p.id}\')" style="border-color:rgba(201,169,110,.5);color:#c9a96e">Reasignar</button>` : ""}
 </div>
 </div>
 </div>`;
@@ -444,6 +457,38 @@ function confirmDelete(id) {
   };
 }
 
+let reasignarId = null;
+function openReasignar(id){
+  if(!window._isAdmin) return;
+  reasignarId = id;
+  const prop = (allProps||[]).find(p => String(p.id) === String(id));
+  const sel = document.getElementById("reasignarSelect");
+  const asesores = (window._asesores||[]).slice().sort((a,b)=>(a.nombre_completo||"").localeCompare(b.nombre_completo||""));
+  sel.innerHTML = asesores.map(a => '<option value="'+a.id+'"'+((prop&&prop.asesor_id===a.id)?" selected":"")+'>'+(a.nombre_completo||"Sin nombre")+'</option>').join("");
+  const info = document.getElementById("reasignarInfo");
+  if(info && prop){ info.textContent = 'Propiedad: '+(prop.titulo||"Sin titulo")+'. Asesor actual: '+(prop._asesorNombre||"Sin asignar")+'.'; }
+  document.getElementById("reasignarModal").classList.remove("hidden");
+  document.getElementById("confirmReasignar").onclick = doReasignar;
+}
+function closeReasignar(){
+  document.getElementById("reasignarModal").classList.add("hidden");
+  reasignarId = null;
+}
+async function doReasignar(){
+  if(!reasignarId) return;
+  const nuevo = document.getElementById("reasignarSelect").value;
+  if(!nuevo){ alert("Selecciona un asesor."); return; }
+  const btn = document.getElementById("confirmReasignar");
+  btn.disabled = true; const prev = btn.textContent; btn.textContent = "Guardando...";
+  const { error } = await sb.from("propiedades").update({ asesor_id: nuevo, updated_at: new Date().toISOString() }).eq("id", reasignarId);
+  btn.disabled = false; btn.textContent = prev;
+  if(error){ alert("Error al reasignar: " + error.message); return; }
+  const a = (window._asesores||[]).find(x => x.id === nuevo);
+  const prop = (allProps||[]).find(p => String(p.id) === String(reasignarId));
+  if(prop){ prop.asesor_id = nuevo; prop._asesorNombre = a ? a.nombre_completo : "Sin asignar"; prop._asesorFoto = a ? a.avatar_url : ""; }
+  closeReasignar();
+  filterProps();
+}
 function closeModal() {
   document.getElementById("deleteModal").classList.add("hidden");
   deleteId = null;
