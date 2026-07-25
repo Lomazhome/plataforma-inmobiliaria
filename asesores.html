@@ -22,6 +22,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
 
 /* ===== ORGANIGRAMA ===== */
 .org{display:flex;flex-direction:column;align-items:center;}
+.org-level--top{margin-bottom:0;}
+.org-level--mid{position:relative;gap:60px;margin-top:0;}
+.org-level--mid::before{content:"";position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:min(60%,400px);height:2px;background:var(--gold);opacity:.55;}
+.org-level--mid .node{position:relative;}
+.org-level--mid .node::before{content:"";position:absolute;top:-18px;left:50%;width:2px;height:18px;background:var(--gold);opacity:.55;}
+.org-level--team{flex-wrap:wrap;gap:24px;}
+.org-title--muted{opacity:.5;}
+.node--placeholder{display:flex;align-items:center;justify-content:center;color:#8a8a80;font-size:.85rem;font-style:italic;min-height:90px;box-shadow:none;border:1px dashed rgba(184,134,11,.4);background:rgba(184,134,11,.04);}
+@media(max-width:560px){.org-level--mid{gap:20px;}.org-level--mid::before{display:none;}.org-level--mid .node::before{display:none;}}
 .org-level{display:flex;justify-content:center;flex-wrap:wrap;gap:24px;width:100%;}
 .org-connector{width:2px;height:34px;background:var(--gold);opacity:.55;}
 .org-branch{position:relative;width:100%;display:flex;justify-content:center;}.org-group{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;}.org-title{font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);padding:4px 16px;border:1px solid var(--gold);border-radius:20px;background:rgba(184,134,11,.06);}
@@ -64,8 +73,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
                         const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
                         function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
                         const ROL_LABEL = {1:"Director / Fundador",2:"Asesor Senior",3:"Asesor Junior",4:"Coordinación",5:"Aliado Externo",6:"Servicio Técnico"};
-                        const GRUPOS = [{t:"Dirección",roles:[1],lead:true},{t:"Coordinación",roles:[4]},{t:"Servicio Técnico",roles:[6]},{t:"Asesores",roles:[2,3]},{t:"Aliados Externos",roles:[5]}];
-                        function inicial(n){var p=(n||"").trim().split(/\s+/).filter(w=>/[A-Za-z\u00c0-\u017f]/.test(w));return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase();}
+                                                function inicial(n){var p=(n||"").trim().split(/\s+/).filter(w=>/[A-Za-z\u00c0-\u017f]/.test(w));return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase();}
                         function nodo(a,lead){
                           const foto = a.avatar_url ? '<img class="foto" src="'+esc(a.avatar_url)+'" alt="'+esc(a.nombre_completo)+'">' : '<div class="foto">'+esc(inicial(a.nombre_completo).toUpperCase())+'</div>';
                             const rolN = ROL_LABEL[a.rol_id] || "Asesor";
@@ -77,22 +85,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
                                     const org = document.getElementById("org");
                                       if(!lista.length){ document.getElementById("empty").style.display="block"; return; }
                                         let html = "";
-                                          GRUPOS.forEach((g, gi) => {
-                                            const miembros = lista.filter(a => g.roles.includes(a.rol_id));
-                                            if (!miembros.length) return;
-                                            if (html) html += '<div class="org-connector"></div>';
-                                            html += '<div class="org-group">'
-                                              + '<div class="org-title">' + esc(g.t) + '</div>'
-                                              + '<div class="org-level">' + miembros.map(a => nodo(a, !!g.lead)).join("") + '</div>'
-                                              + '</div>';
-                                          });
-                                          const usados = GRUPOS.reduce((acc, g) => acc.concat(g.roles), []);
-                                          const otros = lista.filter(a => !usados.includes(a.rol_id));
-                                          if (otros.length) {
-                                            if (html) html += '<div class="org-connector"></div>';
-                                            html += '<div class="org-group"><div class="org-title">Equipo</div><div class="org-level">' + otros.map(a => nodo(a, false)).join("") + '</div></div>';
-                                          }
-                                          org.innerHTML = html;
+const byRoles = rs => lista.filter(a => rs.includes(a.rol_id));
+const dir = byRoles([1]);
+const mid = byRoles([4,6]);
+const ases = byRoles([2,3]);
+const ext = byRoles([5]);
+if(dir.length){ html += '<div class="org-level org-level--top">' + dir.map(a => nodo(a,true)).join("") + '</div>'; }
+if(dir.length && mid.length){ html += '<div class="org-connector"></div>'; }
+if(mid.length){ html += '<div class="org-level org-level--mid">' + mid.map(a => nodo(a,false)).join("") + '</div>'; }
+if(mid.length && ases.length){ html += '<div class="org-connector"></div>'; }
+if(ases.length){ html += '<div class="org-title">Asesores</div><div class="org-level org-level--team">' + ases.map(a => nodo(a,false)).join("") + '</div>'; }
+else { html += '<div class="org-title org-title--muted">Asesores</div><div class="org-level"><div class="node node--placeholder">Aún no hay asesores registrados</div></div>'; }
+if(ext.length){ html += '<div class="org-connector"></div><div class="org-title">Aliados Externos</div><div class="org-level org-level--team">' + ext.map(a => nodo(a,false)).join("") + '</div>'; }
+org.innerHTML = html;
                                                                   }
                                                                   cargar();
                                                                   </script>
