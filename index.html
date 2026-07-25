@@ -822,7 +822,7 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
       if (currentFilter === 'all') return true;
       if (currentFilter === 'venta') return p.tipo_negocio === 'venta';
       if (currentFilter === 'arriendo') return p.tipo_negocio === 'arriendo';
-      return p.tipo?.toLowerCase().includes(currentFilter);
+      return (p.tipo_propiedad||'').toLowerCase().includes(currentFilter);
     }));
   });
 });
