@@ -851,7 +851,7 @@ function renderProps(props) {
       '<div class=\"prop-card__specs\">' +
         (p.habitaciones ? '<span class=\"prop-card__spec\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\"><rect x=\"1\" y=\"6\" width=\"14\" height=\"8\" rx=\"1\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M4 6V4a3 3 0 016 0v2\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>' + p.habitaciones + ' hab</span>' : '') +
         (p.banos ? '<span class=\"prop-card__spec\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\"><circle cx=\"8\" cy=\"8\" r=\"5.5\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>' + p.banos + ' bañ</span>' : '') +
-        (p.area ? '<span class=\"prop-card__spec\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>' + p.area + ' m²</span>' : '') +
+        (p.m2_construccion ? '<span class=\"prop-card__spec\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>' + p.m2_construccion + ' m²</span>' : '') +
       '</div>' +
     '</a>';
   }).join('');
@@ -862,7 +862,7 @@ async function loadProps() {
   try {
     const { data, error } = await db
       .from('propiedades')
-      .select('id,titulo,tipo,tipo_negocio,precio,ciudad,barrio,habitaciones,banos,area,fotos,estado')
+      .select('id,titulo,tipo,tipo_negocio,precio,ciudad,barrio,habitaciones,banos,m2_construccion,fotos,estado')
       .eq('estado', 'activa')
       .order('created_at', { ascending: false })
       .limit(12);
