@@ -216,7 +216,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
         </div>
       </div>
       <div class="filter-group">
-        <span class="filter-label">Barrio / Zona</span>
+        <span class="filter-label">Localidad</span>
         <div class="chips" id="chips-barrio">
           <button class="chip active" data-val="" onclick="setChip(this,'barrio')">Todos</button>
           <button class="chip" data-val="Chapinero" onclick="setChip(this,'barrio')">Chapinero</button>
@@ -368,12 +368,12 @@ function setTipo(btn){
   state.tipo=btn.dataset.tipo;
   applyFilters();
 }
-function buildBarrioChips(){
+function barrioALocalidad(b){b=(b||"").toLowerCase().trim();if(!b)return "";if(b.includes("cedritos"))return "Usaquén";if(b.includes("porciuncula"))return "Barrios Unidos";if(b.includes("rafael uribe"))return "Rafael Uribe Uribe";if(b.includes("serena"))return "Cartagena";return b.charAt(0).toUpperCase()+b.slice(1);}function buildBarrioChips(){
   var cont=document.getElementById("chips-barrio");
   if(!cont)return;
   var counts={};
   (allProps||[]).forEach(function(p){
-    var b=(p.barrio||"").trim();
+    var b=barrioALocalidad(p.barrio);
     if(!b)return;
     counts[b]=(counts[b]||0)+1;
   });
@@ -415,7 +415,7 @@ function applyFilters(){
   let filtered=allProps.filter(p=>{
     if(state.tipo!=="todos"&&p.tipo_operacion!==state.tipo)return false;
     if(state.tipoInmueble&&(p.tipo_propiedad||"").toLowerCase()!==state.tipoInmueble.toLowerCase())return false;
-    if(state.barrio&&(!p.barrio||!p.barrio.toLowerCase().includes(state.barrio.toLowerCase())))return false;
+    if(state.barrio&&barrioALocalidad(p.barrio).toLowerCase()!==state.barrio.toLowerCase())return false;
     if(state.precioMax<20000000&&p.precio>state.precioMax)return false;
     return true;
   });
