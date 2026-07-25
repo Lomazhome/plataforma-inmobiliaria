@@ -180,7 +180,7 @@ button{font-family:var(--sans)}
 .pillar__desc{font-size:.76rem;color:var(--s500);line-height:1.7}
 /* EXPERIENCE ENRICHMENT (left column) */
 .value-sec .reveal{position:relative}
-.exp-aura{position:absolute;top:-40px;left:-90px;width:520px;height:520px;pointer-events:none;z-index:0;opacity:.5}
+.exp-aura{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(560px,118%);aspect-ratio:1;pointer-events:none;z-index:0;opacity:.42}
 .exp-aura svg{width:100%;height:100%;animation:expSpin 90s linear infinite}
 .exp-aura::after{content:'';position:absolute;top:50%;left:50%;width:340px;height:340px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.14),transparent 65%)}
 @keyframes expSpin{to{transform:rotate(360deg)}}
