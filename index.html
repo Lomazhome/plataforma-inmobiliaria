@@ -862,7 +862,7 @@ async function loadProps() {
   try {
     const { data, error } = await db
       .from('propiedades')
-      .select('id,titulo,tipo,tipo_negocio,precio,ciudad,barrio,habitaciones,banos,m2_construccion,fotos,estado')
+      .select('id,titulo,tipo,tipo_propiedad,tipo_negocio,precio,ciudad,barrio,habitaciones,banos,m2_construccion,fotos,estado')
       .eq('estado', 'activa')
       .order('created_at', { ascending: false })
       .limit(12);
