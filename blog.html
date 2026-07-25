@@ -46,6 +46,10 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 .cat-chip{padding:.4rem 1rem;font-size:.72rem;font-weight:500;letter-spacing:.05em;border:1px solid rgba(196,153,42,.4);background:transparent;color:var(--navy);cursor:pointer;transition:all .2s;white-space:nowrap;}
 .cat-chip:hover{border-color:var(--gold);color:var(--gold);}
 .cat-chip.active{background:var(--navy);border-color:var(--navy);color:var(--cream);}
+.cat-search{margin-left:auto;padding:.4rem .9rem;font-size:.72rem;letter-spacing:.03em;border:1px solid rgba(196,153,42,.4);background:#fff;color:var(--navy);min-width:210px;outline:none;transition:border-color .2s;}
+.cat-search::placeholder{color:var(--navy);opacity:.45;}
+.cat-search:focus{border-color:var(--gold);}
+@media(max-width:640px){.cat-search{margin-left:0;width:100%;min-width:0;}}
 .featured-section{max-width:1200px;margin:4rem auto 0;padding:0 2rem;}
 .section-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
 .section-title{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,3vw,2rem);color:var(--navy);margin-bottom:2rem;}
@@ -211,6 +215,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
 <div class="cat-bar">
   <div class="cat-bar-inner">
     <span class="cat-label">Temas:</span>
+    <input type="search" class="cat-search" placeholder="Buscar por tema..." aria-label="Buscar articulos por tema" oninput="filterSearch(this)">
     <button class="cat-chip active" data-cat="" onclick="filterCat(this)">Todos</button>
     <button class="cat-chip" data-cat="Arrendamiento" onclick="filterCat(this)">Arrendamiento</button>
     <button class="cat-chip" data-cat="Compraventa" onclick="filterCat(this)">Compraventa</button>
@@ -476,15 +481,23 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
 </div>
 <button class="aria-fab" id="aria-fab" onclick="openAria()" aria-label="Abrir chat ARIA"><span>A</span></button>
 <script>
+let activeCat="";
+function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+function applyBlogFilters(){
+  const term=norm((document.querySelector(".cat-search")||{}).value||"");
+  document.querySelectorAll(".blog-card,.featured-card").forEach(card=>{
+    const okCat=!activeCat||card.dataset.cat===activeCat;
+    const okTerm=!term||norm(card.textContent+" "+(card.dataset.cat||"")).indexOf(term)>=0;
+    card.style.display=(okCat&&okTerm)?"":"none";
+  });
+}
 function filterCat(btn){
   document.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
   btn.classList.add("active");
-  const cat=btn.dataset.cat;
-  document.querySelectorAll(".blog-card,.featured-card").forEach(card=>{
-    if(!cat||card.dataset.cat===cat){card.style.display="";}
-    else{card.style.display="none";}
-  });
+  activeCat=btn.dataset.cat;
+  applyBlogFilters();
 }
+function filterSearch(el){applyBlogFilters();}
 function handleNL(e){
   e.preventDefault();
   document.getElementById("nl-msg").style.display="block";
