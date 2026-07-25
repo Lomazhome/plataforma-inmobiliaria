@@ -178,6 +178,28 @@ button{font-family:var(--sans)}
 .pillar__num{font-family:var(--serif);font-size:.78rem;font-style:italic;color:var(--gold);flex-shrink:0;padding-top:2px;min-width:22px}
 .pillar__title{font-size:.84rem;font-weight:600;color:var(--cream);margin-bottom:5px;letter-spacing:.02em}
 .pillar__desc{font-size:.76rem;color:var(--s500);line-height:1.7}
+/* EXPERIENCE ENRICHMENT (left column) */
+.value-sec .reveal{position:relative}
+.exp-aura{position:absolute;top:-40px;left:-90px;width:520px;height:520px;pointer-events:none;z-index:0;opacity:.5}
+.exp-aura svg{width:100%;height:100%;animation:expSpin 90s linear infinite}
+.exp-aura::after{content:'';position:absolute;top:50%;left:50%;width:340px;height:340px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.14),transparent 65%)}
+@keyframes expSpin{to{transform:rotate(360deg)}}
+.value-sec .reveal>*{position:relative;z-index:1}
+.exp-stats{display:grid;grid-template-columns:1fr 1fr;gap:30px 34px;margin-top:40px}
+.exp-stat__num{font-family:var(--serif);font-size:2.6rem;line-height:1;color:var(--gold);font-weight:500}
+.exp-stat__num em{font-style:italic;color:var(--cream);font-size:1.6rem}
+.exp-stat__lbl{margin-top:8px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--s400);line-height:1.5}
+.exp-seal{display:flex;align-items:center;gap:18px;margin-top:44px}
+.exp-seal__badge{flex-shrink:0;width:64px;height:64px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 25%,rgba(201,169,110,.16),rgba(28,25,23,.6));font-family:var(--serif);font-size:1.9rem;color:var(--gold);font-style:italic}
+.exp-seal__txt{font-family:var(--serif);font-style:italic;font-size:1.12rem;line-height:1.35;color:var(--cream)}
+.exp-cta{display:flex;flex-wrap:wrap;gap:16px;margin-top:38px}
+.exp-btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-radius:2px;text-decoration:none;transition:all .3s ease}
+.exp-btn--gold{background:var(--gold);color:var(--s900);border:1px solid var(--gold)}
+.exp-btn--gold:hover{background:transparent;color:var(--gold)}
+.exp-btn--ghost{background:transparent;color:var(--cream);border:1px solid var(--s700)}
+.exp-btn--ghost:hover{border-color:var(--gold);color:var(--gold)}
+@media(max-width:920px){.exp-aura{display:none}.exp-stats{gap:26px}}
+
 
 /* ZONES */
 .zones-sec{padding:var(--pad) 0}
@@ -469,9 +491,31 @@ button{font-family:var(--sans)}
 <!-- PROPUESTA DE VALOR -->
 <section class="value-sec" id="nosotros">
   <div class="reveal">
+    <div class="exp-aura" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none" stroke="#c9a96e" stroke-width="0.5">
+        <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="74"/><circle cx="100" cy="100" r="52"/>
+        <ellipse cx="100" cy="100" rx="96" ry="40"/><ellipse cx="100" cy="100" rx="40" ry="96"/>
+        <ellipse cx="100" cy="100" rx="96" ry="70"/><ellipse cx="100" cy="100" rx="70" ry="96"/>
+        <line x1="4" y1="100" x2="196" y2="100"/><line x1="100" y1="4" x2="100" y2="196"/>
+      </svg>
+    </div>
     <p class="sec-tag">Por qué LoMaz Home</p>
     <h2 class="sec-title">Una experiencia<br><em>diferente.</em></h2>
     <p class="value-sec__desc">No somos una inmobiliaria tradicional. Somos un equipo boutique que combina asesoría personalizada con tecnología de punta para que tu proceso sea claro, ágil y sin sorpresas.</p>
+    <div class="exp-stats">
+      <div class="exp-stat"><div class="exp-stat__num">3</div><div class="exp-stat__lbl">Portales en una publicación</div></div>
+      <div class="exp-stat"><div class="exp-stat__num">1</div><div class="exp-stat__lbl">Asesor de principio a fin</div></div>
+      <div class="exp-stat"><div class="exp-stat__num">24<em>/7</em></div><div class="exp-stat__lbl">Chatbot ARIA siempre activo</div></div>
+      <div class="exp-stat"><div class="exp-stat__num">0</div><div class="exp-stat__lbl">Sorpresas en el proceso</div></div>
+    </div>
+    <div class="exp-seal">
+      <div class="exp-seal__badge">L</div>
+      <div class="exp-seal__txt">Acompañamiento boutique,<br>respaldo de plataforma.</div>
+    </div>
+    <div class="exp-cta">
+      <a class="exp-btn exp-btn--gold" href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20quiero%20agendar%20una%20asesor%C3%ADa." target="_blank" rel="noopener">Agendar asesoría <span aria-hidden="true">&rarr;</span></a>
+      <a class="exp-btn exp-btn--ghost" href="propiedades-publica.html">Ver propiedades</a>
+    </div>
   </div>
   <div id="equipo" class="pillars reveal reveal-delay-2">
     <div class="pillar">
