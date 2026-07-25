@@ -180,12 +180,12 @@ button{font-family:var(--sans)}
 .pillar__desc{font-size:.76rem;color:var(--s500);line-height:1.7}
 /* EXPERIENCE ENRICHMENT (left column) */
 .value-sec .reveal{position:relative}
-.exp-aura{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(560px,118%);aspect-ratio:1;pointer-events:none;z-index:0;opacity:.42}
+.exp-aura{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,92%);aspect-ratio:1;pointer-events:none;z-index:0;opacity:.5}
 .exp-aura svg{width:100%;height:100%;animation:expSpin 90s linear infinite}
-.exp-aura::after{content:'';position:absolute;top:50%;left:50%;width:340px;height:340px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.14),transparent 65%)}
+.exp-aura::after{content:'';position:absolute;top:50%;left:50%;width:230px;height:230px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.16),transparent 65%)}
 @keyframes expSpin{to{transform:rotate(360deg)}}
 .value-sec .reveal>*{position:relative;z-index:1}
-.exp-stats{display:grid;grid-template-columns:1fr 1fr;gap:30px 34px;margin-top:40px}
+.exp-stats{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:30px 34px;margin-top:36px;padding:14px 0}
 .exp-stat__num{font-family:var(--serif);font-size:2.6rem;line-height:1;color:var(--gold);font-weight:500}
 .exp-stat__num em{font-style:italic;color:var(--cream);font-size:1.6rem}
 .exp-stat__lbl{margin-top:8px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--s400);line-height:1.5}
@@ -491,7 +491,11 @@ button{font-family:var(--sans)}
 <!-- PROPUESTA DE VALOR -->
 <section class="value-sec" id="nosotros">
   <div class="reveal">
-    <div class="exp-aura" aria-hidden="true">
+    <p class="sec-tag">Por qué LoMaz Home</p>
+    <h2 class="sec-title">Una experiencia<br><em>diferente.</em></h2>
+    <p class="value-sec__desc">No somos una inmobiliaria tradicional. Somos un equipo boutique que combina asesoría personalizada con tecnología de punta para que tu proceso sea claro, ágil y sin sorpresas.</p>
+    <div class="exp-stats">
+      <div class="exp-aura" aria-hidden="true">
       <svg viewBox="0 0 200 200" fill="none" stroke="#c9a96e" stroke-width="0.5">
         <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="74"/><circle cx="100" cy="100" r="52"/>
         <ellipse cx="100" cy="100" rx="96" ry="40"/><ellipse cx="100" cy="100" rx="40" ry="96"/>
@@ -499,10 +503,6 @@ button{font-family:var(--sans)}
         <line x1="4" y1="100" x2="196" y2="100"/><line x1="100" y1="4" x2="100" y2="196"/>
       </svg>
     </div>
-    <p class="sec-tag">Por qué LoMaz Home</p>
-    <h2 class="sec-title">Una experiencia<br><em>diferente.</em></h2>
-    <p class="value-sec__desc">No somos una inmobiliaria tradicional. Somos un equipo boutique que combina asesoría personalizada con tecnología de punta para que tu proceso sea claro, ágil y sin sorpresas.</p>
-    <div class="exp-stats">
       <div class="exp-stat"><div class="exp-stat__num">3</div><div class="exp-stat__lbl">Portales en una publicación</div></div>
       <div class="exp-stat"><div class="exp-stat__num">1</div><div class="exp-stat__lbl">Asesor de principio a fin</div></div>
       <div class="exp-stat"><div class="exp-stat__num">24<em>/7</em></div><div class="exp-stat__lbl">Chatbot ARIA siempre activo</div></div>
