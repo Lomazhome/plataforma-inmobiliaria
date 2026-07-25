@@ -10,7 +10,7 @@
 <meta property="og:description" content="Encuentra tu propiedad ideal en Bogot&#225;. Apartamentos, casas y locales en arriendo y venta."/>
 <meta property="og:image" content="https://plataforma-inmobiliaria-two.vercel.app/og-image.jpg"/>
 <meta property="og:type" content="website"/>
-<meta name="twitter:card" content="summaryh_large_image"/>
+<meta name="twitter:card" content="summaryhh_large_image"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -483,7 +483,7 @@ async function loadProps(){
     const params=new URLSearchParams(window.location.search);
     if(params.get("tipo")){
       const t=params.get("tipo");
-      state.tipo=t;
+      if(t==="arriendo"||t==="venta"||t==="todos")state.tipo=t;
       document.querySelectorAll(".tipo-btn").forEach(b=>{b.classList.toggle("active",b.dataset.tipo===t||b.dataset.tipo==="todos"&&!t);});
       document.querySelectorAll(".tipo-btn").forEach(b=>{if(b.dataset.tipo===t)b.classList.add("active");else b.classList.remove("active");});
     }
