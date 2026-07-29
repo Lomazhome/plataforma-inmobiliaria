@@ -1,14 +1,14 @@
 // Edge Function: notificar-articulo
 // Envia un correo a los suscriptores confirmados cuando se publica un articulo.
 // Se dispara via Database Webhook al insertar/actualizar articulos_blog.
-// Secretos: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, FROM_EMAIL
+// Secretos: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, RESEND_FROM
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL   = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE   = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
-const FROM_EMAIL     = Deno.env.get("FROM_EMAIL") ?? "LoMaz Home <noreply@lomazhome.com>";
+const FROM_EMAIL     = Deno.env.get("RESEND_FROM") ?? "LoMaz Home <noreply@lomazhome.com>";
 const SITE_URL       = "https://www.lomazhome.com";
 
 const CORS = {
