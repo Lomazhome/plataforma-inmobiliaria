@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Crear Articulo - Blog | Lomaz Home</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1B2E;--navy-2:#162540;--navy-3:#1d2e4d;--gold:#c9a96e;--gold-d:#a07840;--gold-l:#e8d5b0;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--sh-card:0 8px 32px rgba(0,0,0,.35);--sh-soft:0 4px 16px rgba(0,0,0,.25);--r-sm:8px;--r:12px;--r-lg:16px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.9rem 1.75rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:.85rem}
+.brand-svg{width:42px;height:42px;flex-shrink:0}
+.brand-text{font-family:var(--serif);font-size:1.55rem;font-weight:500;letter-spacing:.5px;line-height:1}
+.brand-text .lo{color:var(--gold)}
+.brand-text .ho{color:#fff;font-family:var(--sans);font-size:.78rem;letter-spacing:6px;font-weight:400;display:block;margin-top:2px;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.btn-back{background:transparent;border:1px solid var(--line);color:var(--txt-soft);padding:.5rem 1rem;border-radius:var(--r-sm);cursor:pointer;font-size:.8rem;font-weight:500;letter-spacing:.5px;transition:all .25s ease;font-family:var(--sans)}
+.btn-back:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.05)}
+.container{max-width:900px;margin:2rem auto;padding:0 1.5rem}
+.page-title{font-family:var(--serif);font-size:2rem;font-weight:500;color:#fff;letter-spacing:.3px;margin-bottom:.4rem}
+.page-title em{font-style:italic;color:var(--gold)}
+.page-sub{color:var(--txt-soft);font-size:.92rem;margin-bottom:1.8rem;font-weight:300}
+.alert{padding:.9rem 1.2rem;border-radius:var(--r-sm);font-size:.88rem;font-weight:500;margin-bottom:1.5rem;display:none}
+.alert.error{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff8a93;display:block}
+.alert.success{background:rgba(40,167,69,.10);border:1px solid rgba(40,167,69,.35);color:#7dd87d;display:block}
+.alert.info{background:rgba(201,169,110,.10);border:1px solid rgba(201,169,110,.30);color:var(--gold);display:block}
+.card{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.75rem;margin-bottom:1.5rem;box-shadow:var(--sh-soft);position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.4}
+.card h3{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:#fff;margin-bottom:1.3rem;letter-spacing:.3px}
+.card h3 em{font-style:italic;color:var(--gold)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.form-group{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:.3rem}
+input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.78rem 1rem;color:var(--txt);font-family:var(--sans);font-size:.9rem;outline:none;transition:all .25s ease;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
+select option{background:var(--navy-2);color:var(--txt)}
+input::placeholder,textarea::placeholder{color:var(--txt-mute)}
+textarea{resize:vertical;min-height:70px}
+.rt-toolbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem;background:rgba(13,27,46,.85);border:1px solid var(--line);border-bottom:none;border-radius:var(--r-sm) var(--r-sm) 0 0}
+.rt-btn{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--txt-soft);min-width:34px;height:32px;padding:0 .55rem;border-radius:6px;cursor:pointer;font-size:.82rem;font-family:var(--sans);transition:all .18s ease;display:inline-flex;align-items:center;justify-content:center}
+.rt-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.08)}
+.rt-btn b{font-weight:800}.rt-btn i{font-style:italic}.rt-btn u{text-decoration:underline}
+.rt-sep{width:1px;background:var(--line);margin:2px 3px}
+.rt-editor{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:0 0 var(--r-sm) var(--r-sm);padding:1rem 1.1rem;color:var(--txt);font-family:var(--sans);font-size:.95rem;line-height:1.7;min-height:280px;outline:none;transition:all .25s ease;overflow-y:auto}
+.rt-editor:focus{border-color:var(--gold);background:rgba(13,27,46,.85)}
+.rt-editor:empty:before{content:attr(data-ph);color:var(--txt-mute)}
+.rt-editor h2{font-family:var(--serif);color:var(--gold);font-size:1.5rem;margin:1rem 0 .5rem}
+.rt-editor h3{font-family:var(--serif);color:#fff;font-size:1.2rem;margin:.9rem 0 .4rem}
+.rt-editor p{margin:.5rem 0}
+.rt-editor ul,.rt-editor ol{margin:.5rem 0 .5rem 1.4rem}
+.rt-editor a{color:var(--gold);text-decoration:underline}
+.rt-editor blockquote{border-left:3px solid var(--gold);margin:.8rem 0;padding:.3rem 0 .3rem 1rem;color:var(--txt-soft);font-style:italic}
+.hint{font-size:.78rem;color:var(--txt-mute);font-weight:400;margin-top:.35rem}
+.btn-publish{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--sans);font-size:.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(201,169,110,.3);transition:all .25s ease;margin-top:.5rem}
+.btn-publish:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,169,110,.45)}
+.btn-publish:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-draft{width:100%;padding:.9rem;background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line);border-radius:var(--r);font-family:var(--sans);font-size:.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s ease;margin-top:.6rem}
+.btn-draft:hover{border-color:var(--gold);color:var(--gold)}
+.img-preview{margin-top:.6rem;max-height:180px;border-radius:var(--r-sm);border:1px solid var(--line);display:none}
+@media(max-width:900px){.form-grid{grid-template-columns:1fr}.topbar{padding:.75rem 1rem}.brand-text{font-size:1.3rem}.container{padding:0 1rem;margin:1.5rem auto}}
+</style>
+</head>
+<body>
+<div class="topbar">
+<a href="dashboard.html" class="brand">
+<svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
+</svg>
+<div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
+</a>
+<div class="topbar-right">
+<button class="btn-back" onclick="window.location.href='dashboard.html'">&larr; Dashboard</button>
+<span id="userEmail" style="font-size:.85rem;color:var(--txt-soft)">Cargando...</span>
+</div>
+</div>
+<div class="container">
+<div class="page-title">Crear <em>Articulo</em></div>
+<div class="page-sub">Redacta y publica un nuevo articulo en el blog de LoMaz Home. Disponible para todos los asesores.</div>
+<div id="alert" class="alert"></div>
+<div class="card">
+<h3>&#128221; Datos del <em>articulo</em></h3>
+<div class="form-grid">
+<div class="form-group full"><label>TITULO *</label><input type="text" id="titulo" placeholder="Ej: Como arrendar un apartamento en Bogota paso a paso"/></div>
+<div class="form-group"><label>CATEGORIA *</label><select id="categoria">
+<option value="">Seleccionar</option>
+<option value="Arrendamiento">Arrendamiento</option>
+<option value="Compraventa">Compraventa</option>
+<option value="Financiacion">Financiacion</option>
+<option value="Mercado">Mercado</option>
+<option value="Zonas">Zonas</option>
+<option value="Tramites">Tramites</option>
+</select></div>
+<div class="form-group"><label>TIEMPO DE LECTURA (min)</label><input type="number" id="tiempo_lectura" placeholder="Ej: 5" min="1" max="60"/></div>
+<div class="form-group full"><label>EXTRACTO / RESUMEN *</label><textarea id="extracto" placeholder="Resumen corto que aparece en la tarjeta del articulo (1-2 frases)."></textarea></div>
+<div class="form-group full"><label>IMAGEN DE PORTADA (URL)</label><input type="url" id="imagen_url" placeholder="https://... (pega la URL de la imagen)" oninput="previewImg()"/><img id="imgPreview" class="img-preview" alt="Vista previa"/><div class="hint">Pega una URL de imagen (por ejemplo de Unsplash). En una version posterior podemos anadir subida directa como en propiedades.</div></div>
+</div>
+</div>
+<div class="card">
+<h3>&#9998; Contenido del <em>articulo</em></h3>
+<div class="rt-toolbar" id="rtToolbar">
+<button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h2" title="Titulo">H2</button>
+<button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h3" title="Subtitulo">H3</button>
+<button type="button" class="rt-btn" data-cmd="formatBlock" data-val="p" title="Parrafo">P</button>
+<span class="rt-sep"></span>
+<button type="button" class="rt-btn" data-cmd="bold" title="Negrita"><b>B</b></button>
+<button type="button" class="rt-btn" data-cmd="italic" title="Cursiva"><i>I</i></button>
+<button type="button" class="rt-btn" data-cmd="underline" title="Subrayado"><u>U</u></button>
+<span class="rt-sep"></span>
+<button type="button" class="rt-btn" data-cmd="insertUnorderedList" title="Lista con vinetas">&#8226; Lista</button>
+<button type="button" class="rt-btn" data-cmd="insertOrderedList" title="Lista numerada">1. Lista</button>
+<button type="button" class="rt-btn" data-cmd="formatBlock" data-val="blockquote" title="Cita">&#8220; Cita</button>
+<span class="rt-sep"></span>
+<button type="button" class="rt-btn" data-cmd="createLink" title="Insertar enlace">&#128279; Link</button>
+<button type="button" class="rt-btn" data-cmd="removeFormat" title="Quitar formato">&#10005; Formato</button>
+</div>
+<div class="rt-editor" id="editor" contenteditable="true" data-ph="Escribe aqui el contenido del articulo. Usa la barra de herramientas para dar formato..."></div>
+<div class="hint">El contenido se guarda como HTML con formato.</div>
+</div>
+<button class="btn-publish" id="btnPublicar" onclick="guardarArticulo('publicado')">&#128640; Publicar articulo</button>
+<button class="btn-draft" id="btnBorrador" onclick="guardarArticulo('borrador')">Guardar como borrador</button>
+</div>
+<script>
+const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let currentUser=null, currentPerfil=null;
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href="login.html";return;}
+  currentUser=session.user;
+  document.getElementById("userEmail").textContent=currentUser.email||"";
+  try{
+    const {data:perfil}=await sb.from("perfiles_usuarios").select("nombre_completo").eq("id",currentUser.id).single();
+    if(perfil){currentPerfil=perfil;if(perfil.nombre_completo)document.getElementById("userEmail").textContent=perfil.nombre_completo;}
+  }catch(e){}
+})();
+document.getElementById("rtToolbar").addEventListener("click",function(e){
+  const btn=e.target.closest(".rt-btn"); if(!btn) return;
+  const cmd=btn.dataset.cmd, val=btn.dataset.val;
+  document.getElementById("editor").focus();
+  if(cmd==="createLink"){ const url=prompt("URL del enlace:","https://"); if(url) document.execCommand("createLink",false,url); }
+  else if(cmd==="formatBlock"){ document.execCommand("formatBlock",false,val); }
+  else { document.execCommand(cmd,false,null); }
+});
+function previewImg(){
+  const url=document.getElementById("imagen_url").value.trim();
+  const img=document.getElementById("imgPreview");
+  if(url){img.src=url;img.style.display="block";}else{img.style.display="none";}
+}
+function slugify(s){
+  return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-").slice(0,80);
+}
+function showAlert(msg,type){
+  const a=document.getElementById("alert"); a.className="alert "+type; a.textContent=msg;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+async function guardarArticulo(estado){
+  const titulo=document.getElementById("titulo").value.trim();
+  const categoria=document.getElementById("categoria").value;
+  const extracto=document.getElementById("extracto").value.trim();
+  const contenido=document.getElementById("editor").innerHTML.trim();
+  const imagen_url=document.getElementById("imagen_url").value.trim()||null;
+  const tiempo=parseInt(document.getElementById("tiempo_lectura").value)||null;
+  if(!titulo){showAlert("El titulo es obligatorio.","error");return;}
+  if(!categoria){showAlert("Selecciona una categoria.","error");return;}
+  if(!extracto){showAlert("El extracto es obligatorio.","error");return;}
+  if(!contenido || contenido==="<br>"){showAlert("El contenido del articulo no puede estar vacio.","error");return;}
+  const btnP=document.getElementById("btnPublicar"), btnB=document.getElementById("btnBorrador");
+  btnP.disabled=true; btnB.disabled=true;
+  (estado==="publicado"?btnP:btnB).textContent = estado==="publicado"?"Publicando...":"Guardando...";
+  const registro={
+    titulo, slug:slugify(titulo), categoria, extracto, contenido, imagen_url, tiempo_lectura:tiempo, estado,
+    autor_id: currentUser.id,
+    autor_nombre: (currentPerfil&&currentPerfil.nombre_completo)?currentPerfil.nombre_completo:(currentUser.email||null),
+    published_at: estado==="publicado"? new Date().toISOString() : null
+  };
+  const {data,error}=await sb.from("articulos_blog").insert([registro]).select().single();
+  if(error){
+    showAlert("Error al guardar: "+error.message,"error");
+    btnP.disabled=false; btnB.disabled=false;
+    btnP.textContent="\uD83D\uDE80 Publicar articulo"; btnB.textContent="Guardar como borrador";
+    return;
+  }
+  showAlert(estado==="publicado"?"Articulo publicado correctamente.":"Borrador guardado.","success");
+  btnP.textContent="Guardado \u2713";
+  setTimeout(function(){ window.location.href="dashboard.html"; }, 2000);
+}
+</script>
+</body>
+</html>
