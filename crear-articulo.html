@@ -190,6 +190,11 @@ async function guardarArticulo(estado){
     btnP.textContent="\uD83D\uDE80 Publicar articulo"; btnB.textContent="Guardar como borrador";
     return;
   }
+    if(estado==="publicado" && data && data.id){
+      try{
+        await sb.functions.invoke("notificar-articulo",{ body:{ record: data } });
+      }catch(_notifErr){ /* no bloquear la publicacion si el envio de correos falla */ }
+    }
   showAlert(estado==="publicado"?"Articulo publicado correctamente.":"Borrador guardado.","success");
   btnP.textContent="Guardado \u2713";
   setTimeout(function(){ window.location.href="dashboard.html"; }, 2000);
