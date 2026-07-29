@@ -685,3 +685,56 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
     </html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  function ready(fn){ if(document.readyState!=="loading"){fn();} else {document.addEventListener("DOMContentLoaded",fn);} }
+  ready(function(){
+    if(!window.supabase){return;}
+    var SB_URL=(window.SUPABASE_URL)||"https://lniouebpuuuqctrgxoiw.supabase.co";
+    var SB_KEY=(window.SUPABASE_ANON_KEY)||"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+    var sb=window.supabase.createClient(SB_URL,SB_KEY);
+    var grid=document.getElementById("blog-grid");
+    if(!grid){return;}
+    function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+    function fmtDate(iso){ if(!iso)return ""; try{ var m=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]; var d=new Date(iso); return m[d.getMonth()]+" "+d.getFullYear(); }catch(e){return "";} }
+    function card(a){
+      var img=a.imagen_url||"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format";
+      var meta=fmtDate(a.published_at||a.created_at)+(a.tiempo_lectura?(" &middot; "+a.tiempo_lectura+" min"):"");
+      return '<article class="blog-card reveal visible" data-cat="'+esc(a.categoria||"")+'">'+
+        '<div class="blog-card-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
+        (a.categoria?'<span class="blog-card-cat">'+esc(a.categoria)+'</span>':"")+'</div>'+
+        '<div class="blog-card-body">'+
+        '<h3 class="blog-card-title">'+esc(a.titulo)+'</h3>'+
+        '<p class="blog-card-excerpt">'+esc(a.extracto||"")+'</p>'+
+        '<div class="blog-card-footer"><span class="blog-card-date">'+meta+'</span>'+
+        '<a href="articulo.html?slug='+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Leer &rarr;</a></div>'+
+        '</div></article>';
+    }
+    function featured(a){
+      var fc=document.querySelector(".featured-card");
+      if(!fc)return;
+      var img=a.imagen_url||"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80&auto=format";
+      fc.setAttribute("href","articulo.html?slug="+encodeURIComponent(a.slug||""));
+      fc.setAttribute("data-cat",a.categoria||"");
+      fc.innerHTML='<div class="featured-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
+        (a.categoria?'<span class="feat-badge">'+esc(a.categoria)+'</span>':"")+'</div>'+
+        '<div class="featured-body"><p class="feat-cat">'+esc(a.categoria||"Articulo")+' &middot; '+fmtDate(a.published_at||a.created_at)+'</p>'+
+        '<h3 class="feat-title">'+esc(a.titulo)+'</h3>'+
+        '<p class="feat-excerpt">'+esc(a.extracto||"")+'</p>'+
+        '<div class="feat-meta"><span class="feat-date">'+fmtDate(a.published_at||a.created_at)+'</span>'+
+        (a.tiempo_lectura?'<span class="feat-read">&#128338; '+a.tiempo_lectura+' min de lectura</span>':"")+'</div>'+
+        '<span class="feat-cta">Leer articulo &rarr;</span></div>';
+    }
+    sb.from("articulos_blog").select("*").eq("estado","publicado").order("published_at",{ascending:false}).then(function(res){
+      if(res.error||!res.data||!res.data.length){return;}
+      var arts=res.data;
+      featured(arts[0]);
+      grid.innerHTML=arts.map(card).join("");
+      if(typeof applyBlogFilters==="function"){try{applyBlogFilters();}catch(e){}}
+    });
+  });
+})();
+</script>
