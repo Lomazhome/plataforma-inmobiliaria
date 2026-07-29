@@ -1,1 +1,136 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Articulo | LoMaz Home</title>
+<meta name="description" content="Articulo del blog inmobiliario de LoMaz Home."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0D1B2E;--gold:#C4992A;--cream:#F4E5C2;--white:#fff;--text:#1a1a1a;--muted:#6b7280;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:"Inter",sans-serif;background:var(--white);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+nav{background:rgba(13,27,46,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(196,153,42,0.2);padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;color:#F4E5C2;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{color:rgba(244,229,194,.7);font-size:.75rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;transition:color .25s;}
+.nav-links a:hover{color:var(--gold);}
+.art-hero{background:var(--navy);padding:6rem 2rem 3rem;text-align:center;}
+.art-cat{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.art-hero h1{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,4vw,3rem);color:var(--white);line-height:1.2;max-width:820px;margin:0 auto 1.2rem;}
+.art-meta{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,.5);letter-spacing:.05em;}
+.gold-div{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.art-cover{max-width:900px;margin:0 auto;padding:0 2rem;}
+.art-cover img{width:100%;max-height:440px;object-fit:cover;margin-top:2.5rem;border:1px solid rgba(196,153,42,.15);}
+.art-body{max-width:720px;margin:0 auto;padding:3rem 2rem 4rem;font-size:1.02rem;line-height:1.85;color:#2a2a2a;}
+.art-body h2{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--navy);margin:2rem 0 .8rem;}
+.art-body h3{font-family:"Playfair Display",serif;font-size:1.25rem;color:var(--navy);margin:1.6rem 0 .6rem;}
+.art-body p{margin:1rem 0;}
+.art-body ul,.art-body ol{margin:1rem 0 1rem 1.5rem;}
+.art-body li{margin:.4rem 0;}
+.art-body a{color:var(--gold);text-decoration:underline;}
+.art-body blockquote{border-left:3px solid var(--gold);margin:1.5rem 0;padding:.5rem 0 .5rem 1.2rem;color:var(--muted);font-style:italic;}
+.art-back{display:inline-flex;align-items:center;gap:.5rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:.6rem 1.2rem;transition:all .25s;}
+.art-back:hover{background:var(--gold);color:var(--navy);}
+.art-back-wrap{text-align:center;padding-bottom:4rem;}
+.state-msg{max-width:600px;margin:0 auto;padding:5rem 2rem;text-align:center;}
+.state-msg h2{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--navy);margin-bottom:1rem;}
+.state-msg p{color:var(--muted);margin-bottom:1.5rem;}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:3rem 2rem 2rem;}
+.footer-inner{max-width:1200px;margin:0 auto;text-align:center;}
+.footer-brand{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--white);margin-bottom:.5rem;}
+.footer-brand span{color:var(--gold);}
+.footer-copy{font-size:.75rem;color:rgba(255,255,255,.35);margin-top:1rem;}
+@media(max-width:900px){nav{padding:1rem 1.2rem;}.nav-links{display:none;}}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
+<ul class="nav-links">
+<li><a href="index.html">Inicio</a></li>
+<li><a href="propiedades.html">Propiedades</a></li>
+<li><a href="blog.html">Blog</a></li>
+<li><a href="calculadora.html">Calculadora</a></li>
+<li><a href="contacto.html">Contacto</a></li>
+</ul>
+</nav>
+<div id="art-root">
+<div class="state-msg"><p>Cargando articulo...</p></div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">LoMaz <span>Home</span></div>
+<p>Inmobiliaria boutique en Bogota, Colombia.</p>
+<p class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</p>
+</div>
+</footer>
+<script src="config.js"></script>
+<script>
+(function(){
+var SB_URL=(window.SUPABASE_URL)||"https://lniouebpuuuqctrgxoiw.supabase.co";
+var SB_KEY=(window.SUPABASE_ANON_KEY)||"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+var sb=window.supabase.createClient(SB_URL,SB_KEY);
+var root=document.getElementById("art-root");
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fmtDate(iso){
+if(!iso)return "";
+try{
+var meses=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var d=new Date(iso);
+return d.getDate()+" de "+meses[d.getMonth()]+" de "+d.getFullYear();
+}catch(e){return "";}
+}
+function notFound(){
+root.innerHTML='<div class="state-msg"><h2>Articulo no encontrado</h2><p>El articulo que buscas no existe o fue removido.</p><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
+document.title="Articulo no encontrado | LoMaz Home";
+}
+function render(a){
+document.title=a.titulo+" | LoMaz Home";
+var meta=document.querySelector('meta[name="description"]');
+if(meta&&a.extracto)meta.setAttribute("content",a.extracto);
+var cover=a.imagen_url?'<div class="art-cover"><img src="'+esc(a.imagen_url)+'" alt="'+esc(a.titulo)+'"/></div>':"";
+var fecha=fmtDate(a.published_at||a.created_at);
+var lectura=a.tiempo_lectura?('&#128338; '+a.tiempo_lectura+' min de lectura'):"";
+var metaParts=[];
+if(fecha)metaParts.push('<span>'+esc(fecha)+'</span>');
+if(lectura)metaParts.push('<span>'+lectura+'</span>');
+if(a.autor_nombre)metaParts.push('<span>Por '+esc(a.autor_nombre)+'</span>');
+root.innerHTML=
+'<section class="art-hero">'+
+(a.categoria?'<p class="art-cat">'+esc(a.categoria)+'</p>':"")+
+'<h1>'+esc(a.titulo)+'</h1>'+
+'<div class="art-meta">'+metaParts.join("")+'</div>'+
+'</section>'+
+'<div class="gold-div"></div>'+
+cover+
+'<article class="art-body">'+(a.contenido||('<p>'+esc(a.extracto||"")+'</p>'))+'</article>'+
+'<div class="art-back-wrap"><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
+}
+async function load(){
+var params=new URLSearchParams(window.location.search);
+var slug=params.get("slug");
+var id=params.get("id");
+if(!slug&&!id){notFound();return;}
+try{
+var q=sb.from("articulos_blog").select("*").eq("estado","publicado").limit(1);
+q= slug ? q.eq("slug",slug) : q.eq("id",id);
+var res=await q;
+if(res.error)throw res.error;
+if(!res.data||!res.data.length){notFound();return;}
+render(res.data[0]);
+}catch(e){
+root.innerHTML='<div class="state-msg"><h2>No pudimos cargar el articulo</h2><p>Intenta de nuevo en un momento.</p><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
+}
+}
+load();
+})();
+</script>
+</body>
+</html>
