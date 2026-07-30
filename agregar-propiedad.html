@@ -1125,6 +1125,24 @@ try {
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
         showAlert('✅ Cambios guardados correctamente.','success'); window.scrollTo({top:0,behavior:'smooth'});
+        // --- Sincronizacion con Finca Raiz al editar ---
+        // Si esta propiedad ya estaba publicada en Finca Raiz, reenviar los cambios
+        // (mismo id => Finca Raiz lo trata como actualizacion del aviso, no como uno nuevo).
+        try {
+          const { data: _frRow } = await c.from('publicaciones_portales')
+            .select('portal').eq('propiedad_id', EDIT_ID).eq('portal', 'fincaraiz').maybeSingle();
+          if (_frRow && typeof window.publicarEnFincaraiz === 'function') {
+            showAlert('Actualizando el aviso en Finca Raiz...', 'info');
+            const _fr = await window.publicarEnFincaraiz(data, EDIT_ID);
+            if (_fr && _fr.ok) {
+              showAlert('Cambios guardados y reenviados a Finca Raiz correctamente.', 'success');
+            } else {
+              showAlert('Cambios guardados. Finca Raiz: ' + ((_fr && _fr.msg) || 'integracion en proceso, verifica mas tarde.'), 'info');
+            }
+          }
+        } catch (_frErr) {
+          showAlert('Cambios guardados. (No se pudo confirmar Finca Raiz: ' + ((_frErr && _frErr.message) || _frErr) + ')', 'info');
+        }
         /* permanece en el editor tras guardar */
       }catch(e){ alert('Error: '+e.message); }
     }
