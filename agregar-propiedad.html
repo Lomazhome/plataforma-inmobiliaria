@@ -652,7 +652,7 @@ if(p.id === "metrocuadrado"){
 const result = await window.publicarEnMetrocuadrado(prop.id);
 const estado = result.ok ? "publicado" : "error";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"metrocuadrado",estado,mensaje:result.msg,asesor_id:currentUser.id});
-if(result.ok){setPortalStatus("metrocuadrado","ok","Listo");addLog("success","Metrocuadrado",result.msg);}
+if(result.ok){setPortalStatus("metrocuadrado","ok","Publicado");addLog("success","Metrocuadrado",result.msg);}
 else{setPortalStatus("metrocuadrado","error","Error");addLog("error","Metrocuadrado",result.msg);}
 continue;
 }
@@ -660,14 +660,14 @@ if(p.id === "fincaraiz"){
 const result = await window.publicarEnFincaraiz(data, prop.id);
 const estado = result.ok ? "publicado" : "pendiente_credenciales";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
-if(result.ok){setPortalStatus("fincaraiz","ok","Listo");addLog("success","Finca Raiz",result.msg);}
+if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
 else{setPortalStatus("fincaraiz","pending","Proximamente");addLog("info","Finca Raiz",result.msg);}
 continue;
 }
 if(p.id === "proppit"){
 const proppitMsg = "Propiedad agregada al XML feed de Proppit. URL del feed: https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/proppit-feed. Proppit lo lee 1x dia.";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"proppit",estado:"publicado_xml_feed",mensaje:proppitMsg,asesor_id:currentUser.id});
-setPortalStatus("proppit","ok","Listo");
+setPortalStatus("proppit","ok","En feed XML");
 addLog("success","Proppit",proppitMsg);
 continue;
 }
