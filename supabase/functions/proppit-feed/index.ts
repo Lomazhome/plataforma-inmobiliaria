@@ -79,7 +79,9 @@ function buildListing(p: any, contact: any): string {
   lines.push("    </contact>");
   lines.push("    <title>" + cdata(p.titulo || "") + "</title>");
   lines.push("    <description>" + cdata(p.descripcion || "") + "</description>");
-  lines.push("    <price currency=\"COP\" operation=\"" + escapeAttr(operation) + "\">" + precio + "</price>");
+  lines.push("    <prices>");
+  lines.push("      <price currency=\"COP\" operation=\"" + escapeAttr(operation) + "\">" + precio + "</price>");
+  lines.push("    </prices>");
   lines.push("    <property_type>" + cdata(tipoProppit) + "</property_type>");
 
   lines.push("    <address>");
