@@ -705,7 +705,7 @@ return [];
 async function mcCatalog(tipo, params){
 var sess = await sb.auth.getSession();
 var token = sess.data.session ? sess.data.session.access_token : "";
-var payload = Object.assign({tipo:tipo}, params||{});
+var __mcCode={regions:"reg",cities:"cit",zones:"zon",sectors:"sec",realestatetypes:"ret",businesstypes:"bus",amenities:"ame"}; var payload = Object.assign({tipo:(__mcCode[tipo]||tipo)}, params||{});
 var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/catalog", {method:"POST", headers:{Authorization:"Bearer "+token, "Content-Type":"application/json"}, body:JSON.stringify(payload)});
 var json = await resp.json().catch(function(){return null;});
 if(!resp.ok) throw new Error((json&&(json.error||json.message))||("Error "+resp.status));
