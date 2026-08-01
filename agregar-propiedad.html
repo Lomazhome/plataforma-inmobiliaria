@@ -705,8 +705,8 @@ return [];
 async function mcCatalog(tipo, params){
 var sess = await sb.auth.getSession();
 var token = sess.data.session ? sess.data.session.access_token : "";
-var qs = params ? ("?"+new URLSearchParams(params).toString()) : "";
-var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/catalog/"+tipo+qs, {headers:{Authorization:"Bearer "+token}});
+var qs = params ? ("&"+new URLSearchParams(params).toString()) : "";
+var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/catalog?tipo="+encodeURIComponent(tipo)+qs, {headers:{Authorization:"Bearer "+token}});
 var json = await resp.json().catch(function(){return null;});
 if(!resp.ok) throw new Error((json&&(json.error||json.message))||("Error "+resp.status));
 return mcExtractArray(json);
