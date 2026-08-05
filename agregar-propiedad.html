@@ -658,10 +658,10 @@ continue;
 }
 if(p.id === "fincaraiz"){
 const result = await window.publicarEnFincaraiz(data, prop.id);
-const estado = result.ok ? "publicado" : "pendiente_credenciales";
+const estado = result.ok ? "publicado" : "en_proceso";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
-else{setPortalStatus("fincaraiz","pending","Proximamente");addLog("info","Finca Raiz",result.msg);}
+else{setPortalStatus("fincaraiz","pending","En proceso");addLog("info","Finca Raiz",result.msg);}
 continue;
 }
 if(p.id === "proppit"){
@@ -797,7 +797,7 @@ if (json && json.ok) {
   }, 200);
   return { ok:true, msg: 'Enviado a Finca Raiz QA. Task ID: ' + taskId + '. Estado: Pendiente. Usa el boton ACTIVAR para publicar.' };
 }
-if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
+if (json && json.status === 'en_proceso') { const _tid = json.task_id || ''; window._LAST_FR_TASK_ID = _tid; window._LAST_FR_PROP_ID = propId; setTimeout(function(){ const _b = document.getElementById('btn-activar-fr'); if (_b) { _b.style.display='inline-block'; _b.dataset.taskId=_tid; _b.dataset.propId=propId; } }, 200); return { ok:false, msg: 'Finca Raiz devolvio en_proceso (task ' + (_tid || 'sin id') + '). Usa el boton ACTIVAR para completar la publicacion.' }; } if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
 return { ok:false, msg: 'Error Finca Raiz: ' + (json && json.msg ? json.msg : JSON.stringify(json).substring(0,300)) };
 } catch(e) {
 return { ok:false, msg: 'Error de red: ' + e.message };
@@ -818,7 +818,7 @@ const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
 const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
 method: 'POST',
 headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
-body: JSON.stringify({ accion: 'activar', propiedad_id: propId })
+body: JSON.stringify({ accion: 'activar', propiedad_id: propId, task_id: (btn.dataset.taskId || window._LAST_FR_TASK_ID || null) })
 });
 const json = await resp.json().catch(function(){return {};});
 if (json && json.ok) {
@@ -1131,9 +1131,9 @@ try {
         try {
           const { data: _frRow } = await c.from('publicaciones_portales')
             .select('portal').eq('propiedad_id', EDIT_ID).eq('portal', 'fincaraiz').maybeSingle();
-          if (_frRow && typeof window.publicarEnFincaraiz === 'function') {
-            showAlert('Actualizando el aviso en Finca Raiz...', 'info');
-            const _fr = await window.publicarEnFincaraiz(data, EDIT_ID);
+          if ((_frRow || ((document.getElementById('ch-fincaraiz')||{}).checked)) && typeof window.publicarEnFincaraiz === 'function') {
+            showAlert(_frRow ? 'Actualizando el aviso en Finca Raiz...' : 'Enviando el aviso a Finca Raiz...', 'info');
+            const _fr = await window.publicarEnFincaraiz(data, EDIT_ID); try{ const _est=(_fr&&_fr.ok)?'publicado':'en_proceso'; const _msg=(_fr&&_fr.msg)?String(_fr.msg).substring(0,480):''; if(_frRow){ await c.from('publicaciones_portales').update({estado:_est,mensaje:_msg,fecha:new Date().toISOString()}).eq('propiedad_id',EDIT_ID).eq('portal','fincaraiz'); } else { await c.from('publicaciones_portales').insert({propiedad_id:EDIT_ID,portal:'fincaraiz',estado:_est,mensaje:_msg,asesor_id:(typeof currentUser!=='undefined'&&currentUser)?currentUser.id:null}); } }catch(_regErr){ console.error('registro portal fincaraiz', _regErr); }
             if (_fr && _fr.ok) {
               showAlert('Cambios guardados y reenviados a Finca Raiz correctamente.', 'success');
             } else {
