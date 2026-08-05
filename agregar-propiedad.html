@@ -818,12 +818,12 @@ const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
 const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
 method: 'POST',
 headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
-body: JSON.stringify({ accion: 'activar', propiedad_id: propId, task_id: (btn.dataset.taskId || window._LAST_FR_TASK_ID || null) })
+body: JSON.stringify({ accion: 'activar', propiedad_id: propId, task_id: (btn.dataset.taskId || window._LAST_FR_TASK_ID || null), listing_id: (btn.dataset.listingId || window._LAST_FR_LISTING_ID || (await (async function(){ try { var _q = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').maybeSingle(); return (_q && _q.data && _q.data.url_publicacion) || null; } catch(_e){ return null; } })()) || null) })
 });
 const json = await resp.json().catch(function(){return {};});
 if (json && json.ok) {
   addLog('success','Finca Raiz - ACTIVAR', 'Propiedad activada correctamente en Finca Raiz. Ya esta visible publicamente.');
-  btn.textContent = 'Activada en Finca Raiz';
+  btn.textContent = 'Activada en Finca Raiz'; try { await sb.from('publicaciones_portales').update({ estado: 'activo', mensaje: 'Aviso ACTIVO en Finca Raiz.' }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_e){}
   btn.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)';
   btn.style.color = '#fff';
 } else {
