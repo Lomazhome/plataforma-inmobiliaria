@@ -264,7 +264,7 @@ let isAdmin=false;
   currentUser=session.user;
   document.getElementById("user-email").textContent=currentUser.email||"";
   // Check admin role
-  const{data:perfil}=await sb.from("perfiles_usuarios").select("roles(nombre)").eq("user_id",currentUser.id).single();
+  const{data:perfil}=await sb.from("perfiles_usuarios").select("roles(nombre)").eq("id",currentUser.id).single();
   const rol=(perfil?.roles?.nombre)||"";
   if(rol!=="admin"){
     document.getElementById("access-denied").style.display="block";
