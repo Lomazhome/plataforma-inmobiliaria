@@ -16,7 +16,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
@@ -94,6 +94,53 @@ function buildListingPayload(p) {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+
+  // Ruta de estado: dice la verdad sobre Finca Raiz sin exponer ningun secreto.
+  const _urlEstado = new URL(req.url);
+  if (_urlEstado.pathname.split('/').filter(Boolean).includes('estado')) {
+    const tieneUrl = !!SECRETS.FR_URL;
+    const tieneLlave = !!SECRETS.FR_KEY;
+    const tieneCliente = !!SECRETS.FR_CLIENT;
+    let ambiente = 'sin configurar';
+    if (tieneUrl) {
+      const h = SECRETS.FR_URL.toLowerCase();
+      if (h.indexOf('qa') >= 0 || h.indexOf('sandbox') >= 0 || h.indexOf('staging') >= 0) ambiente = 'pruebas';
+      else if (h.indexOf('fincaraiz.com.co') >= 0) ambiente = 'produccion';
+      else ambiente = 'desconocido';
+    }
+    let apiStatus = 0;
+    let credencialesOk = false;
+    if (tieneUrl && tieneLlave && tieneCliente) {
+      try {
+        const sonda = SECRETS.FR_URL + '/task/prueba-estado-lomaz?_ts=' + Date.now();
+        const rp = await fetch(sonda, { method: 'GET', headers: frcolHeaders() });
+        apiStatus = rp.status;
+        credencialesOk = apiStatus !== 401 && apiStatus !== 403 && apiStatus < 500;
+      } catch (_e) {
+        apiStatus = -1;
+      }
+    }
+    const listo = credencialesOk && ambiente === 'produccion';
+    let resumen = '';
+    if (!tieneUrl || !tieneLlave || !tieneCliente) resumen = 'Faltan datos de Finca Raiz en el servidor.';
+    else if (apiStatus === 401 || apiStatus === 403) resumen = 'Finca Raiz rechaza la llave (status ' + apiStatus + ').';
+    else if (apiStatus === -1) resumen = 'No se pudo contactar el servidor de Finca Raiz.';
+    else if (!credencialesOk) resumen = 'Finca Raiz no responde bien (status ' + apiStatus + ').';
+    else if (ambiente === 'pruebas') resumen = 'Las credenciales sirven, pero apuntan al ambiente de pruebas de Finca Raiz, no al real.';
+    else if (ambiente === 'produccion') resumen = 'Todo listo: credenciales validas en produccion.';
+    else resumen = 'Las credenciales sirven, pero no se pudo identificar el ambiente.';
+    return new Response(JSON.stringify({
+      portal: 'fincaraiz',
+      tiene_direccion: tieneUrl,
+      tiene_llave: tieneLlave,
+      tiene_cliente: tieneCliente,
+      ambiente: ambiente,
+      api_status: apiStatus,
+      credenciales_ok: credencialesOk,
+      listo_para_publicar: listo,
+      resumen: resumen,
+    }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  }
 
   // ---- Helper: consulta GET /task/{id} con parametro anti-cache, sondeo acotado (~28s) ----
   async function pollTask(taskId) {
