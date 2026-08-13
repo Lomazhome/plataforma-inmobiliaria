@@ -46,6 +46,7 @@ function propertyTypeFor(tipo) {
     oficina: "office", bodega: "warehouse", finca: "farm", habitacion: "room",
     consultorio: "consulting-room", edificio: "building", cabana: "cabin",
     casa_campestre: "country-house", estudio: "studio", casa_lote: "house-lot",
+    apartaestudio: "studio",
     parqueadero: "parking",
   };
   return m[tipo] || "apartment";
