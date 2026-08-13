@@ -313,12 +313,12 @@ async function publishSelected(){
   let ok=0,fail=0;
   for(const portal of selPortals){
     const tok=getToken(portal);
-    if(!tok){addLog("err","Sin token para "+PORTAL_NAMES[portal]);fail++;continue;}
+    // Metrocuadrado y Finca Raiz usan credenciales guardadas en el servidor, no en este navegador.
+    if(portal==="proppit"){addLog("info","Proppit no recibe envios: lee el feed publico del servidor. Con que el inmueble este activo es suficiente.");continue;}
     prog.textContent="Publicando en "+PORTAL_NAMES[portal]+"...";
     for(const prop of selProps){
       try{
-        // Simulate API call - in production this would call the real API
-        await simulatePublish(portal,prop,tok);
+        await publicarEnPortal(portal,prop);
         addLog("ok","Publicado en "+PORTAL_NAMES[portal]+": "+prop.titulo);
         ok++;
         // Update publish count in UI
@@ -335,25 +335,17 @@ async function publishSelected(){
   showAlert(msg,fail>0?"error":"success");
 }
 
-async function simulatePublish(portal,prop,tok){
+async function publicarEnPortal(portal,prop){
   if(portal==="metro"){const{data:{session}}=await sb.auth.getSession();const resp=await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token},body:JSON.stringify({propertyId:prop.id})});const data=await resp.json().catch(()=>({}));if(resp.status===201){return{success:true,id:(data.respuesta&&(data.respuesta.transactionId||data.respuesta.transaction_id))||("m2_"+Date.now())};}const errMsg=(data&&(data.error||(data.respuesta&&(data.respuesta.message||JSON.stringify(data.respuesta)))))||("Error HTTP "+resp.status);throw new Error(errMsg);}
-  await new Promise(r=>setTimeout(r,600));
-  const payload={
-    title:prop.titulo,
-    price:prop.precio,
-    type:prop.tipo_negocio,
-    property_type:prop.tipo_propiedad,
-    city:prop.ciudad,
-    neighborhood:prop.barrio,
-    area:prop.area_construida,
-    rooms:prop.habitaciones,
-    bathrooms:prop.banos,
-    parking:prop.parqueaderos,
-    description:prop.descripcion,
-    images:prop.fotos||[]
-  };
-  console.log("[Lomaz Portal] Payload para "+portal+":",JSON.stringify(payload).substring(0,100));
-  throw new Error("Publicacion simulada deshabilitada. Publica el inmueble desde Agregar propiedad para enviarlo a los portales reales.");
+  if(portal==="finca"){
+    const {data:{session}}=await sb.auth.getSession();
+    const correo=(session&&session.user)?session.user.email:null;
+    const resp=await fetch(SB_URL+"/functions/v1/publicar-en-fincaraiz",{method:"POST",headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY},body:JSON.stringify({propiedad:Object.assign({},prop,{id:prop.id,contacto_email:correo})})});
+    const data=await resp.json().catch(()=>({}));
+    if(data&&data.ok){return{success:true,id:(data.fincaraiz&&data.fincaraiz.task&&data.fincaraiz.task.id)||""};}
+    throw new Error((data&&(data.msg||data.error))||("Error HTTP "+resp.status));
+  }
+  throw new Error("Este portal no tiene envio automatico desde esta pantalla.");
 }
 
 function addLog(type,msg){
@@ -381,7 +373,7 @@ async function init(){
     if(getToken(p))updatePortalUI(p,true);
   });
   // Load properties
-  const {data:props}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,tipo_propiedad,ciudad,barrio,area_construida,habitaciones,banos,parqueaderos,descripcion,fotos").eq("asesor_id",currentUser.id).eq("estado","activa").order("created_at",{ascending:false});
+  const {data:props}=await sb.from("propiedades").select("*").eq("asesor_id",currentUser.id).eq("estado","activa").order("created_at",{ascending:false});
   myProps=props||[];
   renderPropList();
   // Add log entry for connected portals
