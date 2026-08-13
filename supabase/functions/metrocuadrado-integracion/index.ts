@@ -174,6 +174,57 @@ Deno.serve(async (req) => {
     }
     let uid = (userData && userData.user) ? userData.user.id : null;
 
+    // Ruta de estado: revisa de verdad si Metrocuadrado esta listo (no devuelve secretos).
+    if (parts.includes('estado')) {
+      const { data: cfgE } = await admin.from('configuracion_portales').select('*').eq('portal', 'metrocuadrado').maybeSingle();
+      if (!cfgE) {
+        return json({ portal: 'metrocuadrado', configurado: false, listo_para_publicar: false, mensaje: 'Aun no hay credenciales guardadas para Metrocuadrado.' }, 200);
+      }
+      const ambEst = (url.searchParams.get('ambiente') || cfgE.ambiente || 'dev').toLowerCase();
+      if (!cfgE.username || !cfgE.password || !cfgE.identification) {
+        return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, listo_para_publicar: false, mensaje: 'Faltan datos: usuario, contrasena o identificacion/NIT.' }, 200);
+      }
+      const urlsE = baseUrls(ambEst);
+      const hdrsE: Record<string, string> = { 'Content-Type': 'application/json', 'x-api-key': xApiKey(ambEst) };
+      let catStatus = 0;
+      let catOk = false;
+      try {
+        const rc = await fetch(urlsE.base + '/rest-catalogue/businesstypes/', { headers: hdrsE });
+        catStatus = rc.status;
+        const tc = await rc.text().catch(() => '');
+        catOk = rc.ok && tc.trim().charAt(0) === '[';
+      } catch (_e) {
+        catStatus = -1;
+      }
+      let credStatus = 0;
+      let credOk = false;
+      let mensajeMc = '';
+      try {
+        const rt = await fetch(urlsE.token, { method: 'POST', headers: hdrsE, body: JSON.stringify({ username: cfgE.username, password: cfgE.password, identification: cfgE.identification }) });
+        credStatus = rt.status;
+        const tt = await rt.text().catch(() => '');
+        let pt: any = null;
+        try { pt = JSON.parse(tt); } catch (_e) { pt = null; }
+        const tk = pt ? (pt.token || pt.jwt || pt.access_token || (pt.data && (pt.data.id_token || pt.data.token || pt.data.access_token))) : null;
+        credOk = !!tk;
+        let crudo = '';
+        if (pt && pt.data && pt.data.message) crudo = String(pt.data.message);
+        else if (pt && pt.message) crudo = String(pt.message);
+        else crudo = tt.slice(0, 200);
+        mensajeMc = String(crudo).split(String(cfgE.password)).join('***');
+      } catch (_e) {
+        credStatus = -1;
+        mensajeMc = 'No se pudo contactar el servidor de Metrocuadrado.';
+      }
+      const listo = !!cfgE.activo && catOk && credOk;
+      let resumen = '';
+      if (listo) resumen = 'Todo listo: llave y credenciales validas en ' + ambEst + '.';
+      else if (!cfgE.activo) resumen = 'La integracion esta desactivada (marca Activo y guarda).';
+      else if (!catOk) resumen = 'La API de Metrocuadrado no responde bien a los catalogos (status ' + catStatus + ').';
+      else if (!credOk) resumen = 'Metrocuadrado rechaza el usuario en ' + ambEst + ': ' + mensajeMc;
+      return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, catalogos_ok: catOk, catalogos_status: catStatus, credenciales_ok: credOk, credenciales_status: credStatus, mensaje_metrocuadrado: mensajeMc, listo_para_publicar: listo, resumen: resumen }, 200);
+    }
+
     try {
       const cfg = await getConfig(admin);
       const ambiente = (cfg.ambiente || "dev").toLowerCase();
