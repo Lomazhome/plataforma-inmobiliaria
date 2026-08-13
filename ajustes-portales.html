@@ -376,15 +376,32 @@ async function testPortal(portal){
     }
     return;
   }
-  await new Promise(r=>setTimeout(r,1000));
+  // Metrocuadrado: verificacion real contra su API (antes solo mostraba un mensaje de adorno)
+  if(portal==='metrocuadrado'){
+    try {
+      const { data: est, error: errEst } = await sb.functions.invoke('metrocuadrado-integracion/estado?t='+Date.now(), { method: 'GET' });
+      if(errEst || !est){
+        resultEl.className='test-result fail';
+        resultEl.textContent='No se pudo verificar con Metrocuadrado. Intenta de nuevo en un momento.';
+        return;
+      }
+      resultEl.className = est.listo_para_publicar ? 'test-result ok' : 'test-result fail';
+      const detalle = 'Ambiente: '+(est.ambiente||'?')+' | Catalogos: '+(est.catalogos_ok?'OK':'falla '+est.catalogos_status)+' | Usuario: '+(est.credenciales_ok?'OK':'rechazado');
+      resultEl.textContent = (est.resumen || 'Verificacion realizada.') + ' (' + detalle + ')';
+    } catch(e){
+      resultEl.className='test-result fail';
+      resultEl.textContent='Error al verificar con Metrocuadrado: '+(e && e.message ? e.message : e);
+    }
+    return;
+  }
+  // Los demas portales no tienen prueba en vivo: se dice la verdad, no se finge exito.
   const msgs={
-    metrocuadrado:"Credenciales guardadas. La publicacion automatica estara disponible al enviar un inmueble.",
-    proppit:"Credenciales guardadas. Proppit distribuira a 6 portales al publicar.",
-    marketplace:"Credenciales guardadas. Se usara para generar posts de Marketplace.",
-    instagram:"Credenciales guardadas. Se usara para generar posts de Instagram."
+    proppit:'Credenciales guardadas. Esta pantalla no comprueba Proppit en vivo: falta registrar el feed en su panel.',
+    marketplace:'Credenciales guardadas. No hay prueba en vivo; se usara para generar posts de Marketplace.',
+    instagram:'Credenciales guardadas. No hay prueba en vivo; se usara para generar posts de Instagram.'
   };
-  resultEl.className="test-result ok";
-  resultEl.textContent=msgs[portal]||"Credenciales guardadas correctamente.";
+  resultEl.className='test-result';
+  resultEl.textContent=msgs[portal]||'Credenciales guardadas. Este portal no tiene prueba automatica.';
 }
 </script>
 </body>
