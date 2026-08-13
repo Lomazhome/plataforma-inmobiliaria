@@ -829,7 +829,7 @@ if (json && json.ok) {
     const btnA = document.getElementById('btn-activar-fr');
     if (btnA) { btnA.style.display='inline-block'; btnA.dataset.taskId = taskId; btnA.dataset.propId = propId; }
   }, 200);
-  return { ok:true, msg: 'Enviado a Finca Raiz QA. Task ID: ' + taskId + '. Estado: Pendiente. Usa el boton ACTIVAR para publicar.' };
+  try { setTimeout(function(){ try { if (typeof window.activarEnFincaraiz === 'function') window.activarEnFincaraiz(); } catch(_e) {} }, 1500); } catch(_e) {} return { ok:true, msg: 'Enviado a Finca Raiz. Task ID: ' + taskId + '. Activando automaticamente, revisa el registro.' };
 }
 if (json && json.status === 'en_proceso') { const _tid = json.task_id || ''; window._LAST_FR_TASK_ID = _tid; window._LAST_FR_PROP_ID = propId; setTimeout(function(){ const _b = document.getElementById('btn-activar-fr'); if (_b) { _b.style.display='inline-block'; _b.dataset.taskId=_tid; _b.dataset.propId=propId; } }, 200); return { ok:false, msg: 'Finca Raiz devolvio en_proceso (task ' + (_tid || 'sin id') + '). Usa el boton ACTIVAR para completar la publicacion.' }; } if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
 return { ok:false, msg: 'Error Finca Raiz: ' + (json && json.msg ? json.msg : JSON.stringify(json).substring(0,300)) };
