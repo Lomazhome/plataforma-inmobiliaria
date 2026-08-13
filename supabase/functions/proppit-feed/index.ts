@@ -50,8 +50,8 @@ const AMENITY_MAP: Record<string,string> = {
 };
 
 function cdata(s: any): string {
-  const t = String(s ?? "").replace(/\]\]>/g, "]]]]><![CDATA[>");
-  return "<![CDATA[" + t + "]]>";
+  const t = String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/[\u0080-\uFFFF]/g, (c) => "&#" + c.charCodeAt(0) + ";");
+  return t;
 }
 
 function escapeAttr(s: any): string {
