@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Buscar en el mapa | LoMaz Home</title>
+<meta name="description" content="Busca inmuebles en venta y arriendo sobre el mapa de Bogota. Dibuja la zona que te interesa y mira solo las propiedades ubicadas dentro de ella."/>
+<link rel="canonical" href="https://www.lomazhome.com/mapa.html"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0D1B2E;--navy2:#162540;--gold:#C4992A;--gold-l:#e8d5b0;--cream:#F4E5C2;--line:rgba(201,169,110,.25);--txt:#e8edf5;--txt-soft:#9fb0c6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--navy);color:var(--txt);min-height:100vh}
+a{color:inherit;text-decoration:none}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.brand{font-size:1.35rem;letter-spacing:.5px;font-weight:600;color:var(--cream)}
+.brand span{color:var(--gold)}
+.nav a{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-soft);margin-left:1.1rem}
+.nav a:hover{color:var(--gold)}
+.bar{padding:.9rem 1.5rem;display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap;border-bottom:1px solid var(--line);background:var(--navy2)}
+.fg{display:flex;flex-direction:column;gap:.25rem}
+.fg label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+select,input[type=number]{background:#0a1424;border:1px solid var(--line);color:var(--txt);padding:.45rem .6rem;border-radius:6px;font-size:.85rem;min-width:150px}
+.btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:.45rem .9rem;border-radius:6px;font-size:.78rem;letter-spacing:.06em;cursor:pointer;text-transform:uppercase}
+.btn:hover{background:var(--gold);color:var(--navy)}
+.btn.solid{background:var(--gold);color:var(--navy)}
+.hint{font-size:.75rem;color:var(--txt-soft);padding:.55rem 1.5rem;border-bottom:1px solid var(--line);background:#0a1424}
+.hint b{color:var(--gold-l)}
+.layout{display:flex;align-items:stretch;min-height:calc(100vh - 190px)}
+#mapa{flex:1 1 auto;min-height:520px}
+.side{width:370px;max-width:42vw;border-left:1px solid var(--line);overflow-y:auto;max-height:calc(100vh - 190px);background:var(--navy2)}
+.side h2{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:.9rem 1rem .5rem}
+.card{display:flex;gap:.7rem;padding:.7rem 1rem;border-bottom:1px solid var(--line);cursor:pointer}
+.card:hover{background:rgba(201,169,110,.07)}
+.card img{width:86px;height:66px;object-fit:cover;border-radius:6px;background:#0a1424;flex-shrink:0}
+.card .t{font-size:.85rem;font-weight:600;color:var(--cream);line-height:1.25}
+.card .m{font-size:.72rem;color:var(--txt-soft);margin-top:.2rem}
+.card .p{font-size:.9rem;color:var(--gold);margin-top:.25rem;font-weight:600}
+.vacio{padding:1.2rem 1rem;font-size:.82rem;color:var(--txt-soft);line-height:1.5}
+.pop{font-family:Inter,sans-serif;min-width:200px}
+.pop img{width:100%;height:110px;object-fit:cover;border-radius:6px;margin-bottom:.4rem;background:#eee}
+.pop .pt{font-weight:700;font-size:.9rem;color:#0D1B2E;line-height:1.25}
+.pop .pm{font-size:.75rem;color:#5a6a80;margin-top:.15rem}
+.pop .pp{font-size:.95rem;color:#9c7a1f;font-weight:700;margin-top:.25rem}
+.pop a.ver{display:inline-block;margin-top:.45rem;background:#0D1B2E;color:#F4E5C2;padding:.35rem .7rem;border-radius:5px;font-size:.75rem}
+@media(max-width:820px){.layout{flex-direction:column}.side{width:100%;max-width:100%;max-height:none;border-left:none;border-top:1px solid var(--line)}#mapa{min-height:420px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html" class="brand">LoMaz <span>Home</span></a>
+  <nav class="nav">
+    <a href="index.html">Inicio</a>
+    <a href="propiedades-publica.html">Inmuebles</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+</div>
+<div class="bar">
+  <div class="fg"><label>Operacion</label><select id="fOp"><option value="">Venta y arriendo</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option></select></div>
+  <div class="fg"><label>Tipo de inmueble</label><select id="fTipo"><option value="">Todos</option><option value="apartamento">Apartamento</option><option value="apartaestudio">Apartaestudio</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitaci&oacute;n</option></select></div>
+  <div class="fg"><label>Precio maximo (COP)</label><input type="number" id="fMax" min="0" step="10000000" placeholder="Sin limite"/></div>
+  <button class="btn solid" id="btnDibujar">Dibujar zona</button>
+  <button class="btn" id="btnLimpiar">Quitar zona</button>
+  <span id="contador" style="font-size:.8rem;color:var(--txt-soft);margin-left:auto"></span>
+</div>
+<div class="hint">Mueve el mapa para ver el inventario disponible. Para buscar dentro de un sector, pulsa <b>Dibujar zona</b> y marca los vertices sobre el mapa; al cerrar el trazo solo veras los inmuebles ubicados dentro de esa franja.</div>
+<div class="layout">
+  <div id="mapa"></div>
+  <aside class="side"><h2>Inmuebles en el area</h2><div id="lista"><div class="vacio">Cargando inventario...</div></div></aside>
+</div>
+<script>
+(function(){
+  var SB=null, TODAS=[], MARCADORES={}, CAPA=null, POLI=null, mapa=null, cluster=null;
+  var LISTA=document.getElementById("lista"), CONT=document.getElementById("contador");
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function precio(v){ var n=Number(v); if(!n) return "Precio a consultar"; if(n>=1000000000) return "$ "+(n/1000000000).toFixed(2).replace(/\.00$/,"")+" mil millones"; if(n>=1000000) return "$ "+Math.round(n/1000000).toLocaleString("es-CO")+" millones"; return "$ "+n.toLocaleString("es-CO"); }
+  function foto(p){ if(p.foto_principal) return p.foto_principal; if(Array.isArray(p.fotos)&&p.fotos.length) return p.fotos[0]; if(Array.isArray(p.imagenes)&&p.imagenes.length) return p.imagenes[0]; return "data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2290%22%3E%3Crect width=%22120%22 height=%2290%22 fill=%22%230a1424%22/%3E%3C/svg%3E"; }
+  function opTexto(p){ var o=String(p.tipo_operacion||p.tipo_negocio||p.negocio||"").toLowerCase(); if(o.indexOf("arrend")>=0||o.indexOf("arrien")>=0) return "Arriendo"; if(o.indexOf("venta")>=0) return "Venta"; return o? (o.charAt(0).toUpperCase()+o.slice(1)) : ""; }
+  function esOp(p,f){ if(!f) return true; var o=String(p.tipo_operacion||p.tipo_negocio||p.negocio||"").toLowerCase(); if(f==="arriendo") return o.indexOf("arrend")>=0||o.indexOf("arrien")>=0; return o.indexOf("venta")>=0; }
+  function dentro(pt,poly){ var x=pt[1], y=pt[0], hit=false; for(var i=0,j=poly.length-1;i<poly.length;j=i++){ var xi=poly[i][1], yi=poly[i][0], xj=poly[j][1], yj=poly[j][0]; if(((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) hit=!hit; } return hit; }
+  function filtradas(){ var op=document.getElementById("fOp").value, tp=document.getElementById("fTipo").value, mx=parseFloat(document.getElementById("fMax").value); return TODAS.filter(function(p){ if(!esOp(p,op)) return false; if(tp && String(p.tipo_propiedad||"").toLowerCase()!==tp) return false; if(!isNaN(mx) && mx>0 && Number(p.precio||0)>mx) return false; if(POLI && !dentro([p.__lat,p.__lng],POLI)) return false; return true; }); }
+  function popup(p){ return "<div class=\"pop\"><img src=\""+esc(foto(p))+"\" alt=\"\"/><div class=\"pt\">"+esc(p.titulo||p.tipo_propiedad||"Inmueble")+"</div><div class=\"pm\">"+esc([opTexto(p),p.barrio,p.ciudad].filter(Boolean).join(" &middot; "))+"</div><div class=\"pp\">"+esc(precio(p.precio))+"</div><a class=\"ver\" href=\"propiedad-publica.html?id="+encodeURIComponent(p.id)+"\">Ver ficha completa</a></div>"; }
+  function pinta(){ var arr=filtradas(); if(CAPA) CAPA.clearLayers(); MARCADORES={};
+    arr.forEach(function(p){ var m=L.marker([p.__lat,p.__lng],{title:p.titulo||""}); m.bindPopup(popup(p)); m.addTo(CAPA); MARCADORES[p.id]=m; });
+    CONT.textContent=arr.length+(arr.length===1?" inmueble":" inmuebles")+(POLI?" en la zona dibujada":"");
+    if(!arr.length){ LISTA.innerHTML="<div class=\"vacio\">No hay inmuebles que cumplan estos criterios"+(POLI?" dentro de la zona dibujada":"")+". Prueba ampliando la zona o quitando filtros.</div>"; return; }
+    LISTA.innerHTML=arr.map(function(p){ return "<div class=\"card\" data-id=\""+esc(p.id)+"\"><img src=\""+esc(foto(p))+"\" alt=\"\"/><div><div class=\"t\">"+esc(p.titulo||p.tipo_propiedad||"Inmueble")+"</div><div class=\"m\">"+esc([opTexto(p),p.barrio,p.ciudad].filter(Boolean).join(" &middot; "))+"</div><div class=\"p\">"+esc(precio(p.precio))+"</div></div></div>"; }).join("");
+    Array.prototype.forEach.call(LISTA.querySelectorAll(".card"),function(c){ c.addEventListener("click",function(){ var m=MARCADORES[c.getAttribute("data-id")]; if(m){ mapa.setView(m.getLatLng(),16); m.openPopup(); } }); });
+  }
+  function ajusta(){ var arr=filtradas(); if(!arr.length) return; var b=L.latLngBounds(arr.map(function(p){ return [p.__lat,p.__lng]; })); mapa.fitBounds(b.pad(0.25)); }
+  async function cargar(){
+    try{
+      var cfg=await (await fetch("config.js")).text();
+      var url=(cfg.match(/https:\/\/[a-z0-9]+\.supabase\.co/)||[])[0];
+      var key=(cfg.match(/eyJ[\w.\-]+/)||[])[0];
+      if(!url||!key) throw new Error("configuracion no disponible");
+      SB=window.supabase.createClient(url,key);
+      var r=await SB.from("propiedades").select("id,titulo,tipo_operacion,tipo_negocio,negocio,tipo_propiedad,precio,barrio,ciudad,latitud,longitud,foto_principal,fotos,imagenes,estado").eq("estado","activa");
+      if(r.error) throw r.error;
+      var todas=r.data||[];
+      TODAS=todas.map(function(p){ p.__lat=parseFloat(p.latitud); p.__lng=parseFloat(p.longitud); return p; }).filter(function(p){ return !isNaN(p.__lat)&&!isNaN(p.__lng); });
+      var sinCoord=todas.length-TODAS.length;
+      pinta(); ajusta();
+      if(sinCoord>0){ var h=document.querySelector(".hint"); if(h) h.innerHTML+=" <b>Nota:</b> "+sinCoord+(sinCoord===1?" inmueble aun no tiene":" inmuebles aun no tienen")+" ubicacion en el mapa; puedes verlos en el listado de <a href=\"propiedades-publica.html\" style=\"color:var(--gold)\">Inmuebles</a>."; }
+    }catch(e){ LISTA.innerHTML="<div class=\"vacio\">No se pudo cargar el inventario. Detalle: "+esc((e&&e.message)||e)+"</div>"; }
+  }
+  function iniciar(){
+    mapa=L.map("mapa",{scrollWheelZoom:true}).setView([4.6533,-74.0836],12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(mapa);
+    CAPA=L.featureGroup().addTo(mapa);
+    var dibujo=new L.FeatureGroup(); mapa.addLayer(dibujo);
+    var dibujar=new L.Draw.Polygon(mapa,{shapeOptions:{color:"#C4992A",weight:2,fillOpacity:.08}});
+    document.getElementById("btnDibujar").addEventListener("click",function(){ dibujo.clearLayers(); POLI=null; dibujar.enable(); });
+    document.getElementById("btnLimpiar").addEventListener("click",function(){ dibujo.clearLayers(); POLI=null; pinta(); ajusta(); });
+    mapa.on(L.Draw.Event.CREATED,function(e){ dibujo.clearLayers(); dibujo.addLayer(e.layer); POLI=e.layer.getLatLngs()[0].map(function(ll){ return [ll.lat,ll.lng]; }); pinta(); });
+    ["fOp","fTipo","fMax"].forEach(function(id){ var el=document.getElementById(id); el.addEventListener("change",function(){ pinta(); ajusta(); }); el.addEventListener("input",function(){ pinta(); }); });
+    var q=new URLSearchParams(window.location.search);
+    if(q.get("negocio")) document.getElementById("fOp").value=q.get("negocio");
+    if(q.get("tipo")) document.getElementById("fTipo").value=q.get("tipo");
+    cargar();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else iniciar();
+})();
+</script>
+</body>
+</html>
