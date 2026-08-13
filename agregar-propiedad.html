@@ -209,7 +209,7 @@ img,video,iframe{max-width:100%}
 <div class="card"><h3>&#128203; Informacion <em>Basica</em></h3>
 <div class="form-grid">
 <div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
-<div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitacion</option></select></div>
+<div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="apartaestudio">Apartaestudio</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitacion</option></select></div>
 <div class="form-group"><label>ESTADO DE LA PROPIEDAD *</label><select id="status_propiedad"><option value="borrador">Borrador (no visible)</option><option value="activa" selected>Activa (publicada)</option><option value="pausada">Pausada (oculta temporal)</option><option value="vendida">Vendida</option><option value="arrendada">Arrendada</option><option value="reservada">Reservada</option></select></div>
 <div class="form-group"><label>EXCLUSIVA</label><select id="exclusiva"><option value="no">No</option><option value="si">Si (LoMaz Home exclusiva)</option></select></div>
 <div class="form-group full"><label>TITULO DEL AVISO *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
@@ -219,7 +219,7 @@ img,video,iframe{max-width:100%}
 <div class="form-group"><label>AREA DE TERRENO (m2)</label><input type="number" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
 <div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
 <div class="form-group"><label>BAÑOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
-<div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div><div class="form-group"><label>TIPO DE PARQUEADERO</label><select id="tipo_parqueadero"><option value="">Seleccionar</option><option value="privado">Privado / Propio</option><option value="comunal">Comunal</option><option value="mixto">Privado y comunal</option></select></div>
 <div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
 <div class="form-group"><label>ANTIGÜEDAD (años)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
 <div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
@@ -318,6 +318,7 @@ img,video,iframe{max-width:100%}
 <label class="char-item"><input type="checkbox" name="char" value="Zona de ropas"/> <span>Zona de ropas</span></label>
 <div class="amenity-group-title">Cocina y Equipamiento</div>
 <label class="char-item"><input type="checkbox" name="char" value="Cocina integral"/> <span>Cocina integral</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Cocina semi-integral"/> <span>Cocina semi-integral</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Cocina abierta"/> <span>Cocina abierta</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Cocina americana"/> <span>Cocina americana</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Comedor auxiliar"/> <span>Comedor auxiliar</span></label>
@@ -335,6 +336,8 @@ img,video,iframe{max-width:100%}
 <label class="char-item"><input type="checkbox" name="char" value="Parqueadero doble"/> <span>Parqueadero doble</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Parqueadero visitantes"/> <span>Parqueadero visitantes</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Parqueadero moto"/> <span>Parqueadero moto</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero privado"/> <span>Parqueadero privado</span></label>
+<label class="char-item"><input type="checkbox" name="char" value="Parqueadero comunal"/> <span>Parqueadero comunal</span></label>
 <div class="amenity-group-title">Vista y Entorno</div>
 <label class="char-item"><input type="checkbox" name="char" value="Vista al mar"/> <span>Vista al mar</span></label>
 <label class="char-item"><input type="checkbox" name="char" value="Vista a la montaña"/> <span>Vista a la montaña</span></label>
@@ -360,7 +363,8 @@ img,video,iframe{max-width:100%}
 <div class="form-grid" style="margin-top:1.5rem">
 <div class="form-group"><label>DEPÓSITO INCLUIDO</label><select id="deposito"><option value="false">No</option><option value="true">Si</option></select></div>
 <div class="form-group"><label>UNIDAD CERRADA</label><select id="unidad_cerrada"><option value="no">No</option><option value="si">Si (conjunto/edificio cerrado)</option></select></div>
-<div class="form-group"><label>TIPO DE PISO PRINCIPAL</label><select id="tipo_piso"><option value="">Seleccionar</option><option value="madera">Madera</option><option value="porcelanato">Porcelanato</option><option value="ceramica">Ceramica</option><option value="marmol">Marmol</option><option value="alfombra">Alfombra</option><option value="vinilo">Vinilo</option><option value="laminado">Laminado</option></select></div>
+<div class="form-group"><label>TIPO DE PISO PRINCIPAL</label><select id="tipo_piso"><option value="">Seleccionar</option><option value="madera">Madera</option><option value="porcelanato">Porcelanato</option><option value="ceramica">Ceramica</option><option value="marmol">Marmol</option><option value="alfombra">Alfombra</option><option value="vinilo">Vinilo</option><option value="laminado">Laminado</option><option value="baldosa">Baldosa</option><option value="cera_epoxica">Cera ep&oacute;xica</option><option value="otro">Otros (especificar)</option></select></div>
+<div class="form-group" id="grupo_tipo_piso_otro" style="display:none"><label>ESPECIFIQUE EL MATERIAL DEL PISO</label><input type="text" id="tipo_piso_otro" placeholder="Ej: cemento pulido, piedra, gres"></div>
 <div class="form-group"><label>NUMERO DE NIVELES</label><input type="number" id="niveles" placeholder="1" min="1" max="10"/></div>
 </div>
 </div>
@@ -437,6 +441,15 @@ function __applyTipoFields(){ const tp=((document.getElementById("tipo_propiedad
 document.addEventListener("DOMContentLoaded",function(){ const t=document.getElementById("tipo_propiedad"); if(t){ t.addEventListener("change",__applyTipoFields); __applyTipoFields(); } });
 // ===== Mapa + geocodificacion (Leaflet + Nominatim, sin API key) =====
 window.__map=null; window.__marker=null;
+/* LomazHome: material de piso "Otros" + tipo de parqueadero (privado/comunal) */
+function __togglePisoOtro(){ try{ var s=document.getElementById("tipo_piso"), g=document.getElementById("grupo_tipo_piso_otro"); if(!s||!g) return; var es=(s.value==="otro"); g.style.display= es? "" : "none"; if(!es){ var i=document.getElementById("tipo_piso_otro"); if(i) i.value=""; } }catch(_e){} }
+function __getTipoPiso(){ try{ var s=document.getElementById("tipo_piso"); if(!s) return null; if(s.value==="otro"){ var i=document.getElementById("tipo_piso_otro"); var t=i? String(i.value||"").trim() : ""; return t? t : null; } return s.value||null; }catch(_e){ return null; } }
+function __setTipoPiso(val){ try{ var s=document.getElementById("tipo_piso"); if(!s) return; var t=(val==null)? "" : String(val).trim(); if(!t){ s.value=""; __togglePisoOtro(); return; } var enc=null; for(var i=0;i<s.options.length;i++){ if(String(s.options[i].value).toLowerCase()===t.toLowerCase()){ enc=s.options[i].value; break; } } if(enc!==null){ s.value=enc; __togglePisoOtro(); } else { s.value="otro"; __togglePisoOtro(); var inp=document.getElementById("tipo_piso_otro"); if(inp) inp.value=t; } }catch(_e){} }
+function __charSet(val,on){ var cbs=document.querySelectorAll('input[name="char"]'); for(var i=0;i<cbs.length;i++){ if(cbs[i].value===val) cbs[i].checked=!!on; } }
+function __charHas(val){ var cbs=document.querySelectorAll('input[name="char"]'); for(var i=0;i<cbs.length;i++){ if(cbs[i].value===val) return cbs[i].checked; } return false; }
+function __syncParqDesdeSelect(){ try{ var s=document.getElementById("tipo_parqueadero"); if(!s) return; var v=s.value; __charSet("Parqueadero privado", v==="privado"||v==="mixto"); __charSet("Parqueadero comunal", v==="comunal"||v==="mixto"); }catch(_e){} }
+function __syncParqDesdeChecks(){ try{ var s=document.getElementById("tipo_parqueadero"); if(!s) return; var p=__charHas("Parqueadero privado"), c=__charHas("Parqueadero comunal"); s.value=(p&&c)?"mixto":(p?"privado":(c?"comunal":"")); }catch(_e){} }
+document.addEventListener("DOMContentLoaded", function(){ var s=document.getElementById("tipo_piso"); if(s) s.addEventListener("change", __togglePisoOtro); __togglePisoOtro(); var tp=document.getElementById("tipo_parqueadero"); if(tp) tp.addEventListener("change", __syncParqDesdeSelect); var cbs=document.querySelectorAll('input[name="char"]'); for(var i=0;i<cbs.length;i++){ if(cbs[i].value==="Parqueadero privado"||cbs[i].value==="Parqueadero comunal"){ cbs[i].addEventListener("change", __syncParqDesdeChecks); } } });
 function __setLatLng(lat,lng){ const la=document.getElementById("latitud"); const lo=document.getElementById("longitud"); if(la) la.value=Number(lat).toFixed(7); if(lo) lo.value=Number(lng).toFixed(7); }
 function __ensureMap(){ if(window.__map) { setTimeout(function(){ window.__map.invalidateSize(); },200); return; } const el=document.getElementById("mapa"); if(!el||!window.L) return; const startLat=4.7110, startLng=-74.0721; window.__map=L.map("mapa").setView([startLat,startLng],11); L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(window.__map); window.__marker=L.marker([startLat,startLng],{draggable:true}).addTo(window.__map); window.__marker.on("dragend",function(e){ const p=e.target.getLatLng(); __setLatLng(p.lat,p.lng); }); window.__map.on("click",function(e){ window.__marker.setLatLng(e.latlng); __setLatLng(e.latlng.lat,e.latlng.lng); }); setTimeout(function(){ window.__map.invalidateSize(); },200); const la=document.getElementById("latitud"), lo=document.getElementById("longitud"); if(la&&lo&&la.value&&lo.value){ const cv=[parseFloat(la.value),parseFloat(lo.value)]; window.__map.setView(cv,16); window.__marker.setLatLng(cv); } }
 async function __geocodeDireccion(){ const st=document.getElementById("geoStatus"); const v=function(id){ return ((document.getElementById(id)||{}).value||"").trim(); }; const dir=v("direccion"), barrio=v("barrio"), ciudad=v("ciudad"), depto=v("departamento"); if(!ciudad){ st.textContent="Escribe al menos la ciudad."; return; } const attempts=[]; if(dir&&barrio&&ciudad) attempts.push([dir,barrio,ciudad,"Colombia"]); if(barrio&&ciudad) attempts.push([barrio,ciudad,"Colombia"]); if(dir&&ciudad) attempts.push([dir,ciudad,"Colombia"]); if(ciudad&&depto) attempts.push([ciudad,depto,"Colombia"]); attempts.push([ciudad,"Colombia"]); st.textContent="Buscando..."; for(let i=0;i<attempts.length;i++){ const q=attempts[i].filter(Boolean).join(", "); try{ const r=await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=co&q="+encodeURIComponent(q)); const data=await r.json(); if(data&&data.length){ const lat=parseFloat(data[0].lat), lng=parseFloat(data[0].lon); __ensureMap(); window.__map.setView([lat,lng], i===0?17:(i<3?15:13)); window.__marker.setLatLng([lat,lng]); __setLatLng(lat,lng); st.textContent=(i===0?"Ubicaci\u00f3n exacta encontrada.":"Ubicaci\u00f3n aproximada ("+q+"). Arrastra el marcador para ajustar.")+""; return; } }catch(e){ console.error("geocode attempt error",e); } } st.textContent="No se encontr\u00f3 la direcci\u00f3n. Haz clic en el mapa o arrastra el marcador para fijar el punto."; }
@@ -577,7 +590,7 @@ piso: parseInt(v("piso"))||0,
 pisos_totales: parseInt(v("niveles"))||null,
 acepta_creditos: v("acepta_credito") === "si",
 deposito: v("deposito")==="true",
-tipo_piso: v("tipo_piso") || null,
+tipo_piso: __getTipoPiso(),
 descripcion: v("descripcion").trim(),
 departamento: v("departamento"),
 ciudad: v("ciudad").trim(),
@@ -1087,12 +1100,13 @@ try {
       sv('tipo_operacion', r.tipo_operacion); sv('tipo_propiedad', r.tipo_propiedad);
       sv('status_propiedad', r.estado);
       sv('acepta_credito', r.acepta_creditos ? 'si' : 'no');
-      sv('deposito', r.deposito ? 'true':'false'); sv('tipo_piso', r.tipo_piso);
+      sv('deposito', r.deposito ? 'true':'false'); __setTipoPiso(r.tipo_piso);
       sv('departamento', r.departamento);
       setTimeout(function(){ sv('ciudad', r.ciudad); setTimeout(function(){ sv('barrio', r.barrio); }, 250); }, 350);
       var h1 = document.querySelector('.page-title') || document.querySelector('h1');
       if(h1){ h1.innerHTML = h1.innerHTML.replace(/Agregar/i,'Editar'); }
       document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); } try{ (async function(){ try{ var _sbq = window.__editClient || (typeof getClient==='function' ? await getClient() : null); if(!_sbq) return; var _pp = await _sbq.from('publicaciones_portales').select('estado,url_publicacion').eq('propiedad_id', r.id).eq('portal','fincaraiz').maybeSingle(); var _row = _pp && _pp.data; if(!_row) return; var _bt = document.getElementById('btn-activar-fr'); if(!_bt) return; _bt.dataset.propId = String(r.id); if(_row.url_publicacion) _bt.dataset.listingId = _row.url_publicacion; _bt.style.display = 'inline-block'; if(_row.estado === 'activo'){ _bt.disabled = true; _bt.textContent = 'Activada en Finca Raiz'; _bt.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; _bt.style.color = '#fff'; } else { _bt.disabled = false; _bt.textContent = 'Activar en Finca Raiz (pasar de Pendiente a Activa)'; } }catch(_be){ console.error('init boton activar FR', _be); } })(); }catch(_bx){}
+      try{ if(typeof __syncParqDesdeChecks==="function") __syncParqDesdeChecks(); }catch(_e){}
     }catch(e){ console.error('prefill err', e); }
   }
   function installSaveOverride(){
@@ -1115,7 +1129,7 @@ try {
           estrato: parseInt(gv('estrato'))||1, antiguedad: parseInt(gv('antiguedad'))||0,
           piso: parseInt(gv('piso'))||0, pisos_totales: parseInt(gv('niveles'))||null,
           acepta_creditos: gv('acepta_credito')==='si', deposito: gv('deposito')==='true',
-          tipo_piso: gv('tipo_piso')||null, descripcion: gv('descripcion').trim(),
+          tipo_piso: __getTipoPiso(), descripcion: gv('descripcion').trim(),
           departamento: gv('departamento'), ciudad: gv('ciudad').trim(),
           barrio: gv('barrio').trim(), direccion: gv('direccion').trim()||null,
           latitud: parseFloat(gv('latitud'))||null, longitud: parseFloat(gv('longitud'))||null,
