@@ -131,7 +131,7 @@ h1{color:#12233F !important;}
     var SKEY=(cfg.match(/eyJ[\w.\-]+/)||[])[0];
     SB=window.supabase.createClient(SURL,SKEY); try{ var __ur=await SB.auth.getUser(); var __u=__ur&&__ur.data?__ur.data.user:null; if(__u){ try{ var __mp=await SB.from('perfiles_usuarios').select('nombre_completo').eq('id',__u.id).single(); if(__mp&&__mp.data&&__mp.data.nombre_completo){ myName=__mp.data.nombre_completo; } }catch(__me){} var __lb=document.getElementById('navLoginBtn'); if(__lb){ __lb.textContent='Mi Panel'; __lb.setAttribute('href','/dashboard.html'); } } }catch(__se){}
   }catch(e){}
-  if(typeof __u==='undefined' || !__u){ location.replace('/login.html?redirect='+encodeURIComponent(location.pathname+location.search)); return; }
+  var __visitante = (typeof __u==='undefined' || !__u); /* visitante externo: ve la ficha en modo lectura, sin acciones internas */
   var p=null;
   try{ var r=await SB.from('propiedades').select('*').eq('id',ID).single(); p=r.data; }catch(e){}
   if(!p){app.innerHTML='<div class="center-msg">No se encontro la propiedad o no esta disponible.</div>';return;}
