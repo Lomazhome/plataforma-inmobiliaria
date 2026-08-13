@@ -69,7 +69,7 @@ function buildListingPayload(p) {
     description: p.descripcion || p.titulo || "Inmueble LoMaz Home",
     price: Number(p.precio) || 0,
     currency: "COP",
-    area: Number(p.m2_construccion) || 0,
+    area: Number(p.m2_construccion) || Number(p.area_construida) || Number(p.area_total) || 0,
     address: { address: p.direccion || p.barrio || p.ciudad || "Bogota" },
     locations: {
       location_point: {
