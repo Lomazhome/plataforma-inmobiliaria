@@ -353,7 +353,7 @@ async function simulatePublish(portal,prop,tok){
     images:prop.fotos||[]
   };
   console.log("[Lomaz Portal] Payload para "+portal+":",JSON.stringify(payload).substring(0,100));
-  return {success:true,id:"sim_"+Date.now()};
+  throw new Error("Publicacion simulada deshabilitada. Publica el inmueble desde Agregar propiedad para enviarlo a los portales reales.");
 }
 
 function addLog(type,msg){
