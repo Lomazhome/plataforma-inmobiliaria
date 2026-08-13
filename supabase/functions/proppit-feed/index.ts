@@ -108,13 +108,13 @@ function buildListing(p: any, contact: any): string {
   if (p.piso) lines.push("    <floor>" + cdata(Math.round(Number(p.piso) || 0)) + "</floor>");
   if (p.precio_admin && Number(p.precio_admin) > 0) lines.push("    <maintenanceFee currency=\"COP\">" + Math.round(Number(p.precio_admin)) + "</maintenanceFee>");
 
-  if (!isLand && p.m2_construccion) {
-    lines.push("    <floorArea unit=\"sqm\">" + Math.round(Number(p.m2_construccion)) + "</floorArea>");
+  if (!isLand && (Number(p.m2_construccion) || Number(p.area_construida))) {
+    lines.push("    <floorArea unit=\"sqm\">" + Math.round(Number(p.m2_construccion) || Number(p.area_construida)) + "</floorArea>");
   }
-  if (isLand && p.m2_terreno) {
-    lines.push("    <plotArea unit=\"sqm\">" + Math.round(Number(p.m2_terreno)) + "</plotArea>");
-  } else if (p.m2_terreno && (tipoProppit === "house" || tipoProppit === "villa")) {
-    lines.push("    <plotArea unit=\"sqm\">" + Math.round(Number(p.m2_terreno)) + "</plotArea>");
+  if (isLand && (Number(p.m2_terreno) || Number(p.area_total))) {
+    lines.push("    <plotArea unit=\"sqm\">" + Math.round(Number(p.m2_terreno) || Number(p.area_total)) + "</plotArea>");
+  } else if ((Number(p.m2_terreno) || Number(p.area_total)) && (tipoProppit === "house" || tipoProppit === "villa")) {
+    lines.push("    <plotArea unit=\"sqm\">" + Math.round(Number(p.m2_terreno) || Number(p.area_total)) + "</plotArea>");
   }
 
   if (fotos.length > 0) {
