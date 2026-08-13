@@ -75,7 +75,7 @@ function buildListing(p: any, contact: any): string {
   lines.push("      <phone>" + cdata(contact.phone || "3003300343") + "</phone>");
   lines.push("      <whatsapp>" + cdata(contact.whatsapp || "3003300343") + "</whatsapp>");
   if (contact.email) lines.push("      <email>" + cdata(contact.email) + "</email>");
-  if (contact.name) lines.push("      <name>" + cdata(contact.name) + "</name>");
+  lines.push("      <name>" + cdata(contact.name || "Lomaz Home") + "</name>");
   lines.push("    </contact>");
   lines.push("    <title>" + cdata(p.titulo || "") + "</title>");
   lines.push("    <description>" + cdata(p.descripcion || "") + "</description>");
