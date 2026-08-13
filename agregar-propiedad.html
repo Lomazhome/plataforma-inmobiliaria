@@ -1036,7 +1036,7 @@ try {
     function render(props){ lista.innerHTML=""; if(!props||!props.length){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#999;\">No hay inmuebles registrados aún.</div>"; return; } props.forEach(function(p,i){ lista.appendChild(tarjeta(p,i)); }); }
     if(cache){ render(cache); return; }
     lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#999;\">Cargando…</div>";
-    fetch(API_URL).then(function(r){ return r.json(); }).then(function(d){ if(d&&d.ok){ cache=d.properties; render(cache); } else { lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">Error al cargar.</div>"; } }).catch(function(e){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">No se pudo conectar con Captación.</div>"; });
+    fetch(API_URL).then(function(r){ return r.json(); }).then(function(d){ if(d&&d.ok){ cache=d.properties; render(cache); } else { lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">Error al cargar.<br><small>Detalle: "+((d&&d.error)?d.error:"la respuesta de Captacion no es valida")+"</small></div>"; } }).catch(function(e){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">No se pudo conectar con Captación.<br><small>Detalle: "+((e&&e.message)?e.message:String(e))+"</small><br><small>Si el detalle dice Failed to fetch, revisa la CSP en vercel.json o que la app de Captacion este publicada para Cualquier persona.</small></div>"; try{ console.error("[Captacion] Error al conectar:", e); }catch(_ce){} });
   }
   function init(){
     var b=$("btnImportarCaptacion"); if(b) b.addEventListener("click",abrir);
