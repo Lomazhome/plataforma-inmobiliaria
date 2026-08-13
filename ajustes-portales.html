@@ -292,17 +292,43 @@ const FIELDS={
   marketplace:{key:"fb-token",secondary:"fb-pageid",keyName:"page_access_token",secName:"page_id"},
   instagram:{key:"ig-token",secondary:"ig-accountid",keyName:"access_token",secName:"account_id"}
 };
+function pintarBadge(portal,clase,texto,titulo){
+  const badge=document.getElementById('badge-'+portal);
+  if(!badge)return;
+  badge.className='portal-status-badge '+clase;
+  badge.textContent=texto;
+  badge.title=titulo||'';
+}
+// Revisa el estado de verdad, en vez de suponerlo porque hay datos guardados.
+async function verificarEstadoReal(){
+  try{
+    const {data:est,error:errEst}=await sb.functions.invoke('metrocuadrado-integracion/estado?t='+Date.now(),{method:'GET'});
+    const card=document.getElementById('card-metrocuadrado');
+    if(errEst||!est){
+      pintarBadge('metrocuadrado','badge-unavailable','Sin verificar','No se pudo consultar el estado en este momento.');
+    } else if(est.listo_para_publicar){
+      pintarBadge('metrocuadrado','badge-connected','Conectado','Llave y credenciales validas en '+(est.ambiente||''));
+      if(card)card.classList.add('connected');
+    } else {
+      pintarBadge('metrocuadrado','badge-disconnected','Falta activar',est.resumen||'Metrocuadrado todavia no acepta la publicacion.');
+      if(card)card.classList.remove('connected');
+    }
+  }catch(e){
+    pintarBadge('metrocuadrado','badge-unavailable','Sin verificar','Error al consultar: '+(e&&e.message?e.message:e));
+  }
+  pintarBadge('fincaraiz','badge-unavailable','Se configura en el servidor','Las credenciales de Finca Raiz viven como secretos en el servidor, no en esta pantalla. Hoy apuntan al ambiente de pruebas de Finca Raiz.');
+  pintarBadge('proppit','badge-unavailable','Se configura en el servidor','Proppit lee un feed publico del servidor. Falta registrar la direccion del feed en el panel de Proppit.');
+}
 async function loadCredentials(){
   const{data:creds}=await sb.from("configuracion_portales").select("*");
-  if(!creds)return;
+  if(!creds){await verificarEstadoReal();return;}
   for(const c of creds){
     const f=FIELDS[c.portal];
     if(!f)continue;
     const badge=document.getElementById("badge-"+c.portal);
     const card=document.getElementById("card-"+c.portal);
     if(c.activo&&c[f.keyName]){
-      if(badge){badge.className="portal-status-badge badge-connected";badge.textContent="Conectado";}
-      if(card)card.classList.add("connected");
+      if(badge){badge.className='portal-status-badge badge-disconnected';badge.textContent='Guardado (sin verificar)';badge.title='Los datos estan guardados, pero esta pantalla aun no ha comprobado si el portal los acepta.';}
     }
     // Show masked key
     const el=document.getElementById(f.key);
@@ -313,6 +339,7 @@ async function loadCredentials(){
       if(c.portal==="metrocuadrado"){const identEl=document.getElementById("metro-identification");if(identEl&&c.identification)identEl.value=c.identification;const ambEl=document.getElementById("metro-ambiente");if(ambEl&&c.ambiente)ambEl.value=c.ambiente;}
     }
   }
+  await verificarEstadoReal();
 }
 async function savePortal(portal){
   const f=FIELDS[portal];
