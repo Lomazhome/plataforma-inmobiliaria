@@ -316,7 +316,21 @@ async function verificarEstadoReal(){
   }catch(e){
     pintarBadge('metrocuadrado','badge-unavailable','Sin verificar','Error al consultar: '+(e&&e.message?e.message:e));
   }
-  pintarBadge('fincaraiz','badge-unavailable','Se configura en el servidor','Las credenciales de Finca Raiz viven como secretos en el servidor, no en esta pantalla. Hoy apuntan al ambiente de pruebas de Finca Raiz.');
+  // Finca Raiz: se pregunta al servidor si la llave sirve y a que ambiente apunta.
+  try{
+    const {data:efr,error:errFr}=await sb.functions.invoke('publicar-en-fincaraiz/estado?t='+Date.now(),{method:'GET'});
+    if(errFr||!efr){
+      pintarBadge('fincaraiz','badge-unavailable','Sin verificar','No se pudo consultar el estado de Finca Raiz en este momento.');
+    }else if(efr.listo_para_publicar){
+      pintarBadge('fincaraiz','badge-connected','Conectado',efr.resumen||'Finca Raiz acepta las credenciales y apunta al ambiente real.');
+    }else if(efr.credenciales_ok&&efr.ambiente!=='produccion'){
+      pintarBadge('fincaraiz','badge-disconnected','Solo pruebas',efr.resumen||'Las credenciales sirven pero apuntan al ambiente de pruebas de Finca Raiz. Lo que publiques no saldra en fincaraiz.com.co.');
+    }else{
+      pintarBadge('fincaraiz','badge-disconnected','Falta credencial',efr.resumen||'Finca Raiz no acepta la llave configurada en el servidor.');
+    }
+  }catch(e){
+    pintarBadge('fincaraiz','badge-unavailable','Sin verificar','Error al consultar Finca Raiz: '+(e&&e.message?e.message:e));
+  }
   pintarBadge('proppit','badge-unavailable','Se configura en el servidor','Proppit lee un feed publico del servidor. Falta registrar la direccion del feed en el panel de Proppit.');
 }
 async function loadCredentials(){
