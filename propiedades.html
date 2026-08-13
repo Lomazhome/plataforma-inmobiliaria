@@ -208,11 +208,14 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
         <span class="filter-label">Inmueble</span>
         <div class="chips" id="chips-tipo">
           <button class="chip active" data-val="" onclick="setChip(this,'tipo')">Todos</button>
-          <button class="chip" data-val="Apartamento" onclick="setChip(this,'tipo')">Apto</button>
-          <button class="chip" data-val="Casa" onclick="setChip(this,'tipo')">Casa</button>
-          <button class="chip" data-val="Oficina" onclick="setChip(this,'tipo')">Oficina</button>
-          <button class="chip" data-val="Local" onclick="setChip(this,'tipo')">Local</button>
-          <button class="chip" data-val="Apartaestudio" onclick="setChip(this,'tipo')">Aparta-estudio</button>
+          <button class="chip" data-val="apartamento" onclick="setChip(this,'tipo')">Apto</button>
+          <button class="chip" data-val="apartaestudio" onclick="setChip(this,'tipo')">Aparta-estudio</button>
+          <button class="chip" data-val="casa" onclick="setChip(this,'tipo')">Casa</button>
+          <button class="chip" data-val="oficina" onclick="setChip(this,'tipo')">Oficina</button>
+          <button class="chip" data-val="local" onclick="setChip(this,'tipo')">Local</button>
+          <button class="chip" data-val="bodega" onclick="setChip(this,'tipo')">Bodega</button>
+          <button class="chip" data-val="lote" onclick="setChip(this,'tipo')">Lote</button>
+          <button class="chip" data-val="finca" onclick="setChip(this,'tipo')">Finca/Rural</button>
         </div>
       </div>
       <div class="filter-group">
@@ -605,7 +608,7 @@ const sc=document.createElement("script");sc.type="application/ld+json";sc.text=
   const tipo = p.get('tipo');
   const zona = p.get('zona');
   if (tipo) {
-    const m = {'apartamento':'Apartamento','casa':'Casa','oficina':'Oficina','local':'Local'};
+    const m = {}; /* los data-val ya usan el mismo slug que la base de datos */
     const chip = document.querySelector('.chip[data-val="' + (m[tipo]||tipo) + '"]');
     if (chip) chip.dispatchEvent(new MouseEvent('click',{bubbles:true}));
   }
