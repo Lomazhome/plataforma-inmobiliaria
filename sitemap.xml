@@ -25,6 +25,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.lomazhome.com/equipo</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.lomazhome.com/sobre-nosotros.html</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
