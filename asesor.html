@@ -3,8 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfil del Asesor | LoMaz Home</title>
+<title>Tarjeta digital | LoMaz Home</title>
+<meta name="description" content="Tarjeta de presentacion digital del equipo LoMaz Home: contacto directo por WhatsApp, llamada y correo, mas el portafolio de propiedades del asesor.">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="LoMaz Home">
+<meta property="og:title" content="Tarjeta digital | LoMaz Home">
+<meta property="og:description" content="Inmobiliaria boutique en Bogota. Contacto directo con tu asesor y portafolio de propiedades.">
+<meta property="og:image" content="https://www.lomazhome.com/og-home.jpg">
+<meta property="og:url" content="https://www.lomazhome.com/asesor.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://www.lomazhome.com/asesor.html">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="config.js"></script>
 <style>
 :root{--navy:#0f2038;--gold:#b8860b;}
@@ -16,13 +26,26 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
 .topbar a{color:#fff;text-decoration:none;font-size:.9rem;}
 .wrap{max-width:1100px;margin:0 auto;padding:32px 20px;}
 .hero{background:var(--navy);color:#fff;border-radius:16px;padding:36px;display:flex;gap:28px;align-items:center;flex-wrap:wrap;}
-.hero .foto{width:140px;height:140px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);background:#1a2f4d;display:flex;align-items:center;justify-content:center;font-size:3rem;color:var(--gold);}
+.hero .foto{width:140px;height:140px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);background:#1a2f4d;display:flex;align-items:center;justify-content:center;font-size:3rem;color:var(--gold);flex-shrink:0;}
+.hero .info{flex:1;min-width:260px;}
 .hero h1{font-size:2rem;margin-bottom:6px;}
-.hero .rol{color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:.85rem;margin-bottom:14px;}
-.hero .contacto{font-size:.95rem;line-height:1.8;}
-.hero .contacto b{color:var(--gold);}
-.hero .bio{margin-top:12px;font-size:.92rem;opacity:.9;max-width:520px;}
-.cta{display:inline-block;margin-top:14px;background:var(--gold);color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:600;}
+.hero .rol{color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;margin-bottom:14px;}
+.hero .bio{margin:14px 0;line-height:1.55;color:#dfe6f0;max-width:640px;}
+.hero .contacto{font-size:.95rem;line-height:1.75;color:#dfe6f0;}
+.hero .contacto a{color:#fff;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.4);}
+.acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+.cta{display:inline-block;background:var(--gold);color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:600;border:none;cursor:pointer;font-size:.95rem;font-family:inherit;}
+.cta.alt{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);}
+.redes{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.redes a{display:inline-block;padding:8px 14px;border-radius:20px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;font-size:.85rem;}
+.utilidades{display:flex;gap:22px;flex-wrap:wrap;align-items:stretch;margin-top:24px;}
+.qrbox{background:#fff;border-radius:14px;padding:18px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.08);width:210px;}
+.qrbox p{font-size:.75rem;color:#667085;margin-top:10px;line-height:1.4;}
+.enlace-box{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 22px rgba(0,0,0,.08);flex:1;min-width:280px;}
+.enlace-box label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#667085;display:block;margin-bottom:8px;font-weight:700;}
+.enlace-box .url{font-size:.9rem;word-break:break-all;background:#f5f5f0;border-radius:8px;padding:10px;margin-bottom:12px;}
+.enlace-box .cta{background:var(--navy);}
+.enlace-box .cta.alt{background:transparent;color:var(--navy);border:1px solid var(--navy);}
 h2.sec{margin:38px 0 18px;font-size:1.5rem;border-left:4px solid var(--gold);padding-left:12px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;}
 .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 22px rgba(0,0,0,.08);transition:transform .2s;}
@@ -32,9 +55,10 @@ h2.sec{margin:38px 0 18px;font-size:1.5rem;border-left:4px solid var(--gold);pad
 .card .title{font-weight:700;font-size:1.05rem;margin-bottom:6px;}
 .card .loc{color:#667085;font-size:.85rem;margin-bottom:10px;}
 .card .price{color:var(--gold);font-weight:700;font-size:1.15rem;}
-.card a.ver{display:inline-block;margin-top:12px;color:var(--navy);font-weight:600;text-decoration:none;border:1px solid var(--navy);padding:7px 16px;border-radius:7px;font-size:.85rem;}
-.empty{text-align:center;color:#667085;padding:50px;}
-.foot{text-align:center;color:#667085;padding:30px;font-size:.85rem;}
+.card a.ver{display:inline-block;margin-top:12px;color:var(--navy);font-weight:600;text-decoration:none;border-bottom:2px solid var(--gold);}
+.empty{background:#fff;border-radius:14px;padding:28px;text-align:center;color:#667085;}
+.foot{background:var(--navy);color:#fff;text-align:center;padding:22px;font-size:.85rem;margin-top:40px;}
+@media(max-width:640px){.hero{padding:24px;justify-content:center;text-align:center;}.hero .info{text-align:center;}.acciones,.redes{justify-content:center;}}
 </style>
 </head>
 <body>
@@ -44,45 +68,208 @@ h2.sec{margin:38px 0 18px;font-size:1.5rem;border-left:4px solid var(--gold);pad
 </div>
 <div class="wrap">
 <div id="hero" class="hero"><div style="width:100%;text-align:center;color:#fff">Cargando perfil...</div></div>
+<div class="utilidades">
+<div class="qrbox" id="qrbox" style="display:none"><canvas id="qr" width="160" height="160"></canvas><p>Escanea el codigo para abrir esta tarjeta</p></div>
+<div class="enlace-box" id="enlaceBox" style="display:none">
+<label>Enlace de esta tarjeta (link en bio)</label>
+<div class="url" id="urlCorta"></div>
+<button class="cta" type="button" id="btnCopiar">Copiar enlace</button>
+<button class="cta alt" type="button" id="btnCompartir">Compartir</button>
+</div>
+</div>
 <h2 class="sec">Propiedades de este asesor</h2>
 <div id="grid" class="grid"></div>
 <div id="empty" class="empty" style="display:none">Este asesor a&uacute;n no tiene propiedades publicadas.</div>
 </div>
 <div class="foot">LoMaz Home Inmobiliaria &middot; (57) 300 330 0343 &middot; www.lomazhome.com</div>
 <script>
-const OFICINA_TEL = "300 330 0343";
-const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-const params = new URLSearchParams(window.location.search);
-const asesorId = params.get("id");
-function esc(s){return (s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","\"":"&quot;"}[c]));}
+var OFICINA_TEL  = "300 330 0343";
+var OFICINA_WA   = "573003300343";
+var OFICINA_MAIL = "lomazhome@gmail.com";
+var SITE         = "https://www.lomazhome.com";
+var OG_FALLBACK  = SITE + "/og-home.jpg";
+var COLS = "id,nombre_completo,telefono,avatar_url,notas,rol_id,cargo,licencia,datos_perfil";
+
+var sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+var params = new URLSearchParams(window.location.search);
+
+function esc(s){ return (s||"").toString().replace(/[<>&"]/g, function(c){ return {"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]; }); }
+function slugify(s){ return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+/,"").replace(/-+$/,""); }
+function digitos(s){ return (s||"").toString().replace(/[^0-9]/g,""); }
+function telE164(s){ var d=digitos(s); if(!d) return ""; if(d.length===10) return "57"+d; return d; }
+function waLink(s,msg){ var d=telE164(s); if(!d) return ""; return "https://wa.me/"+d+"?text="+encodeURIComponent(msg); }
+
+var UTM_KEYS=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+var utm=UTM_KEYS.filter(function(k){ return params.get(k); }).map(function(k){ return k+"="+encodeURIComponent(params.get(k)); }).join("&");
+function conUtm(u){ if(!utm) return u; return u+(u.indexOf("?")>=0?"&":"?")+utm; }
+
+var REDES=[
+{k:"instagram",n:"Instagram",base:"https://instagram.com/"},
+{k:"facebook",n:"Facebook",base:"https://facebook.com/"},
+{k:"tiktok",n:"TikTok",base:"https://tiktok.com/@"},
+{k:"linkedin",n:"LinkedIn",base:"https://linkedin.com/in/"},
+{k:"youtube",n:"YouTube",base:"https://youtube.com/@"},
+{k:"threads",n:"Threads",base:"https://threads.net/@"}
+];
+function urlRed(v,base){ if(!v) return ""; v=v.toString().trim(); if(/^https?:\/\//i.test(v)) return v; return base+v.replace(/^@/,""); }
+function setMeta(sel,val){ var el=document.querySelector(sel); if(el&&val) el.setAttribute("content",val); }
+
+function slugDeRuta(){
+  var partes=window.location.pathname.replace(/\/+$/,"").split("/");
+  var ult=partes[partes.length-1]||"";
+  if(!ult || /\.html$/i.test(ult)) return "";
+  return decodeURIComponent(ult);
+}
+
+async function buscarPerfil(){
+  var id=params.get("id");
+  if(id){
+    var r1=await sb.from("perfiles_usuarios").select(COLS).eq("id",id).maybeSingle();
+    if(r1.data) return r1.data;
+  }
+  var slug=params.get("slug")||slugDeRuta();
+  if(slug){
+    var r2=await sb.from("perfiles_usuarios").select(COLS).eq("datos_perfil->>slug",slug).maybeSingle();
+    if(r2 && r2.data) return r2.data;
+    var r3=await sb.from("perfiles_usuarios").select(COLS);
+    var lista=r3.data||[];
+    for(var i=0;i<lista.length;i++){
+      if(slugify(lista[i].nombre_completo)===slugify(slug)) return lista[i];
+    }
+  }
+  return null;
+}
+
+function vcardTexto(p){
+  var l=["BEGIN:VCARD","VERSION:3.0"];
+  l.push("FN:"+p.nombre);
+  l.push("N:"+p.nombre+";;;;");
+  l.push("ORG:LoMaz Home Inmobiliaria");
+  if(p.rol) l.push("TITLE:"+p.rol);
+  if(p.tel) l.push("TEL;TYPE=CELL:+"+telE164(p.tel));
+  l.push("TEL;TYPE=WORK:+"+OFICINA_WA);
+  l.push("EMAIL;TYPE=INTERNET:"+(p.mail||OFICINA_MAIL));
+  l.push("URL:"+p.url);
+  l.push("ADR;TYPE=WORK:;;;"+(p.ciudad||"Bogota")+";;;Colombia");
+  l.push("NOTE:Tarjeta digital LoMaz Home");
+  l.push("END:VCARD");
+  return l.join("\r\n");
+}
+
+function descargarVcard(p){
+  var blob=new Blob([vcardTexto(p)],{type:"text/vcard;charset=utf-8"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");
+  a.href=url;
+  a.download=slugify(p.nombre)+"-lomazhome.vcf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); },1500);
+}
+
 async function cargar(){
-  if(!asesorId){ document.getElementById("hero").innerHTML='<div style="color:#fff">Asesor no especificado.</div>'; return; }
-    const { data: perf } = await sb.from("perfiles_usuarios").select("id,nombre_completo,telefono,avatar_url,notas,rol_id").eq("id",asesorId).maybeSingle();
-      const { data: roles } = await sb.from("roles").select("id,nombre");
-        const rmap={}; (roles||[]).forEach(r=>rmap[r.id]=r.nombre);
-          const nombre = perf? perf.nombre_completo : "Asesor LoMaz Home";
-            const rolN = perf&&perf.rol_id? (rmap[perf.rol_id]||"Asesor") : "Asesor";
-              const foto = perf&&perf.avatar_url ? `<img class="foto" src="${esc(perf.avatar_url)}" alt="${esc(nombre)}">` : `<div class="foto">&#128100;</div>`;
-                const bio = perf&&perf.notas ? `<div class="bio">${esc(perf.notas)}</div>` : "";
-                  const waNum = "573003300343";
-                    document.getElementById("hero").innerHTML = foto +
-                        `<div><h1>${esc(nombre)}</h1><div class="rol">${esc(rolN)}</div>`+
-                            `<div class="contacto"><div><b>Oficina LoMaz Home:</b> (57) ${OFICINA_TEL}</div></div>`+
-                                bio +
-                                    `<a class="cta" href="https://wa.me/${waNum}" target="_blank">Contactar por WhatsApp</a></div>`;
-                                      document.title = nombre + " | LoMaz Home";
-                                        const { data: props } = await sb.from("propiedades").select("id,titulo,precio,ciudad,barrio,foto_principal,fotos,estado,tipo_negocio").eq("asesor_id",asesorId).eq("estado","activa").order("created_at",{ascending:false});
-                                          const grid=document.getElementById("grid");
-                                            if(!props || !props.length){ document.getElementById("empty").style.display="block"; return; }
-                                              grid.innerHTML = props.map(p=>{
-                                                  const img = p.foto_principal || (p.fotos && p.fotos[0]) || "";
-                                                      const ph = img ? `<div class="ph" style="background-image:url('${esc(img)}')"></div>` : `<div class="ph">&#127968;</div>`;
-                                                          const precio = "$" + Number(p.precio||0).toLocaleString("es-CO");
-                                                              const loc = [p.barrio,p.ciudad].filter(Boolean).join(", ");
-                                                                  return `<div class="card">${ph}<div class="body"><div class="title">${esc(p.titulo||"Propiedad")}</div><div class="loc">${esc(loc)}</div><div class="price">${precio}</div><a class="ver" href="propiedad.html?id=${p.id}">Ver detalle</a></div></div>`;
-                                                                    }).join("");
-                                                                    }
-                                                                    cargar();
-                                                                    </script>
-                                                                    </body>
-                                                                    </html>
+  var hero=document.getElementById("hero");
+  var perf=null;
+  try{ perf=await buscarPerfil(); }catch(e){ perf=null; }
+  if(!perf){
+    hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="asesores.html" style="color:#b8860b">Ver todo el equipo</a></div>';
+    return;
+  }
+  var dp=perf.datos_perfil||{};
+  var rmap={};
+  try{
+    var rr=await sb.from("roles").select("id,nombre");
+    (rr.data||[]).forEach(function(r){ rmap[r.id]=r.nombre; });
+  }catch(e){}
+
+  var nombre=perf.nombre_completo||"Asesor LoMaz Home";
+  var rol=dp.cargo_publico||perf.cargo||(perf.rol_id?(rmap[perf.rol_id]||"Asesor"):"Asesor");
+  var bio=dp.bio||perf.notas||"";
+  var tel=dp.telefono_publico||perf.telefono||"";
+  var waNum=dp.whatsapp||tel;
+  var mail=dp.email||"";
+  var ciudad=dp.ciudad||"Bogota";
+  var slug=dp.slug||slugify(nombre);
+  var urlTarjeta=SITE+"/asesor/"+slug;
+  var avatar=perf.avatar_url||"";
+  var msgWa="Hola "+nombre+", vi tu tarjeta digital de LoMaz Home y quiero mas informacion.";
+
+  var foto = avatar ? '<img class="foto" src="'+esc(avatar)+'" alt="'+esc(nombre)+'">' : '<div class="foto">&#128100;</div>';
+
+  var contacto='<div class="contacto">';
+  if(tel) contacto+='<div><b>Celular:</b> <a href="tel:+'+telE164(tel)+'">(57) '+esc(tel)+'</a></div>';
+  contacto+='<div><b>Oficina LoMaz Home:</b> <a href="tel:+'+OFICINA_WA+'">(57) '+OFICINA_TEL+'</a></div>';
+  contacto+='<div><b>Correo:</b> <a href="mailto:'+esc(mail||OFICINA_MAIL)+'">'+esc(mail||OFICINA_MAIL)+'</a></div>';
+  contacto+='<div><b>Ciudad:</b> '+esc(ciudad)+'</div>';
+  if(perf.licencia) contacto+='<div><b>Matricula:</b> '+esc(perf.licencia)+'</div>';
+  contacto+='</div>';
+
+  var acciones='<div class="acciones">'
+    +'<a class="cta" href="'+esc(waLink(waNum,msgWa)||("https://wa.me/"+OFICINA_WA))+'" target="_blank" rel="noopener">WhatsApp directo</a>'
+    +(tel?'<a class="cta alt" href="tel:+'+telE164(tel)+'">Llamar</a>':'')
+    +'<a class="cta alt" href="mailto:'+esc(mail||OFICINA_MAIL)+'">Escribir correo</a>'
+    +'<button class="cta alt" type="button" id="btnVcard">Guardar contacto</button>'
+    +'<a class="cta alt" href="'+conUtm("propiedades.html")+'">Ver propiedades</a>'
+    +'</div>';
+
+  var redesHtml="";
+  REDES.forEach(function(r){
+    var u=urlRed(dp[r.k],r.base);
+    if(u) redesHtml+='<a href="'+esc(u)+'" target="_blank" rel="noopener">'+r.n+'</a>';
+  });
+  if(dp.web) redesHtml+='<a href="'+esc(dp.web)+'" target="_blank" rel="noopener">Sitio web</a>';
+  if(redesHtml) redesHtml='<div class="redes">'+redesHtml+'</div>';
+
+  hero.innerHTML = foto
+    +'<div class="info"><h1>'+esc(nombre)+'</h1><div class="rol">'+esc(rol)+'</div>'
+    +(bio?'<div class="bio">'+esc(bio)+'</div>':'')
+    +contacto+acciones+redesHtml+'</div>';
+
+  var desc=(bio||("Asesor inmobiliario de LoMaz Home en "+ciudad+". Contacto directo por WhatsApp, llamada y correo.")).substring(0,180);
+  document.title=nombre+" | LoMaz Home";
+  setMeta('meta[name="description"]',desc);
+  setMeta('meta[property="og:title"]',nombre+" | LoMaz Home");
+  setMeta('meta[property="og:description"]',desc);
+  setMeta('meta[property="og:image"]',avatar||OG_FALLBACK);
+  setMeta('meta[property="og:url"]',urlTarjeta);
+  var can=document.querySelector('link[rel="canonical"]');
+  if(can) can.setAttribute("href",urlTarjeta);
+
+  var bv=document.getElementById("btnVcard");
+  if(bv) bv.addEventListener("click",function(){
+    descargarVcard({nombre:nombre,rol:rol,tel:tel,mail:mail,url:urlTarjeta,ciudad:ciudad});
+  });
+
+  document.getElementById("urlCorta").textContent=urlTarjeta;
+  document.getElementById("enlaceBox").style.display="block";
+  document.getElementById("btnCopiar").addEventListener("click",function(){
+    var b=this;
+    navigator.clipboard.writeText(urlTarjeta).then(function(){ b.textContent="Enlace copiado"; });
+  });
+  document.getElementById("btnCompartir").addEventListener("click",function(){
+    if(navigator.share){ navigator.share({title:nombre+" | LoMaz Home",text:"Tarjeta digital LoMaz Home",url:urlTarjeta}); }
+    else { navigator.clipboard.writeText(urlTarjeta); }
+  });
+
+  if(window.QRCode && QRCode.toCanvas){
+    document.getElementById("qrbox").style.display="block";
+    QRCode.toCanvas(document.getElementById("qr"),urlTarjeta,{width:160,margin:1,color:{dark:"#0f2038",light:"#ffffff"}},function(){});
+  }
+
+  var pr=await sb.from("propiedades").select("id,titulo,precio,ciudad,barrio,foto_principal,fotos,estado,tipo_negocio").eq("asesor_id",perf.id).eq("estado","activa").order("created_at",{ascending:false});
+  var props=pr.data||[];
+  if(!props.length){ document.getElementById("empty").style.display="block"; return; }
+  document.getElementById("grid").innerHTML=props.map(function(p){
+    var img=p.foto_principal||(p.fotos&&p.fotos[0])||"";
+    var ph=img?'<div class="ph" style="background-image:url(\''+esc(img)+'\')"></div>':'<div class="ph">&#127968;</div>';
+    var precio="$"+Number(p.precio||0).toLocaleString("es-CO");
+    var loc=[p.barrio,p.ciudad].filter(Boolean).join(", ");
+    return '<div class="card">'+ph+'<div class="body"><div class="title">'+esc(p.titulo)+'</div><div class="loc">'+esc(loc)+'</div><div class="price">'+precio+'</div><a class="ver" href="'+conUtm("propiedad.html?id="+p.id)+'">Ver detalle</a></div></div>';
+  }).join("");
+}
+
+cargar();
+</script>
+</body>
+</html>

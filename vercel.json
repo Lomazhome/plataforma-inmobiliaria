@@ -3,6 +3,18 @@
     {
       "source": "/semaforo-del-inversionista",
       "destination": "/semaforo-del-inversionista.html"
+    },
+    {
+      "source": "/equipo",
+      "destination": "/asesores.html"
+    },
+    {
+      "source": "/asesor/:slug",
+      "destination": "/asesor.html"
+    },
+    {
+      "source": "/tarjeta/:slug",
+      "destination": "/asesor.html"
     }
   ],
   "headers": [
