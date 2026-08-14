@@ -60,7 +60,8 @@ function paginaOg(perf, slug){
   const nombre = (perf && perf.nombre_completo) || "Asesor LoMaz Home";
   const cargo = dp.cargo_publico || (perf && perf.cargo) || "Asesor inmobiliario";
   const ciudad = dp.ciudad || "Bogot\u00e1";
-  const bio = String(dp.bio || (perf && perf.notas) || (cargo + " de LoMaz Home en " + ciudad + ". Escr\u00edbeme por WhatsApp, llamada o correo.")).replace(/\s+/g, " ").slice(0, 190);
+  const marca = /lomaz/i.test(cargo) ? "" : " de LoMaz Home";
+  const bio = String(dp.bio || (perf && perf.notas) || (cargo + marca + " en " + ciudad + ". Escr\u00edbeme por WhatsApp, llamada o correo.")).replace(/\s+/g, " ").slice(0, 190);
   const foto = (perf && perf.avatar_url) || (SITE + "/og-home.jpg");
   const url = SITE + "/asesor/" + slug;
   const titulo = nombre + " | " + (/lomaz/i.test(cargo) ? cargo : cargo + " LoMaz Home");
