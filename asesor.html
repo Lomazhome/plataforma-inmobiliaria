@@ -98,6 +98,7 @@ function esc(s){ return (s||"").toString().replace(/[<>&"]/g, function(c){ retur
 function slugify(s){ return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+/,"").replace(/-+$/,""); }
 function digitos(s){ return (s||"").toString().replace(/[^0-9]/g,""); }
 function telE164(s){ var d=digitos(s); if(!d) return ""; if(d.length===10) return "57"+d; return d; }
+function telVisible(s){ var d=digitos(s); if(!d) return ""; if(d.length>10 && d.indexOf("57")===0) d=d.slice(d.length-10); if(d.length===10) return d.slice(0,3)+" "+d.slice(3,6)+" "+d.slice(6); return d; }
 function waLink(s,msg){ var d=telE164(s); if(!d) return ""; return "https://wa.me/"+d+"?text="+encodeURIComponent(msg); }
 
 var UTM_KEYS=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
@@ -112,7 +113,8 @@ var REDES=[
 {k:"youtube",n:"YouTube",base:"https://youtube.com/@"},
 {k:"threads",n:"Threads",base:"https://threads.net/@"}
 ];
-function urlRed(v,base){ if(!v) return ""; v=v.toString().trim(); if(/^https?:\/\//i.test(v)) return v; return base+v.replace(/^@/,""); }
+function urlAbs(v){ v=(v||"").toString().trim().replace(/\s+/g,""); if(!v) return ""; if(/^https?:\/\//i.test(v)) return v; if(/^[a-z0-9-]+(\.[a-z0-9-]+)+(\/.*)?$/i.test(v)) return "https://"+v; return ""; }
+function urlRed(v,base){ v=(v||"").toString().trim().replace(/\s+/g,""); if(!v) return ""; var abs=urlAbs(v); if(abs) return abs; return base+v.replace(/^@+/,"").replace(/^\/+/,""); }
 function setMeta(sel,val){ var el=document.querySelector(sel); if(el&&val) el.setAttribute("content",val); }
 
 function slugDeRuta(){
@@ -187,7 +189,7 @@ async function cargar(){
   var nombre=perf.nombre_completo||"Asesor LoMaz Home";
   var rol=dp.cargo_publico||perf.cargo||(perf.rol_id?(rmap[perf.rol_id]||"Asesor"):"Asesor");
   var bio=dp.bio||perf.notas||"";
-  var tel=dp.telefono_publico||perf.telefono||"";
+  var tel=dp.telefono_publico||perf.telefono||dp.whatsapp||"";
   var waNum=dp.whatsapp||tel;
   var mail=dp.email||"";
   var ciudad=dp.ciudad||"Bogota";
@@ -199,7 +201,7 @@ async function cargar(){
   var foto = avatar ? '<img class="foto" src="'+esc(avatar)+'" alt="'+esc(nombre)+'">' : '<div class="foto">&#128100;</div>';
 
   var contacto='<div class="contacto">';
-  if(tel) contacto+='<div><b>Celular:</b> <a href="tel:+'+telE164(tel)+'">(57) '+esc(tel)+'</a></div>';
+  if(tel) contacto+='<div><b>Celular:</b> <a href="tel:+'+telE164(tel)+'">(57) '+esc(telVisible(tel))+'</a></div>';
   contacto+='<div><b>Oficina LoMaz Home:</b> <a href="tel:+'+OFICINA_WA+'">(57) '+OFICINA_TEL+'</a></div>';
   contacto+='<div><b>Correo:</b> <a href="mailto:'+esc(mail||OFICINA_MAIL)+'">'+esc(mail||OFICINA_MAIL)+'</a></div>';
   contacto+='<div><b>Ciudad:</b> '+esc(ciudad)+'</div>';
@@ -219,7 +221,7 @@ async function cargar(){
     var u=urlRed(dp[r.k],r.base);
     if(u) redesHtml+='<a href="'+esc(u)+'" target="_blank" rel="noopener">'+r.n+'</a>';
   });
-  var webUrl=dp.web||dp.website; if(webUrl) redesHtml+='<a href="'+esc(webUrl)+'" target="_blank" rel="noopener">Sitio web</a>';
+  var webUrl=urlAbs(dp.web||dp.website); if(webUrl) redesHtml+='<a href="'+esc(webUrl)+'" target="_blank" rel="noopener">Sitio web</a>';
   if(redesHtml) redesHtml='<div class="redes">'+redesHtml+'</div>';
 
   hero.innerHTML = foto
