@@ -10,7 +10,29 @@
     },
     {
       "source": "/asesor/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|LinkedInBot|Slackbot|TelegramBot|Discordbot|Pinterest|redditbot|vkShare|SkypeUriPreview|Applebot|Iframely|Embedly).*"
+        }
+      ],
+      "destination": "/api/tarjeta-og?slug=:slug"
+    },
+    {
+      "source": "/asesor/:slug",
       "destination": "/asesor.html"
+    },
+    {
+      "source": "/tarjeta/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|LinkedInBot|Slackbot|TelegramBot|Discordbot|Pinterest|redditbot|vkShare|SkypeUriPreview|Applebot|Iframely|Embedly).*"
+        }
+      ],
+      "destination": "/api/tarjeta-og?slug=:slug"
     },
     {
       "source": "/tarjeta/:slug",
