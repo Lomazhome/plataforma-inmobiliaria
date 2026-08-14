@@ -387,7 +387,9 @@ function tjHints(){
       var auto=tjSlugify(tjValor("pNombre")+" "+tjValor("pApellido"))||tjSlugify((currentProfile&&currentProfile.nombre_completo)||"");
       h.innerHTML=auto?('Si lo dejas vac&iacute;o usaremos tu nombre: <b>www.lomazhome.com/asesor/'+auto+'</b>'):'Escribe tu nombre para generar la direcci&oacute;n.';
     }else{
-      h.innerHTML='Tu tarjeta queda en: <b>www.lomazhome.com/asesor/'+s+'</b>';
+      var guardado=(currentProfile&&currentProfile.datos_perfil&&currentProfile.datos_perfil.slug)||"";
+      var aviso=(guardado&&guardado!==s)?' <span style="color:#b45309">(pulsa <b>Guardar mi tarjeta</b> para activar esta direcci&oacute;n)</span>':'';
+      h.innerHTML='Tu tarjeta queda en: <b>www.lomazhome.com/asesor/'+s+'</b>'+aviso;
     }
   }
   var c=document.getElementById("tjCheck");
@@ -436,11 +438,21 @@ function tjBaseUrl(){
 }
 
 function tjCopiar(btn,url){
-  navigator.clipboard.writeText(url).then(function(){
-    var o=btn.textContent;
+  var ok=function(){
+    var o=btn.getAttribute("data-o")||btn.textContent;
+    btn.setAttribute("data-o",o);
     btn.textContent="Copiado";
     setTimeout(function(){ btn.textContent=o; },1500);
-  });
+  };
+  var manual=function(){
+    try{
+      var ta=document.createElement("textarea"); ta.value=url; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.top="-1000px";
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,ta.value.length);
+      var hecho=document.execCommand("copy"); document.body.removeChild(ta);
+      if(hecho){ ok(); } else { showAlert("Copia el enlace manualmente: "+url,"error"); }
+    }catch(e){ showAlert("Copia el enlace manualmente: "+url,"error"); }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(ok,manual); } else { manual(); }
 }
 
 function renderTjLinks(){
@@ -484,8 +496,14 @@ async function saveTarjeta(){
   if(mailTj && !tjEmailOk(mailTj)){ showAlert("Revisa tu correo de contacto: "+mailTj,"error"); return; }
   var waTj=tjDigitos(tjValor("tjWhatsapp"));
   if(waTj && waTj.length<10){ showAlert("El WhatsApp debe tener al menos 10 digitos","error"); return; }
-  var dupR=await sb.from("perfiles_usuarios").select("id,nombre_completo").eq("datos_perfil->>slug",slug).neq("id",currentUser.id);
-  if(dupR && dupR.data && dupR.data.length){ showAlert("La direccion /asesor/"+slug+" ya la usa "+(dupR.data[0].nombre_completo||"otro asesor")+". Elige otra.","error"); return; }
+  var todosR=await sb.from("perfiles_usuarios").select("id,nombre_completo,datos_perfil");
+  var listaR=(todosR&&todosR.data)||[];
+  for(var iR=0;iR<listaR.length;iR++){
+    if(listaR[iR].id===currentUser.id) continue;
+    var dpR=listaR[iR].datos_perfil||{};
+    var slugR=dpR.slug||tjSlugify(listaR[iR].nombre_completo||"");
+    if(slugR===slug){ showAlert("La direccion /asesor/"+slug+" ya la usa "+(listaR[iR].nombre_completo||"otro asesor")+". Elige otra.","error"); return; }
+  }
   var dpExtra={
     slug:slug,
     cargo_publico:tjValor("tjCargo"),
