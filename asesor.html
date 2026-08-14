@@ -14,8 +14,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://www.lomazhome.com/asesor.html">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="/config.js"></script>
 <style>
 :root{--navy:#0f2038;--gold:#b8860b;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -40,6 +40,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f203
 .redes a{display:inline-block;padding:8px 14px;border-radius:20px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;font-size:.85rem;}
 .utilidades{display:flex;gap:22px;flex-wrap:wrap;align-items:stretch;margin-top:24px;}
 .qrbox{background:#fff;border-radius:14px;padding:18px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,.08);width:210px;}
+.qrbox img,.qrbox canvas{display:block;margin:0 auto;}
 .qrbox p{font-size:.75rem;color:#667085;margin-top:10px;line-height:1.4;}
 .enlace-box{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 22px rgba(0,0,0,.08);flex:1;min-width:280px;}
 .enlace-box label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#667085;display:block;margin-bottom:8px;font-weight:700;}
@@ -64,12 +65,12 @@ h2.sec{margin:38px 0 18px;font-size:1.5rem;border-left:4px solid var(--gold);pad
 <body>
 <div class="topbar">
 <div class="logo">LoMaz<span>Home</span></div>
-<a href="propiedades.html">&larr; Ver todo el portafolio</a>
+<a href="/propiedades.html">&larr; Ver todo el portafolio</a>
 </div>
 <div class="wrap">
 <div id="hero" class="hero"><div style="width:100%;text-align:center;color:#fff">Cargando perfil...</div></div>
 <div class="utilidades">
-<div class="qrbox" id="qrbox" style="display:none"><canvas id="qr" width="160" height="160"></canvas><p>Escanea el codigo para abrir esta tarjeta</p></div>
+<div class="qrbox" id="qrbox" style="display:none"><div id="qr"></div><p>Escanea el codigo para abrir esta tarjeta</p></div>
 <div class="enlace-box" id="enlaceBox" style="display:none">
 <label>Enlace de esta tarjeta (link en bio)</label>
 <div class="url" id="urlCorta"></div>
@@ -173,7 +174,7 @@ async function cargar(){
   var perf=null;
   try{ perf=await buscarPerfil(); }catch(e){ perf=null; }
   if(!perf){
-    hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="asesores.html" style="color:#b8860b">Ver todo el equipo</a></div>';
+    hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="/asesores.html" style="color:#b8860b">Ver todo el equipo</a></div>';
     return;
   }
   var dp=perf.datos_perfil||{};
@@ -210,7 +211,7 @@ async function cargar(){
     +(tel?'<a class="cta alt" href="tel:+'+telE164(tel)+'">Llamar</a>':'')
     +'<a class="cta alt" href="mailto:'+esc(mail||OFICINA_MAIL)+'">Escribir correo</a>'
     +'<button class="cta alt" type="button" id="btnVcard">Guardar contacto</button>'
-    +'<a class="cta alt" href="'+conUtm("propiedades.html")+'">Ver propiedades</a>'
+    +'<a class="cta alt" href="'+conUtm("/propiedades.html")+'">Ver propiedades</a>'
     +'</div>';
 
   var redesHtml="";
@@ -252,9 +253,9 @@ async function cargar(){
     else { navigator.clipboard.writeText(urlTarjeta); }
   });
 
-  if(window.QRCode && QRCode.toCanvas){
+  if(window.QRCode){
     document.getElementById("qrbox").style.display="block";
-    QRCode.toCanvas(document.getElementById("qr"),urlTarjeta,{width:160,margin:1,color:{dark:"#0f2038",light:"#ffffff"}},function(){});
+    try{ new QRCode(document.getElementById("qr"),{text:urlTarjeta,width:160,height:160,colorDark:"#0f2038",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ document.getElementById("qrbox").style.display="none"; }
   }
 
   var pr=await sb.from("propiedades").select("id,titulo,precio,ciudad,barrio,foto_principal,fotos,estado,tipo_negocio").eq("asesor_id",perf.id).eq("estado","activa").order("created_at",{ascending:false});
@@ -265,7 +266,7 @@ async function cargar(){
     var ph=img?'<div class="ph" style="background-image:url(\''+esc(img)+'\')"></div>':'<div class="ph">&#127968;</div>';
     var precio="$"+Number(p.precio||0).toLocaleString("es-CO");
     var loc=[p.barrio,p.ciudad].filter(Boolean).join(", ");
-    return '<div class="card">'+ph+'<div class="body"><div class="title">'+esc(p.titulo)+'</div><div class="loc">'+esc(loc)+'</div><div class="price">'+precio+'</div><a class="ver" href="'+conUtm("propiedad.html?id="+p.id)+'">Ver detalle</a></div></div>';
+    return '<div class="card">'+ph+'<div class="body"><div class="title">'+esc(p.titulo)+'</div><div class="loc">'+esc(loc)+'</div><div class="price">'+precio+'</div><a class="ver" href="'+conUtm("/propiedad.html?id="+p.id)+'">Ver detalle</a></div></div>';
   }).join("");
 }
 
