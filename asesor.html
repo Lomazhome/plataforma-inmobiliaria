@@ -99,6 +99,17 @@ function slugify(s){ return (s||"").toString().toLowerCase().normalize("NFD").re
 function digitos(s){ return (s||"").toString().replace(/[^0-9]/g,""); }
 function telE164(s){ var d=digitos(s); if(!d) return ""; if(d.length===10) return "57"+d; return d; }
 function telVisible(s){ var d=digitos(s); if(!d) return ""; if(d.length>10 && d.indexOf("57")===0) d=d.slice(d.length-10); if(d.length===10) return d.slice(0,3)+" "+d.slice(3,6)+" "+d.slice(6); return d; }
+function copiarTexto(txt,cb){
+  var fin=function(ok){ if(cb) cb(ok); };
+  var manual=function(){
+    try{
+      var ta=document.createElement("textarea"); ta.value=txt; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.top="-1000px";
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,ta.value.length);
+      var ok=document.execCommand("copy"); document.body.removeChild(ta); fin(ok);
+    }catch(e){ fin(false); }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){ fin(true); },manual); } else { manual(); }
+}
 function waLink(s,msg){ var d=telE164(s); if(!d) return ""; return "https://wa.me/"+d+"?text="+encodeURIComponent(msg); }
 
 var UTM_KEYS=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
@@ -177,6 +188,8 @@ async function cargar(){
   try{ perf=await buscarPerfil(); }catch(e){ perf=null; }
   if(!perf){
     hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="/asesores.html" style="color:#b8860b">Ver todo el equipo</a></div>';
+    var secNF=document.querySelector("h2.sec"); if(secNF) secNF.style.display="none";
+    var gridNF=document.getElementById("grid"); if(gridNF) gridNF.style.display="none";
     return;
   }
   var dp=perf.datos_perfil||{};
@@ -192,7 +205,7 @@ async function cargar(){
   var tel=dp.telefono_publico||perf.telefono||dp.whatsapp||"";
   var waNum=dp.whatsapp||tel;
   var mail=dp.email||"";
-  var ciudad=dp.ciudad||"Bogota";
+  var ciudad=dp.ciudad||"Bogotá";
   var slug=dp.slug||slugify(nombre);
   var urlTarjeta=SITE+"/asesor/"+slug;
   var avatar=perf.avatar_url||"";
@@ -248,11 +261,11 @@ async function cargar(){
   document.getElementById("enlaceBox").style.display="block";
   document.getElementById("btnCopiar").addEventListener("click",function(){
     var b=this;
-    navigator.clipboard.writeText(urlTarjeta).then(function(){ b.textContent="Enlace copiado"; });
+    copiarTexto(urlTarjeta,function(ok){ b.textContent=ok?"Enlace copiado":"Copialo a mano: "+urlTarjeta; });
   });
   document.getElementById("btnCompartir").addEventListener("click",function(){
     if(navigator.share){ navigator.share({title:nombre+" | LoMaz Home",text:"Tarjeta digital LoMaz Home",url:urlTarjeta}); }
-    else { navigator.clipboard.writeText(urlTarjeta); }
+    else { copiarTexto(urlTarjeta); }
   });
 
   if(window.QRCode){
