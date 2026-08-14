@@ -171,20 +171,23 @@ textarea{resize:vertical;min-height:90px}
     <div class="card">
       <h3>&#128179; Datos que aparecen en tu tarjeta</h3>
       <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Rellena estos campos y tu tarjeta digital se genera sola. No hay que programar nada.</p>
+      <div id="tjCheck" style="margin-bottom:16px"></div>
       <div class="form-grid">
         <div class="form-group full">
           <label>Direcci&oacute;n de tu tarjeta</label>
           <div class="social-row"><span class="social-prefix">www.lomazhome.com/asesor/</span><input type="text" id="tjSlug" placeholder="tu-nombre" oninput="renderTjLinks()" style="flex:1" /></div>
+          <div id="tjSlugHint" style="font-size:.82rem;color:#667085;margin-top:6px"></div>
         </div>
         <div class="form-group"><label>Cargo que se muestra</label><input type="text" id="tjCargo" placeholder="Asesora Inmobiliaria" /></div>
         <div class="form-group"><label>Correo de contacto</label><input type="email" id="tjEmail" placeholder="nombre@lomazhome.com" /></div>
-        <div class="form-group"><label>WhatsApp de contacto</label><input type="tel" id="tjWhatsapp" placeholder="300 000 0000" /></div>
+        <div class="form-group"><label>WhatsApp de contacto</label><input type="tel" id="tjWhatsapp" placeholder="300 000 0000" /><div style="font-size:.78rem;color:#98a2b3;margin-top:4px">Solo n&uacute;meros. Es el bot&oacute;n principal de tu tarjeta.</div></div>
         <div class="form-group"><label>Ciudad</label><input type="text" id="tjCiudad" placeholder="Bogot&aacute;" /></div>
         <div class="form-group full"><label>Presentaci&oacute;n corta (bio)</label><textarea id="tjBio" rows="3" placeholder="Qui&eacute;n eres, en qu&eacute; te especializas y por qu&eacute; confiar en ti."></textarea></div>
       </div>
     </div>
     <div class="card">
       <h3>&#128241; Tus redes en la tarjeta</h3>
+      <div style="font-size:.85rem;color:#667085;margin-bottom:14px">Escribe solo tu usuario (ejemplo: <b>lomazhome</b>). Si pegas el enlace completo tambi&eacute;n funciona. Lo que dejes vac&iacute;o no aparece en la tarjeta.</div>
       <div class="form-grid single">
         <div class="form-group"><label>Instagram</label><div class="social-row"><span class="social-prefix">instagram.com/</span><input type="text" id="tjInstagram" placeholder="tu_usuario" style="flex:1" /></div></div>
         <div class="form-group"><label>Facebook</label><div class="social-row"><span class="social-prefix">facebook.com/</span><input type="text" id="tjFacebook" placeholder="tu_pagina" style="flex:1" /></div></div>
@@ -353,6 +356,67 @@ async function loadProfile(){
   renderTjLinks();
 }
 
+function tjNormUrl(v){
+  v=(v||"").toString().trim().replace(/\s+/g,"");
+  if(!v) return "";
+  if(/^https?:\/\//i.test(v)) return v.replace(/\/+$/,"");
+  if(/^[a-z0-9-]+(\.[a-z0-9-]+)+(\/.*)?$/i.test(v)) return "https://"+v.replace(/\/+$/,"");
+  return v;
+}
+function tjNormRed(v){
+  v=(v||"").toString().trim().replace(/\s+/g,"");
+  if(!v) return "";
+  if(/^https?:\/\//i.test(v)) return v.replace(/\/+$/,"");
+  if(/^[a-z0-9-]+(\.[a-z0-9-]+)+\/.+$/i.test(v)) return "https://"+v.replace(/\/+$/,"");
+  return v.replace(/^@+/,"").replace(/^\/+/,"").replace(/\/+$/,"");
+}
+function tjDigitos(s){ return (s||"").toString().replace(/[^0-9]/g,""); }
+function tjWaFmt(s){
+  var d=tjDigitos(s);
+  if(!d) return "";
+  if(d.length>10 && d.indexOf("57")===0) d=d.slice(d.length-10);
+  if(d.length===10) return d.slice(0,3)+" "+d.slice(3,6)+" "+d.slice(6);
+  return d;
+}
+function tjEmailOk(s){ return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test((s||"").trim()); }
+function tjHints(){
+  var s=tjSlugify(tjValor("tjSlug"));
+  var h=document.getElementById("tjSlugHint");
+  if(h){
+    if(!s){
+      var auto=tjSlugify(tjValor("pNombre")+" "+tjValor("pApellido"))||tjSlugify((currentProfile&&currentProfile.nombre_completo)||"");
+      h.innerHTML=auto?('Si lo dejas vac&iacute;o usaremos tu nombre: <b>www.lomazhome.com/asesor/'+auto+'</b>'):'Escribe tu nombre para generar la direcci&oacute;n.';
+    }else{
+      h.innerHTML='Tu tarjeta queda en: <b>www.lomazhome.com/asesor/'+s+'</b>';
+    }
+  }
+  var c=document.getElementById("tjCheck");
+  if(!c) return;
+  var faltan=[];
+  if(!(currentProfile&&currentProfile.avatar_url)) faltan.push('Tu foto: s&uacute;bela en la pesta&ntilde;a <b>Informaci&oacute;n Personal</b>');
+  if(tjDigitos(tjValor("tjWhatsapp")).length<10) faltan.push('Tu WhatsApp (10 d&iacute;gitos)');
+  if(!tjEmailOk(tjValor("tjEmail"))) faltan.push('Tu correo de contacto');
+  if(tjValor("tjBio").length<40) faltan.push('Una presentaci&oacute;n de al menos 40 caracteres');
+  if(!tjValor("tjCiudad")) faltan.push('Tu ciudad');
+  var redes=["tjInstagram","tjFacebook","tjTiktok","tjLinkedin","tjYoutube","tjThreads","tjWeb"].filter(function(k){ return tjValor(k); }).length;
+  if(!redes) faltan.push('Al menos una red social o tu sitio web');
+  var total=6, pct=Math.round((total-faltan.length)*100/total);
+  if(!faltan.length){
+    c.innerHTML='<div style="background:#e8f8ef;border:1px solid #b7e4c7;color:#14532d;padding:12px 14px;border-radius:10px;font-size:.9rem">&#9989; <b>Tu tarjeta est&aacute; completa (100%).</b> No olvides pulsar <b>Guardar mi tarjeta</b>.</div>';
+  }else{
+    c.innerHTML='<div style="background:#fff7e6;border:1px solid #ffe0a3;color:#7a4b00;padding:12px 14px;border-radius:10px;font-size:.9rem"><b>Tu tarjeta est&aacute; al '+pct+'%.</b> Para que quede perfecta falta:<ul style="margin:6px 0 0 18px">'+faltan.map(function(f){ return '<li>'+f+'</li>'; }).join("")+'</ul></div>';
+  }
+}
+function tjWatch(){
+  var p=document.getElementById("tab-tarjeta");
+  if(!p) return;
+  Array.prototype.forEach.call(p.querySelectorAll("input,textarea"),function(el){
+    el.addEventListener("input",function(){ renderTjLinks(); });
+  });
+  renderTjLinks();
+}
+if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded",tjWatch); } else { tjWatch(); }
+
 var TJ_REDES=[["instagram","Instagram"],["facebook","Facebook"],["tiktok","TikTok"],["youtube","YouTube"],["threads","Threads"],["linkedin","LinkedIn"],["whatsapp","WhatsApp"],["email","Firma de correo"],["qr","Tarjeta impresa / QR"]];
 
 function tjSlugify(s){
@@ -380,6 +444,7 @@ function tjCopiar(btn,url){
 }
 
 function renderTjLinks(){
+  tjHints();
   var base=tjBaseUrl();
   var ver=document.getElementById("tjVer");
   if(ver) ver.href=base;
@@ -412,23 +477,30 @@ function descargarQR(){
 }
 
 async function saveTarjeta(){
-  var slug=tjSlugify(tjValor("tjSlug"))||tjSlugify(tjValor("pNombre")+" "+tjValor("pApellido"));
+  var slug=tjSlugify(tjValor("tjSlug"))||tjSlugify(tjValor("pNombre")+" "+tjValor("pApellido"))||tjSlugify((currentProfile&&currentProfile.nombre_completo)||"");
   if(!slug){ showAlert("Escribe tu nombre o la direccion de tu tarjeta","error"); return; }
+  if(slug.length<3){ showAlert("La direccion de tu tarjeta debe tener al menos 3 letras","error"); return; }
+  var mailTj=tjValor("tjEmail");
+  if(mailTj && !tjEmailOk(mailTj)){ showAlert("Revisa tu correo de contacto: "+mailTj,"error"); return; }
+  var waTj=tjDigitos(tjValor("tjWhatsapp"));
+  if(waTj && waTj.length<10){ showAlert("El WhatsApp debe tener al menos 10 digitos","error"); return; }
+  var dupR=await sb.from("perfiles_usuarios").select("id,nombre_completo").eq("datos_perfil->>slug",slug).neq("id",currentUser.id);
+  if(dupR && dupR.data && dupR.data.length){ showAlert("La direccion /asesor/"+slug+" ya la usa "+(dupR.data[0].nombre_completo||"otro asesor")+". Elige otra.","error"); return; }
   var dpExtra={
     slug:slug,
     cargo_publico:tjValor("tjCargo"),
     email:tjValor("tjEmail"),
-    whatsapp:tjValor("tjWhatsapp"),
+    whatsapp:tjWaFmt(tjValor("tjWhatsapp")),
     ciudad:tjValor("tjCiudad"),
     bio:tjValor("tjBio"),
-    instagram:tjValor("tjInstagram"),
-    facebook:tjValor("tjFacebook"),
-    tiktok:tjValor("tjTiktok"),
-    linkedin:tjValor("tjLinkedin"),
-    youtube:tjValor("tjYoutube"),
-    threads:tjValor("tjThreads"),
-    web:tjValor("tjWeb"),
-    website:tjValor("tjWeb")
+    instagram:tjNormRed(tjValor("tjInstagram")),
+    facebook:tjNormRed(tjValor("tjFacebook")),
+    tiktok:tjNormRed(tjValor("tjTiktok")),
+    linkedin:tjNormRed(tjValor("tjLinkedin")),
+    youtube:tjNormRed(tjValor("tjYoutube")),
+    threads:tjNormRed(tjValor("tjThreads")),
+    web:tjNormUrl(tjValor("tjWeb")),
+    website:tjNormUrl(tjValor("tjWeb"))
   };
   var dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
   var payload={
@@ -445,8 +517,18 @@ async function saveTarjeta(){
     if(payload.cargo) currentProfile.cargo=payload.cargo;
     if(payload.notas) currentProfile.notas=payload.notas;
   }
-  var el=document.getElementById("tjSlug");
-  if(el) el.value=slug;
+  var setTj=function(id,v){ var e=document.getElementById(id); if(e) e.value=v||""; };
+  setTj("tjSlug",slug);
+  setTj("tjWhatsapp",dpExtra.whatsapp);
+  setTj("tjInstagram",dpExtra.instagram);
+  setTj("tjFacebook",dpExtra.facebook);
+  setTj("tjTiktok",dpExtra.tiktok);
+  setTj("tjLinkedin",dpExtra.linkedin);
+  setTj("tjYoutube",dpExtra.youtube);
+  setTj("tjThreads",dpExtra.threads);
+  setTj("tjWeb",dpExtra.web);
+  if(dpExtra.whatsapp) setTj("pWhatsapp",dpExtra.whatsapp);
+  if(dpExtra.ciudad) setTj("pCiudad",dpExtra.ciudad);
   renderTjLinks();
   showAlert("Tarjeta actualizada: www.lomazhome.com/asesor/"+slug,"success");
 }
@@ -456,12 +538,12 @@ async function saveInfo(){
   const apellido=document.getElementById("pApellido").value.trim();
   if(!nombre){showAlert("El nombre es obligatorio","error");return;}
   const nombre_completo=(nombre+" "+apellido).trim();
-  const dpExtra={
-    whatsapp:document.getElementById("pWhatsapp").value.trim(),
-    ciudad:document.getElementById("pCiudad").value.trim(),
-    direccion:document.getElementById("pDireccion").value.trim()
-  };
   const dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
+  const dpExtra={
+    whatsapp:document.getElementById("pWhatsapp").value.trim()||dpBase.whatsapp||"",
+    ciudad:document.getElementById("pCiudad").value.trim()||dpBase.ciudad||"",
+    direccion:document.getElementById("pDireccion").value.trim()||dpBase.direccion||""
+  };
   const payload={
     id:currentUser.id,
     nombre_completo,
