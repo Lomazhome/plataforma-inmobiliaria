@@ -219,7 +219,7 @@ async function cargar(){
     var u=urlRed(dp[r.k],r.base);
     if(u) redesHtml+='<a href="'+esc(u)+'" target="_blank" rel="noopener">'+r.n+'</a>';
   });
-  if(dp.web) redesHtml+='<a href="'+esc(dp.web)+'" target="_blank" rel="noopener">Sitio web</a>';
+  var webUrl=dp.web||dp.website; if(webUrl) redesHtml+='<a href="'+esc(webUrl)+'" target="_blank" rel="noopener">Sitio web</a>';
   if(redesHtml) redesHtml='<div class="redes">'+redesHtml+'</div>';
 
   hero.innerHTML = foto
