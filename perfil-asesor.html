@@ -6,6 +6,7 @@
 <title>Mi Perfil | Lomaz Home</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <style>
 :root{--navy:#0D1B2E;--navy-2:#162540;--gold:#c9a96e;--gold-d:#a07840;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px;--r-lg:16px;}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -122,6 +123,7 @@ textarea{resize:vertical;min-height:90px}
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('info')">👤 Información Personal</button>
     <button class="tab-btn" onclick="showTab('pro')">🏆 Perfil Profesional</button>
+    <button class="tab-btn" onclick="showTab('tarjeta')">&#129654; Mi Tarjeta Digital</button>
     <button class="tab-btn" onclick="showTab('seg')">🔒 Seguridad</button>
   </div>
   <!-- TAB 1: Informacion Personal -->
@@ -157,27 +159,53 @@ textarea{resize:vertical;min-height:90px}
       </div>
     </div>
     <div class="card">
-      <h3>🌐 Redes Sociales y Portales</h3>
-      <div class="form-grid single">
-        <div class="form-group">
-          <label>Instagram</label>
-          <div class="social-row"><span class="social-prefix">instagram.com/</span><input type="text" id="pInstagram" placeholder="tu_usuario" style="flex:1" /></div>
-        </div>
-        <div class="form-group">
-          <label>Facebook</label>
-          <div class="social-row"><span class="social-prefix">facebook.com/</span><input type="text" id="pFacebook" placeholder="tu_pagina" style="flex:1" /></div>
-        </div>
-        <div class="form-group">
-          <label>LinkedIn</label>
-          <div class="social-row"><span class="social-prefix">linkedin.com/in/</span><input type="text" id="pLinkedin" placeholder="tu_perfil" style="flex:1" /></div>
-        </div>
-        <div class="form-group">
-          <label>Sitio Web personal</label>
-          <input type="url" id="pWebsite" placeholder="https://tu-sitio.com" />
-        </div>
-      </div>
+      <h3>&#128241; Redes Sociales</h3>
+      <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Tus redes ahora se editan en la pesta&ntilde;a <b>Mi Tarjeta Digital</b>, para que la tarjeta y el perfil siempre digan lo mismo.</p>
       <div style="margin-top:18px">
         <button class="btn-primary" onclick="savePro()">💾 Guardar Perfil Profesional</button>
+      </div>
+    </div>
+  </div>
+  <!-- TAB: Mi Tarjeta Digital -->
+  <div id="tab-tarjeta" class="tab-panel">
+    <div class="card">
+      <h3>&#129654; Datos que aparecen en tu tarjeta</h3>
+      <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Rellena estos campos y tu tarjeta digital se genera sola. No hay que programar nada.</p>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Direcci&oacute;n de tu tarjeta</label>
+          <div class="social-row"><span class="social-prefix">www.lomazhome.com/asesor/</span><input type="text" id="tjSlug" placeholder="tu-nombre" oninput="renderTjLinks()" style="flex:1" /></div>
+        </div>
+        <div class="form-group"><label>Cargo que se muestra</label><input type="text" id="tjCargo" placeholder="Asesora Inmobiliaria" /></div>
+        <div class="form-group"><label>Correo de contacto</label><input type="email" id="tjEmail" placeholder="nombre@lomazhome.com" /></div>
+        <div class="form-group"><label>WhatsApp de contacto</label><input type="tel" id="tjWhatsapp" placeholder="300 000 0000" /></div>
+        <div class="form-group"><label>Ciudad</label><input type="text" id="tjCiudad" placeholder="Bogot&aacute;" /></div>
+        <div class="form-group full"><label>Presentaci&oacute;n corta (bio)</label><textarea id="tjBio" rows="3" placeholder="Qui&eacute;n eres, en qu&eacute; te especializas y por qu&eacute; confiar en ti."></textarea></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>&#128241; Tus redes en la tarjeta</h3>
+      <div class="form-grid single">
+        <div class="form-group"><label>Instagram</label><div class="social-row"><span class="social-prefix">instagram.com/</span><input type="text" id="tjInstagram" placeholder="tu_usuario" style="flex:1" /></div></div>
+        <div class="form-group"><label>Facebook</label><div class="social-row"><span class="social-prefix">facebook.com/</span><input type="text" id="tjFacebook" placeholder="tu_pagina" style="flex:1" /></div></div>
+        <div class="form-group"><label>TikTok</label><div class="social-row"><span class="social-prefix">tiktok.com/@</span><input type="text" id="tjTiktok" placeholder="tu_usuario" style="flex:1" /></div></div>
+        <div class="form-group"><label>LinkedIn</label><div class="social-row"><span class="social-prefix">linkedin.com/in/</span><input type="text" id="tjLinkedin" placeholder="tu_perfil" style="flex:1" /></div></div>
+        <div class="form-group"><label>YouTube</label><div class="social-row"><span class="social-prefix">youtube.com/@</span><input type="text" id="tjYoutube" placeholder="tu_canal" style="flex:1" /></div></div>
+        <div class="form-group"><label>Threads</label><div class="social-row"><span class="social-prefix">threads.net/@</span><input type="text" id="tjThreads" placeholder="tu_usuario" style="flex:1" /></div></div>
+        <div class="form-group"><label>Sitio web personal</label><input type="url" id="tjWeb" placeholder="https://tu-sitio.com" /></div>
+      </div>
+      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-primary" onclick="saveTarjeta()">&#128190; Guardar mi tarjeta</button>
+        <a class="btn-primary" id="tjVer" href="asesores.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">&#128065; Ver mi tarjeta</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>&#128279; Un enlace por cada red social</h3>
+      <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Copia el enlace de cada red y p&eacute;galo en tu bio. Cada uno viene marcado para saber de qu&eacute; red te llegan los clientes.</p>
+      <div id="tjLinks"></div>
+      <div style="display:flex;gap:22px;flex-wrap:wrap;align-items:center;margin-top:18px">
+        <div id="tjQr" style="background:#fff;padding:10px;border-radius:10px;border:1px solid #e5e7eb"></div>
+        <button class="btn-primary" onclick="descargarQR()">&#11015; Descargar QR</button>
       </div>
     </div>
   </div>
@@ -309,6 +337,118 @@ async function loadProfile(){
   setV("pFacebook",dp.facebook);
   setV("pLinkedin",dp.linkedin);
   setV("pWebsite",dp.website);
+  setV("tjSlug",dp.slug);
+  setV("tjCargo",dp.cargo_publico||data.cargo);
+  setV("tjEmail",dp.email);
+  setV("tjWhatsapp",dp.whatsapp);
+  setV("tjCiudad",dp.ciudad);
+  setV("tjBio",data.notas!=null?data.notas:dp.bio);
+  setV("tjInstagram",dp.instagram);
+  setV("tjFacebook",dp.facebook);
+  setV("tjTiktok",dp.tiktok);
+  setV("tjLinkedin",dp.linkedin);
+  setV("tjYoutube",dp.youtube);
+  setV("tjThreads",dp.threads);
+  setV("tjWeb",dp.web||dp.website);
+  renderTjLinks();
+}
+
+var TJ_REDES=[["instagram","Instagram"],["facebook","Facebook"],["tiktok","TikTok"],["youtube","YouTube"],["threads","Threads"],["linkedin","LinkedIn"],["whatsapp","WhatsApp"],["email","Firma de correo"],["qr","Tarjeta impresa / QR"]];
+
+function tjSlugify(s){
+  return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+/,"").replace(/-+$/,"");
+}
+
+function tjValor(id){
+  var el=document.getElementById(id);
+  return el?el.value.trim():"";
+}
+
+function tjBaseUrl(){
+  var s=tjSlugify(tjValor("tjSlug"));
+  if(!s) s=tjSlugify(tjValor("pNombre")+" "+tjValor("pApellido"));
+  if(!s) s=tjSlugify((currentProfile&&currentProfile.nombre_completo)||"");
+  return "https://www.lomazhome.com/asesor/"+s;
+}
+
+function tjCopiar(btn,url){
+  navigator.clipboard.writeText(url).then(function(){
+    var o=btn.textContent;
+    btn.textContent="Copiado";
+    setTimeout(function(){ btn.textContent=o; },1500);
+  });
+}
+
+function renderTjLinks(){
+  var base=tjBaseUrl();
+  var ver=document.getElementById("tjVer");
+  if(ver) ver.href=base;
+  var cont=document.getElementById("tjLinks");
+  if(!cont) return;
+  cont.innerHTML=TJ_REDES.map(function(r){
+    var u=base+"?utm_source="+r[0]+"&utm_medium=bio";
+    return '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid #eef0f3">'
+      +'<b style="min-width:150px">'+r[1]+'</b>'
+      +'<code style="flex:1;min-width:240px;font-size:.8rem;word-break:break-all;color:#0f2038">'+u+'</code>'
+      +'<button class="btn-primary" type="button" onclick="tjCopiar(this,\''+u+'\')">Copiar</button>'
+      +'</div>';
+  }).join("");
+  var q=document.getElementById("tjQr");
+  if(q && window.QRCode){
+    q.innerHTML="";
+    try{ new QRCode(q,{text:base,width:130,height:130,colorDark:"#0f2038",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){}
+  }
+}
+
+function descargarQR(){
+  var c=document.querySelector("#tjQr canvas");
+  if(!c){ showAlert("Primero guarda tu tarjeta","error"); return; }
+  var a=document.createElement("a");
+  a.href=c.toDataURL("image/png");
+  a.download="qr-tarjeta-lomazhome.png";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+async function saveTarjeta(){
+  var slug=tjSlugify(tjValor("tjSlug"))||tjSlugify(tjValor("pNombre")+" "+tjValor("pApellido"));
+  if(!slug){ showAlert("Escribe tu nombre o la direccion de tu tarjeta","error"); return; }
+  var dpExtra={
+    slug:slug,
+    cargo_publico:tjValor("tjCargo"),
+    email:tjValor("tjEmail"),
+    whatsapp:tjValor("tjWhatsapp"),
+    ciudad:tjValor("tjCiudad"),
+    bio:tjValor("tjBio"),
+    instagram:tjValor("tjInstagram"),
+    facebook:tjValor("tjFacebook"),
+    tiktok:tjValor("tjTiktok"),
+    linkedin:tjValor("tjLinkedin"),
+    youtube:tjValor("tjYoutube"),
+    threads:tjValor("tjThreads"),
+    web:tjValor("tjWeb"),
+    website:tjValor("tjWeb")
+  };
+  var dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
+  var payload={
+    id:currentUser.id,
+    datos_perfil:Object.assign({},dpBase,dpExtra),
+    updated_at:new Date().toISOString()
+  };
+  if(tjValor("tjCargo")) payload.cargo=tjValor("tjCargo");
+  if(tjValor("tjBio")) payload.notas=tjValor("tjBio");
+  const {error}=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id);
+  if(error){ showAlert("Error: "+error.message,"error"); return; }
+  if(currentProfile){
+    currentProfile.datos_perfil=payload.datos_perfil;
+    if(payload.cargo) currentProfile.cargo=payload.cargo;
+    if(payload.notas) currentProfile.notas=payload.notas;
+  }
+  var el=document.getElementById("tjSlug");
+  if(el) el.value=slug;
+  renderTjLinks();
+  showAlert("Tarjeta actualizada: www.lomazhome.com/asesor/"+slug,"success");
 }
 
 async function saveInfo(){
@@ -342,10 +482,6 @@ async function savePro(){
     anos_experiencia:parseInt(document.getElementById("pExperiencia").value)||null,
     zona_trabajo:document.getElementById("pZona").value.trim(),
     especialidad:document.getElementById("pEspecialidad").value,
-    instagram:document.getElementById("pInstagram").value.trim(),
-    facebook:document.getElementById("pFacebook").value.trim(),
-    linkedin:document.getElementById("pLinkedin").value.trim(),
-    website:document.getElementById("pWebsite").value.trim()
   };
   const dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
   const payload={
