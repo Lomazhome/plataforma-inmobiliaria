@@ -1441,6 +1441,7 @@ try {
       var o=await llamar("publicar-en-fincaraiz",body);
       var j=o.json||{};
       if(j.ok) return {ok:true,msg:String(j.msg||("Finca Raiz confirmo la accion ("+(j.status||"")+")")).substring(0,300)};
+      if(j.status==="en_proceso"||j.task_id) return {ok:true,msg:"Finca Raiz recibio la orden y la esta procesando"+(j.task_id?" (tarea "+String(j.task_id).substring(0,8)+")":"")+". Puede tardar unos minutos en verse en el portal."};
       var txt=JSON.stringify(j);
       if(accion!=="reactivar" && /propiedad\.id/i.test(txt)) return {ok:false,msg:"La funcion de Finca Raiz instalada aun no acepta pausar/retirar: falta desplegar la version nueva de publicar-en-fincaraiz."};
       return {ok:false,msg:String(j.msg||j.error||("HTTP "+o.status)).substring(0,300)};
@@ -1474,12 +1475,15 @@ try {
     var okBtn={ pausar:"Si, pausar", reactivar:"Si, reactivar", retirar:"Si, retirar el aviso" };
     var ok=await confirmar(titulos[accion]||"Confirmar",textos[accion]||"",okBtn[accion]||"Confirmar",accion==="retirar");
     if(!ok) return;
-    avisar("Procesando en "+n+"...","info");
+    if(window.__LMZ_BUSY){ avisar("Espera a que termine la accion anterior.","info"); return; }
+    window.__LMZ_BUSY=true;
+    avisar("Procesando en "+n+"... puede tardar hasta 2 minutos. No cierres esta pagina.","info");
     var res={ok:false,msg:""};
     try{ res=await ejecutar(r,portal,accion); }catch(e){ res={ok:false,msg:(e&&e.message)||String(e)}; }
     var nuevos={ pausar:"pausado", reactivar:"activo", retirar:"retirado" };
     if(res.ok){ await registrar(r,nuevos[accion],res.msg); avisar(n+": "+(res.msg||"listo."),"success"); }
     else{ avisar(n+": no se pudo completar. "+(res.msg||""),"error"); }
+    window.__LMZ_BUSY=false;
     render();
   };
 
