@@ -185,7 +185,7 @@ Deno.serve(async (req) => {
         return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, listo_para_publicar: false, mensaje: 'Faltan datos: usuario, contrasena o identificacion/NIT.' }, 200);
       }
       const urlsE = baseUrls(ambEst);
-      const hdrsE: Record<string, string> = { 'Content-Type': 'application/json', 'x-api-key': xApiKey(ambEst) };
+      const hdrsE: Record<string, string> = { 'Content-Type': 'application/json', 'x-api-key': xApiKey(ambEst) }; try { const _tkE = await getToken(admin, ambEst, cfgE); if (_tkE) hdrsE['token'] = _tkE; } catch (_e) { /* sin token */ }
       let catStatus = 0;
       let catOk = false;
       try {
@@ -245,7 +245,7 @@ Deno.serve(async (req) => {
         };
         const path = map[tipo];
         if (!path) return json({ error: "Catalogo desconocido: " + tipo }, 400);
-        const ambCat = (url.searchParams.get("ambiente") || ambiente).toLowerCase(); const urlsCat = baseUrls(ambCat); const _sp = new URLSearchParams(url.search); _sp.delete("ambiente"); const qs = _sp.toString() ? "?" + _sp.toString() : ""; const hdrs: Record<string,string> = { "Content-Type": "application/json", "x-api-key": xApiKey(ambCat) }; const u1 = urlsCat.base + path + qs; const u2 = urlsCat.base + "/rest-api" + path + qs; const diag: any[] = []; let resp = await fetch(u1, { headers: hdrs }); diag.push({ intento: 1, ambiente: ambCat, url: u1, status: resp.status }); if (!resp.ok) { resp = await fetch(u2, { headers: hdrs }); diag.push({ intento: 2, ambiente: ambCat, url: u2, status: resp.status }); }
+        const ambCat = (url.searchParams.get("ambiente") || ambiente).toLowerCase(); const urlsCat = baseUrls(ambCat); const _sp = new URLSearchParams(url.search); _sp.delete("ambiente"); const qs = _sp.toString() ? "?" + _sp.toString() : ""; const hdrs: Record<string,string> = { "Content-Type": "application/json", "x-api-key": xApiKey(ambCat) }; try { const _tk = await getToken(admin, ambCat, cfg); if (_tk) hdrs["token"] = _tk; } catch (_e) { /* sin token: se intenta igual */ } const u1 = urlsCat.base + path + qs; const u2 = urlsCat.base + "/rest-api" + path + qs; const diag: any[] = []; let resp = await fetch(u1, { headers: hdrs }); diag.push({ intento: 1, ambiente: ambCat, url: u1, status: resp.status }); if (!resp.ok) { resp = await fetch(u2, { headers: hdrs }); diag.push({ intento: 2, ambiente: ambCat, url: u2, status: resp.status }); }
         const _raw = await resp.text().catch(() => ""); let data: any = null; try { data = JSON.parse(_raw); } catch (_e) { data = null; }
         if (!resp.ok || data === null) return json({ diagnostico: "catalogo Metrocuadrado", intentos: diag, status_final: resp.status, content_type: resp.headers.get("content-type"), largo: _raw.length, muestra: _raw.slice(0, 600) }, resp.ok ? 200 : resp.status);
         return json(data, resp.status);
