@@ -1638,5 +1638,75 @@ try {
   if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded",_init); } else { _init(); }
 })();
 </script>
+        <script>
+/* ---- LomazHome: coordenadas garantizadas (respaldo de geolocalizacion) ---- */
+(function(){
+  function el(id){ return document.getElementById(id); }
+  function val(id){ var e = el(id); return e ? String(e.value || "").trim() : ""; }
+  function coordsOk(){
+    var la = parseFloat(val("latitud")), lo = parseFloat(val("longitud"));
+    return !isNaN(la) && !isNaN(lo) && (la !== 0 || lo !== 0);
+  }
+  function pausa(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function pintar(lat, lng, texto){
+    if (el("latitud")) el("latitud").value = Number(lat).toFixed(7);
+    if (el("longitud")) el("longitud").value = Number(lng).toFixed(7);
+    try {
+      if (typeof __ensureMap === "function") {
+        __ensureMap();
+        if (window.__map) window.__map.setView([Number(lat), Number(lng)], 15);
+        if (window.__marker) window.__marker.setLatLng([Number(lat), Number(lng)]);
+      }
+    } catch (e) {}
+    var st = el("geoStatus");
+    if (st && texto) { st.textContent = texto; st.style.color = "#ffc86b"; }
+  }
+  async function resolver(){
+    var ciudad = val("ciudad"), barrio = val("barrio"), depto = val("departamento"), dir = val("direccion");
+    if (!ciudad) return false;
+    var intentos = [];
+    if (dir && barrio) intentos.push([dir, barrio, ciudad, "Colombia"]);
+    if (dir) intentos.push([dir, ciudad, "Colombia"]);
+    if (barrio) intentos.push([barrio, ciudad, "Colombia"]);
+    if (depto) intentos.push([ciudad, depto, "Colombia"]);
+    intentos.push([ciudad, "Colombia"]);
+    for (var i = 0; i < intentos.length; i++) {
+      var q = intentos[i].filter(Boolean).join(", ");
+      try {
+        var r = await fetch("https://nominatim.openstreetmap.org/search" + "?format=json&limit=1&countrycodes=co&q=" + encodeURIComponent(q));
+        var d = await r.json();
+        if (d && d.length) {
+          pintar(d[0].lat, d[0].lon, "Ubicacion aproximada (" + q + "). Arrastra el marcador para ajustar el punto exacto.");
+          return true;
+        }
+      } catch (e) {}
+      await pausa(1100);
+    }
+    return false;
+  }
+  window.__geoGarantizar = async function(){ return coordsOk() ? true : await resolver(); };
+  function init(){
+    var vueltas = 0;
+    var reloj = setInterval(function(){
+      vueltas++;
+      if (coordsOk() || vueltas > 8) { clearInterval(reloj); return; }
+      if (val("ciudad")) { clearInterval(reloj); window.__geoGarantizar(); }
+    }, 2000);
+    ["ciudad", "barrio", "direccion"].forEach(function(id){
+      var e = el(id);
+      if (e) e.addEventListener("blur", function(){ if (!coordsOk()) window.__geoGarantizar(); });
+    });
+    if (typeof window.publicarPropiedad === "function" && !window.__geoWrap) {
+      window.__geoWrap = true;
+      var original = window.publicarPropiedad;
+      window.publicarPropiedad = async function(){
+        try { if (!coordsOk()) await window.__geoGarantizar(); } catch (e) {}
+        return original.apply(this, arguments);
+      };
+    }
+  }
+  if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", init); } else { init(); }
+})();
+</script>
 </body>
 </html>
