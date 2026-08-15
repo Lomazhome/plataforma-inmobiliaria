@@ -157,7 +157,7 @@ function buildListing(p: any, contact: any): string {
 Deno.serve(async (_req) => {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE);
   
-  const { data: props, error } = await supabase
+  const { data: propsRaw, error } = await supabase
     .from("propiedades")
     .select("*")
     .in("estado", ["activo", "activa", "publicada"])
@@ -170,6 +170,19 @@ Deno.serve(async (_req) => {
       headers: { "Content-Type": "application/xml; charset=utf-8" }
     });
   }
+
+  // Se excluyen del feed las propiedades que el asesor pauso o retiro
+  // de Proppit desde la edicion de la propiedad en LoMaz Home.
+  const fueraDeProppit = (p: any) => {
+    try {
+      const arr = Array.isArray(p.publicado_portales) ? p.publicado_portales : [];
+      const reg = arr.find((x: any) => x && String(x.portal || "").toLowerCase() === "proppit");
+      if (!reg) return false;
+      const e = String(reg.estado || "").toLowerCase();
+      return e === "pausado" || e === "pausada" || e === "retirado" || e === "retirada" || e === "inactivo";
+    } catch (_e) { return false; }
+  };
+  const props = (propsRaw || []).filter((p: any) => !fueraDeProppit(p));
 
   // Cargar perfiles de asesores y emails de auth.users
   const asesorIds = [...new Set((props||[]).map((p: any) => p.asesor_id).filter(Boolean))];
