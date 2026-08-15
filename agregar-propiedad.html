@@ -377,7 +377,7 @@ img,video,iframe{max-width:100%}
 <p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Marca los portales adicionales: los inmobiliarios se envian en paralelo y antes de mandar nada te pedimos confirmacion.</p>
 <div class="portales-grid">
 <div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
-<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">PORTALES INMOBILIARIOS &middot; ENVIO AUTOMATICO EN PARALELO</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">PORTALES INMOBILIARIOS &middot; ENVIO EN PARALELO &middot; ELIGE LOS QUE QUIERAS</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
 <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
 <div style="font-size:.74rem;letter-spacing:.08em;color:#8a94a6;font-weight:700;margin:.9rem 0 .35rem">REDES SOCIALES &middot; PUBLICACION ASISTIDA (TU PEGAS EL TEXTO)</div><div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
@@ -785,13 +785,14 @@ window.sincronizarPortalesDePropiedad = sincronizarPortalesDePropiedad;
 // El asesor ve un resumen y decide antes de que se envie nada.
 // ============================================================
 function marcarPortalesInmobiliarios(){
-  ["ch-metrocuadrado","ch-fincaraiz","ch-proppit"].forEach(function(id){
-    var cb=document.getElementById(id); if(!cb||cb.disabled) return;
-    cb.checked=true;
-    var row=document.getElementById(id.replace("ch-","row-"));
-    if(row) row.classList.add("selected");
-    if(id==="ch-metrocuadrado" && typeof toggleMetroMapa==="function"){ try { toggleMetroMapa(cb); } catch(_e) {} }
-  });
+  var ids=["ch-metrocuadrado","ch-fincaraiz","ch-proppit"];
+  var libres=ids.map(function(id){return document.getElementById(id);}).filter(function(cb){return cb && !cb.disabled;});
+  if(!libres.length) return;
+  var todos=libres.every(function(cb){return cb.checked;});
+  var nuevo=!todos;
+  libres.forEach(function(cb){ if(cb.checked!==nuevo){ cb.checked=nuevo; cb.dispatchEvent(new Event("change",{bubbles:true})); } });
+  var b=document.querySelector('button[onclick*="marcarPortalesInmobiliarios"]');
+  if(b) b.textContent = nuevo ? "Quitar los 3" : "Marcar los 3";
 }
 window.marcarPortalesInmobiliarios = marcarPortalesInmobiliarios;
 function confirmarPublicacionPortales(tareas){
@@ -1262,23 +1263,13 @@ try {
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
         showAlert('✅ Cambios guardados correctamente.','success'); window.scrollTo({top:0,behavior:'smooth'});
-        // --- Sincronizacion con Finca Raiz al editar ---
-        // Si esta propiedad ya estaba publicada en Finca Raiz, reenviar los cambios
-        // (mismo id => Finca Raiz lo trata como actualizacion del aviso, no como uno nuevo).
+        // --- Portales: actualizacion en paralelo al editar ---
         try {
-          const { data: _frRow } = await c.from('publicaciones_portales')
-            .select('portal').eq('propiedad_id', EDIT_ID).eq('portal', 'fincaraiz').maybeSingle();
-          if ((_frRow || ((document.getElementById('ch-fincaraiz')||{}).checked)) && typeof window.publicarEnFincaraiz === 'function') {
-            showAlert(_frRow ? 'Actualizando el aviso en Finca Raiz...' : 'Enviando el aviso a Finca Raiz...', 'info');
-            const _fr = await window.publicarEnFincaraiz(data, EDIT_ID); try{ const _est=(_fr&&_fr.ok)?'publicado':'en_proceso'; const _msg=(_fr&&_fr.msg)?String(_fr.msg).substring(0,480):''; if(_frRow){ await c.from('publicaciones_portales').update({estado:_est,mensaje:_msg,fecha:new Date().toISOString()}).eq('propiedad_id',EDIT_ID).eq('portal','fincaraiz'); } else { await c.from('publicaciones_portales').insert({propiedad_id:EDIT_ID,portal:'fincaraiz',estado:_est,mensaje:_msg,asesor_id:(typeof currentUser!=='undefined'&&currentUser)?currentUser.id:null}); } }catch(_regErr){ console.error('registro portal fincaraiz', _regErr); }
-            if (_fr && _fr.ok) {
-              showAlert('Cambios guardados y reenviados a Finca Raiz correctamente.', 'success');
-            } else {
-              showAlert('Cambios guardados. Finca Raiz: ' + ((_fr && _fr.msg) || 'integracion en proceso, verifica mas tarde.'), 'info');
-            }
+          if (typeof window.lmzActualizarPortalesAlEditar === "function") {
+            await window.lmzActualizarPortalesAlEditar(EDIT_ID, data, c);
           }
-        } catch (_frErr) {
-          showAlert('Cambios guardados. (No se pudo confirmar Finca Raiz: ' + ((_frErr && _frErr.message) || _frErr) + ')', 'info');
+        } catch (_pErr) {
+          showAlert("Cambios guardados. No se pudieron actualizar los portales: " + ((_pErr && _pErr.message) || _pErr), "info");
         }
         /* permanece en el editor tras guardar */
       }catch(e){ alert('Error: '+e.message); }
@@ -1289,6 +1280,299 @@ try {
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(function(){ prefill(); installSaveOverride(); }, 600); });
   } else { setTimeout(function(){ prefill(); installSaveOverride(); }, 600); }
+})();
+</script>
+<script>
+/* ============================================================
+   LoMaz Home - PORTALES dentro de la EDICION de una propiedad
+   Se activa solo cuando la pagina abre en modo edicion (con id).
+   1) Muestra en que portales esta publicada y con que estado.
+   2) Permite Ver / Pausar / Reactivar / Retirar en cada portal.
+   3) Al guardar cambios reenvia la actualizacion EN PARALELO a
+      los portales que el asesor apruebe (o siempre, si deja
+      marcada la casilla de actualizacion automatica).
+   ============================================================ */
+(function(){
+  var EDIT_ID = new URLSearchParams(location.search).get("id");
+  if(!EDIT_ID) return;
+  var FN = "https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/";
+  var LS_AUTO = "lmzAutoActualizarPortales";
+  var P = {
+    metrocuadrado:{name:"Metrocuadrado", tipo:"api", home:"https://www.metrocuadrado.com/"},
+    fincaraiz:{name:"Finca Raiz", tipo:"api", home:"https://www.fincaraiz.com.co/"},
+    proppit:{name:"Proppit", tipo:"feed", home:"https://www.proppit.com/"},
+    marketplace:{name:"Facebook Marketplace", tipo:"manual", home:"https://www.facebook.com/marketplace/you/selling"},
+    instagram:{name:"Instagram", tipo:"manual", home:"https://www.instagram.com/"}
+  };
+  var ACT = ["activo","activa","publicado","publicada","publicado_xml_feed","en_proceso"];
+  function cli(){ return window.__editClient || window.sb || null; }
+  function activo(e){ return ACT.indexOf(String(e||"").toLowerCase().replace(/\s+/g,"_")) !== -1; }
+  function pausado(e){ return /^(pausado|pausada|inactivo)$/i.test(String(e||"")); }
+  function retirado(e){ return /^(retirado|retirada|eliminado)$/i.test(String(e||"")); }
+  function esc(s){ var d=document.createElement("div"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
+  function fmtFecha(f){ try{ return new Date(f).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}); }catch(_e){ return ""; } }
+  function nombre(p){ return (P[p]&&P[p].name)||p; }
+  function avisar(m,t){ if(typeof showAlert==="function") showAlert(m,t||"info"); }
+
+  async function leer(){
+    var c=cli(); if(!c) return [];
+    var q=await c.from("publicaciones_portales").select("id,portal,estado,mensaje,url_publicacion,fecha").eq("propiedad_id",EDIT_ID);
+    if(q.error||!q.data) return [];
+    var last={};
+    q.data.forEach(function(r){ var k=String(r.portal||"").toLowerCase(); if(!k) return; if(last[k] && (last[k].fecha||"")>(r.fecha||"")) return; last[k]=r; });
+    var ids={};
+    try{
+      var pr=await c.from("propiedades").select("publicado_portales,metro_realestate_id").eq("id",EDIT_ID).single();
+      window.__LMZ_METRO=(pr.data&&pr.data.metro_realestate_id)||null;
+      var arr=(pr.data&&pr.data.publicado_portales)||[];
+      if(Array.isArray(arr)) arr.forEach(function(x){ if(x&&x.portal) ids[String(x.portal).toLowerCase()]=x; });
+    }catch(_e){}
+    return Object.keys(last).map(function(k){
+      var r=last[k], x=ids[k]||{}, up=String(r.url_publicacion||"").trim();
+      return { portal:k, rowId:r.id, estado:r.estado||"", fecha:r.fecha||"", mensaje:r.mensaje||"",
+        url:(x.url||(/^https?:/i.test(up)?up:"")),
+        listing_id:(x.listing_id||(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(up)?up:"")),
+        property_id:(x.property_id||""), task_id:(x.task_id||""), url_publicacion:up };
+    });
+  }
+
+  function chip(t,bg,fg){ return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.66rem;font-weight:700;background:'+bg+';color:'+fg+'">'+esc(t)+'</span>'; }
+  function chipEstado(e){
+    if(activo(e)) return chip("PUBLICADO","rgba(34,197,94,.15)","#22c55e");
+    if(pausado(e)) return chip("PAUSADO","rgba(234,179,8,.16)","#eab308");
+    if(retirado(e)) return chip("RETIRADO","rgba(148,163,184,.18)","#94a3b8");
+    return chip(String(e||"SIN ESTADO").toUpperCase().replace(/_/g," ").substring(0,20),"rgba(148,163,184,.18)","#cbd5e1");
+  }
+  function boton(txt,accion,portal,color){
+    return '<button type="button" data-lmz="'+accion+'" data-portal="'+(portal||"")+'" style="background:transparent;border:1px solid '+color+';color:'+color+';border-radius:6px;padding:3px 9px;font-size:.71rem;cursor:pointer;margin-left:.3rem;white-space:nowrap">'+esc(txt)+'</button>';
+  }
+
+  async function render(){
+    var panel=document.getElementById("panel4"); if(!panel) return;
+    var host=document.getElementById("cardPortalesEdit");
+    if(!host){
+      host=document.createElement("div"); host.className="card"; host.id="cardPortalesEdit";
+      panel.insertBefore(host,panel.firstChild);
+      host.addEventListener("click",function(ev){
+        var b=ev.target && ev.target.closest ? ev.target.closest("button[data-lmz]") : null;
+        if(!b) return;
+        var a=b.getAttribute("data-lmz"), p=b.getAttribute("data-portal");
+        if(a==="refrescar") render();
+        else if(a==="ver") window.lmzVerPortal(p);
+        else window.lmzAccionPortal(p,a);
+      });
+      host.addEventListener("change",function(ev){
+        var t=ev.target;
+        if(t && t.id==="chAutoPortales"){ try{ localStorage.setItem(LS_AUTO, t.checked?"1":"0"); }catch(_e){}
+          avisar(t.checked?"Listo: al guardar cambios se actualizaran solos los portales publicados.":"Listo: antes de actualizar los portales te preguntaremos.","info"); }
+      });
+    }
+    var lista=await leer(); window.__LMZ_LISTA=lista;
+    var filas=lista.map(function(r){
+      var det=[];
+      if(r.listing_id) det.push("Aviso "+r.listing_id.substring(0,8));
+      if(r.property_id) det.push("ID portal "+r.property_id);
+      if(r.fecha) det.push(fmtFecha(r.fecha));
+      var acc=boton("Ver","ver",r.portal,"#60a5fa");
+      if(activo(r.estado)) acc+=boton("Pausar","pausar",r.portal,"#eab308");
+      if(pausado(r.estado)||retirado(r.estado)) acc+=boton("Reactivar","reactivar",r.portal,"#22c55e");
+      if(!retirado(r.estado)) acc+=boton("Retirar","retirar",r.portal,"#f87171");
+      return '<div class="portal-row" style="align-items:center;justify-content:space-between"><div><div class="portal-name">'+esc(nombre(r.portal))+'</div><div class="portal-desc">'+esc(det.join(" - "))+'</div></div><div style="display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;justify-content:flex-end">'+chipEstado(r.estado)+acc+'</div></div>';
+    }).join("");
+    if(!filas) filas='<div style="color:#94a3b8;font-size:.82rem">Esta propiedad todavia no se ha enviado a ningun portal. Marca abajo los portales que quieras y guarda los cambios.</div>';
+    var auto=false; try{ auto=localStorage.getItem(LS_AUTO)==="1"; }catch(_e){}
+    host.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap"><div style="color:var(--gold);font-size:.78rem;font-weight:700;letter-spacing:.07em">PORTALES DE ESTA PROPIEDAD</div>'+boton("Refrescar","refrescar","","#94a3b8")+'</div><div style="color:#94a3b8;font-size:.78rem;margin:.35rem 0 .7rem">Cada portal es independiente: aqui puedes ver el aviso, pausarlo o retirarlo sin borrar la propiedad de Lomaz Home.</div>'+filas+'<label style="display:flex;align-items:flex-start;gap:.5rem;margin-top:.85rem;font-size:.77rem;color:#cbd5e1;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" id="chAutoPortales" '+(auto?"checked":"")+' style="margin-top:2px;width:16px;height:16px;flex:0 0 16px"/><span>Al guardar cambios, actualizar automaticamente los portales publicados sin preguntarme.</span></label>';
+  }
+  window.lmzRenderPortales=render;
+  window.lmzVerPortal=function(portal){
+    var r=(window.__LMZ_LISTA||[]).filter(function(x){return x.portal===portal;})[0]||{};
+    if(r.url){ window.open(r.url,"_blank","noopener"); return; }
+    if(portal==="proppit"){ window.open(FN+"proppit-feed","_blank","noopener"); return; }
+    var t="El portal no devolvio una URL publica de este aviso.";
+    if(r.listing_id) t+=" Buscalo en tu panel del portal con el aviso "+r.listing_id+".";
+    else if(r.property_id) t+=" Buscalo con el ID "+r.property_id+".";
+    avisar(t,"info");
+    var h=(P[portal]&&P[portal].home)||""; if(h) window.open(h,"_blank","noopener");
+  };
+  function confirmar(titulo,html,textoOk,peligro){
+    return new Promise(function(resolve){
+      var ov=document.createElement("div");
+      ov.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:1rem";
+      var col=peligro?"#f87171":"#22c55e";
+      ov.innerHTML='<div style="background:#0f172a;border:1px solid rgba(148,163,184,.25);border-radius:14px;max-width:440px;width:100%;padding:1.15rem 1.25rem;color:#e2e8f0;font-size:.88rem"><div style="font-weight:700;margin-bottom:.55rem">'+esc(titulo)+'</div><div style="color:#cbd5e1;line-height:1.5">'+html+'</div><div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.1rem"><button type="button" data-x="0" style="background:transparent;border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:7px 13px;cursor:pointer">Cancelar</button><button type="button" data-x="1" style="background:'+col+';border:none;color:#0b1220;font-weight:700;border-radius:8px;padding:7px 15px;cursor:pointer">'+esc(textoOk)+'</button></div></div>';
+      function fin(v){ try{ document.body.removeChild(ov); }catch(_e){} resolve(v); }
+      ov.addEventListener("click",function(e){
+        var b=e.target && e.target.closest ? e.target.closest("button[data-x]") : null;
+        if(b) fin(b.getAttribute("data-x")==="1"); else if(e.target===ov) fin(false);
+      });
+      document.body.appendChild(ov);
+    });
+  }
+
+  async function asesorId(){
+    try{ var c=cli(); var u=await c.auth.getUser(); return (u&&u.data&&u.data.user)?u.data.user.id:null; }catch(_e){ return null; }
+  }
+  async function registrar(r,estado,mensaje){
+    var c=cli(); if(!c) return;
+    var ids=[];
+    if(r.listing_id) ids.push("listing_id="+r.listing_id);
+    if(r.property_id) ids.push("fr_property_id="+r.property_id);
+    if(r.task_id) ids.push("task_id="+r.task_id);
+    var msg=(ids.join(" ")+" | "+(mensaje||"")).substring(0,480);
+    try{
+      await c.from("publicaciones_portales").insert({ propiedad_id:EDIT_ID, portal:r.portal, estado:estado, mensaje:msg,
+        url_publicacion:(r.url_publicacion||""), fecha:new Date().toISOString(), asesor_id: await asesorId() });
+    }catch(_e){}
+    try{ if(typeof window.sincronizarPortalesDePropiedad==="function") await window.sincronizarPortalesDePropiedad(EDIT_ID); }catch(_e){}
+  }
+  async function llamar(path,body){
+    var c=cli(); var key=(c&&c.supabaseKey)||"";
+    var resp=await fetch(FN+path,{ method:"POST", headers:{ "Content-Type":"application/json", apikey:key, Authorization:"Bearer "+key }, body:JSON.stringify(body) });
+    var j=null; try{ j=await resp.json(); }catch(_e){ j={}; }
+    return { status:resp.status, json:(j||{}) };
+  }
+
+  async function ejecutar(r,portal,accion){
+    if(portal==="fincaraiz"){
+      if(!r.listing_id && !r.task_id) return {ok:false,msg:"No tengo guardado el identificador del aviso; hay que recuperarlo desde Finca Raiz antes de pausar o retirar."};
+      var body={ propiedad_id:EDIT_ID, listing_id:(r.listing_id||null), task_id:(r.task_id||null) };
+      if(accion==="reactivar"){ body.accion="activar"; }
+      else { body.accion="cambiar_estado"; body.estado=(accion==="pausar")?"INACTIVE":"DELETED"; }
+      var o=await llamar("publicar-en-fincaraiz",body);
+      var j=o.json||{};
+      if(j.ok) return {ok:true,msg:String(j.msg||("Finca Raiz confirmo la accion ("+(j.status||"")+")")).substring(0,300)};
+      var txt=JSON.stringify(j);
+      if(accion!=="reactivar" && /propiedad\.id/i.test(txt)) return {ok:false,msg:"La funcion de Finca Raiz instalada aun no acepta pausar/retirar: falta desplegar la version nueva de publicar-en-fincaraiz."};
+      return {ok:false,msg:String(j.msg||j.error||("HTTP "+o.status)).substring(0,300)};
+    }
+    if(portal==="metrocuadrado"){
+      if(accion==="reactivar"){
+        if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"La publicacion de Metrocuadrado no esta disponible en esta pagina."};
+        var m=await window.publicarEnMetrocuadrado(EDIT_ID);
+        return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
+      }
+      var o2=await llamar("metrocuadrado-integracion/unpublish",{propertyId:EDIT_ID});
+      if(o2.status<300) return {ok:true,msg:"Metrocuadrado recibio la solicitud de retiro del aviso."};
+      return {ok:false,msg:String((o2.json&&(o2.json.error||JSON.stringify(o2.json)))||("HTTP "+o2.status)).substring(0,300)};
+    }
+    if(portal==="proppit"){
+      return {ok:true,msg:(accion==="reactivar")?"La propiedad vuelve al feed XML de Proppit en su proxima lectura.":"La propiedad queda marcada como fuera del feed XML de Proppit."};
+    }
+    return {ok:true,msg:(accion==="reactivar")?"Marcado como publicado manualmente.":"Marcado como retirado. Recuerda borrar tambien la publicacion manual en la app del portal."};
+  }
+
+  window.lmzAccionPortal=async function(portal,accion){
+    var r=(window.__LMZ_LISTA||[]).filter(function(x){return x.portal===portal;})[0];
+    if(!r) return;
+    var n=nombre(portal);
+    var titulos={ pausar:"Pausar el aviso en "+n, reactivar:"Reactivar el aviso en "+n, retirar:"Retirar el aviso de "+n };
+    var textos={
+      pausar:"El aviso deja de mostrarse en "+n+". La propiedad sigue publicada en Lomaz Home y puedes reactivarla cuando quieras.",
+      reactivar:"El aviso vuelve a mostrarse en "+n+" con la informacion actual de Lomaz Home.",
+      retirar:"<b>El aviso se retira de "+n+".</b><br>Segun el portal esta accion puede ser definitiva y habria que volver a publicarlo desde cero. La propiedad NO se borra de Lomaz Home."
+    };
+    var okBtn={ pausar:"Si, pausar", reactivar:"Si, reactivar", retirar:"Si, retirar el aviso" };
+    var ok=await confirmar(titulos[accion]||"Confirmar",textos[accion]||"",okBtn[accion]||"Confirmar",accion==="retirar");
+    if(!ok) return;
+    avisar("Procesando en "+n+"...","info");
+    var res={ok:false,msg:""};
+    try{ res=await ejecutar(r,portal,accion); }catch(e){ res={ok:false,msg:(e&&e.message)||String(e)}; }
+    var nuevos={ pausar:"pausado", reactivar:"activo", retirar:"retirado" };
+    if(res.ok){ await registrar(r,nuevos[accion],res.msg); avisar(n+": "+(res.msg||"listo."),"success"); }
+    else{ avisar(n+": no se pudo completar. "+(res.msg||""),"error"); }
+    render();
+  };
+
+  function modalSeleccion(cands){
+    return new Promise(function(resolve){
+      var ov=document.createElement("div");
+      ov.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:1rem";
+      var filas=cands.map(function(r){
+        var extra=(r.estado==="nuevo")?"se publicara por primera vez":"se actualizara el aviso existente";
+        return '<label style="display:flex;align-items:flex-start;gap:.55rem;padding:.4rem 0;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" checked data-p="'+r.portal+'" style="margin-top:3px;width:16px;height:16px;flex:0 0 16px"/><span><b>'+esc(nombre(r.portal))+'</b><br><span style="color:#94a3b8;font-size:.76rem">'+esc(extra)+'</span></span></label>';
+      }).join("");
+      ov.innerHTML='<div style="background:#0f172a;border:1px solid rgba(148,163,184,.25);border-radius:14px;max-width:460px;width:100%;padding:1.15rem 1.25rem;color:#e2e8f0;font-size:.88rem"><div style="font-weight:700;margin-bottom:.4rem">Actualizar los portales</div><div style="color:#cbd5e1;font-size:.82rem;margin-bottom:.6rem">Guardaste cambios en Lomaz Home. Elige a que portales quieres enviar la actualizacion (se envian todos al mismo tiempo).</div>'+filas+'<label style="display:flex;align-items:center;gap:.5rem;margin-top:.7rem;font-size:.76rem;color:#94a3b8;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" data-auto="1" style="width:16px;height:16px;flex:0 0 16px"/><span>No preguntarme mas: actualizar siempre en automatico</span></label><div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem;flex-wrap:wrap"><button type="button" data-x="0" style="background:transparent;border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:7px 13px;cursor:pointer">Solo Lomaz Home</button><button type="button" data-x="1" style="background:#22c55e;border:none;color:#0b1220;font-weight:700;border-radius:8px;padding:7px 15px;cursor:pointer">Actualizar seleccionados</button></div></div>';
+      function fin(v){
+        var sel=[];
+        if(v){
+          var cbs=ov.querySelectorAll("input[data-p]");
+          for(var i=0;i<cbs.length;i++){ if(cbs[i].checked) sel.push(cbs[i].getAttribute("data-p")); }
+          var au=ov.querySelector("input[data-auto]");
+          if(au && au.checked){ try{ localStorage.setItem(LS_AUTO,"1"); }catch(_e){} }
+        }
+        try{ document.body.removeChild(ov); }catch(_e){}
+        resolve(sel);
+      }
+      ov.addEventListener("click",function(e){
+        var b=e.target && e.target.closest ? e.target.closest("button[data-x]") : null;
+        if(b) fin(b.getAttribute("data-x")==="1"); else if(e.target===ov) fin(false);
+      });
+      document.body.appendChild(ov);
+    });
+  }
+
+  async function actualizarUno(r,data,propId){
+    if(r.portal==="fincaraiz"){
+      if(typeof window.publicarEnFincaraiz!=="function") return {ok:false,msg:"Finca Raiz no esta disponible en esta pagina."};
+      var f=await window.publicarEnFincaraiz(data,propId);
+      return {ok:!!(f&&f.ok),msg:String((f&&f.msg)||"").substring(0,300)};
+    }
+    if(r.portal==="metrocuadrado"){
+      if(r.estado==="nuevo" || !window.__LMZ_METRO){
+        if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"Metrocuadrado no esta disponible en esta pagina."};
+        var m=await window.publicarEnMetrocuadrado(propId);
+        return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
+      }
+      var o=await llamar("metrocuadrado-integracion/update",{propertyId:propId});
+      if(o.status<300) return {ok:true,msg:"Aviso actualizado en Metrocuadrado."};
+      return {ok:false,msg:String((o.json&&(o.json.error||JSON.stringify(o.json)))||("HTTP "+o.status)).substring(0,300)};
+    }
+    if(r.portal==="proppit") return {ok:true,msg:"Los cambios entran en el feed XML; Proppit lo lee una vez al dia."};
+    return {ok:true,msg:""};
+  }
+
+  window.lmzActualizarPortalesAlEditar=async function(propId,data){
+    var lista=await leer(); window.__LMZ_LISTA=lista;
+    var cands=lista.filter(function(r){ var m=P[r.portal]; return m && m.tipo!=="manual" && activo(r.estado); });
+    ["fincaraiz","metrocuadrado","proppit"].forEach(function(p){
+      var cb=document.getElementById("ch-"+p);
+      var reg=lista.some(function(r){ return r.portal===p; });
+      if(cb && cb.checked && !reg) cands.push({portal:p,estado:"nuevo",listing_id:"",property_id:"",task_id:"",url:"",url_publicacion:""});
+    });
+    if(!cands.length) return;
+    var sel=null, auto=false;
+    try{ auto=localStorage.getItem(LS_AUTO)==="1"; }catch(_e){}
+    if(auto) sel=cands.map(function(r){ return r.portal; });
+    else sel=await modalSeleccion(cands);
+    if(!sel || !sel.length){ avisar("Cambios guardados en Lomaz Home. No se actualizo ningun portal.","info"); return; }
+    var tareas=cands.filter(function(r){ return sel.indexOf(r.portal)!==-1; });
+    avisar("Actualizando en paralelo: "+tareas.map(function(r){ return nombre(r.portal); }).join(", ")+"...","info");
+    var out=await Promise.allSettled(tareas.map(function(r){
+      return (async function(){
+        var res=await actualizarUno(r,data,propId);
+        var est=res.ok?((r.portal==="proppit")?"publicado_xml_feed":"activo"):((r.estado==="nuevo")?"en_proceso":r.estado);
+        await registrar(r,est,res.msg);
+        return {portal:r.portal, ok:res.ok, msg:res.msg};
+      })();
+    }));
+    var okN=[], errN=[];
+    out.forEach(function(x,i){
+      var v=(x&&x.value)||{portal:(tareas[i]||{}).portal,ok:false,msg:(x&&x.reason&&x.reason.message)||""};
+      var n=nombre(v.portal||"portal");
+      if(x.status==="fulfilled" && v.ok) okN.push(n); else errN.push(n+(v.msg?(" ("+String(v.msg).substring(0,90)+")"):""));
+    });
+    var msg="";
+    if(okN.length) msg+="Actualizado en: "+okN.join(", ")+". ";
+    if(errN.length) msg+="Sin actualizar: "+errN.join(" / ")+".";
+    avisar(msg||"Portales procesados.", errN.length?(okN.length?"info":"error"):"success");
+    try{ if(typeof render==="function") render(); }catch(_e){}
+  };
+
+  function arrancar(){
+    setTimeout(function(){ try{ render(); }catch(_e){} }, 1400);
+    setTimeout(function(){ try{ if(!window.__LMZ_LISTA || !window.__LMZ_LISTA.length) render(); }catch(_e){} }, 3800);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",arrancar); else arrancar();
 })();
 </script>
 </body>
