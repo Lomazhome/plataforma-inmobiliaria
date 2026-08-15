@@ -101,108 +101,35 @@ body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:
 <div class="topbar"><a href="index.html" class="brand"><svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/><path d="M84 60 L80 62 M84 65 L88 67 M85 70 L81 72 M85 75 L89 77 M86 80 L82 82" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/></svg><div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div></a><div class="user-info"><a href="dashboard.html" class="btn-back">← Dashboard</a><div style="position:relative"><div class="user-avatar" id="topAvatar" title="Perfil" style="cursor:pointer">?</div><div id="topAvatarMenu" style="display:none;position:absolute;right:0;top:48px;background:#122036;border:1px solid rgba(201,169,110,.25);border-radius:12px;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;z-index:9999"><div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.25)"><div id="topEmail" style="font-size:.9rem;color:#f5f1ea;font-weight:600;white-space:nowrap">&nbsp;</div><div id="topRole" style="font-size:.7rem;color:#c9a96e;letter-spacing:1px;text-transform:uppercase;margin-top:2px">&nbsp;</div></div><a href="perfil-asesor.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem">Mi Perfil</a><a href="mis-propiedades.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Mis Propiedades</a><a href="clientes.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Clientes</a><a href="#" id="topLogoutBtn" style="display:block;padding:.75rem 1.1rem;color:#e57373;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Cerrar Sesion</a></div></div><script>(function(){function fmtRol(r){if(!r)return"Usuario";var map={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};var k=String(r).toLowerCase();return map[k]||(r.charAt(0).toUpperCase()+r.slice(1));}async function fillTop(){try{var s=(await sb.auth.getSession()).data.session;if(!s)return;var email=s.user.email||"";var av=document.getElementById("topAvatar");if(av&&email)av.textContent=email.charAt(0).toUpperCase();var r=await sb.from("perfiles_usuarios").select("nombre_completo,rol_id,roles(nombre)").eq("id",s.user.id).single();var p=r.data;if(p){var nombre=(p.nombre_completo||"").trim();if(nombre){document.getElementById("topEmail").textContent=nombre;if(av)av.textContent=nombre.charAt(0).toUpperCase();}var rn=p.roles&&p.roles.nombre?p.roles.nombre:null;document.getElementById("topRole").textContent=fmtRol(rn);}}catch(e){}}(function w(){if(typeof sb!=='undefined'&&sb&&sb.from){fillTop();}else{setTimeout(w,150);}})();var av=document.getElementById("topAvatar"),mn=document.getElementById("topAvatarMenu");if(av){av.addEventListener("click",function(e){e.stopPropagation();mn.style.display=(mn.style.display==="none")?"block":"none";});document.addEventListener("click",function(){mn.style.display="none";});}var lo=document.getElementById("topLogoutBtn");if(lo){lo.addEventListener("click",function(e){e.preventDefault();try{Object.keys(localStorage).filter(function(x){return /sb-.*-auth-token/.test(x)}).forEach(function(x){localStorage.removeItem(x);});}catch(_){}window.location.href="login.html";});}})();</script></div></div><div class="layout">
 <main class="content">
   <div class="page-header">
-    <h1>🌐 Integracion de Portales</h1>
-    <p>Conecta tus portales inmobiliarios y publica propiedades automaticamente desde Lomaz Home.</p>
+    <h1>&#127760; Portales</h1>
+    <p style="color:var(--txt-mute);font-size:.9rem;margin-top:.3rem">Estado real de cada aviso. La publicacion se hace desde la creacion de la propiedad, no desde aqui.</p>
   </div>
-  <div id="mainAlert" class="alert"></div>
-  <div class="portals-grid" id="portalsGrid">
-    <div class="portal-card" id="card-proppit">
-      <div class="portal-header">
-        <div class="portal-logo">
-          <div class="portal-icon proppit">P</div>
-          <div><div class="portal-name">Proppit</div><div class="portal-sub">Publica en 6+ portales a la vez</div></div>
-        </div>
-        <span class="status-badge off" id="status-proppit">Desconectado</span>
-      </div>
-      <div id="token-area-proppit">
-        <div class="portal-info">Ingresa tu API Token de Proppit. Lo encuentras en: <a href="https://proppit.com/properties" target="_blank">proppit.com</a> → Configuracion → API.</div>
-        <div class="token-row">
-          <input type="password" class="token-input" id="tok-proppit" placeholder="Token de API de Proppit..."/>
-          <button class="btn-connect" onclick="connectPortal('proppit')">Conectar</button>
-        </div>
-      </div>
-      <div class="portal-stats" id="stats-proppit" style="display:none">
-        <div class="pstat"><div class="val" id="ps-proppit-pub">0</div><div class="lbl">Publicadas</div></div>
-        <div class="pstat"><div class="val" id="ps-proppit-port">6+</div><div class="lbl">Sub-portales</div></div>
-        <div class="pstat"><div class="val" id="ps-proppit-last">-</div><div class="lbl">Ultima pub.</div></div>
-      </div>
-    </div>
-    <div class="portal-card" id="card-metro">
-      <div class="portal-header">
-        <div class="portal-logo">
-          <div class="portal-icon metro">M</div>
-          <div><div class="portal-name">Metrocuadrado</div><div class="portal-sub">El portal N°1 de Colombia</div></div>
-        </div>
-        <span class="status-badge off" id="status-metro">Desconectado</span>
-      </div>
-      <div id="token-area-metro">
-        <div class="portal-info">Ingresa tu API Key de Metrocuadrado. Disponible en: <a href="https://www.metrocuadrado.com/userspace/realestates" target="_blank">metrocuadrado.com</a> → Mi espacio → API.</div>
-        <div class="token-row">
-          <input type="password" class="token-input" id="tok-metro" placeholder="API Key de Metrocuadrado..."/>
-          <button class="btn-connect" onclick="connectPortal('metro')">Conectar</button>
-        </div>
-      </div>
-      <div class="portal-stats" id="stats-metro" style="display:none">
-        <div class="pstat"><div class="val" id="ps-metro-pub">0</div><div class="lbl">Publicadas</div></div>
-        <div class="pstat"><div class="val" id="ps-metro-plan">-</div><div class="lbl">Plan</div></div>
-        <div class="pstat"><div class="val" id="ps-metro-last">-</div><div class="lbl">Ultima pub.</div></div>
-      </div>
-    </div>
-    <div class="portal-card" id="card-finca">
-      <div class="portal-header">
-        <div class="portal-logo">
-          <div class="portal-icon finca">FR</div>
-          <div><div class="portal-name">Finca Raiz</div><div class="portal-sub">Portal inmobiliario nacional</div></div>
-        </div>
-        <span class="status-badge off" id="status-finca">Desconectado</span>
-      </div>
-      <div id="token-area-finca">
-        <div class="portal-info">Ingresa tu API Key de Finca Raiz. Disponible en: <a href="https://ov.fincaraiz.com.co/inmobiliarias/administrar-inmuebles" target="_blank">fincaraiz.com.co</a> → Administrar → API.</div>
-        <div class="token-row">
-          <input type="password" class="token-input" id="tok-finca" placeholder="API Key de Finca Raiz..."/>
-          <button class="btn-connect" onclick="connectPortal('finca')">Conectar</button>
-        </div>
-      </div>
-      <div class="portal-stats" id="stats-finca" style="display:none">
-        <div class="pstat"><div class="val" id="ps-finca-pub">0</div><div class="lbl">Publicadas</div></div>
-        <div class="pstat"><div class="val" id="ps-finca-cupo">-</div><div class="lbl">Cupo</div></div>
-        <div class="pstat"><div class="val" id="ps-finca-last">-</div><div class="lbl">Ultima pub.</div></div>
-      </div>
-    </div>
-  </div>
-  <!-- Publish Section -->
+
   <div class="section-card">
-    <h3>🚀 Publicar Propiedades en Portales</h3>
-    <p style="font-size:.8rem;color:#666;margin-bottom:16px">Selecciona las propiedades y los portales donde deseas publicar.</p>
-    <!-- Portal toggles -->
-    <div style="margin-bottom:12px;font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em">Publicar en:</div>
-    <div class="portal-toggles">
-      <label class="ptoggle disabled" id="tog-proppit"><input type="checkbox" id="chk-proppit" style="display:none" disabled/> P Proppit</label>
-      <label class="ptoggle disabled" id="tog-metro"><input type="checkbox" id="chk-metro" style="display:none" disabled/> M Metrocuadrado</label>
-      <label class="ptoggle disabled" id="tog-finca"><input type="checkbox" id="chk-finca" style="display:none" disabled/> FR Finca Raiz</label>
+    <h2 style="font-size:1rem;margin-bottom:.7rem">Como funciona</h2>
+    <div style="display:grid;gap:.5rem;font-size:.9rem;color:var(--txt-soft)">
+      <div><b style="color:var(--gold)">1.</b> Creas la propiedad en LoMaz Home y en el ultimo paso marcas los portales que quieras.</div>
+      <div><b style="color:var(--gold)">2.</b> Metrocuadrado, Finca Raiz y Proppit salen <b>en paralelo</b>, despues de que apruebes el resumen.</div>
+      <div><b style="color:var(--gold)">3.</b> Facebook Marketplace e Instagram son asistidos: la plataforma arma el texto y tu lo pegas.</div>
+      <div><b style="color:var(--gold)">4.</b> Las credenciales de cada portal viven en <a href="ajustes-portales.html" style="color:var(--gold)">Ajustes &gt; Portales</a>.</div>
     </div>
-    <!-- Property selector -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em">Mis propiedades:</div>
-      <div style="display:flex;gap:8px">
-        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:var(--sans)" onclick="selectAllProps(true)">Seleccionar todas</button>
-        <button style="background:none;border:none;color:#666;font-size:.73rem;cursor:pointer;font-family:var(--sans)" onclick="selectAllProps(false)">Deseleccionar</button>
-      </div>
-    </div>
-    <div class="prop-list" id="propList"><div style="text-align:center;padding:20px;color:#555;font-size:.8rem">Cargando propiedades...</div></div>
-    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <button class="btn-pub" id="btnPublish" onclick="publishSelected()" disabled>
-        <span>🚀</span><span id="btnPublishTxt">Publicar seleccionadas</span>
-      </button>
-      <div id="pubProgress" style="font-size:.78rem;color:#888;display:none">Publicando...</div>
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+      <a href="agregar-propiedad.html" class="btn-pub" style="text-decoration:none;display:inline-block">Publicar una propiedad</a>
+      <a href="ajustes-portales.html" class="btn-connect" style="text-decoration:none;display:inline-block">Ver credenciales</a>
     </div>
   </div>
-  <!-- Publish Log -->
+
   <div class="section-card">
-    <h3>📋 Historial de Publicaciones</h3>
-    <ul class="log-list" id="logList">
-      <li class="empty-log">No hay publicaciones registradas aun.</li>
-    </ul>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
+      <h2 style="font-size:1rem">Estado por propiedad</h2>
+      <button class="btn-connect" onclick="cargarTablero()">Actualizar</button>
+    </div>
+    <div id="tabla" style="margin-top:.8rem;overflow-x:auto"><p style="color:var(--txt-mute);font-size:.88rem">Cargando...</p></div>
+  </div>
+
+  <div class="section-card">
+    <h2 style="font-size:1rem;margin-bottom:.7rem">Ultimos movimientos</h2>
+    <ul class="log-list" id="mov"></ul>
   </div>
 </main>
 </div>
@@ -211,196 +138,73 @@ const SB_URL="https://lniouebpuuuqctrgxoiw.supabase.co";
 const SB_KEY=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const sb=supabase.createClient(SB_URL,SB_KEY);
 let currentUser=null;
-let myProps=[];
-const PORTAL_KEYS={proppit:"lomaz_tok_proppit",metro:"lomaz_tok_metro",finca:"lomaz_tok_finca"};
-const PORTAL_NAMES={proppit:"Proppit",metro:"Metrocuadrado",finca:"Finca Raiz"};
-
-function fmtPrice(n){if(!n)return "A convenir";if(n>=1000000000)return "$"+(n/1000000000).toFixed(1)+"B";if(n>=1000000)return "$"+(n/1000000).toFixed(0)+"M";return "$"+n.toLocaleString("es-CO");}
-function fmtDate(d){if(!d)return "-";return new Date(d).toLocaleDateString("es-CO",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});}
-
-function showAlert(msg,type){const el=document.getElementById("mainAlert");el.textContent=msg;el.className="alert "+type;setTimeout(()=>{el.className="alert";},5000);}
-
-function getToken(portal){return localStorage.getItem(PORTAL_KEYS[portal]);}
-function setToken(portal,tok){localStorage.setItem(PORTAL_KEYS[portal],tok);}
-function clearToken(portal){localStorage.removeItem(PORTAL_KEYS[portal]);}
-
-function updatePortalUI(portal,connected){
-  const card=document.getElementById("card-"+portal);
-  const badge=document.getElementById("status-"+portal);
-  const statsDiv=document.getElementById("stats-"+portal);
-  const tokenArea=document.getElementById("token-area-"+portal);
-  const tog=document.getElementById("tog-"+portal);
-  const chk=document.getElementById("chk-"+portal);
-  if(connected){
-    card.className="portal-card connected";
-    badge.className="status-badge on";badge.textContent="Conectado";
-    statsDiv.style.display="flex";
-    tokenArea.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span style="font-size:.78rem;color:#81c784">Token guardado correctamente</span><button class="btn-disconnect" onclick="disconnectPortal('${portal}')">Desconectar</button></div>`;
-    tog.className="ptoggle active";chk.disabled=false;
-  }else{
-    card.className="portal-card";
-    badge.className="status-badge off";badge.textContent="Desconectado";
-    statsDiv.style.display="none";
-    tog.className="ptoggle disabled";chk.disabled=true;chk.checked=false;
-  }
-  updatePublishBtn();
+const PORTALES=[{k:"metrocuadrado",n:"Metrocuadrado"},{k:"fincaraiz",n:"Finca Raiz"},{k:"proppit",n:"Proppit"}];
+const REDES=[{k:"marketplace",n:"Marketplace"},{k:"instagram",n:"Instagram"}];
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function fdate(d){ if(!d) return "-"; try { return new Date(d).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"2-digit"}); } catch(e) { return "-"; } }
+function clasificar(estado){
+  var e=String(estado||"").toLowerCase();
+  if(e.indexOf("activo")>=0) return {t:"ok",txt:"Activo"};
+  if(e.indexOf("error")>=0) return {t:"err",txt:"Error"};
+  if(e.indexOf("xml")>=0) return {t:"ok",txt:"En feed"};
+  if(e.indexOf("publicado")>=0) return {t:"warn",txt:"Enviado"};
+  if(e.indexOf("preparado")>=0) return {t:"warn",txt:"Por pegar"};
+  if(e.indexOf("pendiente")>=0) return {t:"neutral",txt:"Pendiente"};
+  return {t:"neutral",txt:estado||"-"};
 }
-
-function connectPortal(portal){
-  const tok=document.getElementById("tok-"+portal).value.trim();
-  if(!tok){showAlert("Por favor ingresa el token de "+PORTAL_NAMES[portal],"error");return;}
-  if(tok.length<8){showAlert("El token parece demasiado corto. Verifica que sea correcto.","error");return;}
-  setToken(portal,tok);
-  updatePortalUI(portal,true);
-  addLog("info","Token de "+PORTAL_NAMES[portal]+" guardado correctamente");
-  showAlert("Conectado a "+PORTAL_NAMES[portal]+" exitosamente","success");
+function chip(txt,tipo){
+  var col = tipo==="ok" ? "#1f6b3c" : (tipo==="err" ? "#7f1d1d" : (tipo==="warn" ? "#7c5a12" : "#334155"));
+  return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:700;background:'+col+';color:#fff;white-space:nowrap">'+esc(txt)+'</span>';
 }
-
-function disconnectPortal(portal){
-  if(!confirm("Desconectar "+PORTAL_NAMES[portal]+"? Se eliminara el token guardado."))return;
-  clearToken(portal);
-  // Rebuild token area
-  const areas={proppit:'<div class="portal-info">Ingresa tu API Token de Proppit. Lo encuentras en: <a href="https://proppit.com/properties" target="_blank">proppit.com</a> Configuracion API.</div><div class="token-row"><input type="password" class="token-input" id="tok-proppit" placeholder="Token de API de Proppit..."/><button class="btn-connect" onclick="connectPortal(\'proppit\')">Conectar</button></div>',
-    metro:'<div class="portal-info">Ingresa tu API Key de Metrocuadrado. Disponible en: <a href="https://www.metrocuadrado.com/userspace/realestates" target="_blank">metrocuadrado.com</a> Mi espacio API.</div><div class="token-row"><input type="password" class="token-input" id="tok-metro" placeholder="API Key de Metrocuadrado..."/><button class="btn-connect" onclick="connectPortal(\'metro\')">Conectar</button></div>',
-    finca:'<div class="portal-info">Ingresa tu API Key de Finca Raiz. Disponible en: <a href="https://ov.fincaraiz.com.co/inmobiliarias/administrar-inmuebles" target="_blank">fincaraiz.com.co</a> Administrar API.</div><div class="token-row"><input type="password" class="token-input" id="tok-finca" placeholder="API Key de Finca Raiz..."/><button class="btn-connect" onclick="connectPortal(\'finca\')">Conectar</button></div>'};
-  document.getElementById("token-area-"+portal).innerHTML=areas[portal]||"";
-  updatePortalUI(portal,false);
-  addLog("err","Desconectado de "+PORTAL_NAMES[portal]);
+async function cargarTablero(){
+  var cont=document.getElementById("tabla");
+  cont.innerHTML='<p style="color:var(--txt-mute);font-size:.88rem">Cargando...</p>';
+  var pr=await sb.from("propiedades").select("id,titulo,ciudad,estado,publicado_portales").order("id",{ascending:false}).limit(60);
+  if(pr.error){ cont.innerHTML='<p style="color:#fca5a5;font-size:.88rem">No se pudo cargar: '+esc(pr.error.message)+'</p>'; return; }
+  var filas=(pr.data||[]).filter(function(p){ return Array.isArray(p.publicado_portales) && p.publicado_portales.length; });
+  if(!filas.length){ cont.innerHTML='<p style="color:var(--txt-mute);font-size:.88rem">Todavia no hay propiedades enviadas a portales. Publica una desde <a href="agregar-propiedad.html" style="color:var(--gold)">Agregar propiedad</a>.</p>'; return; }
+  var cols=PORTALES.concat(REDES);
+  var h='<table style="width:100%;border-collapse:collapse;font-size:.86rem"><thead><tr style="text-align:left;color:var(--txt-mute);font-size:.76rem;letter-spacing:.04em"><th style="padding:.4rem .5rem">PROPIEDAD</th>';
+  cols.forEach(function(c){ h+='<th style="padding:.4rem .5rem">'+esc(c.n.toUpperCase())+'</th>'; });
+  h+='<th style="padding:.4rem .5rem">IDENTIFICADOR</th></tr></thead><tbody>';
+  filas.forEach(function(p){
+    var mapa={}; (p.publicado_portales||[]).forEach(function(o){ if(o&&o.portal) mapa[o.portal]=o; });
+    h+='<tr style="border-top:1px solid var(--line)">';
+    h+='<td style="padding:.55rem .5rem;min-width:190px"><div style="font-weight:600">'+esc(p.titulo||("Propiedad "+p.id))+'</div><div style="color:var(--txt-mute);font-size:.76rem">'+esc(p.ciudad||"")+' &middot; '+esc(p.estado||"")+'</div></td>';
+    cols.forEach(function(c){
+      var o=mapa[c.k];
+      if(!o){ h+='<td style="padding:.55rem .5rem;color:var(--txt-mute)">&mdash;</td>'; return; }
+      var cl=clasificar(o.estado);
+      h+='<td style="padding:.55rem .5rem">'+chip(cl.txt,cl.t)+'<div style="color:var(--txt-mute);font-size:.72rem;margin-top:.25rem">'+fdate(o.fecha)+'</div></td>';
+    });
+    var fr=mapa["fincaraiz"]||{};
+    var idtxt = (fr.listing_id||fr.property_id) ? ('listing '+esc(String(fr.listing_id||"-").slice(0,8))+'&hellip;<br>property '+esc(fr.property_id||"-")) : '&mdash;';
+    h+='<td style="padding:.55rem .5rem;font-size:.72rem;color:var(--txt-mute);white-space:nowrap">'+idtxt+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  cont.innerHTML=h;
 }
-
-function renderPropList(){
-  const list=document.getElementById("propList");
-  if(myProps.length===0){list.innerHTML='<div style="text-align:center;padding:20px;color:#555;font-size:.8rem">No tienes propiedades activas. <a href="agregar-propiedad.html" style="color:#c9a96e">Agrega una</a>.</div>';return;}
-  list.innerHTML=myProps.map(p=>`
-    <div class="prop-item" id="pi-${p.id}" onclick="togglePropSelect('${p.id}')">
-      <input type="checkbox" class="prop-check" id="pc-${p.id}" onclick="event.stopPropagation();togglePropSelect('${p.id}')" />
-      <div class="prop-item-info">
-        <div class="prop-item-title">${p.titulo||"Sin titulo"}</div>
-        <div class="prop-item-sub">${p.tipo_negocio||""} · ${p.ciudad||""} · ${p.tipo_propiedad||""}</div>
-      </div>
-      <div class="prop-item-price">${fmtPrice(p.precio)}</div>
-    </div>`).join("");
+async function cargarMovimientos(){
+  var box=document.getElementById("mov");
+  var q=await sb.from("publicaciones_portales").select("portal,estado,mensaje,fecha").order("fecha",{ascending:false}).limit(10);
+  if(q.error||!q.data||!q.data.length){ box.innerHTML='<li style="color:var(--txt-mute);font-size:.88rem;list-style:none">Sin movimientos todavia.</li>'; return; }
+  box.innerHTML=q.data.map(function(r){
+    var c=clasificar(r.estado);
+    var ic=c.t==="ok"?"ok":(c.t==="err"?"err":"info");
+    var em=c.t==="ok"?"\u2705":(c.t==="err"?"\u274C":"\u2139\uFE0F");
+    return '<li class="log-item"><div class="log-icon '+ic+'"><span>'+em+'</span></div><div><div class="log-text"><b>'+esc(r.portal)+'</b> &middot; '+esc(c.txt)+' &mdash; '+esc(String(r.mensaje||"").slice(0,120))+'</div><div class="log-time">'+fdate(r.fecha)+'</div></div></li>';
+  }).join("");
 }
-
-function togglePropSelect(id){
-  const item=document.getElementById("pi-"+id);
-  const chk=document.getElementById("pc-"+id);
-  chk.checked=!chk.checked;
-  item.classList.toggle("selected",chk.checked);
-  updatePublishBtn();
-}
-
-function selectAllProps(sel){
-  myProps.forEach(p=>{const chk=document.getElementById("pc-"+p.id);const item=document.getElementById("pi-"+p.id);if(chk&&item){chk.checked=sel;item.classList.toggle("selected",sel);}});
-  updatePublishBtn();
-}
-
-function updatePublishBtn(){
-  const selProps=myProps.filter(p=>{const c=document.getElementById("pc-"+p.id);return c&&c.checked;});
-  const selPortals=["proppit","metro","finca"].filter(p=>{const c=document.getElementById("chk-"+p);return c&&c.checked;});
-  const btn=document.getElementById("btnPublish");
-  btn.disabled=selProps.length===0||selPortals.length===0;
-  document.getElementById("btnPublishTxt").textContent=`Publicar ${selProps.length} propiedad${selProps.length!==1?"es":""} en ${selPortals.length} portal${selPortals.length!==1?"es":""}`;
-}
-
-async function publishSelected(){
-  const selProps=myProps.filter(p=>{const c=document.getElementById("pc-"+p.id);return c&&c.checked;});
-  const selPortals=["proppit","metro","finca"].filter(p=>{const c=document.getElementById("chk-"+p);return c&&c.checked;});
-  if(selProps.length===0||selPortals.length===0)return;
-  const btn=document.getElementById("btnPublish");
-  const prog=document.getElementById("pubProgress");
-  btn.disabled=true;prog.style.display="block";
-  let ok=0,fail=0;
-  for(const portal of selPortals){
-    const tok=getToken(portal);
-    if(!tok){addLog("err","Sin token para "+PORTAL_NAMES[portal]);fail++;continue;}
-    prog.textContent="Publicando en "+PORTAL_NAMES[portal]+"...";
-    for(const prop of selProps){
-      try{
-        // Simulate API call - in production this would call the real API
-        await simulatePublish(portal,prop,tok);
-        addLog("ok","Publicado en "+PORTAL_NAMES[portal]+": "+prop.titulo);
-        ok++;
-        // Update publish count in UI
-        const el=document.getElementById("ps-"+portal+"-pub");
-        if(el)el.textContent=parseInt(el.textContent||0)+1;
-        const lastEl=document.getElementById("ps-"+portal+"-last");
-        if(lastEl)lastEl.textContent="Ahora";
-      }catch(e){addLog("err","Error en "+PORTAL_NAMES[portal]+": "+prop.titulo+" - "+e.message);fail++;}
-    }
-  }
-  prog.style.display="none";
-  btn.disabled=false;
-  const msg=ok+" publicacion"+(ok!==1?"es":"")+" exitosa"+(ok!==1?"s":"")+(fail>0?", "+fail+" fallo"+(fail!==1?"s":""):"");
-  showAlert(msg,fail>0?"error":"success");
-}
-
-async function simulatePublish(portal,prop,tok){
-  if(portal==="metro"){const{data:{session}}=await sb.auth.getSession();const resp=await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token},body:JSON.stringify({propertyId:prop.id})});const data=await resp.json().catch(()=>({}));if(resp.status===201){return{success:true,id:(data.respuesta&&(data.respuesta.transactionId||data.respuesta.transaction_id))||("m2_"+Date.now())};}const errMsg=(data&&(data.error||(data.respuesta&&(data.respuesta.message||JSON.stringify(data.respuesta)))))||("Error HTTP "+resp.status);throw new Error(errMsg);}
-  await new Promise(r=>setTimeout(r,600));
-  const payload={
-    title:prop.titulo,
-    price:prop.precio,
-    type:prop.tipo_negocio,
-    property_type:prop.tipo_propiedad,
-    city:prop.ciudad,
-    neighborhood:prop.barrio,
-    area:prop.area_construida,
-    rooms:prop.habitaciones,
-    bathrooms:prop.banos,
-    parking:prop.parqueaderos,
-    description:prop.descripcion,
-    images:prop.fotos||[]
-  };
-  console.log("[Lomaz Portal] Payload para "+portal+":",JSON.stringify(payload).substring(0,100));
-  throw new Error("Publicacion simulada deshabilitada. Publica el inmueble desde Agregar propiedad para enviarlo a los portales reales.");
-}
-
-function addLog(type,msg){
-  const list=document.getElementById("logList");
-  const emptyMsg=list.querySelector(".empty-log");
-  if(emptyMsg)emptyMsg.remove();
-  const icons={ok:"✅",err:"❌",info:"ℹ️"};
-  const li=document.createElement("li");
-  li.className="log-item";
-  li.innerHTML=`<div class="log-icon ${type}"><span>${icons[type]||"•"}</span></div><div><div class="log-text">${msg}</div><div class="log-time">${new Date().toLocaleString("es-CO")}</div></div>`;
-  list.insertBefore(li,list.firstChild);
-}
-
-async function logout(){await sb.auth.signOut();window.location.href="login.html";}
-
 async function init(){
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href="login.html";return;}
-  currentUser=session.user;
-  const email=currentUser.email;
-  document.getElementById("topEmail").textContent=email;
-  document.getElementById("topAvatar").textContent=email.charAt(0).toUpperCase();try{const{data:perfil}=await sb.from("perfiles_usuarios").select("nombre_completo,roles(nombre)").eq("id",currentUser.id).single();if(perfil){const nombre=(perfil.nombre_completo||"").trim();if(nombre){document.getElementById("topEmail").textContent=nombre;document.getElementById("topAvatar").textContent=nombre.charAt(0).toUpperCase();}const rolMap={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};const rolN=perfil.roles&&perfil.roles.nombre?perfil.roles.nombre:null;if(rolN){document.getElementById("topRole").textContent=rolMap[String(rolN).toLowerCase()]||rolN;}}}catch(e){console.error("perfil",e);}
-  // Load portal states from localStorage
-  ["proppit","metro","finca"].forEach(p=>{
-    if(getToken(p))updatePortalUI(p,true);
-  });
-  // Load properties
-  const {data:props}=await sb.from("propiedades").select("id,titulo,precio,tipo_negocio,tipo_propiedad,ciudad,barrio,area_construida,habitaciones,banos,parqueaderos,descripcion,fotos").eq("asesor_id",currentUser.id).eq("estado","activa").order("created_at",{ascending:false});
-  myProps=props||[];
-  renderPropList();
-  // Add log entry for connected portals
-  ["proppit","metro","finca"].forEach(p=>{
-    if(getToken(p))addLog("info",PORTAL_NAMES[p]+" conectado y listo para publicar");
-  });
+  try {
+    var s=await sb.auth.getSession();
+    currentUser=(s&&s.data&&s.data.session)?s.data.session.user:null;
+    if(!currentUser){ window.location.href="login.html"; return; }
+  } catch(e) {}
+  await cargarTablero();
+  await cargarMovimientos();
 }
-
-// Toggle portal checkbox
-document.querySelectorAll(".ptoggle").forEach(tog=>{
-  tog.addEventListener("click",function(){
-    if(this.classList.contains("disabled"))return;
-    const chk=this.querySelector("input");
-    chk.checked=!chk.checked;
-    this.classList.toggle("active",chk.checked);
-    updatePublishBtn();
-  });
-});
-
+window.cargarTablero=cargarTablero;
 init();
 </script>
 </body>
