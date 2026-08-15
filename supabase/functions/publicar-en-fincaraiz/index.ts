@@ -52,12 +52,18 @@ function propertyTypeFor(tipo) {
   return m[tipo] || "apartment";
 }
 
-function currencyId() {
+function currencyId(p) {
   // Fincaraiz espera el ID NUMERICO de la moneda, no el codigo ISO.
   // Enviar "COP" produce 400: [{"currency":["A valid integer is required."]}]
-  const raw = Deno.env.get("FINCARAIZ_CURRENCY_ID");
-  const n = Number(raw);
-  return (Number.isFinite(n) && n > 0) ? n : 1;
+  // Se lee el ISO guardado en la propiedad (columna moneda) y se traduce al id.
+  // Los ids se ajustan sin redeploy con los secrets FINCARAIZ_CURRENCY_ID (COP)
+  // y FINCARAIZ_CURRENCY_ID_USD (USD).
+  const iso = String((p && p.moneda) || "COP").trim().toUpperCase();
+  const envCop = Number(Deno.env.get("FINCARAIZ_CURRENCY_ID"));
+  const envUsd = Number(Deno.env.get("FINCARAIZ_CURRENCY_ID_USD"));
+  const idCop = (Number.isFinite(envCop) && envCop > 0) ? envCop : 1;
+  const idUsd = (Number.isFinite(envUsd) && envUsd > 0) ? envUsd : 2;
+  return (iso === "USD" || iso === "DOLAR" || iso === "DOLARES") ? idUsd : idCop;
 }
 
 function buildListingPayload(p) {
@@ -76,7 +82,7 @@ function buildListingPayload(p) {
     property_type: propertyTypeFor(p.tipo_propiedad),
     description: p.descripcion || p.titulo || "Inmueble LoMaz Home",
     price: Number(p.precio) || 0,
-    currency: currencyId(),
+    currency: currencyId(p),
     area: Number(p.m2_construccion) || Number(p.area_construida) || Number(p.area_total) || 0,
     address: { address: p.direccion || p.barrio || p.ciudad || "Bogota" },
     locations: {
