@@ -1689,8 +1689,9 @@ try {
     var vueltas = 0;
     var reloj = setInterval(function(){
       vueltas++;
-      if (coordsOk() || vueltas > 8) { clearInterval(reloj); return; }
-      if (val("ciudad")) { clearInterval(reloj); window.__geoGarantizar(); }
+      if (coordsOk() || vueltas > 12) { clearInterval(reloj); return; }
+      var listo = val("ciudad") && (val("barrio") || val("direccion") || vueltas >= 6);
+      if (listo) { clearInterval(reloj); window.__geoGarantizar(); }
     }, 2000);
     ["ciudad", "barrio", "direccion"].forEach(function(id){
       var e = el(id);
