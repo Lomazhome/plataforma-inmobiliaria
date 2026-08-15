@@ -691,6 +691,7 @@ const result = await window.publicarEnMetrocuadrado(prop.id);
 const estado = result.ok ? "publicado" : "error";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"metrocuadrado",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("metrocuadrado","ok","Publicado");addLog("success","Metrocuadrado",result.msg);}
+else if(result.pendiente){setPortalStatus("metrocuadrado","pending","Pendiente");addLog("info","Metrocuadrado",result.msg);}
 else{setPortalStatus("metrocuadrado","error","Error");addLog("error","Metrocuadrado",result.msg);}
 return;
 }
@@ -905,6 +906,8 @@ var tid = (json.respuesta && (json.respuesta.transactionId || json.respuesta.tra
 return {ok:true, msg:"Publicado en Metrocuadrado correctamente."+(tid?(" Transaction ID: "+tid):"")};
 }
 var errMsg = (json && (json.error || (json.respuesta && (json.respuesta.message || JSON.stringify(json.respuesta))))) || ("Error HTTP "+resp.status);
+var _pend = (window.lmzMetroPendiente ? window.lmzMetroPendiente(errMsg) : "");
+if(_pend) return {ok:false, pendiente:true, msg:_pend};
 return {ok:false, msg: errMsg};
 }catch(e){
 return {ok:false, msg:"Error de red: "+e.message};
@@ -1577,6 +1580,60 @@ try {
     setTimeout(function(){ try{ if(!window.__LMZ_LISTA || !window.__LMZ_LISTA.length) render(); }catch(_e){} }, 3800);
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",arrancar); else arrancar();
+})();
+</script>
+<script>
+/* LoMaz Home: estado real de Metrocuadrado y mensajes claros (agosto 2026) */
+(function(){
+  function _box(){
+    var r=document.getElementById("row-metrocuadrado");
+    if(!r) return null;
+    var x=document.getElementById("lmzMetroAviso");
+    if(!x){
+      x=document.createElement("div");
+      x.id="lmzMetroAviso";
+      x.style.cssText="display:none;margin:.4rem 0 .2rem;padding:.6rem .8rem;border-radius:8px;font-size:.8rem;line-height:1.4";
+      r.parentNode.insertBefore(x, r.nextSibling);
+    }
+    return x;
+  }
+  function _pinta(tipo,txt){
+    var x=_box(); if(!x) return;
+    x.style.display="block";
+    if(tipo==="ok"){ x.style.background="rgba(40,167,69,.12)"; x.style.border="1px solid rgba(40,167,69,.45)"; x.style.color="#8fe0a3"; }
+    else if(tipo==="info"){ x.style.background="rgba(255,255,255,.06)"; x.style.border="1px solid rgba(255,255,255,.18)"; x.style.color="#cfcfcf"; }
+    else { x.style.background="rgba(255,193,7,.10)"; x.style.border="1px solid rgba(255,193,7,.45)"; x.style.color="#f0cf7a"; }
+    x.textContent=txt;
+  }
+  window.lmzMetroPendiente=function(m){
+    var t=String(m||"");
+    if(/No active membership|Incorrect username or password/i.test(t)) return "La cuenta de Metrocuadrado no tiene membresia activa todavia. La propiedad quedo guardada en LoMaz Home y en los demas portales; Metrocuadrado queda pendiente hasta que activen el plan.";
+    if(/Invalid authentication credentials|401/.test(t)) return "Metrocuadrado aun no habilita nuestra API Key (error 401). La propiedad quedo guardada en LoMaz Home y en los demas portales; se enviara a Metrocuadrado cuando habiliten el acceso.";
+    return "";
+  };
+  window.lmzChequearMetro=async function(){
+    try{
+      _pinta("info","Verificando el estado de Metrocuadrado...");
+      var ses=await sb.auth.getSession();
+      var tok=(ses&&ses.data&&ses.data.session)?ses.data.session.access_token:sb.supabaseKey;
+      var r=await fetch(sb.supabaseUrl+"/functions/v1/metrocuadrado-integracion/estado",{headers:{apikey:sb.supabaseKey,Authorization:"Bearer "+tok}});
+      var j=await r.json().catch(function(){return {};});
+      if(j && j.listo_para_publicar){ _pinta("ok","Metrocuadrado esta habilitado: el aviso se enviara al publicar."); return; }
+      var t=String((j&&(j.resumen||j.mensaje_metrocuadrado||j.error))||"");
+      var m=window.lmzMetroPendiente(t);
+      if(!m) m="Metrocuadrado aun no esta habilitado. Puedes publicar igual: la propiedad se guarda en LoMaz Home y en los demas portales, y Metrocuadrado queda pendiente.";
+      _pinta("warn",m);
+    }catch(e){ _pinta("warn","No se pudo verificar el estado de Metrocuadrado ("+e.message+")."); }
+  };
+  function _init(){
+    var ch=document.getElementById("ch-metrocuadrado");
+    if(!ch) return;
+    ch.addEventListener("change",function(){
+      if(ch.checked){ window.lmzChequearMetro(); }
+      else { var x=document.getElementById("lmzMetroAviso"); if(x) x.style.display="none"; }
+    });
+  }
+  if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded",_init); } else { _init(); }
 })();
 </script>
 </body>
