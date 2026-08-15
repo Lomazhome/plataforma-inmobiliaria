@@ -1340,7 +1340,9 @@ try {
   }
 
   function chip(t,bg,fg){ return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.66rem;font-weight:700;background:'+bg+';color:'+fg+'">'+esc(t)+'</span>'; }
+  function enProceso(e){ return /^(en_proceso|procesando|pendiente)$/.test(String(e||"").toLowerCase().replace(/\s+/g,"_")); }
   function chipEstado(e){
+    if(enProceso(e)) return chip("EN PROCESO","rgba(59,130,246,.16)","#60a5fa");
     if(activo(e)) return chip("PUBLICADO","rgba(34,197,94,.15)","#22c55e");
     if(pausado(e)) return chip("PAUSADO","rgba(234,179,8,.16)","#eab308");
     if(retirado(e)) return chip("RETIRADO","rgba(148,163,184,.18)","#94a3b8");
