@@ -23,13 +23,16 @@ const CORS = {
 // --- Ambiente: si existe el secret FINCARAIZ_API_KEY_PROD se usa PRODUCCION. ---
 // Asi pasar de pruebas a produccion es UN SOLO secret, sin tocar el codigo.
 // Opcionales: FINCARAIZ_API_URL_PROD y FINCARAIZ_CLIENT_ID_PROD.
-const PROD_URL_DEFAULT = "https://msi-infofinca.fincaraiz.com.co/management/api/1.0";
+// OJO: la URL de produccion NO se adivina. QA usa el gateway kong-qa.frcol.io con
+// header "apikey"; el host msi-infofinca.fincaraiz.com.co exige JWT y devuelve 401.
+// Solo se pasa a produccion cuando existen AMBOS secrets: la llave y la URL reales.
 const KEY_PROD = Deno.env.get("FINCARAIZ_API_KEY_PROD") || "";
-const ES_PROD = KEY_PROD.length > 0;
+const URL_PROD = Deno.env.get("FINCARAIZ_API_URL_PROD") || "";
+const ES_PROD = KEY_PROD.length > 0 && URL_PROD.length > 0;
 
 const SECRETS = {
   FR_URL: ES_PROD
-    ? (Deno.env.get("FINCARAIZ_API_URL_PROD") || PROD_URL_DEFAULT)
+    ? URL_PROD
     : (Deno.env.get("FINCARAIZ_API_URL") || ""),
   FR_KEY: ES_PROD ? KEY_PROD : (Deno.env.get("FINCARAIZ_API_KEY") || ""),
   FR_CLIENT: ES_PROD
@@ -321,7 +324,9 @@ function readListingResult(task) {
 
     if (!rPost.ok || !jPost?.task?.id) {
       return new Response(
-        JSON.stringify({ ok: false, status: "error_api", msg: jPost?.message || "Sin task id en la respuesta", detail: JSON.stringify(jPost).substring(0, 500) }),
+        JSON.stringify({ ok: false, status: "error_api", msg: (rPost.status === 401 || rPost.status === 403)
+          ? ("Finca Raiz rechazo las credenciales (" + rPost.status + "). Revisa FINCARAIZ_API_URL/KEY.")
+          : (jPost?.message || ("Finca Raiz respondio " + rPost.status + " sin task id")), detail: JSON.stringify(jPost).substring(0, 500) }),
         { status: 200, headers: { ...CORS, "Content-Type": "application/json" } }
       );
     }
