@@ -374,13 +374,13 @@ img,video,iframe{max-width:100%}
 <div class="step-panel" id="panel4">
 <div class="card"><h3>&#128203; Resumen de la <em>propiedad</em></h3><table class="summary-table" id="summaryTable"></table></div>
 <div class="card"><h3>&#127758; Publicar en <em>portales externos</em></h3>
-<p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Selecciona los portales adicionales:</p>
+<p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Marca los portales adicionales: los inmobiliarios se envian en paralelo y antes de mandar nada te pedimos confirmacion.</p>
 <div class="portales-grid">
 <div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
-<div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">PORTALES INMOBILIARIOS &middot; ENVIO AUTOMATICO EN PARALELO</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
 <div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
-<div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
+<div style="font-size:.74rem;letter-spacing:.08em;color:#8a94a6;font-weight:700;margin:.9rem 0 .35rem">REDES SOCIALES &middot; PUBLICACION ASISTIDA (TU PEGAS EL TEXTO)</div><div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
 <div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Genera caption + descarga fotos + abre Instagram</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
 </div>
 <div class="publish-log" id="publishLog" style="display:none">
@@ -661,9 +661,13 @@ const msgs={
 "marketplace":"Texto copiado para Facebook Marketplace. Abre Facebook Marketplace > Crear anuncio > Pega el texto.",
 "instagram":"Post generado para Instagram. Abre tu app Instagram y publica con el caption preparado."
 };
+const __tareas=[];
 for(const p of portales){
+const __sel=document.getElementById(p.cb)?.checked;
+if(!__sel)continue;
+__tareas.push({id:p.id,name:p.name,asistido:(p.id==="marketplace"||p.id==="instagram"),run:async function(){
 const checked=document.getElementById(p.cb)?.checked;
-if(!checked)continue;
+if(!checked)return;
 setPortalStatus(p.id,"publishing","Publicando...");
 addLog("loading",p.name,"Enviando al portal...");
 if(p.id === "instagram"){
@@ -672,7 +676,7 @@ const estado = result.ok ? "preparado_manual" : "error";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"instagram",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("instagram","ok","Listo p/ pegar");addLog("success","Instagram",result.msg);}
 else{setPortalStatus("instagram","error","Error");addLog("error","Instagram",result.msg);}
-continue;
+return;
 }
 if(p.id === "marketplace"){
 const result = await window.publicarEnFacebookMarketplace(data, prop.id);
@@ -680,7 +684,7 @@ const estado = result.ok ? "preparado_manual" : "error";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"marketplace",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("marketplace","ok","Listo p/ pegar");addLog("success","Facebook Marketplace",result.msg);}
 else{setPortalStatus("marketplace","error","Error");addLog("error","Facebook Marketplace",result.msg);}
-continue;
+return;
 }
 if(p.id === "metrocuadrado"){
 const result = await window.publicarEnMetrocuadrado(prop.id);
@@ -688,7 +692,7 @@ const estado = result.ok ? "publicado" : "error";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"metrocuadrado",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("metrocuadrado","ok","Publicado");addLog("success","Metrocuadrado",result.msg);}
 else{setPortalStatus("metrocuadrado","error","Error");addLog("error","Metrocuadrado",result.msg);}
-continue;
+return;
 }
 if(p.id === "fincaraiz"){
 const result = await window.publicarEnFincaraiz(data, prop.id);
@@ -696,20 +700,36 @@ const estado = result.ok ? "publicado" : "en_proceso";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
 if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
 else{setPortalStatus("fincaraiz","pending","En proceso");addLog("info","Finca Raiz",result.msg);}
-continue;
+return;
 }
 if(p.id === "proppit"){
 const proppitMsg = "Propiedad agregada al XML feed de Proppit. URL del feed: https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/proppit-feed. Proppit lo lee 1x dia.";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"proppit",estado:"publicado_xml_feed",mensaje:proppitMsg,asesor_id:currentUser.id});
 setPortalStatus("proppit","ok","En feed XML");
 addLog("success","Proppit",proppitMsg);
-continue;
+return;
 }
 await new Promise(r=>setTimeout(r,800));
 const{error:ePortal}=await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:p.id,estado:"pendiente_credenciales",mensaje:msgs[p.id]||"Requiere configuracion.",asesor_id:currentUser.id});
 if(ePortal){setPortalStatus(p.id,"error","Error DB");addLog("error",p.name,"Error: "+ePortal.message);}
 else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,msgs[p.id]);}
+}});
 }
+if(__tareas.length){
+const __apro = await confirmarPublicacionPortales(__tareas);
+if(!__apro){
+addLog("info","Portales","No se aprobo el envio. La propiedad quedo publicada solo en Lomaz Home.");
+__tareas.forEach(function(t){ setPortalStatus(t.id,"pending","No enviado"); });
+__tareas.length=0;
+}
+}
+const __auto=__tareas.filter(function(t){return !t.asistido;});
+const __asis=__tareas.filter(function(t){return t.asistido;});
+if(__auto.length){
+addLog("loading","Portales","Enviando en paralelo a "+__auto.map(function(t){return t.name;}).join(", ")+"...");
+await Promise.allSettled(__auto.map(function(t){ return (async function(){ try { await t.run(); } catch(e) { setPortalStatus(t.id,"error","Error"); addLog("error",t.name,"Error: "+((e&&e.message)||e)); } })(); }));
+}
+for(const t of __asis){ try { await t.run(); } catch(e) { setPortalStatus(t.id,"error","Error"); addLog("error",t.name,"Error: "+((e&&e.message)||e)); } }
 try { await sincronizarPortalesDePropiedad(prop.id); } catch(_sp) {}
 btn.textContent="Publicado en Lomaz Home";
 showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
@@ -760,6 +780,44 @@ async function sincronizarPortalesDePropiedad(propId){
   } catch (_e) { return null; }
 }
 window.sincronizarPortalesDePropiedad = sincronizarPortalesDePropiedad;
+// ============================================================
+// Paso de aprobacion + seleccion rapida de portales.
+// El asesor ve un resumen y decide antes de que se envie nada.
+// ============================================================
+function marcarPortalesInmobiliarios(){
+  ["ch-metrocuadrado","ch-fincaraiz","ch-proppit"].forEach(function(id){
+    var cb=document.getElementById(id); if(!cb||cb.disabled) return;
+    cb.checked=true;
+    var row=document.getElementById(id.replace("ch-","row-"));
+    if(row) row.classList.add("selected");
+    if(id==="ch-metrocuadrado" && typeof toggleMetroMapa==="function"){ try { toggleMetroMapa(cb); } catch(_e) {} }
+  });
+}
+window.marcarPortalesInmobiliarios = marcarPortalesInmobiliarios;
+function confirmarPublicacionPortales(tareas){
+  return new Promise(function(resolve){
+    try {
+      var autos=tareas.filter(function(t){return !t.asistido;}).map(function(t){return t.name;});
+      var asis=tareas.filter(function(t){return t.asistido;}).map(function(t){return t.name;});
+      var ov=document.createElement("div");
+      ov.id="ovConfirmPortales";
+      ov.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:1rem";
+      var h='<div style="max-width:430px;width:100%;background:#111827;border:1px solid #b8892b;border-radius:14px;padding:1.1rem 1.2rem;color:#e8eefc">';
+      h+='<div style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem">Confirma la publicacion en portales</div>';
+      h+='<div style="font-size:.86rem;color:#9aa7bd;margin-bottom:.8rem">La propiedad ya quedo publicada en Lomaz Home. Esto es lo que se enviara ahora:</div>';
+      if(autos.length){ h+='<div style="font-size:.78rem;letter-spacing:.06em;color:#b8892b;font-weight:700">EN PARALELO, AUTOMATICO</div><ul style="margin:.2rem 0 .7rem 1.1rem;font-size:.9rem">'+autos.map(function(n){return "<li>"+n+"</li>";}).join("")+"</ul>"; }
+      if(asis.length){ h+='<div style="font-size:.78rem;letter-spacing:.06em;color:#9aa7bd;font-weight:700">ASISTIDO, TU PEGAS EL TEXTO</div><ul style="margin:.2rem 0 .7rem 1.1rem;font-size:.9rem">'+asis.map(function(n){return "<li>"+n+"</li>";}).join("")+"</ul>"; }
+      h+='<div style="font-size:.78rem;color:#9aa7bd;margin-bottom:.9rem">Despues puedes revisar el estado de cada aviso en la pagina Portales.</div>';
+      h+='<div style="display:flex;gap:.5rem;justify-content:flex-end"><button type="button" id="btnNoPortales" style="background:transparent;border:1px solid #475569;color:#e8eefc;border-radius:8px;padding:.5rem .8rem;cursor:pointer">Solo Lomaz Home</button><button type="button" id="btnSiPortales" style="background:linear-gradient(135deg,#b8892b,#8a6620);border:0;color:#fff;border-radius:8px;padding:.5rem .9rem;font-weight:700;cursor:pointer">Si, publicar ahora</button></div></div>';
+      ov.innerHTML=h;
+      document.body.appendChild(ov);
+      var fin=function(v){ try { ov.remove(); } catch(_e) {} resolve(v); };
+      ov.querySelector("#btnSiPortales").addEventListener("click",function(){ fin(true); });
+      ov.querySelector("#btnNoPortales").addEventListener("click",function(){ fin(false); });
+    } catch(_e) { resolve(true); }
+  });
+}
+window.confirmarPublicacionPortales = confirmarPublicacionPortales;
 let __metroCache = {regions:null};
 function mcSetHidden(id,val){ var e=document.getElementById(id); if(e) e.value = val||""; }
 function mcFillSelect(sel, items, valKey, textKey, placeholder){
