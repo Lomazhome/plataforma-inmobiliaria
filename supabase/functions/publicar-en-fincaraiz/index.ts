@@ -20,10 +20,21 @@ const CORS = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// --- Ambiente: si existe el secret FINCARAIZ_API_KEY_PROD se usa PRODUCCION. ---
+// Asi pasar de pruebas a produccion es UN SOLO secret, sin tocar el codigo.
+// Opcionales: FINCARAIZ_API_URL_PROD y FINCARAIZ_CLIENT_ID_PROD.
+const PROD_URL_DEFAULT = "https://msi-infofinca.fincaraiz.com.co/management/api/1.0";
+const KEY_PROD = Deno.env.get("FINCARAIZ_API_KEY_PROD") || "";
+const ES_PROD = KEY_PROD.length > 0;
+
 const SECRETS = {
-  FR_URL: Deno.env.get("FINCARAIZ_API_URL") || "",
-  FR_KEY: Deno.env.get("FINCARAIZ_API_KEY") || "",
-  FR_CLIENT: Deno.env.get("FINCARAIZ_CLIENT_ID") || "",
+  FR_URL: ES_PROD
+    ? (Deno.env.get("FINCARAIZ_API_URL_PROD") || PROD_URL_DEFAULT)
+    : (Deno.env.get("FINCARAIZ_API_URL") || ""),
+  FR_KEY: ES_PROD ? KEY_PROD : (Deno.env.get("FINCARAIZ_API_KEY") || ""),
+  FR_CLIENT: ES_PROD
+    ? (Deno.env.get("FINCARAIZ_CLIENT_ID_PROD") || Deno.env.get("FINCARAIZ_CLIENT_ID") || "")
+    : (Deno.env.get("FINCARAIZ_CLIENT_ID") || ""),
   FR_AGENT: Deno.env.get("FINCARAIZ_CLIENT_AGENT") || "",
   WEBHOOK_SECRET: Deno.env.get("WEBHOOK_SHARED_SECRET") || "",
 };
