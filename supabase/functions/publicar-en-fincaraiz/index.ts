@@ -219,8 +219,8 @@ function readListingResult(task) {
     }
 
 
-    // ===== Accion: activar (PATCH /listing/status) =====
-    if (body && body.accion === "activar") {
+    // ===== Acciones: activar / cambiar_estado (PATCH /listing/status) =====
+    if (body && (body.accion === "activar" || body.accion === "cambiar_estado")) {
       const propId = body.propiedad_id || body.id;
       if (!propId) {
         return new Response(
@@ -242,7 +242,13 @@ function readListingResult(task) {
           { status: 400, headers: { ...CORS, "Content-Type": "application/json" } }
         );
       }
-      const patchPayload = { listing_id: _lid, client_id: SECRETS.FR_CLIENT, status: "ACTIVE" };
+      // Estado del aviso en Finca Raiz. "activar" siempre pone ACTIVE;
+      // "cambiar_estado" acepta INACTIVE (pausar) o DELETED (retirar).
+      const _EST_OK = ["ACTIVE", "INACTIVE", "DELETED", "SOLD", "RENTED"];
+      let _st = String(body.estado || body.status || "ACTIVE").toUpperCase();
+      if (body.accion === "activar") _st = "ACTIVE";
+      if (_EST_OK.indexOf(_st) === -1) _st = "ACTIVE";
+      const patchPayload = { listing_id: _lid, client_id: SECRETS.FR_CLIENT, status: _st };
       const rPatch = await fetch(SECRETS.FR_URL + "/listing/status", {
         method: "PATCH", headers: frcolHeaders(), body: JSON.stringify([patchPayload])
       });
@@ -256,7 +262,7 @@ function readListingResult(task) {
       const pr = await pollTask(jPatch.task.id);
       if (pr.done && pr.ok) {
         return new Response(
-          JSON.stringify({ ok: true, status: "activado", task_id: jPatch.task.id, fincaraiz: pr.task }),
+          JSON.stringify({ ok: true, status: "activado", estado: _st, task_id: jPatch.task.id, fincaraiz: pr.task }),
           { status: 200, headers: { ...CORS, "Content-Type": "application/json" } }
         );
       }
