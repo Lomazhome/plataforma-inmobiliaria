@@ -65,6 +65,12 @@ async function getConfig(admin: any) {
   .single();
   if (error || !data) throw new Error("No hay credenciales configuradas para Metrocuadrado. Ve a Ajustes > Portales.");
   if (!data.activo) throw new Error("La integracion con Metrocuadrado esta desactivada.");
+  const _envU = Deno.env.get("METRO_USERNAME") ?? "";
+  const _envP = Deno.env.get("METRO_PASSWORD") ?? "";
+  const _envI = Deno.env.get("METRO_IDENTIFICATION") ?? "";
+  if (_envU) data.username = _envU;
+  if (_envP) data.password = _envP;
+  if (_envI) data.identification = _envI;
   if (!data.username || !data.password || !data.identification) {
     throw new Error("Faltan credenciales de Metrocuadrado (usuario, password o identificacion/NIT).");
   }
@@ -182,7 +188,7 @@ Deno.serve(async (req) => {
       }
       const ambEst = (url.searchParams.get('ambiente') || cfgE.ambiente || 'dev').toLowerCase();
       if (!cfgE.username || !cfgE.password || !cfgE.identification) {
-        return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, listo_para_publicar: false, mensaje: 'Faltan datos: usuario, contrasena o identificacion/NIT.' }, 200);
+        return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, credenciales_origen: (Deno.env.get("METRO_PASSWORD") ? "secrets" : "tabla"), listo_para_publicar: false, mensaje: 'Faltan datos: usuario, contrasena o identificacion/NIT.' }, 200);
       }
       const urlsE = baseUrls(ambEst);
       const hdrsE: Record<string, string> = { 'Content-Type': 'application/json', 'x-api-key': xApiKey(ambEst) }; try { const _tkE = await getToken(admin, ambEst, cfgE); if (_tkE) hdrsE['token'] = _tkE; } catch (_e) { /* sin token */ }
@@ -222,7 +228,7 @@ Deno.serve(async (req) => {
       else if (!cfgE.activo) resumen = 'La integracion esta desactivada (marca Activo y guarda).';
       else if (!catOk) resumen = 'La API de Metrocuadrado no responde bien a los catalogos (status ' + catStatus + ').';
       else if (!credOk) resumen = 'Metrocuadrado rechaza el usuario en ' + ambEst + ': ' + mensajeMc;
-      return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, catalogos_ok: catOk, catalogos_status: catStatus, credenciales_ok: credOk, credenciales_status: credStatus, mensaje_metrocuadrado: mensajeMc, listo_para_publicar: listo, resumen: resumen }, 200);
+      return json({ portal: 'metrocuadrado', configurado: true, activo: !!cfgE.activo, ambiente: ambEst, credenciales_origen: (Deno.env.get("METRO_PASSWORD") ? "secrets" : "tabla"), catalogos_ok: catOk, catalogos_status: catStatus, credenciales_ok: credOk, credenciales_status: credStatus, mensaje_metrocuadrado: mensajeMc, listo_para_publicar: listo, resumen: resumen }, 200);
     }
 
     try {
