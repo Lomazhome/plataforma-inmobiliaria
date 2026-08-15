@@ -52,6 +52,14 @@ function propertyTypeFor(tipo) {
   return m[tipo] || "apartment";
 }
 
+function currencyId() {
+  // Fincaraiz espera el ID NUMERICO de la moneda, no el codigo ISO.
+  // Enviar "COP" produce 400: [{"currency":["A valid integer is required."]}]
+  const raw = Deno.env.get("FINCARAIZ_CURRENCY_ID");
+  const n = Number(raw);
+  return (Number.isFinite(n) && n > 0) ? n : 1;
+}
+
 function buildListingPayload(p) {
   const photos = [];
   let urls = [];
@@ -68,7 +76,7 @@ function buildListingPayload(p) {
     property_type: propertyTypeFor(p.tipo_propiedad),
     description: p.descripcion || p.titulo || "Inmueble LoMaz Home",
     price: Number(p.precio) || 0,
-    currency: "COP",
+    currency: currencyId(),
     area: Number(p.m2_construccion) || Number(p.area_construida) || Number(p.area_total) || 0,
     address: { address: p.direccion || p.barrio || p.ciudad || "Bogota" },
     locations: {
