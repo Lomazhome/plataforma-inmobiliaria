@@ -184,6 +184,11 @@ Deno.serve(async (req) => {
       const st = last?.task?.status;
       if (st === "COMPLETED" || st === "FORWARDED") return { done: true, ok: true, task: last.task };
       if (st === "ERROR") return { done: true, ok: false, task: last.task };
+      // Deteccion temprana: la tarea global puede quedar en RUNNING por multimedia,
+      // pero si el aviso ya quedo COMPLETED con listing_id la publicacion es valida.
+      const _c0 = (last && last.task && Array.isArray(last.task.content)) ? last.task.content[0] : null;
+      if (_c0 && _c0.status === "ERROR") return { done: true, ok: false, task: last.task };
+      if (_c0 && _c0.status === "COMPLETED" && _c0.listing_id) return { done: true, ok: true, task: last.task };
       await new Promise((res) => setTimeout(res, DELAY_MS));
     }
     return { done: false, ok: false, task: last?.task || null };
@@ -199,9 +204,16 @@ function readListingResult(task) {
                    : (l && l.listing_id != null) ? l.listing_id
                    : null;
   const external_code = (c0 && c0.external_code != null) ? c0.external_code : null;
-  const error = (c0 && c0.error && (c0.error.message || c0.error))
-             || (l && l.error && (l.error.message || l.error))
-             || null;
+  const _errTxt = (e) => {
+      if (!e) return null;
+      if (typeof e === "string") return e;
+      const st0 = e.status || e;
+      const d = st0.description || st0.detail || e.message || null;
+      const cd = st0.default_code || st0.status_code || null;
+      if (d && cd) return d + " (" + cd + ")";
+      return d || (cd ? String(cd) : JSON.stringify(e).substring(0, 300));
+    };
+    const error = _errTxt(c0 && c0.error) || _errTxt(l && l.error) || null;
   return { listing_id, external_code, error };
 }
 
@@ -257,14 +269,18 @@ function readListingResult(task) {
           { status: 400, headers: { ...CORS, "Content-Type": "application/json" } }
         );
       }
-      let _lid = body.listing_id || null;
-      if (!_lid && body.task_id) {
+      // El listing_id valido es el que devuelve la tarea del MISMO ambiente.
+      // Se resuelve primero desde task_id para no reutilizar un listing_id
+      // guardado de otro ambiente (QA vs produccion).
+      let _lid = null;
+      if (body.task_id) {
         try {
           const _rt = await fetch(SECRETS.FR_URL + "/task/" + encodeURIComponent(body.task_id) + "?_ts=" + Date.now(), { method: "GET", headers: frcolHeaders() });
           const _jt = await _rt.json().catch(() => ({}));
           _lid = readListingResult(_jt?.task || _jt).listing_id || null;
         } catch (_e) { /* noop */ }
       }
+      if (!_lid) _lid = body.listing_id || null;
       if (!_lid) {
         return new Response(
           JSON.stringify({ ok: false, status: "error", msg: "Falta listing_id. Envia listing_id o task_id de la publicacion." }),
@@ -298,12 +314,12 @@ function readListingResult(task) {
       if (pr.done && !pr.ok) {
         const res = readListingResult(pr.task);
         return new Response(
-          JSON.stringify({ ok: false, status: "error", task_id: jPatch.task.id, msg: res.error || "La activacion finalizo con error" }),
+          JSON.stringify({ ok: false, status: "error", task_id: jPatch.task.id, msg: (/no_quota|No quota/i.test(String(res.error || "")) ? "Finca Raiz rechazo la operacion: la cuenta no tiene cupos de inmuebles disponibles (No quota). Libera o compra un cupo en la Oficina Virtual y vuelve a intentar." : (res.error || "La activacion finalizo con error")) }),
           { status: 200, headers: { ...CORS, "Content-Type": "application/json" } }
         );
       }
       return new Response(
-        JSON.stringify({ ok: false, status: "en_proceso", task_id: jPatch.task.id, msg: "La activacion sigue en proceso; consulta el task_id mas tarde." }),
+        JSON.stringify({ ok: false, status: "en_proceso", task_id: jPatch.task.id, listing_id: _lid, msg: "La activacion sigue en proceso; consulta el task_id mas tarde." }),
         { status: 200, headers: { ...CORS, "Content-Type": "application/json" } }
       );
     }
@@ -344,12 +360,12 @@ function readListingResult(task) {
     if (pr.done && !pr.ok) {
       const res = readListingResult(pr.task);
       return new Response(
-        JSON.stringify({ ok: false, status: "error", task_id: jPost.task.id, msg: res.error || "La integracion finalizo con error" }),
+        JSON.stringify({ ok: false, status: "error", task_id: jPost.task.id, msg: (/no_quota|No quota/i.test(String(res.error || "")) ? "Finca Raiz rechazo la operacion: la cuenta no tiene cupos de inmuebles disponibles (No quota). Libera o compra un cupo en la Oficina Virtual y vuelve a intentar." : (res.error || "La integracion finalizo con error")) }),
         { status: 200, headers: { ...CORS, "Content-Type": "application/json" } }
       );
     }
     return new Response(
-      JSON.stringify({ ok: false, status: "en_proceso", task_id: jPost.task.id, msg: "La integracion sigue en proceso; consulta el task_id mas tarde." }),
+      JSON.stringify({ ok: false, status: "en_proceso", task_id: jPost.task.id, listing_id: (function(){ try { return readListingResult((pr && pr.task) || {}).listing_id || null; } catch (_e) { return null; } })(), msg: "La integracion sigue en proceso; consulta el task_id mas tarde." }),
       { status: 200, headers: { ...CORS, "Content-Type": "application/json" } }
     );
 
