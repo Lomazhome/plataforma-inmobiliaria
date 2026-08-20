@@ -140,10 +140,10 @@ Deno.serve(async (req) => {
     let credencialesOk = false;
     if (tieneUrl && tieneLlave && tieneCliente) {
       try {
-        const sonda = SECRETS.FR_URL + '/task/prueba-estado-lomaz?_ts=' + Date.now();
+        const sonda = SECRETS.FR_URL + '/client?_ts=' + Date.now();
         const rp = await fetch(sonda, { method: 'GET', headers: frcolHeaders() });
         apiStatus = rp.status;
-        credencialesOk = apiStatus !== 401 && apiStatus !== 403 && apiStatus < 500;
+        credencialesOk = apiStatus >= 200 && apiStatus < 300;
       } catch (_e) {
         apiStatus = -1;
       }
@@ -152,6 +152,7 @@ Deno.serve(async (req) => {
     let resumen = '';
     if (!tieneUrl || !tieneLlave || !tieneCliente) resumen = 'Faltan datos de Finca Raiz en el servidor.';
     else if (apiStatus === 401 || apiStatus === 403) resumen = 'Finca Raiz rechaza la llave (status ' + apiStatus + ').';
+    else if (apiStatus === 404) resumen = 'La sonda GET /client no existe en este servidor de Finca Raiz (404); no se pudo verificar la llave.';
     else if (apiStatus === -1) resumen = 'No se pudo contactar el servidor de Finca Raiz.';
     else if (!credencialesOk) resumen = 'Finca Raiz no responde bien (status ' + apiStatus + ').';
     else if (ambiente === 'pruebas') resumen = 'Las credenciales sirven, pero apuntan al ambiente de pruebas de Finca Raiz, no al real.';
