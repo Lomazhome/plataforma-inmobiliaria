@@ -162,7 +162,7 @@ td strong{font-weight:600;color:#fff}
 <div class="tab-panel" id="panel-lista">
 <div class="card"><h3>Usuarios de la <em>Plataforma</em></h3>
 <div class="tools-row">
-<input type="text" id="buscar-usuario" placeholder="Buscar por nombre o correo..." oninput="filtrarUsuarios()"/>
+<input type="text" id="buscar-usuario" placeholder="Buscar por nombre o correo..." oninput="filtrarUsuariosDebounced()"/>
 <button class="btn-sm btn-neutral" onclick="cargarUsuarios()">&#x21bb; Actualizar</button>
 </div>
 <div class="table-wrap"><table id="tabla-usuarios">
@@ -225,6 +225,7 @@ return;
 }
 await cargarRoles();
 await cargarUsuarios();
+suscribirRealtimeUsuarios();
 })();
 
 function showAlert(msg,type){const a=document.getElementById("alert");a.className="alert "+type;a.textContent=msg;a.scrollIntoView({behavior:"smooth",block:"center"});}
@@ -419,6 +420,137 @@ const{error}=await sb.from("permisos_modulos").upsert(updates,{onConflict:"rol_i
 if(error)showAlert("Error al guardar: "+error.message,"error");
 else showAlert("Permisos guardados correctamente para el rol seleccionado","success");
 }
+
+/* ================= TIEMPO REAL: USUARIOS (Supabase Realtime) ================= */
+/* Inyecta los estilos que usan el indicador "en vivo", el resaltado de filas
+   nuevas y el toast de notificacion, sin tocar la hoja de estilos principal. */
+(function inyectarEstilosRT(){
+  if(document.getElementById("rt-estilos"))return;
+  const st=document.createElement("style");
+  st.id="rt-estilos";
+  st.textContent=
+    "@keyframes rtFlash{0%{background:#dcfce7}70%{background:#dcfce7}100%{background:transparent}}"+
+    ".fila-nueva{animation:rtFlash 3.5s ease-out}"+
+    "#rt-indicador{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;margin-left:12px;white-space:nowrap}"+
+    ".rt-toast{position:fixed;right:18px;bottom:18px;background:#111827;color:#fff;padding:11px 16px;border-radius:10px;font-size:13px;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,.28);opacity:0;transform:translateY(10px);transition:opacity .25s ease,transform .25s ease;max-width:320px}"+
+    ".rt-toast.show{opacity:1;transform:none}";
+  document.head.appendChild(st);
+})();
+
+/* Escape de HTML para textos que vienen de la base de datos. */
+function escapeHtml(valor){
+  return String(valor==null?"":valor).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+/* ---- Busqueda con debounce (evita re-renderizar en cada tecla) ---- */
+let _rtTimerFiltro=null;
+function filtrarUsuariosDebounced(){
+  clearTimeout(_rtTimerFiltro);
+  _rtTimerFiltro=setTimeout(filtrarUsuarios,250);
+}
+
+/* ---- Estado del canal de tiempo real ---- */
+let canalUsuariosRT=null;
+let _rtTimerRefresco=null;
+const _rtIdsNuevos=new Set();
+
+function rtToast(texto){
+  const el=document.createElement("div");
+  el.className="rt-toast";
+  el.textContent=texto;
+  document.body.appendChild(el);
+  requestAnimationFrame(function(){el.classList.add("show");});
+  setTimeout(function(){
+    el.classList.remove("show");
+    setTimeout(function(){el.remove();},300);
+  },3800);
+}
+
+function rtIndicador(estado){
+  let ind=document.getElementById("rt-indicador");
+  if(!ind){
+    const input=document.getElementById("buscar-usuario");
+    if(!input||!input.parentNode)return;
+    ind=document.createElement("span");
+    ind.id="rt-indicador";
+    input.parentNode.appendChild(ind);
+  }
+  const enVivo=estado==="SUBSCRIBED";
+  ind.textContent=enVivo?"● En vivo":"○ Sin conexion en vivo";
+  ind.style.color=enVivo?"#16a34a":"#9ca3af";
+  ind.title=enVivo
+    ?"Los usuarios nuevos aparecen automaticamente"
+    :"Estado del canal: "+estado;
+}
+
+/* Resalta las filas de los usuarios que acabaron de llegar por realtime. */
+function rtResaltarNuevos(){
+  if(!_rtIdsNuevos.size)return;
+  Array.prototype.slice.call(_rtIdsNuevos).forEach(function(id){
+    const btn=document.querySelector('button[onclick*="'+id+'"]');
+    const tr=btn?btn.closest("tr"):null;
+    if(!tr)return;
+    tr.classList.remove("fila-nueva");
+    void tr.offsetWidth;
+    tr.classList.add("fila-nueva");
+    setTimeout(function(){
+      tr.classList.remove("fila-nueva");
+      _rtIdsNuevos.delete(id);
+    },3600);
+  });
+}
+
+/* Recarga la lista respetando el texto que haya en el buscador. */
+async function rtRefrescarLista(){
+  await cargarUsuarios();
+  const input=document.getElementById("buscar-usuario");
+  if(input&&input.value.trim())filtrarUsuarios();
+  rtResaltarNuevos();
+}
+
+/* Agrupa varios eventos seguidos en una sola recarga. */
+function rtProgramarRefresco(){
+  clearTimeout(_rtTimerRefresco);
+  _rtTimerRefresco=setTimeout(rtRefrescarLista,300);
+}
+
+function suscribirRealtimeUsuarios(){
+  if(canalUsuariosRT)return;
+  try{
+    canalUsuariosRT=sb.channel("rt-perfiles-usuarios")
+      .on("postgres_changes",{event:"INSERT",schema:"public",table:"perfiles_usuarios"},function(payload){
+        const nuevo=payload&&payload.new?payload.new:null;
+        if(nuevo&&nuevo.id)_rtIdsNuevos.add(nuevo.id);
+        rtToast("Nuevo usuario: "+((nuevo&&nuevo.nombre_completo)||"sin nombre"));
+        rtProgramarRefresco();
+      })
+      .on("postgres_changes",{event:"UPDATE",schema:"public",table:"perfiles_usuarios"},function(){
+        rtProgramarRefresco();
+      })
+      .on("postgres_changes",{event:"DELETE",schema:"public",table:"perfiles_usuarios"},function(){
+        rtToast("Se elimino un usuario");
+        rtProgramarRefresco();
+      })
+      .subscribe(function(estado){
+        rtIndicador(estado);
+        if(estado==="SUBSCRIBED")rtProgramarRefresco();
+      });
+  }catch(e){
+    console.warn("Realtime no disponible:",e);
+    rtIndicador("ERROR");
+  }
+  /* Al volver a la pestaña, sincroniza por si se perdio algun evento. */
+  document.addEventListener("visibilitychange",function(){
+    if(document.visibilityState==="visible")rtProgramarRefresco();
+  });
+  window.addEventListener("beforeunload",function(){
+    if(canalUsuariosRT){try{sb.removeChannel(canalUsuariosRT);}catch(e){}}
+  });
+}
+/* =============== FIN TIEMPO REAL: USUARIOS =============== */
+
 </script>
 </body>
   </html>
