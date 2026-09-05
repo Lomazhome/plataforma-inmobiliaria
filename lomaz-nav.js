@@ -262,7 +262,7 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
   #lm-chat-widget { bottom:0; right:0; left:0; width:100%; height:70vh; border-radius:20px 20px 0 0; transform-origin:bottom center; }
   #lm-aria-fab { bottom:20px; right:20px; }
 }
-#lm-mobile-menu { display:none; position:fixed; inset:0; background:rgba(13,27,46,0.98); z-index:9998; flex-direction:column; padding:80px 2rem 2rem; overflow-y:auto; }
+#lm-mobile-menu { display:none; position:fixed; inset:0; background:rgba(13,27,46,0.98); z-index:10001; flex-direction:column; padding:80px 2rem 2rem; overflow-y:auto; }
 #lm-mobile-menu.lm-open { display:flex; }
 .lm-mob-link { display:block; padding:1.05rem 0; min-height:48px; border-bottom:1px solid rgba(255,255,255,0.06); color:rgba(255,255,255,0.8); font-size:1.2rem; text-decoration:none; font-family:var(--lm-serif); }
 .lm-mob-link:hover { color:var(--lm-gold); }
@@ -636,12 +636,18 @@ function init() {
   document.querySelectorAll('.lm-suggestion-chip').forEach(c=>c.addEventListener('click',function(){send(this.dataset.msg);}));
   
   // Mobile menu
-  document.getElementById('lm-ham').addEventListener('click',()=>document.getElementById('lm-mobile-menu').classList.add('lm-open'));
-  document.getElementById('lm-mob-cls').addEventListener('click',()=>document.getElementById('lm-mobile-menu').classList.remove('lm-open'));
+  // Menu movil: el boton ☰ abre/cierra (toggle), la ✕ cierra, y tocar cualquier enlace tambien cierra
+  const mm=document.getElementById('lm-mobile-menu');
+  const cerrarMenu=()=>{mm.classList.remove('lm-open');document.body.style.overflow='';};
+  const abrirMenu=()=>{mm.classList.add('lm-open');document.body.style.overflow='hidden';};
+  document.getElementById('lm-ham').addEventListener('click',e=>{e.stopPropagation();mm.classList.contains('lm-open')?cerrarMenu():abrirMenu();});
+  document.getElementById('lm-mob-cls').addEventListener('click',e=>{e.stopPropagation();cerrarMenu();});
+  mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',cerrarMenu));
+  mm.addEventListener('click',e=>{if(e.target===mm)cerrarMenu();});
   
   // Keyboard
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){if(open){open=true;tog();}document.getElementById('lm-mobile-menu').classList.remove('lm-open');}
+    if(e.key==='Escape'){if(open){open=true;tog();}cerrarMenu();}
   });
   
   // Click outside
