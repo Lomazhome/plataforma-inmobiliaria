@@ -1,5 +1,5 @@
 // Edge Function: proppit-feed
-// Genera XML feed compatible con Proppit (Colombia) leyendo propiedades activas de Supabase
+// Genera XML feed compatible con Proppit (Colombia). Solo incluye propiedades activas que el asesor haya enviado a Proppit (casilla "Proppit" marcada) y no esten pausadas/retiradas.
 // Distribucion: Trovit, Mitula, Nestoria, Nuroa, puntopropiedad
 // URL publica: https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/proppit-feed
 
@@ -171,18 +171,49 @@ Deno.serve(async (_req) => {
     });
   }
 
-  // Se excluyen del feed las propiedades que el asesor pauso o retiro
-  // de Proppit desde la edicion de la propiedad en LoMaz Home.
-  const fueraDeProppit = (p: any) => {
+  // OPT-IN: solo entran al feed las propiedades que el asesor envio a Proppit
+  // marcando la casilla "Proppit" al publicar o editar en LoMaz Home.
+  // Una propiedad sin registro de Proppit, o con el aviso pausado/retirado,
+  // NO se incluye (evita duplicar avisos creados manualmente en Proppit).
+  const ESTADOS_ACTIVOS = ["publicado_xml_feed", "publicado", "publicada", "activo", "activa", "en_proceso"];
+  const esActivo = (e: any) => ESTADOS_ACTIVOS.indexOf(String(e || "").toLowerCase().replace(/\s+/g, "_")) !== -1;
+
+  // Estado mas reciente por propiedad segun el historial publicaciones_portales
+  // (respaldo por si propiedades.publicado_portales no se sincronizo).
+  const ultimoEstadoProppit: Record<string, { estado: string; fecha: string }> = {};
+  try {
+    const { data: pubs } = await supabase
+      .from("publicaciones_portales")
+      .select("propiedad_id,estado,fecha")
+      .eq("portal", "proppit");
+    for (const r of (pubs || [])) {
+      const id = String(r.propiedad_id || "");
+      if (!id) continue;
+      const prev = ultimoEstadoProppit[id];
+      if (prev && (prev.fecha || "") > (r.fecha || "")) continue;
+      ultimoEstadoProppit[id] = { estado: String(r.estado || ""), fecha: String(r.fecha || "") };
+    }
+  } catch (_e) { /* sin historial: se usa solo publicado_portales */ }
+
+  const enviadaAProppit = (p: any) => {
     try {
       const arr = Array.isArray(p.publicado_portales) ? p.publicado_portales : [];
       const reg = arr.find((x: any) => x && String(x.portal || "").toLowerCase() === "proppit");
-      if (!reg) return false;
-      const e = String(reg.estado || "").toLowerCase();
-      return e === "pausado" || e === "pausada" || e === "retirado" || e === "retirada" || e === "inactivo";
+      const hist = ultimoEstadoProppit[String(p.id)];
+      let estado = "";
+      if (reg && hist) {
+        estado = ((reg.fecha || "") >= (hist.fecha || "")) ? reg.estado : hist.estado;
+      } else if (reg) {
+        estado = reg.estado;
+      } else if (hist) {
+        estado = hist.estado;
+      } else {
+        return false; // nunca se marco la casilla Proppit
+      }
+      return esActivo(estado);
     } catch (_e) { return false; }
   };
-  const props = (propsRaw || []).filter((p: any) => !fueraDeProppit(p));
+  const props = (propsRaw || []).filter((p: any) => enviadaAProppit(p));
 
   // Cargar perfiles de asesores y emails de auth.users
   const asesorIds = [...new Set((props||[]).map((p: any) => p.asesor_id).filter(Boolean))];
@@ -239,3 +270,4 @@ Deno.serve(async (_req) => {
     }
   });
 });
+
