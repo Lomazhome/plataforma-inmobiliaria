@@ -1,0 +1,75 @@
+/* ============================================================
+   LoMaz Home — lomaz-mobile.css
+   Ajustes para celulares y tablets pequeñas (pantallas <= 768px).
+   Este archivo se carga DESPUÉS de los estilos de cada página, por eso
+   sus reglas ganan cuando hay conflicto. Solo afecta pantallas angostas:
+   en computador no cambia nada.
+   ============================================================ */
+
+/* ---------- 1. Reglas generales (todas las páginas) ---------- */
+@media (max-width: 768px) {
+  html { -webkit-text-size-adjust: 100%; }           /* iPhone no agranda el texto solo al girar */
+  body { overflow-x: hidden; }                        /* nunca aparece scroll horizontal */
+  img, video, iframe, svg, table { max-width: 100%; } /* nada se sale del ancho de la pantalla */
+  input, select, textarea { font-size: 16px !important; } /* evita el zoom automático de iPhone al tocar un campo */
+  button, .btn, .chip, .tipo-btn { -webkit-tap-highlight-color: transparent; }
+}
+
+/* ---------- 2. Inicio (index.html) ---------- */
+@media (max-width: 768px) {
+  /* carrusel de propiedades destacadas: se desliza con el dedo, sin barra gris */
+  .props-grid { scrollbar-width: none; }
+  .props-grid::-webkit-scrollbar { display: none; }
+  .hero__stats, .hero__trust { flex-wrap: wrap; }
+}
+
+/* ---------- 3. Catálogo (propiedades-publica.html / propiedades.html) ---------- */
+@media (max-width: 768px) {
+  /* La barra de filtros era "pegajosa" y ocupaba media pantalla: en celular se queda arriba y se desplaza con la página */
+  .filters-section { position: static !important; padding: 1.1rem 1rem !important; }
+  .filters-row { flex-direction: column; align-items: stretch !important; gap: .9rem; }
+  .filter-group { width: 100%; }
+  .filter-label { font-size: .7rem; }
+  /* Todos / Arriendo / Venta + Buscar en el mapa: se acomodan en dos filas en vez de salirse */
+  .tipo-toggle { flex-wrap: wrap; width: 100%; }
+  .tipo-toggle .tipo-btn { flex: 1 1 33%; min-height: 44px; padding: .6rem .4rem; font-size: .72rem; text-align: center; }
+  .tipo-toggle a.tipo-btn { flex-basis: 100%; margin-left: 0 !important; border-top: 1px solid rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; }
+  /* chips de inmueble y barrio: botones más altos para el dedo, y ocupan todo el ancho */
+  .chips { width: 100%; gap: .45rem; }
+  .chip { min-height: 40px; padding: .5rem .8rem; font-size: .74rem; display: inline-flex; align-items: center; }
+  .prop-grid { grid-template-columns: 1fr !important; gap: 1.4rem; }
+  .results-header { flex-direction: column; align-items: flex-start; gap: .6rem; }
+  .hero-catalogo, .catalogo-hero { padding: 3rem 1.2rem !important; }
+}
+
+/* ---------- 4. Ficha de propiedad (propiedad-publica.html / propiedad.html) ---------- */
+@media (max-width: 768px) {
+  nav.top .wrap { height: 58px; }
+  nav.top .links a { padding: 10px 2px; }             /* enlaces más fáciles de tocar */
+  .gallery .main { height: min(62vw, 300px); }         /* la foto (o el ícono de casa) ya no ocupa toda la pantalla */
+  .gallery .ph { font-size: 52px; }
+  h1.title { font-size: 1.55rem !important; line-height: 1.2; }
+  .loc { font-size: .9rem; }
+  .fact { padding: 16px 8px; }
+  .fact .v { font-size: 1.4rem; }
+  .layout { gap: 22px; padding-bottom: 40px; }
+  .wrap { padding: 0 14px; }
+  .sec p { font-size: .95rem; line-height: 1.6; }
+}
+
+/* ---------- 5. Blog (blog.html) ---------- */
+@media (max-width: 900px) {
+  #main-nav { padding: 1rem 1.2rem !important; }
+  .nav-links.open { width: min(300px, 86vw); overflow-y: auto; }
+  .nav-links.open .has-dropdown .nav-arrow { display: none; }
+}
+@media (max-width: 480px) {
+  #main-nav > a[href="login.html"] { display: none; }  /* en pantallas muy angostas el botón "Acceso" va dentro del menú */
+  .featured-body h2, .featured-title { font-size: 1.35rem; }
+}
+
+/* ---------- 6. Menú compartido (lomaz-nav.js) y chat ARIA ---------- */
+@media (max-width: 768px) {
+  #lm-mobile-menu { padding: 76px 1.4rem 2rem; }
+  #lm-chat-widget { height: 78vh; }
+}

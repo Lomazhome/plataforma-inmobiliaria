@@ -156,6 +156,10 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 @media(max-width:900px){
 .nav-links{display:none;}.nav-ham{display:flex;}
 .nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--navy);padding:5rem 2rem 2rem;z-index:300;box-shadow:-4px 0 30px rgba(0,0,0,.3);}
+.nav-links.open li a{display:block;padding:.9rem 0;font-size:.9rem!important;}
+.nav-ham{position:relative;z-index:400;background:none;border:none;width:44px;height:44px;align-items:center;justify-content:center;}
+.nav-ham.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}.nav-ham.is-open span:nth-child(2){opacity:0;}.nav-ham.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.nav-links.open .nav-dropdown{position:static!important;transform:none!important;opacity:1!important;visibility:visible!important;min-width:0!important;border:none!important;box-shadow:none!important;padding-left:.5rem;}
 .featured-card{grid-template-columns:1fr;}
 .featured-img{min-height:240px;}
 .blog-grid{grid-template-columns:repeat(2,1fr);}
@@ -180,11 +184,12 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 body.nav-show #lm-nav{transform:translateY(0)!important;}
 </style>
 <script src="config.js"></script>
+<link rel="stylesheet" href="lomaz-mobile.css">
 </head>
 <body>
 <nav id="main-nav" class="nav" style="position:static;width:100%;z-index:1;padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,46,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(196,153,42,0.2)">
   <a href="index.html" class="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;color:#F4E5C2;text-decoration:none">LoMaz <span style="color:#C4992A">Home</span></a>
-  <ul class="nav-links" id="nav-links" style="display:flex;gap:2rem;list-style:none;align-items:center;margin:0;padding:0">
+  <ul class="nav-links" id="nav-links" style="gap:2rem;list-style:none;align-items:center;margin:0;padding:0">
     <li><a href="index.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Inicio</a></li>
     <li class="has-dropdown">
       <a href="propiedades.html" class="nav-parent" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none;display:flex;align-items:center;gap:.3rem">Propiedades <svg class="nav-arrow" viewBox="0 0 10 6" width="9" height="9" style="transition:transform .3s"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
@@ -206,6 +211,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
     <li><a href="contacto.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Contacto</a></li>
   </ul>
   <a href="login.html" style="border:1px solid #C4992A;color:#F4E5C2;padding:.5rem 1.2rem;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .3s">Acceso Asesores</a>
+  <button class="nav-ham" id="nav-ham" aria-label="Abrir menu" aria-expanded="false" onclick="var n=document.getElementById('nav-links');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.classList.toggle('is-open',o);"><span></span><span></span><span></span></button>
 </nav>
 <section class="blog-hero">
   <p class="blog-hero-eyebrow">Blog Inmobiliario</p>

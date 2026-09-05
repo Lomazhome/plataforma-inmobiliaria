@@ -258,7 +258,11 @@
     .lm-planet:hover .lm-tooltip { opacity: 1; }
 
     @media (max-width: 640px) {
-      .lm-orbit-wrap { width: 130px; height: 130px; bottom: 12px; right: 12px; }
+      /* MOVIL: el sistema orbital ocupaba 130px y tapaba botones y textos.
+         En celular solo se muestra el sol (boton ARIA); las redes quedan en el pie de pagina. */
+      .lm-orbit-wrap { width: 56px; height: 56px; bottom: 14px; right: 14px; }
+      .lm-orbit-ring, .lm-orbit-rotor { display: none; }
+      .lm-sun { width: 46px; height: 46px; margin-left: -23px; margin-top: -23px; }
     }
   `;
   document.head.appendChild(style);

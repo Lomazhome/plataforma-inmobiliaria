@@ -252,14 +252,19 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 .lm-chat-send-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
 .lm-chat-footer-note { text-align:center; font-size:0.62rem; color:rgba(255,255,255,0.15); margin-top:6px; }
 @media (max-width:768px) {
-  .lm-menu,.lm-nav-right { display:none; }
-  .lm-hamburger { display:flex; }
+  /* MOVIL: se ocultan los enlaces de escritorio y los botones ARIA/Acceso,
+     pero la barra derecha sigue visible para que el boton hamburguesa (☰) aparezca */
+  .lm-menu { display:none; }
+  .lm-nav-right .lm-aria-nav-btn, .lm-nav-right .lm-asesores-btn { display:none; }
+  .lm-hamburger { display:flex; align-items:center; justify-content:center; width:44px; height:44px; margin-right:-8px; }
+  .lm-hamburger span { width:24px; height:2px; }
+  .lm-nav-inner { padding:0 1.1rem; }
   #lm-chat-widget { bottom:0; right:0; left:0; width:100%; height:70vh; border-radius:20px 20px 0 0; transform-origin:bottom center; }
   #lm-aria-fab { bottom:20px; right:20px; }
 }
 #lm-mobile-menu { display:none; position:fixed; inset:0; background:rgba(13,27,46,0.98); z-index:9998; flex-direction:column; padding:80px 2rem 2rem; overflow-y:auto; }
 #lm-mobile-menu.lm-open { display:flex; }
-.lm-mob-link { display:block; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.06); color:rgba(255,255,255,0.8); font-size:1.2rem; text-decoration:none; font-family:var(--lm-serif); }
+.lm-mob-link { display:block; padding:1.05rem 0; min-height:48px; border-bottom:1px solid rgba(255,255,255,0.06); color:rgba(255,255,255,0.8); font-size:1.2rem; text-decoration:none; font-family:var(--lm-serif); }
 .lm-mob-link:hover { color:var(--lm-gold); }
 `;
 
@@ -367,7 +372,7 @@ function bChat() {
 }
 
 function bMob() {
-  return '<div id="lm-mobile-menu"><button id="lm-mob-cls" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="login.html" style="color:var(--lm-gold)">Acceso Asesores</a></div>';
+  return '<div id="lm-mobile-menu"><button id="lm-mob-cls" aria-label="Cerrar menu" style="position:absolute;top:1rem;right:1rem;width:48px;height:48px;background:none;border:none;color:white;font-size:1.6rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="login.html" style="color:var(--lm-gold)">Acceso Asesores</a></div>';
 }
 
 const KB = {
