@@ -3,7 +3,9 @@
 // las personas siguen viendo la tarjeta normal en /asesor.html.
 
 const SITE = "https://www.lomazhome.com";
-const COLS = "id,nombre_completo,avatar_url,notas,cargo,datos_perfil";
+// "notas" (biografia) se pide primero; si el publico no puede leer esa columna, se repite sin ella
+const COLS_PUB = "id,nombre_completo,avatar_url,cargo,datos_perfil";
+const COLS = COLS_PUB + ",notas";
 
 function esc(s){
   return String(s === null || s === undefined ? "" : s)
@@ -37,21 +39,27 @@ async function buscarPerfil(slug){
   const c = await credenciales();
   if(!c.url || !c.key) return null;
   const cab = { apikey: c.key, Authorization: "Bearer " + c.key };
-  const base = c.url + "/rest/v1/perfiles_usuarios?select=" + encodeURIComponent(COLS);
-  try{
-    const r1 = await fetch(base + "&" + encodeURIComponent("datos_perfil->>slug") + "=eq." + encodeURIComponent(slug) + "&limit=1", { headers: cab });
-    const d1 = await r1.json();
-    if(Array.isArray(d1) && d1.length) return d1[0];
-  }catch(e){}
-  try{
-    const r2 = await fetch(base, { headers: cab });
-    const d2 = await r2.json();
-    if(Array.isArray(d2)){
-      for(let i = 0; i < d2.length; i++){
-        if(slugify(d2[i].nombre_completo) === slugify(slug)) return d2[i];
-      }
+  // Devuelve la lista de filas, o null si la consulta fallo (permiso, red, etc.)
+  async function pedir(cols, filtro){
+    try{
+      const r = await fetch(c.url + "/rest/v1/perfiles_usuarios?select=" + encodeURIComponent(cols) + (filtro || ""), { headers: cab });
+      const d = await r.json();
+      return Array.isArray(d) ? d : null;
+    }catch(e){ return null; }
+  }
+  async function pedirConRespaldo(filtro){
+    let d = await pedir(COLS, filtro);
+    if(d === null) d = await pedir(COLS_PUB, filtro);
+    return d;
+  }
+  const porSlug = await pedirConRespaldo("&" + encodeURIComponent("datos_perfil->>slug") + "=eq." + encodeURIComponent(slug) + "&limit=1");
+  if(porSlug && porSlug.length) return porSlug[0];
+  const todos = await pedirConRespaldo("");
+  if(todos){
+    for(let i = 0; i < todos.length; i++){
+      if(slugify(todos[i].nombre_completo) === slugify(slug)) return todos[i];
     }
-  }catch(e){}
+  }
   return null;
 }
 
