@@ -89,9 +89,25 @@ var OFICINA_WA   = "573003300343";
 var OFICINA_MAIL = "lomazhome@gmail.com";
 var SITE         = "https://www.lomazhome.com";
 var OG_FALLBACK  = SITE + "/og-home.jpg";
-var COLS = "id,nombre_completo,telefono,avatar_url,notas,rol_id,cargo,licencia,datos_perfil";
+// Columnas que el publico puede leer. "notas" (la biografia) se pide aparte: si algun dia
+// la base no la deja ver a visitantes anonimos, la tarjeta sigue cargando con datos_perfil.bio.
+var COLS_PUB = "id,nombre_completo,telefono,avatar_url,rol_id,cargo,licencia,datos_perfil";
+var COLS = COLS_PUB + ",notas";
 
 var sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+
+function sinPermiso(r){
+  if(!r || !r.error) return false;
+  var m=String(r.error.message||"");
+  return r.error.code==="42501" || r.status===401 || r.status===403 || /permission denied/i.test(m);
+}
+// Ejecuta la consulta con todas las columnas y, si el permiso falla, la repite solo con las publicas
+async function consultar(q){
+  var r=null;
+  try{ r=await q(COLS); }catch(e){ r={error:e,data:null}; }
+  if(sinPermiso(r)){ try{ r=await q(COLS_PUB); }catch(e){ r={error:e,data:null}; } }
+  return r||{data:null};
+}
 var params = new URLSearchParams(window.location.search);
 
 function esc(s){ return (s||"").toString().replace(/[<>&"]/g, function(c){ return {"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]; }); }
@@ -138,14 +154,14 @@ function slugDeRuta(){
 async function buscarPerfil(){
   var id=params.get("id");
   if(id){
-    var r1=await sb.from("perfiles_usuarios").select(COLS).eq("id",id).maybeSingle();
+    var r1=await consultar(function(c){ return sb.from("perfiles_usuarios").select(c).eq("id",id).maybeSingle(); });
     if(r1.data) return r1.data;
   }
   var slug=params.get("slug")||slugDeRuta();
   if(slug){
-    var r2=await sb.from("perfiles_usuarios").select(COLS).eq("datos_perfil->>slug",slug).maybeSingle();
+    var r2=await consultar(function(c){ return sb.from("perfiles_usuarios").select(c).eq("datos_perfil->>slug",slug).maybeSingle(); });
     if(r2 && r2.data) return r2.data;
-    var r3=await sb.from("perfiles_usuarios").select(COLS);
+    var r3=await consultar(function(c){ return sb.from("perfiles_usuarios").select(c); });
     var lista=r3.data||[];
     for(var i=0;i<lista.length;i++){
       if(slugify(lista[i].nombre_completo)===slugify(slug)) return lista[i];
@@ -186,6 +202,11 @@ async function cargar(){
   var hero=document.getElementById("hero");
   var perf=null;
   try{ perf=await buscarPerfil(); }catch(e){ perf=null; }
+  if(!perf){
+    // Segundo intento: el servidor a veces tarda en responder (504) y la tarjeta no debe quedar en blanco por eso
+    await new Promise(function(r){ setTimeout(r,1500); });
+    try{ perf=await buscarPerfil(); }catch(e){ perf=null; }
+  }
   if(!perf){
     hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="/asesores.html" style="color:#b8860b">Ver todo el equipo</a></div>';
     var secNF=document.querySelector("h2.sec"); if(secNF) secNF.style.display="none";

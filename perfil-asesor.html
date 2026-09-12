@@ -109,9 +109,9 @@ textarea{resize:vertical;min-height:90px}
     <div class="avatar-big" id="bigAvatar"><span id="bigInitial">?</span></div>
     <div class="avatar-info">
       <h4 id="profileName">Tu Nombre</h4>
-      <p>JPG o PNG · Máx 2MB · Recomendado 200x200px</p>
-      <label class="btn-upload" for="fotoInput">📤 Cambiar foto</label>
-      <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="uploadFoto(this)"/>
+      <p>JPG, PNG o WebP · La foto se ajusta sola al subirla · Ideal: cuadrada y con tu rostro centrado</p>
+      <label class="btn-upload" for="fotoInput" id="btnFoto">📤 Cambiar foto</label>
+      <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp,image/*" style="display:none" onchange="uploadFoto(this)"/>
     </div>
   </div>
   
@@ -140,7 +140,7 @@ textarea{resize:vertical;min-height:90px}
         <div class="form-group full"><label>Dirección de oficina</label><input type="text" id="pDireccion" placeholder="Dirección de tu oficina o agencia" /></div>
       </div>
       <div style="margin-top:18px">
-        <button class="btn-primary" onclick="saveInfo()">💾 Guardar Cambios</button>
+        <button class="btn-primary" id="btnGuardarInfo" onclick="saveInfo()">💾 Guardar Cambios</button>
       </div>
     </div>
   </div>
@@ -162,7 +162,7 @@ textarea{resize:vertical;min-height:90px}
       <h3>&#128241; Redes Sociales</h3>
       <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Tus redes ahora se editan en la pesta&ntilde;a <b>Mi Tarjeta Digital</b>, para que la tarjeta y el perfil siempre digan lo mismo.</p>
       <div style="margin-top:18px">
-        <button class="btn-primary" onclick="savePro()">💾 Guardar Perfil Profesional</button>
+        <button class="btn-primary" id="btnGuardarPro" onclick="savePro()">💾 Guardar Perfil Profesional</button>
       </div>
     </div>
   </div>
@@ -198,7 +198,7 @@ textarea{resize:vertical;min-height:90px}
         <div class="form-group"><label>Sitio web personal</label><input type="url" id="tjWeb" placeholder="https://tu-sitio.com" /></div>
       </div>
       <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn-primary" onclick="saveTarjeta()">&#128190; Guardar mi tarjeta</button>
+        <button class="btn-primary" id="btnGuardarTarjeta" onclick="saveTarjeta()">&#128190; Guardar mi tarjeta</button>
         <a class="btn-primary" id="tjVer" href="asesores.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">&#128065; Ver mi tarjeta</a>
       </div>
     </div>
@@ -262,7 +262,43 @@ function showAlert(msg,type,id){
   const el=document.getElementById(id||"globalAlert");
   el.textContent=msg;
   el.className="alert "+type+" show";
-  setTimeout(()=>{el.classList.remove("show");},4000);
+  clearTimeout(el.__t);
+  el.__t=setTimeout(()=>{el.classList.remove("show");},type==="error"?9000:4000);
+}
+
+// ---------- Guardado verificado en perfiles_usuarios ----------
+// Antes se daba por guardado cualquier respuesta sin error, aunque la base no hubiera
+// tocado ninguna fila (permisos) o la conexion fallara a medias. Ahora se pide la fila
+// actualizada de vuelta y solo se confirma cuando realmente volvio.
+function esErrorRed(e){
+  const m=String((e&&e.message)||e||"");
+  return /failed to fetch|networkerror|load failed|timeout|timed out|502|503|504|fetch/i.test(m);
+}
+function mensajeError(e){
+  const m=String((e&&e.message)||e||"");
+  if(esErrorRed(e)) return "No hubo respuesta del servidor (conexion inestable). Espera unos segundos e intenta de nuevo.";
+  if(/jwt|expired|token/i.test(m)) return "Tu sesion expiro. Recarga la pagina e inicia sesion de nuevo.";
+  if(/permission denied|row-level security|violates/i.test(m)) return "Tu usuario no tiene permiso para guardar este dato. Avisale al administrador.";
+  return m;
+}
+async function guardarPerfil(payload){
+  let ultimo=null;
+  for(let intento=0;intento<2;intento++){
+    let r=null;
+    try{
+      r=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id).select("*");
+    }catch(e){ r={error:e}; }
+    if(r.error){
+      ultimo=r.error;
+      if(esErrorRed(r.error)&&intento===0){ await new Promise(res=>setTimeout(res,1500)); continue; }
+      return {ok:false,msg:mensajeError(r.error)};
+    }
+    const fila=(r.data&&r.data[0])||null;
+    if(!fila) return {ok:false,msg:"No se guardo: la base de datos no encontro tu perfil o tu usuario no tiene permiso para editarlo. Avisale al administrador."};
+    currentProfile=fila;
+    return {ok:true,fila:fila};
+  }
+  return {ok:false,msg:mensajeError(ultimo)};
 }
 
 async function logout(){
@@ -308,8 +344,15 @@ async function loadStats(){
 }
 
 async function loadProfile(){
-  const {data,error}=await sb.from("perfiles_usuarios").select("*").eq("id",currentUser.id).single();
-  if(error||!data)return;
+  let r=null;
+  for(let intento=0;intento<2;intento++){
+    try{ r=await sb.from("perfiles_usuarios").select("*").eq("id",currentUser.id).maybeSingle(); }catch(e){ r={error:e}; }
+    if(!r.error||!esErrorRed(r.error)) break;
+    await new Promise(res=>setTimeout(res,1500));
+  }
+  if(r.error){ showAlert("No se pudo cargar tu perfil. "+mensajeError(r.error),"error"); return; }
+  if(!r.data){ showAlert("Tu usuario no tiene todavia un perfil de asesor creado. Pidele al administrador que lo cree en Usuarios para poder guardar tus datos.","error"); return; }
+  const data=r.data;
   currentProfile=data;
   const dp=data.datos_perfil||{};
   const full=(data.nombre_completo||"").trim();
@@ -528,13 +571,11 @@ async function saveTarjeta(){
   };
   if(tjValor("tjCargo")) payload.cargo=tjValor("tjCargo");
   if(tjValor("tjBio")) payload.notas=tjValor("tjBio");
-  const {error}=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id);
-  if(error){ showAlert("Error: "+error.message,"error"); return; }
-  if(currentProfile){
-    currentProfile.datos_perfil=payload.datos_perfil;
-    if(payload.cargo) currentProfile.cargo=payload.cargo;
-    if(payload.notas) currentProfile.notas=payload.notas;
-  }
+  var btnTj=document.getElementById("btnGuardarTarjeta");
+  if(btnTj){ btnTj.disabled=true; btnTj.__txt=btnTj.textContent; btnTj.textContent="Guardando..."; }
+  var resTj=await guardarPerfil(payload);
+  if(btnTj){ btnTj.disabled=false; btnTj.textContent=btnTj.__txt||"Guardar mi tarjeta"; }
+  if(!resTj.ok){ showAlert("No se guardo la tarjeta. "+resTj.msg,"error"); return; }
   var setTj=function(id,v){ var e=document.getElementById(id); if(e) e.value=v||""; };
   setTj("tjSlug",slug);
   setTj("tjWhatsapp",dpExtra.whatsapp);
@@ -569,10 +610,13 @@ async function saveInfo(){
     datos_perfil:Object.assign({},dpBase,dpExtra),
     updated_at:new Date().toISOString()
   };
-  const {error}=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id);
-  if(error){showAlert("Error: "+error.message,"error");return;}
-  if(currentProfile){currentProfile.nombre_completo=nombre_completo;currentProfile.telefono=payload.telefono;currentProfile.datos_perfil=payload.datos_perfil;}
-  document.getElementById("profileName").textContent=nombre_completo;
+  const b=document.getElementById("btnGuardarInfo");
+  if(b){b.disabled=true;}
+  const res=await guardarPerfil(payload);
+  if(b){b.disabled=false;}
+  if(!res.ok){showAlert("No se guardo la informacion. "+res.msg,"error");return;}
+  document.getElementById("profileName").textContent=res.fila.nombre_completo||nombre_completo;
+  renderTjLinks();
   showAlert("✅ Información personal guardada correctamente","success");
 }
 
@@ -584,35 +628,96 @@ async function savePro(){
     especialidad:document.getElementById("pEspecialidad").value,
   };
   const dpBase=(currentProfile&&currentProfile.datos_perfil)||{};
+  const bioPro=document.getElementById("pBio").value.trim();
+  // La biografia tambien se guarda dentro de datos_perfil.bio: es lo que lee la tarjeta publica
+  if(bioPro) dpExtra.bio=bioPro;
   const payload={
     id:currentUser.id,
     cargo:document.getElementById("pCargo").value.trim(),
     licencia:document.getElementById("pLicencia").value.trim(),
-    notas:document.getElementById("pBio").value.trim(),
+    notas:bioPro,
     datos_perfil:Object.assign({},dpBase,dpExtra),
     updated_at:new Date().toISOString()
   };
-  const {error}=await sb.from("perfiles_usuarios").update(payload).eq("id",currentUser.id);
-  if(error){showAlert("Error: "+error.message,"error");return;}
-  if(currentProfile){currentProfile.cargo=payload.cargo;currentProfile.licencia=payload.licencia;currentProfile.notas=payload.notas;currentProfile.datos_perfil=payload.datos_perfil;}
+  const b=document.getElementById("btnGuardarPro");
+  if(b){b.disabled=true;}
+  const res=await guardarPerfil(payload);
+  if(b){b.disabled=false;}
+  if(!res.ok){showAlert("No se guardo el perfil profesional. "+res.msg,"error");return;}
+  const setV2=(id,val)=>{const el=document.getElementById(id);if(el&&val!=null&&val!=="")el.value=val;};
+  setV2("tjBio",bioPro);
+  if(!(res.fila.datos_perfil&&res.fila.datos_perfil.cargo_publico)) setV2("tjCargo",payload.cargo);
+  renderTjLinks();
   showAlert("✅ Perfil profesional guardado correctamente","success");
 }
 
+// Reduce la foto en el navegador (max 1200px, JPG) para que las fotos del celular
+// (3-10 MB, a veces HEIC) suban rapido y quepan en el limite del bucket (5 MB).
+function comprimirFoto(file){
+  return new Promise(function(resolve){
+    try{
+      const url=URL.createObjectURL(file);
+      const img=new Image();
+      img.onload=function(){
+        try{
+          const MAX=1200;
+          let w=img.naturalWidth||img.width, h=img.naturalHeight||img.height;
+          if(!w||!h){ URL.revokeObjectURL(url); resolve(null); return; }
+          const factor=Math.min(1,MAX/Math.max(w,h));
+          const cw=Math.max(1,Math.round(w*factor)), ch=Math.max(1,Math.round(h*factor));
+          const c=document.createElement("canvas"); c.width=cw; c.height=ch;
+          const ctx=c.getContext("2d");
+          ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,cw,ch);
+          ctx.drawImage(img,0,0,cw,ch);
+          c.toBlob(function(b){ URL.revokeObjectURL(url); resolve(b||null); },"image/jpeg",0.86);
+        }catch(e){ URL.revokeObjectURL(url); resolve(null); }
+      };
+      img.onerror=function(){ URL.revokeObjectURL(url); resolve(null); };
+      img.src=url;
+    }catch(e){ resolve(null); }
+  });
+}
 async function uploadFoto(input){
   const file=input.files[0];
   if(!file)return;
-  if(file.size>2097152){showAlert("La imagen debe ser menor a 2MB","error");return;}
-  const ext=file.name.split(".").pop().toLowerCase();
-  const path=`avatars/${currentUser.id}/avatar.${ext}`;
-  const {error:upErr}=await sb.storage.from("fotos-propiedades").upload(path,file,{upsert:true});
-  if(upErr){showAlert("Error subiendo imagen: "+upErr.message,"error");return;}
-  const {data:{publicUrl}}=sb.storage.from("fotos-propiedades").getPublicUrl(path);
-  const {error}=await sb.from("perfiles_usuarios").update({avatar_url:publicUrl,updated_at:new Date().toISOString()}).eq("id",currentUser.id);
-  if(currentProfile)currentProfile.avatar_url=publicUrl;
-  if(error){showAlert("Error guardando URL: "+error.message,"error");return;}
-  document.getElementById("bigAvatar").innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
-  var __ta2=document.getElementById("topAvatar");if(__ta2)__ta2.innerHTML=`<img src="${publicUrl}" alt="foto"/>`;
-  showAlert("✅ Foto de perfil actualizada","success");
+  const lbl=document.getElementById("btnFoto");
+  const lblTxt=lbl?lbl.textContent:"";
+  if(lbl){ lbl.textContent="Subiendo foto..."; lbl.style.pointerEvents="none"; }
+  const fin=function(){ if(lbl){ lbl.textContent=lblTxt; lbl.style.pointerEvents=""; } input.value=""; };
+  try{
+    let blob=await comprimirFoto(file);
+    let ext="jpg", tipo="image/jpeg";
+    if(!blob){
+      // El navegador no pudo leer la imagen (por ejemplo HEIC de iPhone en Android/Windows): se sube tal cual
+      if(!/^image\/(jpeg|jpg|png|webp|gif)$/i.test(file.type)){
+        showAlert("Ese formato de foto no es compatible ("+(file.type||file.name.split(".").pop())+"). Usa una foto JPG o PNG. En iPhone: Ajustes > Camara > Formatos > Mas compatible.","error"); fin(); return;
+      }
+      if(file.size>5242880){ showAlert("La foto pesa mas de 5 MB y no se pudo reducir. Usa una foto mas liviana.","error"); fin(); return; }
+      blob=file; tipo=file.type||"image/jpeg"; ext=(file.name.split(".").pop()||"jpg").toLowerCase(); if(ext==="jpeg") ext="jpg";
+    }
+    const path=`avatars/${currentUser.id}/avatar.${ext}`;
+    let upErr=null;
+    for(let intento=0;intento<2;intento++){
+      const r=await sb.storage.from("fotos-propiedades").upload(path,blob,{upsert:true,contentType:tipo,cacheControl:"3600"});
+      upErr=r.error||null;
+      if(!upErr) break;
+      if(!esErrorRed(upErr)) break;
+      await new Promise(res=>setTimeout(res,1500));
+    }
+    if(upErr){ showAlert("No se pudo subir la foto: "+mensajeError(upErr),"error"); fin(); return; }
+    const {data:{publicUrl}}=sb.storage.from("fotos-propiedades").getPublicUrl(path);
+    // ?v= evita que el navegador y la CDN sigan mostrando la foto anterior con la misma direccion
+    const urlNueva=publicUrl+"?v="+Date.now();
+    const res=await guardarPerfil({avatar_url:urlNueva,updated_at:new Date().toISOString()});
+    if(!res.ok){ showAlert("La foto subio pero no quedo guardada en tu perfil. "+res.msg,"error"); fin(); return; }
+    document.getElementById("bigAvatar").innerHTML=`<img src="${urlNueva}" alt="foto"/>`;
+    var __ta2=document.getElementById("topAvatar");if(__ta2)__ta2.innerHTML=`<img src="${urlNueva}" alt="foto"/>`;
+    renderTjLinks();
+    showAlert("✅ Foto de perfil actualizada","success");
+  }catch(e){
+    showAlert("No se pudo subir la foto: "+mensajeError(e),"error");
+  }
+  fin();
 }
 
 function checkPwd(v){
