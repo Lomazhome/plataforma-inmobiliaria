@@ -299,6 +299,7 @@ const NAV = [
     {i:'🏨',l:'Tradicional vs Airbnb',s:'Comparador de modelo',h:'calculadora.html#airbnb'},
     {i:'📊',l:'Vacancia y Reserva',s:'Costos ocultos',h:'calculadora.html#vacancia'},
     {i:'🔄',l:'Compra de Cartera',s:'Refinanciación',h:'calculadora.html#cartera'},
+    {i:'🧾',l:'Prorrateo Predial',s:'Vendedor y comprador',h:'calculadora.html#prorrateo'},
     {i:'🧮',l:'Suite Completa',s:'Todas las calculadoras',h:'calculadora.html'},
   ]},
   {l:'Nosotros',h:'index.html#nosotros',d:[

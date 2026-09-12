@@ -80,6 +80,11 @@ select option{background:#ffffff;color:var(--text)}
 .gncard-total{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;color:#ffffff;font-size:.82rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
 .gncard-c .gncard-total{background:var(--navy)}
 .gncard-v .gncard-total{background:#14532d}
+/* 09 Prorrateo Predial */
+input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-height:42px}
+.pr-total{margin-top:1rem;padding:1.3rem 1.5rem;text-align:center}
+.pr-total .rv{font-size:1.9rem}
+.pr-total .rs{font-size:.72rem;margin-top:.4rem}
 @media(max-width:768px){.layout{flex-direction:column}.sidebar{width:100%;border-right:none;border-bottom:1px solid var(--sidebar-border)}.form-grid,.rg,.rg.c3,.rg.c4,.cmpw,.gn2col{grid-template-columns:1fr}.main-content{padding:1.2rem}}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
@@ -99,6 +104,7 @@ select option{background:#ffffff;color:var(--text)}
   <a class="sb-item" href="#" onclick="showMod('airbnb',this);return false"><span class="sb-num">06</span><span class="sb-text"><strong>Tradicional vs Airbnb</strong><small>Comparador de modelo</small></span></a>
   <a class="sb-item" href="#" onclick="showMod('vacancia',this);return false"><span class="sb-num">07</span><span class="sb-text"><strong>Vacancia y Reserva</strong><small>Costos ocultos</small></span></a>
   <a class="sb-item" href="#" onclick="showMod('cartera',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('prorrateo',this);return false"><span class="sb-num">09</span><span class="sb-text"><strong>Prorrateo Predial</strong><small>Vendedor y comprador</small></span></a>
 </nav>
 <main class="main-content">
 
@@ -316,6 +322,34 @@ select option{background:#ffffff;color:var(--text)}
     <div class="rc hi"><div class="rl">Ahorro Mensual</div><div class="rv g" id="m8_am">—</div></div>
     <div class="rc ok"><div class="rl">Ahorro Neto Total de Vida</div><div class="rv gr" id="m8_at">—</div><div class="rs">Restando $600.000 de gastos de trámite</div></div>
   </div>
+</div>
+</div>
+
+<div class="module" id="prorrateo">
+<div class="mod-header"><h1>&#129534; Prorrateo del Impuesto Predial</h1><p>Distribuye el predial de la vigencia entre vendedor y comprador según la fecha de entrega material del inmueble y calcula el valor que una parte debe reembolsar a la otra.</p></div>
+<div class="card">
+  <div class="card-title">Datos de la Liquidación</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Impuesto Predial Pagado — Vigencia del Año (COP)</label><input type="text" id="m9_imp" placeholder="$1.857.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Año de la Vigencia Fiscal</label><input type="number" id="m9_an" value="2026" min="2000" max="2100"/></div>
+    <div class="form-group"><label>Fecha de Entrega Material del Inmueble</label><input type="date" id="m9_fe" onchange="syncM9Anio(this)"/></div>
+    <div class="form-group"><label>Parte que Pagó el 100% del Impuesto</label><select id="m9_pg"><option value="vendedor">Vendedor(a)</option><option value="comprador">Comprador(a)</option></select></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM9()">&#9654; Calcular Prorrateo</button>
+</div>
+<div id="m9_r" style="display:none">
+  <div class="rc hi pr-total"><div class="rl" id="m9_rl">Valor a Reembolsar</div><div class="rv g" id="m9_re">—</div><div class="rs" id="m9_rs"></div></div>
+  <div class="rg c3">
+    <div class="rc"><div class="rl">Valor Diario del Impuesto</div><div class="rv" id="m9_vd">—</div><div class="rs" id="m9_vds"></div></div>
+    <div class="rc"><div class="rl">Cuota a Cargo del Vendedor(a)</div><div class="rv" id="m9_cv">—</div><div class="rs" id="m9_cvs"></div></div>
+    <div class="rc"><div class="rl">Cuota a Cargo del Comprador(a)</div><div class="rv" id="m9_cc">—</div><div class="rs" id="m9_ccs"></div></div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-title">Distribución del Periodo</div>
+    <div style="overflow-x:auto"><table class="bt"><thead><tr><th>Parte y periodo a cargo</th><th style="text-align:right">Días</th><th style="text-align:right">Proporción</th></tr></thead><tbody id="m9_tb"></tbody></table></div>
+  </div>
+  <div class="al info" id="m9_nota"></div>
+  <div class="al warn">&#9888; La fecha de entrega material cuenta para quien recibe el inmueble. Este es el criterio de prorrateo por días calendario; las partes pueden pactar otro criterio en la promesa o en la escritura.</div>
 </div>
 </div>
 
@@ -573,6 +607,72 @@ function calcM8(){
   document.getElementById('m8_r').style.display='block';
 }
 
+// M9 PRORRATEO PREDIAL — misma lógica del Formato de Prorrateo LoMaz Home (Excel)
+var MESES_ES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+// Número de día (días desde 1970) usando UTC para que no afecten los cambios de hora
+function diaNum(y,m,d){return Math.round(Date.UTC(y,m,d)/86400000);}
+function fechaCorta(y,m,d){return ('0'+d).slice(-2)+'/'+('0'+(m+1)).slice(-2)+'/'+y;}
+// Al elegir la fecha de entrega, el año de la vigencia se ajusta solo
+function syncM9Anio(el){
+  var p=(el.value||'').split('-');
+  if(p.length===3&&parseInt(p[0],10)>0)document.getElementById('m9_an').value=parseInt(p[0],10);
+}
+function calcM9(){
+  var imp=pCOP(document.getElementById('m9_imp').value);
+  if(!imp){alert('Ingresa el valor del impuesto predial pagado');return;}
+  var fv=document.getElementById('m9_fe').value; // formato aaaa-mm-dd
+  if(!fv){alert('Selecciona la fecha de entrega material del inmueble');return;}
+  var p=fv.split('-');
+  var fy=parseInt(p[0],10),fm=parseInt(p[1],10)-1,fd=parseInt(p[2],10);
+  var an=parseInt(document.getElementById('m9_an').value,10);
+  if(!an){an=fy;document.getElementById('m9_an').value=an;}
+  if(fy!==an){alert('La fecha de entrega debe estar dentro del año de la vigencia fiscal ('+an+').');return;}
+  var pg=document.getElementById('m9_pg').value; // vendedor | comprador
+
+  // Días: la fecha de entrega cuenta para el comprador (inclusive). Incluye años bisiestos.
+  var ini=diaNum(an,0,1);
+  var dTot=diaNum(an,11,31)-ini+1;          // 365 o 366
+  var dV=diaNum(fy,fm,fd)-ini;              // 1 de enero → día anterior a la entrega
+  var dC=dTot-dV;                           // entrega → 31 de diciembre
+  var propV=dV/dTot*100,propC=dC/dTot*100;
+
+  // Liquidación (redondeada al peso, igual que el Excel)
+  var vd=imp/dTot;
+  var cuotaV=Math.round(imp*dV/dTot);
+  var cuotaC=imp-cuotaV;
+  var reembolso=pg==='vendedor'?cuotaC:cuotaV;
+
+  // Periodos en texto
+  var perV='Sin días a cargo';
+  if(dV>0){var ant=new Date(Date.UTC(fy,fm,fd-1));perV='1 de enero – '+ant.getUTCDate()+' de '+MESES_ES[ant.getUTCMonth()]+' de '+an;}
+  var perC=fd+' de '+MESES_ES[fm]+' – 31 de diciembre de '+an;
+
+  // Tarjeta principal
+  document.getElementById('m9_rl').textContent=pg==='vendedor'?'Valor a reembolsar por el Comprador(a) al Vendedor(a)':'Valor a reembolsar por el Vendedor(a) al Comprador(a)';
+  document.getElementById('m9_re').textContent=fmt(reembolso);
+  document.getElementById('m9_rs').textContent=(pg==='vendedor'?'El vendedor(a) pagó el 100% del predial: el comprador(a) le devuelve su porción de '+dC+' días.':'El comprador(a) pagó el 100% del predial: el vendedor(a) le devuelve su porción de '+dV+' días.');
+
+  // Tarjetas de detalle
+  document.getElementById('m9_vd').textContent='$'+vd.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('m9_vds').textContent=fmt(imp)+' ÷ '+dTot+' días';
+  document.getElementById('m9_cv').textContent=fmt(cuotaV);
+  document.getElementById('m9_cvs').textContent=dV+' días × valor diario';
+  document.getElementById('m9_cc').textContent=fmt(cuotaC);
+  document.getElementById('m9_ccs').textContent=dC+' días × valor diario';
+
+  // Tabla de distribución del periodo (el periodo va debajo del nombre para que se lea bien en celular)
+  var sub='<br/><span style="font-size:.72rem;color:var(--muted);font-weight:400">';
+  document.getElementById('m9_tb').innerHTML=
+    '<tr><td><strong>Vendedor(a)</strong>'+sub+perV+'</span></td><td>'+dV+'</td><td>'+pct(propV)+'</td></tr>'+
+    '<tr><td><strong>Comprador(a)</strong>'+sub+perC+'</span></td><td>'+dC+'</td><td>'+pct(propC)+'</td></tr>'+
+    '<tr class="tr-tot"><td>Total vigencia'+sub+'Año '+an+' completo'+(dTot===366?' (bisiesto)':'')+'</span></td><td>'+dTot+'</td><td>100%</td></tr>';
+
+  // Nota
+  document.getElementById('m9_nota').innerHTML='&#9432; Nota: la parte que pagó el impuesto (<strong>'+(pg==='vendedor'?'Vendedor(a)':'Comprador(a)')+'</strong>) asumió el 100% de la vigencia '+an+'. La otra parte reembolsa la porción proporcional según la fecha de entrega material (<strong>'+fechaCorta(fy,fm,fd)+'</strong>, inclusive para quien recibe). Valores redondeados al peso.';
+
+  document.getElementById('m9_r').style.display='block';
+}
+
 // NAVEGACIÓN
 function showMod(id,el){
   document.querySelectorAll('.module').forEach(function(m){m.classList.remove('active');});
@@ -582,11 +682,12 @@ function showMod(id,el){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 window.addEventListener('DOMContentLoaded',function(){
+  var anEl=document.getElementById('m9_an');if(anEl)anEl.value=new Date().getFullYear();
   var h=location.hash;
-  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera'};
+  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#prorrateo':'prorrateo','#predial':'prorrateo','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera','#mod9':'prorrateo'};
   if(map[h]){
     var t=map[h];
-    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera'].indexOf(t);
+    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera','prorrateo'].indexOf(t);
     showMod(t,document.querySelectorAll('.sb-item')[idx]||null);
   }
 });
