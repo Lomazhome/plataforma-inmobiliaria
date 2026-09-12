@@ -1040,4 +1040,24 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="lomaz-nav.js" defer></script>
   <script src="lomaz-social-orbit.js" defer></script>
 </body>
+  <script>
+// Anti-spam LoMaz: campo trampa (honeypot) para el formulario de contacto.
+(function () {
+  var form = document.getElementById('consultForm');
+  if (!form) return;
+  // 1) Crea un campo invisible para humanos; los bots lo llenan.
+  var wrap = document.createElement('div');
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.style.cssText = 'position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px;height:1px;overflow:hidden';
+  wrap.innerHTML = '<label>No llenes este campo<input type="text" id="cfWeb" name="website" tabindex="-1" autocomplete="off"></label>';
+  form.appendChild(wrap);
+  // 2) Si el campo trampa viene lleno = bot -> cancela el envío en silencio.
+  document.addEventListener('submit', function (e) {
+    if (e.target && e.target.id === 'consultForm') {
+      var t = document.getElementById('cfWeb');
+      if (t && t.value.trim() !== '') { e.preventDefault(); e.stopImmediatePropagation(); return false; }
+    }
+  }, true);
+})();
+</script>
 </html>
