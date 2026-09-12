@@ -139,6 +139,8 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   #acm .acm-tb{font-size:.74rem}
   #acm .acm-tb th,#acm .acm-tb td{padding:.5rem .45rem;white-space:nowrap}
   #acm .acm-fx{display:none}
+  .acm-x{width:40px;height:40px;font-size:1.2rem}
+  .btn-sec{min-height:44px}
 }
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
@@ -414,11 +416,11 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   <div class="card-title">Inmueble Estudiado</div>
   <div class="form-grid">
     <div class="form-group full"><label>Dirección o Referencia del Inmueble — Opcional</label><input type="text" id="acm_dir" placeholder="Calle 109 No. 21-41 AP 403" maxlength="120"/></div>
-    <div class="form-group"><label>Área Privada (m²)</label><input type="number" id="acm_area" placeholder="118.40" step="0.01" min="1"/></div>
-    <div class="form-group"><label>Antigüedad (años)</label><input type="number" id="acm_ant" placeholder="14" min="0" max="150"/></div>
+    <div class="form-group"><label>Área Privada (m²)</label><input type="text" inputmode="decimal" id="acm_area" placeholder="118,40"/></div>
+    <div class="form-group"><label>Antigüedad (años)</label><input type="number" inputmode="numeric" id="acm_ant" placeholder="14" min="0" max="150"/></div>
     <div class="form-group"><label>Nivel de Acabados</label><select id="acm_acab"><option>Lujoso</option><option selected>Bueno</option><option>Normal</option><option>Sencillo</option></select><div class="rs">Lujoso: mármol, domótica, herrajes importados · Bueno: porcelanato, cocina integral de gama media-alta · Normal: acabados estándar de constructora · Sencillo: acabados básicos o por mejorar.</div></div>
-    <div class="form-group"><label>Garajes (cantidad)</label><input type="number" id="acm_gar" value="0" min="0" max="10"/></div>
-    <div class="form-group"><label>Depósitos (cantidad)</label><input type="number" id="acm_dep" value="0" min="0" max="10"/></div>
+    <div class="form-group"><label>Garajes (cantidad)</label><input type="number" inputmode="numeric" id="acm_gar" value="0" min="0" max="10"/></div>
+    <div class="form-group"><label>Depósitos (cantidad)</label><input type="number" inputmode="numeric" id="acm_dep" value="0" min="0" max="10"/></div>
     <div class="form-group"><label>Valor Unitario Garaje (COP) — Opcional</label><input type="text" id="acm_vgar" placeholder="$0" oninput="fmtF(this)"/></div>
     <div class="form-group"><label>Valor Unitario Depósito (COP) — Opcional</label><input type="text" id="acm_vdep" placeholder="$0" oninput="fmtF(this)"/></div>
     <div class="form-group full"><div class="al info" style="margin:0">&#9432; Usa los valores unitarios de garaje y depósito <strong>solo si los comparables NO incluyen</strong> garaje/depósito en su precio, para no duplicar valor. Las alcobas no se ajustan: su efecto ya está en el área.</div></div>
@@ -798,7 +800,9 @@ function acmUid(){return 'c'+Math.random().toString(36).slice(2,10)+Date.now().t
 function acmClamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
 function acmEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
 function acmFac(n){return n.toLocaleString('es-CO',{minimumFractionDigits:3,maximumFractionDigits:3});}
-function acmArea(n){return (parseFloat(n)||0).toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²';}
+// Lee un área escrita con coma o con punto decimal ("118,40" o "118.40")
+function acmDec(v){var s=String(v==null?'':v).trim().replace(/\s|m²/g,'');if(!s)return 0;var c=s.lastIndexOf(','),p=s.lastIndexOf('.');if(c>-1&&p>-1){if(c>p){s=s.replace(/\./g,'').replace(',','.');}else{s=s.replace(/,/g,'');}}else if(c>-1){s=s.replace(',','.');}return parseFloat(s)||0;}
+function acmArea(n){return acmDec(n).toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²';}
 function acmPct(n){return (n*100).toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';}
 
 // Número a letras (pesos colombianos): UN MILLÓN, VEINTIÚN, MIL MILLONES, "DE PESOS" cuando son millones exactos
@@ -827,10 +831,10 @@ function acmFactorArea(areaComp,areaEst){
   return {factor:desc?1:1+s*aj,d:d,desc:desc};
 }
 function acmProp(){
-  return {dir:document.getElementById('acm_dir').value.trim(),area:parseFloat(document.getElementById('acm_area').value)||0,ant:parseFloat(document.getElementById('acm_ant').value)||0,acab:document.getElementById('acm_acab').value,gar:parseInt(document.getElementById('acm_gar').value,10)||0,dep:parseInt(document.getElementById('acm_dep').value,10)||0,vgar:pCOP(document.getElementById('acm_vgar').value),vdep:pCOP(document.getElementById('acm_vdep').value)};
+  return {dir:document.getElementById('acm_dir').value.trim(),area:acmDec(document.getElementById('acm_area').value),ant:parseFloat(document.getElementById('acm_ant').value)||0,acab:document.getElementById('acm_acab').value,gar:parseInt(document.getElementById('acm_gar').value,10)||0,dep:parseInt(document.getElementById('acm_dep').value,10)||0,vgar:pCOP(document.getElementById('acm_vgar').value),vdep:pCOP(document.getElementById('acm_vdep').value)};
 }
 function acmCalcComp(p,c){
-  var areaComp=parseFloat(c.area)||0,precio=pCOP(c.precio);
+  var areaComp=acmDec(c.area),precio=pCOP(c.precio);
   var fa=acmFactorArea(areaComp,p.area||1);
   var fAnt=acmClamp(1+0.005*((parseFloat(c.anios)||0)-p.ant),0.90,1.10);
   var fAcab=acmClamp(1+0.05*((ACM_ACAB[p.acab]||2)-(ACM_ACAB[c.acabados]||2)),0.90,1.10);
@@ -855,13 +859,13 @@ function acmCardHTML(c,i){
     '<div class="acm-comp-head"><strong>Comparable '+(i+1)+'</strong><div style="display:flex;align-items:center;gap:.5rem"><span class="acm-badge gray" data-badge></span><button type="button" class="acm-x" title="Eliminar comparable" onclick="acmRemove(\''+c.id+'\')">&times;</button></div></div>'+
     '<div class="form-grid">'+
     '<div class="form-group full"><label>Dirección o Referencia — Opcional</label><input type="text" data-k="direccion" value="'+acmEsc(c.direccion)+'" placeholder="Calle 109 No. 20-15 · Metrocuadrado" maxlength="120"/></div>'+
-    '<div class="form-group acm-precio"><label>Precio Publicado (COP)</label><input type="text" data-k="precio" value="'+acmEsc(c.precio)+'" placeholder="$750.000.000" oninput="fmtF(this)"/></div>'+
-    '<div class="form-group"><label>Área (m²)</label><input type="number" step="0.01" min="1" data-k="area" value="'+acmEsc(c.area)+'" placeholder="120"/></div>'+
-    '<div class="form-group"><label>Años de Construido</label><input type="number" min="0" max="150" data-k="anios" value="'+acmEsc(c.anios)+'" placeholder="14"/></div>'+
+    '<div class="form-group acm-precio"><label>Precio Publicado (COP)</label><input type="text" inputmode="numeric" data-k="precio" value="'+acmEsc(c.precio)+'" placeholder="$750.000.000" oninput="fmtF(this)"/></div>'+
+    '<div class="form-group"><label>Área (m²)</label><input type="text" inputmode="decimal" data-k="area" value="'+acmEsc(c.area)+'" placeholder="120"/></div>'+
+    '<div class="form-group"><label>Años de Construido</label><input type="number" inputmode="numeric" min="0" max="150" data-k="anios" value="'+acmEsc(c.anios)+'" placeholder="14"/></div>'+
     '<div class="form-group"><label>Acabados</label><select data-k="acabados">'+['Lujoso','Bueno','Normal','Sencillo'].map(function(o){return opt(o,o,c.acabados);}).join('')+'</select></div>'+
     '<div class="form-group full acm-tipo"><label>Tipo de Precio</label><select data-k="tipoPrecio">'+opt('aviso','Aviso en portal (negociable) · factor 95%',c.tipoPrecio)+opt('cierre','Precio de cierre real · factor 100%',c.tipoPrecio)+opt('urgente','Venta urgente · factor 91%',c.tipoPrecio)+'</select></div>'+
-    '<div class="form-group"><label>Amenidades que le Faltan (0-4)</label><input type="number" min="0" max="4" data-k="faltan" value="'+acmEsc(c.faltan)+'"/></div>'+
-    '<div class="form-group"><label>Amenidades que le Sobran (0-4)</label><input type="number" min="0" max="4" data-k="sobran" value="'+acmEsc(c.sobran)+'"/></div>'+
+    '<div class="form-group"><label>Amenidades que le Faltan (0-4)</label><input type="number" inputmode="numeric" min="0" max="4" data-k="faltan" value="'+acmEsc(c.faltan)+'"/></div>'+
+    '<div class="form-group"><label>Amenidades que le Sobran (0-4)</label><input type="number" inputmode="numeric" min="0" max="4" data-k="sobran" value="'+acmEsc(c.sobran)+'"/></div>'+
     '</div><div class="acm-live" data-live></div></div>';
 }
 function acmUpdateCard(id){
@@ -994,7 +998,7 @@ function acmEnviarSemaforo(){
   var hoy=new Date(),iso=hoy.getFullYear()+'-'+('0'+(hoy.getMonth()+1)).slice(-2)+'-'+('0'+hoy.getDate()).slice(-2);
   var borrador={step:1,
     prop:{solicitante:'',propietario:'',direccion:p.dir,edificio:'',barrio:'',localidad:'',upz:'',ciudad:'Bogotá D.C.',estrato:'',matricula:'',chip:'',escritura:'',coeficiente:'',areaConstruida:'',areaPrivada:p.area,garajes:p.gar,depositos:p.dep,antiguedad:p.ant,vidaUtil:100,estadoConservacion:'',acabadosNivel:p.acab,fechaVisita:iso,fechaEstudio:iso,valorGarajeUnit:p.vgar,valorDepositoUnit:p.vdep,elabNombre:'',elabCargo:'',elabRegistro:'',elabTelefono:'',elabEmail:''},
-    comparables:ACM.comps.filter(function(c){return c.area||c.precio;}).map(function(c){return {id:c.id,direccion:c.direccion||'',fuente:'Otro',telefono:'',area:parseFloat(c.area)||'',precio:pCOP(c.precio)||'',anios:parseFloat(c.anios)||0,acabados:c.acabados||'Normal',faltan:parseFloat(c.faltan)||0,sobran:parseFloat(c.sobran)||0,tipoPrecio:c.tipoPrecio||'aviso'};}),
+    comparables:ACM.comps.filter(function(c){return c.area||c.precio;}).map(function(c){return {id:c.id,direccion:c.direccion||'',fuente:'Otro',telefono:'',area:acmDec(c.area)||'',precio:pCOP(c.precio)||'',anios:parseFloat(c.anios)||0,acabados:c.acabados||'Normal',faltan:parseFloat(c.faltan)||0,sobran:parseFloat(c.sobran)||0,tipoPrecio:c.tipoPrecio||'aviso'};}),
     photos:[]};
   try{localStorage.setItem(ACM_SEMAFORO_KEY,JSON.stringify(borrador));}catch(e){alert('No se pudo guardar el borrador en este navegador.');return;}
   window.location.href='semaforo-del-inversionista.html';
@@ -1040,6 +1044,8 @@ document.addEventListener('click',function(e){
 window.addEventListener('DOMContentLoaded',function(){
   var anEl=document.getElementById('m9_an');if(anEl)anEl.value=new Date().getFullYear();
   acmInit();
+  // Celular: teclado numérico en todos los campos de dinero
+  document.querySelectorAll('input[oninput*="fmtF"]').forEach(function(i){i.setAttribute('inputmode','numeric');});
   var h=location.hash;
   var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#prorrateo':'prorrateo','#predial':'prorrateo','#acm':'acm','#semaforo':'acm','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera','#mod9':'prorrateo','#mod10':'acm'};
   if(map[h]){
