@@ -1057,6 +1057,131 @@ window.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
+<!-- LoMaz Home: boton Descargar Recibo PDF (prorrateo predial) -->
+<script>
+(function () {
+  var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var mesAb=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  function fmt(n){return Math.round(n).toLocaleString('es-CO');}
+  function fmt2(n){return n.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function numLetras(num){num=Math.round(num);if(num===0)return'cero';
+    var U=['','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidós','veintitrés','veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+    var D=['','','','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+    var C=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+    function sec(n){if(n===100)return'cien';var s='';var c=Math.floor(n/100),dd=n%100,d=Math.floor(dd/10),u=n%10;if(c>0)s+=C[c]+' ';if(dd<30)s+=U[dd];else{s+=D[d];if(u>0)s+=' y '+U[u];}return s.trim();}
+    var mill=Math.floor(num/1e6),miles=Math.floor((num%1e6)/1e3),r=num%1e3,o='';
+    if(mill>0)o+=(mill===1?'un millón':sec(mill)+' millones')+' ';
+    if(miles>0)o+=(miles===1?'mil':sec(miles)+' mil')+' ';
+    if(r>0)o+=sec(r);return o.trim().replace(/\s+/g,' ');}
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+  function fechaLetras(d){return numLetras(d.getDate())+' ('+d.getDate()+') de '+meses[d.getMonth()]+' de '+numLetras(d.getFullYear())+' ('+d.getFullYear()+')';}
+
+  function calcProrrateo(){
+    var g=function(id){return document.getElementById(id);};
+    var imp=Number(String(g('m9_imp').value).replace(/[^\d]/g,''))||0;
+    var anio=Number(g('m9_an').value)|| new Date().getFullYear();
+    var feStr=g('m9_fe').value; var pg=g('m9_pg').value;
+    if(!imp || !feStr){ return null; }
+    var p=feStr.split('-').map(Number); var fe=new Date(p[0],p[1]-1,p[2]);
+    var leap=(anio%4===0&&anio%100!==0)||anio%400===0; var diasAnio=leap?366:365;
+    var jan1=new Date(anio,0,1);
+    var doy=Math.round((fe-jan1)/86400000)+1;
+    var diasVend=doy-1; var diasComp=diasAnio-diasVend;
+    var valorDia=imp/diasAnio;
+    var cuotaVend=Math.round(valorDia*diasVend); var cuotaComp=imp-cuotaVend;
+    var reembolso=(pg==='vendedor')?cuotaComp:cuotaVend;
+    var diasReemb=(pg==='vendedor')?diasComp:diasVend;
+    var pct=diasReemb/diasAnio*100;
+    return {imp:imp,anio:anio,fe:fe,pg:pg,diasAnio:diasAnio,diasVend:diasVend,diasComp:diasComp,valorDia:valorDia,cuotaVend:cuotaVend,cuotaComp:cuotaComp,reembolso:reembolso,diasReemb:diasReemb,pct:pct,feAntes:new Date(fe.getTime()-86400000)};
+  }
+
+  function generarRecibo(d){
+    var jsPDF=window.jspdf.jsPDF;
+    var NAVY=[20,33,61], GOLD=[201,162,75], LGOLD=[245,238,221], INK=[34,38,49], GRAY=[120,128,143];
+    var doc=new jsPDF({unit:'mm',format:'letter'}); var W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
+    var recibe=(d.pg==='vendedor')?'VENDEDORA':'COMPRADORA', paga=(d.pg==='vendedor')?'COMPRADORA':'VENDEDORA';
+    doc.setFillColor.apply(doc,NAVY); doc.rect(0,0,W,34,'F');
+    doc.setDrawColor.apply(doc,GOLD); doc.setLineWidth(0.5);
+    doc.lines([[8,-7],[8,7]],20,20);
+    doc.rect(15,20,10,9); doc.rect(18.5,25,3,4);
+    doc.setTextColor.apply(doc,GOLD); doc.setFont('times','italic'); doc.setFontSize(15); doc.text('LoMaz',15,17);
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.text('H O M E',15.5,31);
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.text('RECIBO DE PAGO',W-15,13,{align:'right'});
+    doc.setTextColor.apply(doc,GOLD); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.text('Prorrateo de impuesto predial · Vigencia '+d.anio,W-15,19,{align:'right'});
+    doc.setTextColor(210,214,224); doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.text('Te damos lo más para encontrar tu hogar',W-15,24,{align:'right'});
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','normal'); doc.text('Recibo No. ______________',W-15,29,{align:'right'});
+    doc.setFillColor.apply(doc,GOLD); doc.rect(0,34,W,2.4,'F');
+    var y=45;
+    doc.setTextColor.apply(doc,NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.text('Lugar y fecha:',15,y);
+    doc.setTextColor.apply(doc,INK); doc.setFont('helvetica','normal'); doc.text('Bogotá D.C., '+fechaLetras(d.fe),42,y);
+    y=52; doc.setFillColor.apply(doc,NAVY); doc.setDrawColor.apply(doc,GOLD); doc.setLineWidth(0.8); doc.roundedRect(15,y,W-30,25,2,2,'FD');
+    doc.setTextColor.apply(doc,GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.text('VALOR RECIBIDO',W/2,y+7,{align:'center'});
+    doc.setTextColor(255,255,255); doc.setFontSize(22); doc.text('$ '+fmt(d.reembolso),W/2,y+16,{align:'center'});
+    doc.setTextColor(210,214,224); doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.text(cap(numLetras(d.reembolso))+' pesos moneda corriente (M/CTE)',W/2,y+21.5,{align:'center'});
+    y=84; doc.setTextColor.apply(doc,NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('CONCEPTO',15,y); doc.setDrawColor.apply(doc,GOLD); doc.setLineWidth(0.7); doc.line(15,y+1.5,33,y+1.5);
+    var periodo=(d.pg==='vendedor')?('desde la fecha de entrega material del inmueble ('+d.fe.getDate()+' de '+meses[d.fe.getMonth()]+' de '+d.anio+', inclusive) hasta el 31 de diciembre de '+d.anio):('desde el 1 de enero de '+d.anio+' hasta el día anterior a la entrega material del inmueble ('+d.feAntes.getDate()+' de '+meses[d.feAntes.getMonth()]+' de '+d.anio+')');
+    var concepto='Reembolso a la parte '+recibe.toLowerCase()+' del prorrateo del impuesto predial de la vigencia '+d.anio+', pagado en su totalidad por la '+recibe.toLowerCase()+', correspondiente a la porción a cargo de la parte '+paga.toLowerCase()+' '+periodo+': '+d.diasReemb+' días de '+d.diasAnio+', equivalentes al '+fmt2(d.pct)+'% del impuesto anual de $ '+fmt(d.imp)+'.';
+    doc.setTextColor.apply(doc,INK); doc.setFont('helvetica','normal'); doc.setFontSize(9);
+    var cl=doc.splitTextToSize(concepto,W-30); doc.text(cl,15,y+7); y=y+7+cl.length*4.6+3;
+    var rows=[['Impuesto predial vigencia '+d.anio+' (pagado por la '+recibe.toLowerCase()+')','$ '+fmt(d.imp)],
+      ['Cuota a cargo de la vendedora (1 ene – '+d.feAntes.getDate()+' '+mesAb[d.feAntes.getMonth()]+' · '+d.diasVend+' días)','$ '+fmt(d.cuotaVend)],
+      ['Cuota a cargo de la compradora ('+d.fe.getDate()+' '+mesAb[d.fe.getMonth()]+' – 31 dic · '+d.diasComp+' días)','$ '+fmt(d.cuotaComp)]];
+    rows.forEach(function(r,i){ if(i%2===0){doc.setFillColor.apply(doc,LGOLD);doc.rect(15,y,W-30,8,'F');} doc.setTextColor.apply(doc,INK); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.text(r[0],18,y+5.4); doc.setFont('helvetica','bold'); doc.text(r[1],W-18,y+5.4,{align:'right'}); y+=8; });
+    y+=6;
+    function head(t){doc.setTextColor.apply(doc,NAVY);doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(t,15,y);doc.setDrawColor.apply(doc,GOLD);doc.setLineWidth(0.7);doc.line(15,y+1.5,15+doc.getTextWidth(t)*0.55,y+1.5);y+=8;}
+    function ln(x1,x2,yy){doc.setDrawColor(180,186,196);doc.setLineWidth(0.3);doc.line(x1,yy,x2,yy);}
+    head('INMUEBLE OBJETO DE LA COMPRAVENTA');
+    doc.setTextColor.apply(doc,INK);doc.setFont('helvetica','normal');doc.setFontSize(9);
+    doc.text('Dirección:',15,y);ln(33,W-15,y+0.5);y+=8;
+    doc.text('Matrícula inmobiliaria No.:',15,y);ln(60,110,y+0.5);doc.text('Chip / Cédula catastral:',118,y);ln(158,W-15,y+0.5);y+=10;
+    head('FORMA DE PAGO');
+    var ops=['Efectivo','Transferencia','Consignación','Otro'];var cx=15;doc.setFontSize(9);doc.setTextColor.apply(doc,INK);doc.setFont('helvetica','normal');
+    ops.forEach(function(o){doc.setDrawColor.apply(doc,NAVY);doc.setLineWidth(0.4);doc.rect(cx,y-3.5,4,4);doc.text(o,cx+6,y);cx+=doc.getTextWidth(o)+16;});
+    y+=8;doc.text('Banco / Referencia:',15,y);ln(52,W-15,y+0.5);y+=10;
+    head('CONSTANCIA DE LAS PARTES');
+    doc.setTextColor.apply(doc,GRAY);doc.setFont('helvetica','italic');doc.setFontSize(8.5);
+    var decl=doc.splitTextToSize('La '+recibe.toLowerCase()+' declara recibir a satisfacción el valor indicado y la '+paga.toLowerCase()+' declara haberlo pagado, quedando a paz y salvo por este concepto.',W-30);
+    doc.text(decl,15,y);y+=decl.length*4.5+8;
+    function firma(x,titulo){doc.setTextColor.apply(doc,NAVY);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(titulo,x,y);
+      doc.setDrawColor.apply(doc,INK);doc.setLineWidth(0.3);doc.line(x,y+14,x+75,y+14);
+      doc.setTextColor.apply(doc,GRAY);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.text('Firma',x,y+18);
+      doc.text('Nombre:',x,y+24);ln(x+14,x+75,y+24.5);doc.text('C.C. No.:',x,y+30);ln(x+15,x+75,y+30.5);doc.text('Teléfono:',x,y+36);ln(x+15,x+75,y+36.5);}
+    firma(15,'RECIBÍ CONFORME — LA '+recibe); firma(W/2+5,'PAGÓ — LA '+paga);
+    doc.setFillColor.apply(doc,NAVY);doc.rect(0,H-13,W,13,'F');
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('LOMAZ HOME',15,H-5);
+    doc.setTextColor(200,206,218);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.text('Ventas · Arriendos · Administración de inmuebles',W/2,H-5,{align:'center'});doc.text('Bogotá D.C., Colombia',W-15,H-5,{align:'right'});
+    doc.save('Recibo_Prorrateo_Predial_'+d.anio+'_LoMaz_Home.pdf');
+  }
+
+  function descargarPDF(){
+    var d=calcProrrateo();
+    if(!d){ alert('Completa el impuesto predial y la fecha de entrega, y calcula el prorrateo antes de descargar el recibo.'); return; }
+    if(window.jspdf && window.jspdf.jsPDF){ generarRecibo(d); return; }
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload=function(){ generarRecibo(d); };
+    s.onerror=function(){ alert('No se pudo cargar el generador de PDF. Revisa tu conexión e inténtalo de nuevo.'); };
+    document.head.appendChild(s);
+  }
+
+  function inyectarBoton(){
+    var panel=document.getElementById('prorrateo'); if(!panel) return;
+    if(document.getElementById('m9_pdf_btn')) return;
+    var btns=panel.querySelectorAll('button,a');
+    var calc=null; for(var i=0;i<btns.length;i++){ if(/calcular/i.test(btns[i].textContent||'')){ calc=btns[i]; break; } }
+    var b=document.createElement('button');
+    b.id='m9_pdf_btn'; b.type='button';
+    b.innerHTML='📄 Descargar Recibo PDF';
+    b.style.cssText='margin-top:10px;display:block;width:100%;background:#c9a24b;color:#14213d;border:none;border-radius:8px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;';
+    b.onclick=descargarPDF;
+    if(calc && calc.parentNode){ calc.parentNode.insertBefore(b, calc.nextSibling); } else { panel.appendChild(b); }
+  }
+
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', inyectarBoton); }
+  else { inyectarBoton(); }
+  setTimeout(inyectarBoton, 1500); // por si la pestaña carga después
+})();
+</script>
 </body>
 </html>
 <script src="lomaz-nav.js" defer></script>
