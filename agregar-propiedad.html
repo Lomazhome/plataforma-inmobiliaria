@@ -944,7 +944,7 @@ return { ok:false, msg: 'Error de red: ' + e.message };
 }
 };
 
-window.__frVerificarActivacion = async function(taskId, propId, btn){ var supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co'; var supaKey = (typeof SKEY!=='undefined') ? SKEY : ''; for (var i=0; i<18; i++){ await new Promise(function(res){ setTimeout(res, 10000); }); var st=null, jj=null; try { var rr = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', { method:'POST', headers:{ 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey }, body: JSON.stringify({ accion:'consultar_task', task_id: taskId }) }); jj = await rr.json().catch(function(){ return {}; }); st = jj && jj.status; } catch(_e) { continue; } if (st==='COMPLETED' || st==='FORWARDED') { addLog('success','Finca Raiz - ACTIVAR','Propiedad activada correctamente en Finca Raiz. Ya esta visible publicamente.'); if (btn) { btn.disabled=true; btn.textContent='Activada en Finca Raiz'; btn.style.background='linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; btn.style.color='#fff'; } try { var _txt=''; try { _txt = JSON.stringify(jj||{}); } catch(_j) { _txt=''; } var _mp = _txt.match(/"(?:property_id|propertyId|external_id)"\s*:\s*"?(\d{4,})/); var _lid2 = null; try { var _q2 = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').maybeSingle(); _lid2 = (_q2 && _q2.data && _q2.data.url_publicacion) || null; } catch(_e2) {} var _msg = 'Aviso ACTIVO en Finca Raiz.' + (_lid2 ? ' listing_id ' + _lid2 : '') + (_mp ? ', fr_property_id ' + _mp[1] : ''); await sb.from('publicaciones_portales').update({ estado:'activo', mensaje:_msg }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_u) {} try { await sincronizarPortalesDePropiedad(propId); } catch(_sp2) {} return true; } if (st==='ERROR') { var _m=''; try { var _c = jj.task && jj.task.content; _c = Array.isArray(_c) ? _c[0] : _c; _m = (_c && _c.error && (_c.error.message || _c.error)) || ''; } catch(_x) {} addLog('error','Finca Raiz - ACTIVAR','Finca Raiz rechazo la activacion: ' + (_m || 'error no especificado')); if (btn) { btn.disabled=false; btn.textContent='Reintentar activacion'; } return false; } } addLog('info','Finca Raiz - ACTIVAR','Finca Raiz sigue procesando la activacion (task ' + taskId + '). Suele completarse en unos minutos; vuelve a abrir la propiedad mas tarde para confirmar.'); if (btn) { btn.disabled=false; btn.textContent='Verificar activacion'; } return null; }; // Boton para activar la propiedad en Finca Raiz (PATCH /listing/status)
+window.__frVerificarActivacion = async function(taskId, propId, btn){ var supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co'; var supaKey = (typeof SKEY!=='undefined') ? SKEY : ''; for (var i=0; i<18; i++){ await new Promise(function(res){ setTimeout(res, 10000); }); var st=null, jj=null; try { var rr = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', { method:'POST', headers:{ 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey }, body: JSON.stringify({ accion:'consultar_task', task_id: taskId }) }); jj = await rr.json().catch(function(){ return {}; }); st = jj && jj.status; } catch(_e) { continue; } if (st==='COMPLETED' || st==='FORWARDED') { addLog('success','Finca Raiz - ACTIVAR','Propiedad activada correctamente en Finca Raiz. Ya esta visible publicamente.'); if (btn) { btn.disabled=true; btn.textContent='Activada en Finca Raiz'; btn.style.background='linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; btn.style.color='#fff'; } try { var _txt=''; try { _txt = JSON.stringify(jj||{}); } catch(_j) { _txt=''; } var _mp = _txt.match(/"fr_property_id"\s*:\s*"?(\d{4,})/) || _txt.match(/"(?:property_id|propertyId)"\s*:\s*"?(\d{4,})/); var _lid2 = null; try { var _q2 = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); _lid2 = (_q2 && _q2.data && _q2.data.url_publicacion) || null; } catch(_e2) {} var _msg = 'Aviso ACTIVO en Finca Raiz.' + (_lid2 ? ' listing_id ' + _lid2 : '') + (_mp ? ', fr_property_id ' + _mp[1] : ''); await sb.from('publicaciones_portales').update({ estado:'activo', mensaje:_msg }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_u) {} try { await sincronizarPortalesDePropiedad(propId); } catch(_sp2) {} return true; } if (st==='ERROR') { var _m=''; try { var _c = jj.task && jj.task.content; _c = Array.isArray(_c) ? _c[0] : _c; _m = (_c && _c.error && (_c.error.message || _c.error)) || ''; } catch(_x) {} addLog('error','Finca Raiz - ACTIVAR','Finca Raiz rechazo la activacion: ' + (_m || 'error no especificado')); if (btn) { btn.disabled=false; btn.textContent='Reintentar activacion'; } return false; } } addLog('info','Finca Raiz - ACTIVAR','Finca Raiz sigue procesando la activacion (task ' + taskId + '). Suele completarse en unos minutos; vuelve a abrir la propiedad mas tarde para confirmar.'); if (btn) { btn.disabled=false; btn.textContent='Verificar activacion'; } return null; }; // Boton para activar la propiedad en Finca Raiz (PATCH /listing/status)
 window.activarEnFincaraiz = async function(){
 const btn = document.getElementById('btn-activar-fr');
 if (!btn) return;
@@ -958,7 +958,7 @@ const supaKey = (typeof SKEY!=='undefined') ? SKEY : '';
 const resp = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', {
 method: 'POST',
 headers: { 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey },
-body: JSON.stringify({ accion: 'activar', propiedad_id: propId, task_id: (btn.dataset.taskId || window._LAST_FR_TASK_ID || null), listing_id: (btn.dataset.listingId || window._LAST_FR_LISTING_ID || (await (async function(){ try { var _q = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').maybeSingle(); return (_q && _q.data && _q.data.url_publicacion) || null; } catch(_e){ return null; } })()) || null) })
+body: JSON.stringify({ accion: 'activar', propiedad_id: propId, task_id: (btn.dataset.taskId || window._LAST_FR_TASK_ID || null), listing_id: (btn.dataset.listingId || window._LAST_FR_LISTING_ID || (await (async function(){ try { var _q = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); return (_q && _q.data && _q.data.url_publicacion) || null; } catch(_e){ return null; } })()) || null) })
 });
 const json = await resp.json().catch(function(){return {};});
 if (json && json.ok) {
@@ -1232,7 +1232,7 @@ try {
       setTimeout(function(){ sv('ciudad', r.ciudad); setTimeout(function(){ sv('barrio', r.barrio); }, 250); }, 350);
       var h1 = document.querySelector('.page-title') || document.querySelector('h1');
       if(h1){ h1.innerHTML = h1.innerHTML.replace(/Agregar/i,'Editar'); }
-      document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); } try{ (async function(){ try{ var _sbq = window.__editClient || (typeof getClient==='function' ? await getClient() : null); if(!_sbq) return; var _pp = await _sbq.from('publicaciones_portales').select('estado,url_publicacion').eq('propiedad_id', r.id).eq('portal','fincaraiz').maybeSingle(); var _row = _pp && _pp.data; if(!_row) return; var _bt = document.getElementById('btn-activar-fr'); if(!_bt) return; _bt.dataset.propId = String(r.id); if(_row.url_publicacion) _bt.dataset.listingId = _row.url_publicacion; _bt.style.display = 'inline-block'; if(_row.estado === 'activo'){ _bt.disabled = true; _bt.textContent = 'Activada en Finca Raiz'; _bt.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; _bt.style.color = '#fff'; } else { _bt.disabled = false; _bt.textContent = 'Activar en Finca Raiz (pasar de Pendiente a Activa)'; } }catch(_be){ console.error('init boton activar FR', _be); } })(); }catch(_bx){}
+      document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); } try{ (async function(){ try{ var _sbq = window.__editClient || (typeof getClient==='function' ? await getClient() : null); if(!_sbq) return; var _pp = await _sbq.from('publicaciones_portales').select('estado,url_publicacion').eq('propiedad_id', r.id).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); var _row = _pp && _pp.data; if(!_row) return; var _bt = document.getElementById('btn-activar-fr'); if(!_bt) return; _bt.dataset.propId = String(r.id); if(_row.url_publicacion) _bt.dataset.listingId = _row.url_publicacion; _bt.style.display = 'inline-block'; if(_row.estado === 'activo'){ _bt.disabled = true; _bt.textContent = 'Activada en Finca Raiz'; _bt.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; _bt.style.color = '#fff'; } else { _bt.disabled = false; _bt.textContent = 'Activar en Finca Raiz (pasar de Pendiente a Activa)'; } }catch(_be){ console.error('init boton activar FR', _be); } })(); }catch(_bx){}
       try{ if(typeof __syncParqDesdeChecks==="function") __syncParqDesdeChecks(); }catch(_e){}
     }catch(e){ console.error('prefill err', e); }
   }
@@ -1335,7 +1335,7 @@ try {
       return { portal:k, rowId:r.id, estado:r.estado||"", fecha:r.fecha||"", mensaje:r.mensaje||"",
         url:(x.url||(/^https?:/i.test(up)?up:"")),
         listing_id:(x.listing_id||(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(up)?up:"")),
-        property_id:(x.property_id||""), task_id:(x.task_id||""), url_publicacion:up };
+        property_id:(x.property_id||((String(r.mensaje||"").match(/fr_property_id[=\s:]+(\d{4,})/i)||[])[1])||""), task_id:(x.task_id||((String(r.mensaje||"").match(/task(?:_id)?[=\s:(]+([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i)||[])[1])||""), url_publicacion:up };
     });
   }
 
@@ -1362,7 +1362,7 @@ try {
         var b=ev.target && ev.target.closest ? ev.target.closest("button[data-lmz]") : null;
         if(!b) return;
         var a=b.getAttribute("data-lmz"), p=b.getAttribute("data-portal");
-        if(a==="refrescar") render();
+        if(a==="refrescar"){ __frResolviendo[EDIT_ID]=0; render(); }
         else if(a==="ver") window.lmzVerPortal(p);
         else window.lmzAccionPortal(p,a);
       });
@@ -1373,10 +1373,18 @@ try {
       });
     }
     var lista=await leer(); window.__LMZ_LISTA=lista;
+    // Finca Raiz: si no tenemos el codigo publico del aviso, o quedo "en proceso", se consulta una sola vez y se actualiza
+    var fr=lista.filter(function(x){return x.portal==="fincaraiz";})[0];
+    if(fr&&!retirado(fr.estado)&&(!fr.property_id||enProceso(fr.estado)||/devolvio en_proceso|Usa el boton ACTIVAR/i.test(fr.mensaje||""))&&!__frResolviendo[EDIT_ID]){
+      __frResolviendo[EDIT_ID]=1;
+      resolverFincaraiz(fr).then(function(res){ if(res&&res.ok) render(); }).catch(function(){});
+    }
     var filas=lista.map(function(r){
       var det=[];
+      if(r.portal==="fincaraiz"&&r.property_id) det.push("Codigo Finca Raiz "+r.property_id);
+      else if(r.property_id) det.push("ID portal "+r.property_id);
       if(r.listing_id) det.push("Aviso "+r.listing_id.substring(0,8));
-      if(r.property_id) det.push("ID portal "+r.property_id);
+      if(r.portal==="proppit") det.push("Referencia "+EDIT_ID+" en el feed XML");
       if(r.fecha) det.push(fmtFecha(r.fecha));
       var acc=boton("Ver","ver",r.portal,"#60a5fa");
       if(activo(r.estado)) acc+=boton("Pausar","pausar",r.portal,"#eab308");
@@ -1389,10 +1397,99 @@ try {
     host.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap"><div style="color:var(--gold);font-size:.78rem;font-weight:700;letter-spacing:.07em">PORTALES DE ESTA PROPIEDAD</div>'+boton("Refrescar","refrescar","","#94a3b8")+'</div><div style="color:#94a3b8;font-size:.78rem;margin:.35rem 0 .7rem">Cada portal es independiente: aqui puedes ver el aviso, pausarlo o retirarlo sin borrar la propiedad de Lomaz Home.</div>'+filas+'<label style="display:flex;align-items:flex-start;gap:.5rem;margin-top:.85rem;font-size:.77rem;color:#cbd5e1;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" id="chAutoPortales" '+(auto?"checked":"")+' style="margin-top:2px;width:16px;height:16px;flex:0 0 16px"/><span>Al guardar cambios, actualizar automaticamente los portales publicados sin preguntarme.</span></label>';
   }
   window.lmzRenderPortales=render;
-  window.lmzVerPortal=function(portal){
+  // ---------- Finca Raiz: el aviso publico se abre por su codigo (fr_property_id) ----------
+  // Finca Raiz redirige cualquier URL /inmueble/.../<codigo> a la ficha real del aviso.
+  function frUrl(code){ return "https://www.fincaraiz.com.co/inmueble/aviso/lomaz-home/colombia/"+encodeURIComponent(String(code)); }
+  var RE_UUID_G=/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi;
+  // Lee una tarea de Finca Raiz: ahi viene el codigo publico (content[0].fr_property_id) y el listing_id
+  async function frTarea(taskId){
+    try{
+      var o=await llamar("publicar-en-fincaraiz",{accion:"consultar_task",task_id:taskId});
+      var j=o.json||{}, t=j.task||{}, c0=Array.isArray(t.content)?(t.content[0]||{}):(t.content||{});
+      return { status:String(j.status||t.status||""), c0status:String(c0.status||""), listing_id:c0.listing_id?String(c0.listing_id):"", code:c0.fr_property_id?String(c0.fr_property_id):"", error:(c0.error&&(c0.error.message||(typeof c0.error==="string"?c0.error:JSON.stringify(c0.error))))||"", raw:JSON.stringify(t).substring(0,200) };
+    }catch(_e){ return null; }
+  }
+  // Estado real del aviso segun el inventario de la cuenta en Finca Raiz (status 4 = visible al publico, 1 = no disponible)
+  async function frEstadoInventario(code){
+    try{
+      var page=1;
+      for(var i=0;i<10;i++){
+        var o=await llamar("publicar-en-fincaraiz",{accion:"fr_get",path:"listing",q:"page="+page,with_client:true});
+        var b=null; try{ b=JSON.parse((o.json&&o.json.body)||"null"); }catch(_e){}
+        if(!b||!Array.isArray(b.results)) return null;
+        var hit=b.results.filter(function(x){ return String(x.frPropertyId)===String(code); })[0];
+        if(hit) return Number(hit.status);
+        if(!b.next||b.next===page) return "no_esta";
+        page=b.next;
+      }
+    }catch(_e){}
+    return null;
+  }
+  var __frResolviendo={};
+  // Recupera desde Finca Raiz el codigo publico del aviso (y su estado real) y lo deja guardado en el historial
+  async function resolverFincaraiz(r){
+    var tasks=[]; var add=function(id){ id=String(id||"").toLowerCase(); if(id&&tasks.indexOf(id)<0) tasks.push(id); };
+    add(r.task_id);
+    var lid=String(r.listing_id||"").toLowerCase();
+    var m; RE_UUID_G.lastIndex=0; while((m=RE_UUID_G.exec(r.mensaje||""))){ if(m[1].toLowerCase()!==lid) add(m[1]); }
+    try{
+      var c=cli(); var q=await c.from("publicaciones_portales").select("mensaje,url_publicacion,fecha").eq("propiedad_id",EDIT_ID).eq("portal","fincaraiz").order("fecha",{ascending:false}).limit(10);
+      (q.data||[]).forEach(function(x){ var mm; RE_UUID_G.lastIndex=0; while((mm=RE_UUID_G.exec(x.mensaje||""))){ if(mm[1].toLowerCase()!==String(x.url_publicacion||"").toLowerCase()) add(mm[1]); } });
+    }catch(_e){}
+    var best=null, motivo="";
+    for(var i=0;i<tasks.length&&i<8;i++){
+      var t=await frTarea(tasks[i]); if(!t) continue;
+      if(t.code){ best=t; best.task_id=tasks[i]; break; }
+      if(t.c0status==="ERROR"||t.status==="ERROR"){ if(!motivo) motivo="Finca Raiz reporto un error en el aviso"+(t.error?": "+t.error:"")+"."; }
+      else if(t.status&&t.status!=="null"&&!/not found/i.test(t.raw||"")){ if(!motivo) motivo="Finca Raiz sigue procesando el aviso (tarea "+tasks[i].substring(0,8)+"). Intenta de nuevo en unos minutos."; }
+    }
+    if(!best) return {ok:false, motivo:motivo||"Finca Raiz no ha devuelto todavia el codigo publico de este aviso. Si ya lo ves en el portal, abre fincaraiz.com.co con tu cuenta y busca la propiedad en Mis inmuebles."};
+    var inv=await frEstadoInventario(best.code);
+    var estado=(inv===4)?"activo":((inv===1)?"inactivo":((activo(r.estado)||enProceso(r.estado))?"publicado":(r.estado||"publicado")));
+    var nr={ portal:"fincaraiz", listing_id:(best.listing_id||r.listing_id||""), property_id:best.code, task_id:(best.task_id||r.task_id||""), url_publicacion:(best.listing_id||r.url_publicacion||"") };
+    var nota=(inv===4)?"Aviso visible al publico en Finca Raiz (codigo "+best.code+")":((inv===1)?"Aviso creado en Finca Raiz (codigo "+best.code+") pero NO visible al publico: usa Reactivar o el boton Activar en Finca Raiz.":"Aviso creado en Finca Raiz (codigo "+best.code+").");
+    await registrar(nr,estado,nota);
+    return {ok:true, property_id:best.code, listing_id:nr.listing_id, estado:estado, inv:inv, nota:nota};
+  }
+  // ---------- Proppit: no existe una pagina propia del aviso; se muestra el estado del feed y donde buscarlo ----------
+  async function mostrarPanelProppit(r){
+    var p=null; try{ var c=cli(); var q=await c.from("propiedades").select("titulo,barrio,ciudad,estado,latitud,longitud").eq("id",EDIT_ID).maybeSingle(); p=q.data||null; }catch(_e){}
+    var faltas=[];
+    if(p){
+      if(["activo","activa","publicada"].indexOf(String(p.estado||"").toLowerCase())===-1) faltas.push("la propiedad no esta activa en Lomaz Home (estado: "+(p.estado||"sin estado")+")");
+      if(p.latitud==null||p.longitud==null||p.latitud===""||p.longitud==="") faltas.push("no tiene ubicacion en el mapa (latitud/longitud), y Proppit la exige");
+    }
+    if(pausado(r.estado)||retirado(r.estado)) faltas.push("el aviso esta "+(pausado(r.estado)?"pausado":"retirado")+" en Proppit; usa Reactivar");
+    var enFeed=!faltas.length;
+    var busq=encodeURIComponent(("lomaz home "+((p&&(p.barrio||p.ciudad))||"")).trim());
+    var html='<div style="line-height:1.55">';
+    html+=enFeed
+      ? '<div style="color:#22c55e;font-weight:700;margin-bottom:.4rem">&#10004; Esta propiedad esta incluida en el feed XML de Proppit (referencia '+esc(EDIT_ID)+').</div>'
+      : '<div style="color:#f59e0b;font-weight:700;margin-bottom:.4rem">&#9888; Esta propiedad NO entra al feed de Proppit porque '+esc(faltas.join(" y "))+'.</div>';
+    html+='<div>Proppit no tiene una pagina propia del aviso: lee el feed una vez al dia y lo publica en <b>Trovit, Mitula, Nestoria, Nuroa y puntopropiedad</b>. Un aviso nuevo o editado puede tardar hasta 24-48 h en verse en esos portales.</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem">';
+    html+='<a href="https://casas.trovit.com.co/search?text='+busq+'" target="_blank" rel="noopener" style="background:#22c55e;color:#0b1220;font-weight:700;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Buscar en Trovit</a>';
+    html+='<a href="https://casas.mitula.com.co/" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Mitula</a>';
+    html+='<a href="https://www.nestoria.com.co/" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Nestoria</a>';
+    html+='<a href="https://www.proppit.com/" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Panel de Proppit</a>';
+    html+='<a href="'+FN+'proppit-feed" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#94a3b8;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Ver feed XML (tecnico)</a>';
+    html+='</div></div>';
+    await confirmar("Proppit - "+esc((p&&p.titulo)||("Propiedad "+EDIT_ID)),html,"Cerrar",false);
+  }
+  window.lmzVerPortal=async function(portal){
     var r=(window.__LMZ_LISTA||[]).filter(function(x){return x.portal===portal;})[0]||{};
     if(r.url){ window.open(r.url,"_blank","noopener"); return; }
-    if(portal==="proppit"){ window.open(FN+"proppit-feed","_blank","noopener"); return; }
+    if(portal==="proppit"){ mostrarPanelProppit(r); return; }
+    if(portal==="fincaraiz"){
+      if(r.property_id){ window.open(frUrl(r.property_id),"_blank","noopener"); return; }
+      // La pestana se abre ANTES de consultar, para que el navegador no la bloquee como ventana emergente
+      var w=null; try{ w=window.open("","_blank"); if(w) w.document.write('<p style="font-family:sans-serif;padding:2rem">Consultando el aviso en Finca Raiz...</p>'); }catch(_e){ w=null; }
+      var res=await resolverFincaraiz(r);
+      if(res&&res.ok){ try{ await render(); }catch(_e){} if(w) w.location.href=frUrl(res.property_id); else window.open(frUrl(res.property_id),"_blank","noopener"); if(res.inv===1) avisar(res.nota,"info"); return; }
+      if(w){ try{ w.close(); }catch(_e){} }
+      avisar((res&&res.motivo)||"No se pudo consultar el aviso en Finca Raiz.","info");
+      return;
+    }
     var t="El portal no devolvio una URL publica de este aviso.";
     if(r.listing_id) t+=" Buscalo en tu panel del portal con el aviso "+r.listing_id+".";
     else if(r.property_id) t+=" Buscalo con el ID "+r.property_id+".";
