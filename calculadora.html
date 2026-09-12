@@ -85,6 +85,33 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
 .pr-total{margin-top:1rem;padding:1.3rem 1.5rem;text-align:center}
 .pr-total .rv{font-size:1.9rem}
 .pr-total .rs{font-size:.72rem;margin-top:.4rem}
+/* 10 ACM · Valor Comercial */
+.btn-sec{background:#fff;color:var(--navy);border:1.5px solid var(--navy);padding:.7rem 1.4rem;border-radius:8px;font-family:Montserrat,sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:.3s;margin-top:.5rem;margin-right:.6rem}
+.btn-sec:hover{background:var(--navy);color:#fff}
+.btn-sec:disabled{opacity:.45;cursor:not-allowed}
+.acm-comp{border:1.5px solid var(--border);border-left:5px solid #cbd5e1;border-radius:10px;padding:1rem 1.1rem;margin-bottom:1rem;background:#fbfcfe}
+.acm-comp.ok{border-left-color:var(--green)}
+.acm-comp.bad{border-left-color:var(--red)}
+.acm-comp-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.8rem;flex-wrap:wrap}
+.acm-comp-head strong{font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy)}
+.acm-badge{font-size:.68rem;font-weight:700;padding:.3rem .7rem;border-radius:999px;letter-spacing:.5px}
+.acm-badge.green{background:rgba(22,163,74,.12);color:#166534}
+.acm-badge.red{background:rgba(220,38,38,.1);color:#991b1b}
+.acm-badge.gray{background:#f1f5f9;color:var(--muted)}
+.acm-x{background:none;border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;line-height:1;flex-shrink:0}
+.acm-x:hover{border-color:var(--red);color:var(--red)}
+.acm-live{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin-top:.8rem;font-size:.7rem;color:var(--muted)}
+.acm-live b{color:var(--navy)}
+.acm-live .motivo{width:100%;color:#991b1b;font-weight:600}
+.acm-letras{background:var(--navy);color:#fff;padding:.9rem 1.2rem;border-radius:10px;font-size:.8rem;font-style:italic;text-align:center;margin-top:1rem;letter-spacing:.3px}
+.acm-tb tr.desc td{text-decoration:line-through;opacity:.55}
+.acm-tb td:nth-child(2){text-align:left;font-weight:400;color:var(--text)}
+.acm-tb td.num{text-align:right;font-weight:600;color:var(--navy)}
+.acm-tb td.est{text-align:left;font-weight:600;font-size:.72rem}
+.acm-tb tr.desc td.est{text-decoration:none;opacity:1;color:#991b1b}
+.al.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.acm-bridge{border-color:var(--gold);background:rgba(196,153,42,.06)}
+.acm-bridge p{font-size:.85rem;color:var(--text);line-height:1.55;margin-bottom:.8rem}
 @media(max-width:768px){.layout{flex-direction:column}.sidebar{width:100%;border-right:none;border-bottom:1px solid var(--sidebar-border)}.form-grid,.rg,.rg.c3,.rg.c4,.cmpw,.gn2col{grid-template-columns:1fr}.main-content{padding:1.2rem}}
 /* Celular: el menú de herramientas pasa a ser una tira horizontal de botones (se desliza con el dedo)
    en vez de una lista de 9 filas que ocupaba toda la primera pantalla */
@@ -105,6 +132,13 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   #credito .bt th,#credito .bt td{padding:.5rem .45rem;white-space:nowrap}
   #credito .bt th:not(:first-child),#credito .bt td:not(:first-child){text-align:right}
   #credito .bt th:nth-child(2),#credito .bt td:nth-child(2){display:none}
+  /* ACM: los campos numéricos de cada comparable van de a dos por fila; la tabla oculta los factores individuales */
+  .acm-comp .form-grid{grid-template-columns:1fr 1fr;gap:.7rem}
+  .acm-comp .form-grid .full,.acm-comp .form-grid .acm-precio{grid-column:1/-1}
+  .acm-comp .form-grid .acm-tipo{grid-column:auto}
+  #acm .acm-tb{font-size:.74rem}
+  #acm .acm-tb th,#acm .acm-tb td{padding:.5rem .45rem;white-space:nowrap}
+  #acm .acm-fx{display:none}
 }
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
@@ -125,6 +159,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   <a class="sb-item" href="#" onclick="showMod('vacancia',this);return false"><span class="sb-num">07</span><span class="sb-text"><strong>Vacancia y Reserva</strong><small>Costos ocultos</small></span></a>
   <a class="sb-item" href="#" onclick="showMod('cartera',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
   <a class="sb-item" href="#" onclick="showMod('prorrateo',this);return false"><span class="sb-num">09</span><span class="sb-text"><strong>Prorrateo Predial</strong><small>Vendedor y comprador</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('acm',this);return false"><span class="sb-num">10</span><span class="sb-text"><strong>ACM · Valor Comercial</strong><small>Análisis comparativo de mercado</small></span></a>
 </nav>
 <main class="main-content">
 
@@ -370,6 +405,66 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   </div>
   <div class="al info" id="m9_nota"></div>
   <div class="al warn">&#9888; La fecha de entrega material cuenta para quien recibe el inmueble. Este es el criterio de prorrateo por días calendario; las partes pueden pactar otro criterio en la promesa o en la escritura.</div>
+</div>
+</div>
+
+<div class="module" id="acm">
+<div class="mod-header"><h1>&#128678; ACM · Valor Comercial del Inmueble</h1><p>Análisis Comparativo de Mercado por el método de comparación (Decreto 1420 de 1998 y Resolución 620 de 2008 del IGAC): homogeneiza de 3 a 10 comparables y entrega el semáforo de valores mínimo, comercial y máximo.</p></div>
+<div class="card">
+  <div class="card-title">Inmueble Estudiado</div>
+  <div class="form-grid">
+    <div class="form-group full"><label>Dirección o Referencia del Inmueble — Opcional</label><input type="text" id="acm_dir" placeholder="Calle 109 No. 21-41 AP 403" maxlength="120"/></div>
+    <div class="form-group"><label>Área Privada (m²)</label><input type="number" id="acm_area" placeholder="118.40" step="0.01" min="1"/></div>
+    <div class="form-group"><label>Antigüedad (años)</label><input type="number" id="acm_ant" placeholder="14" min="0" max="150"/></div>
+    <div class="form-group"><label>Nivel de Acabados</label><select id="acm_acab"><option>Lujoso</option><option selected>Bueno</option><option>Normal</option><option>Sencillo</option></select><div class="rs">Lujoso: mármol, domótica, herrajes importados · Bueno: porcelanato, cocina integral de gama media-alta · Normal: acabados estándar de constructora · Sencillo: acabados básicos o por mejorar.</div></div>
+    <div class="form-group"><label>Garajes (cantidad)</label><input type="number" id="acm_gar" value="0" min="0" max="10"/></div>
+    <div class="form-group"><label>Depósitos (cantidad)</label><input type="number" id="acm_dep" value="0" min="0" max="10"/></div>
+    <div class="form-group"><label>Valor Unitario Garaje (COP) — Opcional</label><input type="text" id="acm_vgar" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Valor Unitario Depósito (COP) — Opcional</label><input type="text" id="acm_vdep" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><div class="al info" style="margin:0">&#9432; Usa los valores unitarios de garaje y depósito <strong>solo si los comparables NO incluyen</strong> garaje/depósito en su precio, para no duplicar valor. Las alcobas no se ajustan: su efecto ya está en el área.</div></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">Comparables de Mercado <span id="acm_cnt" style="float:right;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:500"></span></div>
+  <div class="al info" style="margin-top:0">&#128161; Usa comparables vigentes del mismo sector, estrato y tipología. <strong>Amenidades</strong> (piscina, gimnasio, salón social, ascensor, vigilancia 24h): "le faltan" = las que el inmueble estudiado SÍ tiene y este no (su factor sube); "le sobran" = las que este tiene y el estudiado no (su factor baja). Cada tarjeta muestra en vivo su semáforo: &#128994; útil o &#128308; descartar.</div>
+  <div id="acm_list"></div>
+  <button type="button" class="btn-sec" id="acm_add" onclick="acmAdd()">+ Agregar comparable</button><button type="button" class="btn-sec" onclick="acmReset()">Limpiar todo</button>
+  <br/><button class="btn-calc" onclick="calcACM()">&#9654; Calcular ACM</button>
+</div>
+<div id="acm_r" style="display:none">
+  <div id="acm_alert" class="al warn"></div>
+  <div class="rg c3">
+    <div class="rc dng"><div class="rl">&#128308; Valor Mínimo de Venta</div><div class="rv rd" id="acm_vmin">—</div><div class="rs">Piso de negociación · límite inferior</div></div>
+    <div class="rc hi"><div class="rl">&#128993; Valor Comercial Estimado</div><div class="rv g" id="acm_vcom">—</div><div class="rs">Precio justo de mercado · promedio</div></div>
+    <div class="rc ok"><div class="rl">&#128994; Valor Máximo de Oferta</div><div class="rv gr" id="acm_vmax">—</div><div class="rs">Precio de salida para publicar · límite superior</div></div>
+  </div>
+  <div class="acm-letras" id="acm_letras"></div>
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-title">Estadística de la Muestra (comparables útiles)</div>
+    <div class="rg c3" style="margin-top:0">
+      <div class="rc"><div class="rl">Promedio m²</div><div class="rv" id="acm_prom">—</div></div>
+      <div class="rc"><div class="rl">Desviación Estándar</div><div class="rv" id="acm_desv">—</div></div>
+      <div class="rc" id="acm_cvc"><div class="rl">Coeficiente de Variación</div><div class="rv" id="acm_cv">—</div><div class="rs">Criterio: CV ≤ 7,5% (Res. 620/2008 IGAC)</div></div>
+      <div class="rc"><div class="rl">Límite Inferior m²</div><div class="rv" id="acm_linf">—</div></div>
+      <div class="rc"><div class="rl">Límite Superior m²</div><div class="rv" id="acm_lsup">—</div></div>
+      <div class="rc"><div class="rl">Comparables Útiles</div><div class="rv" id="acm_n">—</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Comparables Homogeneizados</div>
+    <div style="overflow-x:auto"><table class="bt acm-tb"><thead><tr><th>#</th><th>Referencia</th><th>Área</th><th>Precio</th><th class="acm-fx">F. Área</th><th class="acm-fx">F. Cond.</th><th class="acm-fx">F. Com.</th><th>Valor m² hom.</th><th>Estado</th></tr></thead><tbody id="acm_tb"></tbody></table></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Liquidación del Valor Comercial</div>
+    <div style="overflow-x:auto"><table class="bt acm-tb"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Valor unitario</th><th>Subtotal</th></tr></thead><tbody id="acm_liq"></tbody></table></div>
+  </div>
+  <div class="al info">&#9432; <strong>Metodología:</strong> valor m² homogeneizado = (precio ÷ área) × Factor Área × Factor Condiciones (antigüedad × acabados × amenidades) × Factor Comercial. Regla de oro: si al comparable le falta algo frente al estudiado, su factor sube de 100%; si le sobra, baja. Se descartan los comparables con diferencia de área mayor al 30% o ajuste total superior a ±15%. Sobre los útiles se calcula promedio, desviación estándar muestral y coeficiente de variación; los límites son promedio ± desviación.</div>
+  <div class="al warn">&#9888; Este cálculo es un Análisis Comparativo de Mercado con fines de orientación comercial; no sustituye un avalúo certificado suscrito por avaluador inscrito en el Registro Abierto de Avaluadores — RAA (Ley 1673 de 2013). Vigencia de un (1) año (Decreto 1420 de 1998).</div>
+  <div class="card acm-bridge">
+    <div class="card-title">Informe PDF Profesional</div>
+    <p>Para generar el informe completo (portada, carta de presentación, metodología, registro fotográfico y firma) pasa estos datos al <strong>Semáforo del Inversionista</strong>, la herramienta exclusiva para asesores LoMaz Home. Allí completarás la ficha del inmueble y las fotos.</p>
+    <button class="btn-calc" type="button" onclick="acmEnviarSemaforo()">&#128196; Generar informe PDF en el Semáforo &#8594;</button>
+  </div>
 </div>
 </div>
 
@@ -693,6 +788,218 @@ function calcM9(){
   document.getElementById('m9_r').style.display='block';
 }
 
+// M10 ACM · VALOR COMERCIAL — mismas reglas del Excel "ACM Profesional LoMaz Home" y del Semáforo del Inversionista
+var ACM={comps:[]};
+var ACM_KEY='lomaz_acm_calc_v1';            // borrador local de esta pestaña (por si se recarga la página)
+var ACM_SEMAFORO_KEY='lomaz_semaforo_draft_v1'; // borrador que lee el Semáforo del Inversionista
+var ACM_ACAB={'Sencillo':1,'Normal':2,'Bueno':3,'Lujoso':4};
+var ACM_CAMPOS=['acm_dir','acm_area','acm_ant','acm_acab','acm_gar','acm_dep','acm_vgar','acm_vdep'];
+function acmUid(){return 'c'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
+function acmClamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
+function acmEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function acmFac(n){return n.toLocaleString('es-CO',{minimumFractionDigits:3,maximumFractionDigits:3});}
+function acmArea(n){return (parseFloat(n)||0).toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²';}
+function acmPct(n){return (n*100).toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';}
+
+// Número a letras (pesos colombianos): UN MILLÓN, VEINTIÚN, MIL MILLONES, "DE PESOS" cuando son millones exactos
+var LT_UNI=['','UNO','DOS','TRES','CUATRO','CINCO','SEIS','SIETE','OCHO','NUEVE','DIEZ','ONCE','DOCE','TRECE','CATORCE','QUINCE','DIECISÉIS','DIECISIETE','DIECIOCHO','DIECINUEVE','VEINTE'];
+var LT_DEC=['','','VEINTI','TREINTA','CUARENTA','CINCUENTA','SESENTA','SETENTA','OCHENTA','NOVENTA'];
+var LT_CEN=['','CIENTO','DOSCIENTOS','TRESCIENTOS','CUATROCIENTOS','QUINIENTOS','SEISCIENTOS','SETECIENTOS','OCHOCIENTOS','NOVECIENTOS'];
+function ltApocopar(s){if(s.slice(-9)==='VEINTIUNO')return s.slice(0,-9)+'VEINTIÚN';if(s.slice(-4)===' UNO')return s.slice(0,-3)+'UN';if(s==='UNO')return 'UN';return s;}
+function ltDecenas(n){if(n<=20)return LT_UNI[n];var d=Math.floor(n/10),u=n%10;if(d===2){return ['VEINTE','VEINTIUNO','VEINTIDÓS','VEINTITRÉS','VEINTICUATRO','VEINTICINCO','VEINTISÉIS','VEINTISIETE','VEINTIOCHO','VEINTINUEVE'][u];}return u===0?LT_DEC[d]:LT_DEC[d]+' Y '+LT_UNI[u];}
+function ltCentenas(n){if(n===0)return '';if(n===100)return 'CIEN';var c=Math.floor(n/100),r=n%100,s='';if(c>0)s+=LT_CEN[c];if(r>0)s+=(s?' ':'')+ltDecenas(r);return s;}
+function ltMiles(n){var m=Math.floor(n/1000),r=n%1000,s='';if(m>0)s=(m===1)?'MIL':(ltApocopar(ltCentenas(m))+' MIL');if(r>0)s+=(s?' ':'')+ltCentenas(r);return s;}
+function numeroALetras(num){
+  var n=Math.abs(Math.round(num||0));
+  if(n===0)return 'SON: CERO PESOS M/CTE.';
+  if(n===1)return 'SON: UN PESO M/CTE.';
+  var mill=Math.floor(n/1000000),resto=n%1000000,partes=[];
+  if(mill>0)partes.push(mill===1?'UN MILLÓN':(ltApocopar(ltMiles(mill))+' MILLONES'));
+  if(resto>0)partes.push(ltApocopar(ltMiles(resto)));
+  return 'SON: '+partes.join(' ').trim()+((mill>0&&resto===0)?' DE PESOS M/CTE.':' PESOS M/CTE.');
+}
+
+// Motor de cálculo (método de comparación de mercado)
+function acmFactorArea(areaComp,areaEst){
+  var d=(areaComp-areaEst)/areaEst,a=Math.abs(d),aj=0,desc=false;
+  if(a<=0.05)aj=0;else if(a<=0.10)aj=0.01;else if(a<=0.20)aj=0.025;else if(a<=0.30)aj=0.045;else desc=true;
+  var s=d>0?1:(d<0?-1:0);
+  return {factor:desc?1:1+s*aj,d:d,desc:desc};
+}
+function acmProp(){
+  return {dir:document.getElementById('acm_dir').value.trim(),area:parseFloat(document.getElementById('acm_area').value)||0,ant:parseFloat(document.getElementById('acm_ant').value)||0,acab:document.getElementById('acm_acab').value,gar:parseInt(document.getElementById('acm_gar').value,10)||0,dep:parseInt(document.getElementById('acm_dep').value,10)||0,vgar:pCOP(document.getElementById('acm_vgar').value),vdep:pCOP(document.getElementById('acm_vdep').value)};
+}
+function acmCalcComp(p,c){
+  var areaComp=parseFloat(c.area)||0,precio=pCOP(c.precio);
+  var fa=acmFactorArea(areaComp,p.area||1);
+  var fAnt=acmClamp(1+0.005*((parseFloat(c.anios)||0)-p.ant),0.90,1.10);
+  var fAcab=acmClamp(1+0.05*((ACM_ACAB[p.acab]||2)-(ACM_ACAB[c.acabados]||2)),0.90,1.10);
+  var fAmen=acmClamp(1+0.015*((parseFloat(c.faltan)||0)-(parseFloat(c.sobran)||0)),0.94,1.06);
+  var fCom=c.tipoPrecio==='cierre'?1:(c.tipoPrecio==='urgente'?0.91:0.95);
+  var fCond=fAnt*fAcab*fAmen;
+  var unit=areaComp>0?precio/areaComp:0;
+  var m2=unit*fa.factor*fCond*fCom;
+  var ajuste=fa.factor*fCond*fCom-1;
+  var completo=areaComp>0&&precio>0,ok=true,motivo='';
+  if(!completo){ok=false;motivo='Faltan área o precio';}
+  else if(fa.desc){ok=false;motivo='Diferencia de área superior al 30%';}
+  else if(Math.abs(ajuste)>0.15){ok=false;motivo='Ajuste total supera ±15%';}
+  return {fArea:fa.factor,d:fa.d,fAnt:fAnt,fAcab:fAcab,fAmen:fAmen,fCom:fCom,fCond:fCond,unit:unit,m2:m2,ajuste:ajuste,completo:completo,ok:ok,motivo:motivo};
+}
+
+// Tarjetas de comparables
+function acmNew(){return {id:acmUid(),direccion:'',area:'',precio:'',anios:'',acabados:'Bueno',faltan:0,sobran:0,tipoPrecio:'aviso'};}
+function acmCardHTML(c,i){
+  var opt=function(v,t,cur){return '<option value="'+v+'"'+(cur===v?' selected':'')+'>'+t+'</option>';};
+  return '<div class="acm-comp" data-id="'+c.id+'">'+
+    '<div class="acm-comp-head"><strong>Comparable '+(i+1)+'</strong><div style="display:flex;align-items:center;gap:.5rem"><span class="acm-badge gray" data-badge></span><button type="button" class="acm-x" title="Eliminar comparable" onclick="acmRemove(\''+c.id+'\')">&times;</button></div></div>'+
+    '<div class="form-grid">'+
+    '<div class="form-group full"><label>Dirección o Referencia — Opcional</label><input type="text" data-k="direccion" value="'+acmEsc(c.direccion)+'" placeholder="Calle 109 No. 20-15 · Metrocuadrado" maxlength="120"/></div>'+
+    '<div class="form-group acm-precio"><label>Precio Publicado (COP)</label><input type="text" data-k="precio" value="'+acmEsc(c.precio)+'" placeholder="$750.000.000" oninput="fmtF(this)"/></div>'+
+    '<div class="form-group"><label>Área (m²)</label><input type="number" step="0.01" min="1" data-k="area" value="'+acmEsc(c.area)+'" placeholder="120"/></div>'+
+    '<div class="form-group"><label>Años de Construido</label><input type="number" min="0" max="150" data-k="anios" value="'+acmEsc(c.anios)+'" placeholder="14"/></div>'+
+    '<div class="form-group"><label>Acabados</label><select data-k="acabados">'+['Lujoso','Bueno','Normal','Sencillo'].map(function(o){return opt(o,o,c.acabados);}).join('')+'</select></div>'+
+    '<div class="form-group full acm-tipo"><label>Tipo de Precio</label><select data-k="tipoPrecio">'+opt('aviso','Aviso en portal (negociable) · factor 95%',c.tipoPrecio)+opt('cierre','Precio de cierre real · factor 100%',c.tipoPrecio)+opt('urgente','Venta urgente · factor 91%',c.tipoPrecio)+'</select></div>'+
+    '<div class="form-group"><label>Amenidades que le Faltan (0-4)</label><input type="number" min="0" max="4" data-k="faltan" value="'+acmEsc(c.faltan)+'"/></div>'+
+    '<div class="form-group"><label>Amenidades que le Sobran (0-4)</label><input type="number" min="0" max="4" data-k="sobran" value="'+acmEsc(c.sobran)+'"/></div>'+
+    '</div><div class="acm-live" data-live></div></div>';
+}
+function acmUpdateCard(id){
+  var c=null;for(var i=0;i<ACM.comps.length;i++)if(ACM.comps[i].id===id)c=ACM.comps[i];
+  var el=document.querySelector('.acm-comp[data-id="'+id+'"]');if(!c||!el)return;
+  var p=acmProp(),r=acmCalcComp(p,c);c._r=r;
+  var badge=el.querySelector('[data-badge]'),live=el.querySelector('[data-live]');
+  el.classList.remove('ok','bad');
+  if(!(p.area>0)){badge.className='acm-badge gray';badge.textContent='Falta el área del inmueble estudiado';live.innerHTML='';return;}
+  if(!r.completo){badge.className='acm-badge gray';badge.textContent='Pendiente: área y precio';live.innerHTML='';return;}
+  if(r.ok){el.classList.add('ok');badge.className='acm-badge green';badge.innerHTML='&#128994; Comparable útil';}
+  else{el.classList.add('bad');badge.className='acm-badge red';badge.innerHTML='&#128308; Descartar';}
+  live.innerHTML='<div>F. Área: <b>'+acmFac(r.fArea)+'</b></div><div>F. Antigüedad: <b>'+acmFac(r.fAnt)+'</b></div><div>F. Acabados: <b>'+acmFac(r.fAcab)+'</b></div><div>F. Amenidades: <b>'+acmFac(r.fAmen)+'</b></div><div>F. Comercial: <b>'+acmFac(r.fCom)+'</b></div><div>Ajuste total: <b>'+(r.ajuste>=0?'+':'')+acmPct(r.ajuste)+'</b></div><div>Valor m² homog.: <b>'+fmt(r.m2)+'</b></div>'+(r.ok?'':'<div class="motivo">Motivo: '+r.motivo+'</div>');
+}
+function acmCounter(){
+  var n=ACM.comps.length,ok=0;
+  ACM.comps.forEach(function(c){if(c._r&&c._r.ok)ok++;});
+  document.getElementById('acm_cnt').textContent=n+' agregado'+(n===1?'':'s')+' · '+ok+' útil'+(ok===1?'':'es')+' · mínimo 3, máximo 10';
+  document.getElementById('acm_add').disabled=n>=10;
+}
+function acmUpdateAll(){ACM.comps.forEach(function(c){acmUpdateCard(c.id);});acmCounter();}
+function acmRender(){document.getElementById('acm_list').innerHTML=ACM.comps.map(acmCardHTML).join('');acmUpdateAll();}
+function acmAdd(){if(ACM.comps.length>=10){alert('Máximo 10 comparables.');return;}ACM.comps.push(acmNew());acmRender();acmSave();var ult=document.querySelector('.acm-comp:last-child input');if(ult&&!esCelular())ult.focus();}
+function acmRemove(id){
+  var c=null;for(var i=0;i<ACM.comps.length;i++)if(ACM.comps[i].id===id)c=ACM.comps[i];
+  if(c&&(c.area||c.precio)&&!confirm('¿Eliminar este comparable?'))return;
+  ACM.comps=ACM.comps.filter(function(x){return x.id!==id;});
+  if(ACM.comps.length===0)ACM.comps.push(acmNew());
+  acmRender();acmSave();
+}
+function acmReset(){
+  if(!confirm('¿Limpiar el ACM? Se borran el inmueble estudiado y los comparables digitados.'))return;
+  ACM_CAMPOS.forEach(function(id){var el=document.getElementById(id);el.value=(id==='acm_gar'||id==='acm_dep')?'0':(id==='acm_acab'?'Bueno':'');});
+  ACM.comps=[acmNew(),acmNew(),acmNew()];
+  document.getElementById('acm_r').style.display='none';
+  acmRender();try{localStorage.removeItem(ACM_KEY);}catch(e){}
+}
+// Borrador local: lo que se digita queda guardado en este navegador aunque se recargue la página
+function acmSave(){
+  try{
+    var p={};ACM_CAMPOS.forEach(function(id){p[id]=document.getElementById(id).value;});
+    var comps=ACM.comps.map(function(c){var o={};for(var k in c)if(k!=='_r')o[k]=c[k];return o;});
+    localStorage.setItem(ACM_KEY,JSON.stringify({p:p,comps:comps}));
+  }catch(e){}
+}
+function acmLoad(){
+  try{
+    var raw=localStorage.getItem(ACM_KEY);if(!raw)return;
+    var d=JSON.parse(raw);
+    if(d.p)ACM_CAMPOS.forEach(function(id){if(d.p[id]!==undefined)document.getElementById(id).value=d.p[id];});
+    if(d.comps&&d.comps.length)ACM.comps=d.comps;
+  }catch(e){}
+}
+function acmOnInput(e){
+  var k=e.target.getAttribute('data-k'),card=e.target.closest('.acm-comp');
+  if(!k||!card)return;
+  var id=card.getAttribute('data-id');
+  for(var i=0;i<ACM.comps.length;i++)if(ACM.comps[i].id===id)ACM.comps[i][k]=e.target.value;
+  acmUpdateCard(id);acmCounter();acmSave();
+}
+function acmInit(){
+  acmLoad();
+  if(!ACM.comps.length)ACM.comps=[acmNew(),acmNew(),acmNew()];
+  acmRender();
+  var lista=document.getElementById('acm_list');
+  lista.addEventListener('input',acmOnInput);
+  lista.addEventListener('change',acmOnInput);
+  ACM_CAMPOS.forEach(function(id){var el=document.getElementById(id);el.addEventListener('input',function(){acmUpdateAll();acmSave();});el.addEventListener('change',function(){acmUpdateAll();acmSave();});});
+}
+
+// Resultados
+function calcACM(){
+  var p=acmProp();
+  if(!(p.area>0)){alert('Ingresa el área privada del inmueble estudiado');return;}
+  if(document.getElementById('acm_ant').value===''){alert('Ingresa la antigüedad del inmueble estudiado');return;}
+  acmUpdateAll();
+  var completos=ACM.comps.filter(function(c){return c._r&&c._r.completo;});
+  if(completos.length<3){alert('Diligencia área y precio de mínimo 3 comparables');return;}
+  var utiles=completos.filter(function(c){return c._r.ok;});
+  if(utiles.length<3){alert('Necesitas mínimo 3 comparables en verde (útiles) y tienes '+utiles.length+'. Revisa el motivo de descarte de cada tarjeta roja.');return;}
+
+  // Estadística sobre los comparables útiles (desviación estándar muestral)
+  var vals=utiles.map(function(c){return c._r.m2;}),n=vals.length;
+  var prom=vals.reduce(function(a,b){return a+b;},0)/n;
+  var desv=Math.sqrt(vals.reduce(function(a,b){return a+Math.pow(b-prom,2);},0)/(n-1));
+  var cv=prom?desv/prom:0,linf=prom-desv,lsup=prom+desv;
+  var extras=p.gar*p.vgar+p.dep*p.vdep;
+  var vmin=Math.round(linf*p.area+extras),vcom=Math.round(prom*p.area+extras),vmax=Math.round(lsup*p.area+extras);
+
+  // Alerta de calidad de la muestra
+  var al=document.getElementById('acm_alert');
+  if(cv>0.075){al.className='al warn';al.innerHTML='&#9888; <strong>Muestra poco homogénea:</strong> coeficiente de variación '+acmPct(cv)+' &gt; 7,5% — depura los comparables atípicos (criterio Res. 620/2008 IGAC). Los valores se muestran, pero con menor confianza.';}
+  else{al.className='al ok';al.innerHTML='&#10004; <strong>Muestra homogénea:</strong> coeficiente de variación '+acmPct(cv)+' &le; 7,5% (criterio Res. 620/2008 IGAC). Sello de confianza del análisis.';}
+
+  document.getElementById('acm_vmin').textContent=fmt(vmin);
+  document.getElementById('acm_vcom').textContent=fmt(vcom);
+  document.getElementById('acm_vmax').textContent=fmt(vmax);
+  document.getElementById('acm_letras').textContent='Valor comercial estimado — '+numeroALetras(vcom);
+  document.getElementById('acm_prom').textContent=fmt(prom);
+  document.getElementById('acm_desv').textContent=fmt(desv);
+  document.getElementById('acm_cv').textContent=acmPct(cv);
+  document.getElementById('acm_cv').className='rv '+(cv>0.075?'rd':'gr');
+  document.getElementById('acm_cvc').className='rc '+(cv>0.075?'dng':'ok');
+  document.getElementById('acm_linf').textContent=fmt(linf);
+  document.getElementById('acm_lsup').textContent=fmt(lsup);
+  document.getElementById('acm_n').textContent=n+' de '+completos.length;
+
+  // Tabla de comparables homogeneizados (los descartados quedan visibles, tachados)
+  document.getElementById('acm_tb').innerHTML=completos.map(function(c,i){
+    var r=c._r;
+    return '<tr'+(r.ok?'':' class="desc"')+'><td>'+(i+1)+'</td><td>'+acmEsc(c.direccion||'—')+'</td><td class="num">'+acmArea(c.area)+'</td><td class="num">'+fmt(pCOP(c.precio))+'</td><td class="num acm-fx">'+acmFac(r.fArea)+'</td><td class="num acm-fx">'+acmFac(r.fCond)+'</td><td class="num acm-fx">'+acmFac(r.fCom)+'</td><td class="num">'+fmt(r.m2)+'</td><td class="est">'+(r.ok?'&#128994; Útil':'&#128308; '+r.motivo)+'</td></tr>';
+  }).join('');
+
+  // Liquidación del valor comercial
+  document.getElementById('acm_liq').innerHTML=
+    '<tr><td>Área privada</td><td class="num">'+acmArea(p.area)+'</td><td class="num">'+fmt(prom)+' /m²</td><td class="num">'+fmt(prom*p.area)+'</td></tr>'+
+    '<tr><td>Garajes</td><td class="num">'+p.gar+'</td><td class="num">'+fmt(p.vgar)+'</td><td class="num">'+fmt(p.gar*p.vgar)+'</td></tr>'+
+    '<tr><td>Depósitos</td><td class="num">'+p.dep+'</td><td class="num">'+fmt(p.vdep)+'</td><td class="num">'+fmt(p.dep*p.vdep)+'</td></tr>'+
+    '<tr class="tr-tot"><td>VALOR COMERCIAL ESTIMADO</td><td class="num"></td><td class="num"></td><td class="num">'+fmt(vcom)+'</td></tr>';
+
+  document.getElementById('acm_r').style.display='block';
+}
+
+// Puente al Semáforo del Inversionista: guarda un borrador con estos datos y abre la herramienta completa
+function acmEnviarSemaforo(){
+  var p=acmProp();
+  if(!(p.area>0)||ACM.comps.length<3){alert('Primero calcula el ACM con el inmueble y mínimo 3 comparables.');return;}
+  var existe=null;try{existe=localStorage.getItem(ACM_SEMAFORO_KEY);}catch(e){}
+  if(existe&&!confirm('Ya hay un borrador guardado en el Semáforo del Inversionista. ¿Lo reemplazo con los datos de este ACM?'))return;
+  var hoy=new Date(),iso=hoy.getFullYear()+'-'+('0'+(hoy.getMonth()+1)).slice(-2)+'-'+('0'+hoy.getDate()).slice(-2);
+  var borrador={step:1,
+    prop:{solicitante:'',propietario:'',direccion:p.dir,edificio:'',barrio:'',localidad:'',upz:'',ciudad:'Bogotá D.C.',estrato:'',matricula:'',chip:'',escritura:'',coeficiente:'',areaConstruida:'',areaPrivada:p.area,garajes:p.gar,depositos:p.dep,antiguedad:p.ant,vidaUtil:100,estadoConservacion:'',acabadosNivel:p.acab,fechaVisita:iso,fechaEstudio:iso,valorGarajeUnit:p.vgar,valorDepositoUnit:p.vdep,elabNombre:'',elabCargo:'',elabRegistro:'',elabTelefono:'',elabEmail:''},
+    comparables:ACM.comps.filter(function(c){return c.area||c.precio;}).map(function(c){return {id:c.id,direccion:c.direccion||'',fuente:'Otro',telefono:'',area:parseFloat(c.area)||'',precio:pCOP(c.precio)||'',anios:parseFloat(c.anios)||0,acabados:c.acabados||'Normal',faltan:parseFloat(c.faltan)||0,sobran:parseFloat(c.sobran)||0,tipoPrecio:c.tipoPrecio||'aviso'};}),
+    photos:[]};
+  try{localStorage.setItem(ACM_SEMAFORO_KEY,JSON.stringify(borrador));}catch(e){alert('No se pudo guardar el borrador en este navegador.');return;}
+  window.location.href='semaforo-del-inversionista.html';
+}
+
 // NAVEGACIÓN
 function esCelular(){return window.innerWidth<=768;}
 // Alto del menú fijo de arriba (lomaz-nav.js) más, en celular, la tira de herramientas que queda pegada debajo
@@ -732,11 +1039,12 @@ document.addEventListener('click',function(e){
 });
 window.addEventListener('DOMContentLoaded',function(){
   var anEl=document.getElementById('m9_an');if(anEl)anEl.value=new Date().getFullYear();
+  acmInit();
   var h=location.hash;
-  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#prorrateo':'prorrateo','#predial':'prorrateo','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera','#mod9':'prorrateo'};
+  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#prorrateo':'prorrateo','#predial':'prorrateo','#acm':'acm','#semaforo':'acm','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera','#mod9':'prorrateo','#mod10':'acm'};
   if(map[h]){
     var t=map[h];
-    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera','prorrateo'].indexOf(t);
+    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera','prorrateo','acm'].indexOf(t);
     showMod(t,document.querySelectorAll('.sb-item')[idx]||null,true);
     // El navegador puede volver a saltar al #ancla al terminar de cargar: en celular se recoloca el formulario
     window.addEventListener('load',function(){if(esCelular())setTimeout(function(){irA(document.getElementById(t),true);},50);});
