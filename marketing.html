@@ -183,6 +183,35 @@ textarea{resize:vertical;min-height:70px}
 #panel-marca .toolbar .pm-tog input{width:16px;height:16px;padding:0;margin:0;accent-color:var(--gold);cursor:pointer}
 @media(max-width:700px){.pm-task{grid-template-columns:26px 1fr}.pm-tags{grid-column:2;justify-content:flex-start}.pm-dots{grid-column:2}.pm-cnt{margin-left:0}}
 </style>
+<style id="cal2-style">
+.cal-evt{display:flex;align-items:center;gap:.28rem;font-size:.66rem;padding:.22rem .32rem;border-radius:6px;cursor:pointer;line-height:1.2;border-left:3px solid;overflow:hidden}
+.cal-evt:hover{filter:brightness(1.12)}
+.cev-mono{flex:0 0 auto;min-width:15px;height:15px;padding:0 3px;border-radius:4px;color:#0D1B2E;font-weight:800;font-size:.56rem;display:inline-flex;align-items:center;justify-content:center}
+.cev-ic{flex:0 0 auto}
+.cev-t{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt)}
+.cev-est{flex:0 0 auto;width:7px;height:7px;border-radius:50%}
+.cal-more{font-size:.62rem;color:var(--gold);padding-left:.15rem}
+.legend .lg-grp{color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.62rem}
+.legend .lg-sep{color:var(--txt-mute)}
+.legend .lg-dot{width:8px!important;height:8px!important;border-radius:50%!important}
+.cal-summary{display:flex;flex-wrap:wrap;gap:.4rem .55rem;align-items:center;margin:.1rem 0 1.1rem;font-size:.76rem;color:var(--txt-soft)}
+.cal-summary .cs-total{font-weight:700;color:#fff;background:rgba(201,169,110,.15);border:1px solid var(--line-strong);padding:.22rem .65rem;border-radius:999px}
+.cal-summary .cs-who{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--line);padding:.22rem .6rem;border-radius:999px}
+.cal-summary .cs-who i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.cal-summary .cs-note{color:var(--txt-mute)}
+@media(max-width:700px){
+  .cal-head{flex-direction:column;align-items:stretch;gap:.6rem}
+  .cal-nav{justify-content:center}
+  .cal-month{min-width:auto;flex:1}
+  .cal-head .btn{width:100%}
+  .cal-grid{gap:3px}
+  .cal-cell{min-height:56px;padding:.25rem;border-radius:6px}
+  .cal-daynum{font-size:.66rem}
+  .cal-evt{padding:.16rem;gap:.15rem;justify-content:center}
+  .cev-t,.cev-est{display:none}
+  .cev-mono{min-width:16px;height:16px;font-size:.58rem}
+}
+</style>
 </head>
 <body>
 <div class="topbar">
@@ -248,11 +277,19 @@ textarea{resize:vertical;min-height:70px}
 <div class="cal-nav"><button onclick="calMove(-1)">&#8592;</button><div class="cal-month" id="calMonth"></div><button onclick="calMove(1)">&#8594;</button></div>
 <button class="btn btn-primary" onclick="openEditor()">+ Nueva publicacion</button>
 </div>
-<div class="legend">
-<span><i style="background:#a8a29e"></i>Borrador</span>
-<span><i style="background:#c9a96e"></i>Programado</span>
-<span><i style="background:#28a745"></i>Publicado</span>
+<div class="legend" id="calLegend">
+<span class="lg-grp">Responsable</span>
+<span><i style="background:#9fc0f5"></i>Salom&oacute;n</span>
+<span><i style="background:#f0a9c9"></i>Ang&eacute;lica</span>
+<span><i style="background:#e8d5b0"></i>Los dos</span>
+<span><i style="background:#a8a29e"></i>Equipo</span>
+<span class="lg-sep">|</span>
+<span class="lg-grp">Estado</span>
+<span><i class="lg-dot" style="background:#a8a29e"></i>Borrador</span>
+<span><i class="lg-dot" style="background:#c9a96e"></i>Programado</span>
+<span><i class="lg-dot" style="background:#28a745"></i>Publicado</span>
 </div>
+<div class="cal-summary" id="calSummary"></div>
 <div class="cal-grid" id="calGrid"></div>
 </div>
 
@@ -519,6 +556,17 @@ function switchTab(name){
 function clearFilters(){document.getElementById("fRed").value="";document.getElementById("fEnfoque").value="";document.getElementById("fEstado").value="";document.getElementById("fSearch").value="";render();}
 
 function calMove(d){calRef.setMonth(calRef.getMonth()+d);renderCalendar();}
+const CAL_WHO={
+  sal:{ini:"S",lab:"Salomon",bd:"#9fc0f5",bg:"rgba(96,140,220,.16)"},
+  ang:{ini:"A",lab:"Angelica",bd:"#f0a9c9",bg:"rgba(220,120,160,.16)"},
+  amb:{ini:"S\u00b7A",lab:"Los dos",bd:"#e8d5b0",bg:"rgba(201,169,110,.16)"},
+  otro:{ini:"\u2022",lab:"Equipo",bd:"#a8a29e",bg:"rgba(255,255,255,.05)"}
+};
+function calWho(resp){
+  const s=(resp||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const sal=s.indexOf("salom")>=0, ang=s.indexOf("angel")>=0;
+  if(sal&&ang) return "amb"; if(ang) return "ang"; if(sal) return "sal"; return "otro";
+}
 function renderCalendar(){
   const y=calRef.getFullYear(),m=calRef.getMonth();
   const meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -529,16 +577,28 @@ function renderCalendar(){
   let h="";dows.forEach(d=>h+='<div class="cal-dow">'+d+'</div>');
   for(let i=0;i<startDow;i++)h+='<div class="cal-cell empty-cell"></div>';
   const today=new Date();const isCurMonth=today.getFullYear()===y&&today.getMonth()===m;
+  const cnt={sal:0,ang:0,amb:0,otro:0};let monthTotal=0,maxDay=0,daysWith=0;
   for(let d=1;d<=days;d++){
     const ds=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
     const evs=posts.filter(p=>p.fecha===ds);
+    if(evs.length){daysWith++;monthTotal+=evs.length;if(evs.length>maxDay)maxDay=evs.length;}
     const todayCls=(isCurMonth&&today.getDate()===d)?" today":"";
     h+='<div class="cal-cell'+todayCls+'"><div class="cal-daynum">'+d+'</div>';
-    evs.slice(0,4).forEach(p=>{const c=EST_COLOR[p.estado]||"#a8a29e";h+='<div class="cal-evt" style="border-left-color:'+c+'" title="'+esc(p.titulo||"")+'" onclick="openEditor(\''+p.id+'\')">'+(RED_ICON[p.red_social]||"")+' '+esc((p.titulo||p.red_social||"").slice(0,16))+'</div>';});
-    if(evs.length>4)h+='<div style="font-size:.62rem;color:var(--gold)">+'+(evs.length-4)+' mas</div>';
+    evs.slice(0,4).forEach(p=>{const w=calWho(p.responsable);const meta=CAL_WHO[w];cnt[w]++;const est=EST_COLOR[p.estado]||"#a8a29e";h+='<div class="cal-evt cw-'+w+'" style="border-left-color:'+meta.bd+';background:'+meta.bg+'" title="'+escAttr((p.titulo||p.red_social||"")+" \u2014 "+meta.lab+" \u00b7 "+(p.red_social||"")+" \u00b7 "+(p.estado||""))+'" onclick="openEditor(\''+p.id+'\')"><span class="cev-mono" style="background:'+meta.bd+'">'+meta.ini+'</span><span class="cev-ic">'+(RED_ICON[p.red_social]||"")+'</span><span class="cev-t">'+esc((p.titulo||p.red_social||"").slice(0,22))+'</span><span class="cev-est" style="background:'+est+'"></span></div>';});
+    if(evs.length>4)h+='<div class="cal-more">+'+(evs.length-4)+' mas</div>';
     h+='</div>';
   }
   document.getElementById("calGrid").innerHTML=h;
+  const sEl=document.getElementById("calSummary");
+  if(sEl){
+    if(!monthTotal){sEl.innerHTML='<span class="cs-note">Sin publicaciones programadas este mes.</span>';}
+    else{
+      let parts='<span class="cs-total">'+monthTotal+' publicaci'+(monthTotal>1?'ones':'on')+'</span>';
+      ["sal","ang","amb","otro"].forEach(k=>{if(cnt[k]){const meta=CAL_WHO[k];parts+='<span class="cs-who"><i style="background:'+meta.bd+'"></i>'+cnt[k]+' '+meta.lab+'</span>';}});
+      parts+='<span class="cs-note">m\u00e1x '+maxDay+' en un d\u00eda \u00b7 '+daysWith+' d\u00edas con contenido</span>';
+      sEl.innerHTML=parts;
+    }
+  }
 }
 
 function openEditor(id){
