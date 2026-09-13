@@ -179,7 +179,8 @@ textarea{resize:vertical;min-height:70px}
 .pm-dots .dl{font-size:.72rem;color:var(--txt-mute);margin-left:.3rem}
 .pm-chip{border:1px solid var(--line);background:transparent;color:var(--txt);font:inherit;font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:999px;cursor:pointer}
 .pm-chip.on{background:var(--gold);color:var(--navy);border-color:var(--gold)}
-.pm-tog{display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--txt-soft);cursor:pointer}
+.pm-tog{display:flex;align-items:center;gap:.45rem;font-size:.85rem;color:var(--txt-soft);cursor:pointer;text-transform:none;letter-spacing:0;font-weight:500;white-space:nowrap}
+#panel-marca .toolbar .pm-tog input{width:16px;height:16px;padding:0;margin:0;accent-color:var(--gold);cursor:pointer}
 @media(max-width:700px){.pm-task{grid-template-columns:26px 1fr}.pm-tags{grid-column:2;justify-content:flex-start}.pm-dots{grid-column:2}.pm-cnt{margin-left:0}}
 </style>
 </head>
@@ -303,7 +304,7 @@ textarea{resize:vertical;min-height:70px}
 <button class="btn btn-primary" style="width:100%;margin-top:.4rem" onclick="generarContenido()">&#10024; Generar contenido</button>
 <div class="ai-key-row">
 <span title="Opcional: si configuras una clave de OpenAI, el agente usara IA avanzada. Sin clave, usa el motor local.">&#9881; IA avanzada (opcional)</span>
-<input type="password" id="agKey" placeholder="OpenAI API key (opcional)" style="flex:1" onchange="saveAgKey()">
+<input type="password" id="agKey" placeholder="OpenAI API key (opcional)" autocomplete="new-password" style="flex:1" onchange="saveAgKey()">
 </div>
 </div>
 <div class="agent-card">
