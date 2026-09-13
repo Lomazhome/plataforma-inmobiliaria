@@ -129,6 +129,59 @@ textarea{resize:vertical;min-height:70px}
 .ai-key-row input{font-size:.78rem;padding:.5rem .7rem}
 @media(max-width:900px){.agent-wrap{grid-template-columns:1fr}.src-box .src-row{grid-template-columns:1fr}}
 </style>
+<style id="pm-style">
+/* ===== Plan de Marca ===== */
+#panel-marca .pm-head{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:flex-end;margin-bottom:1rem}
+#panel-marca .pm-head p{color:var(--txt-soft);font-size:.92rem;max-width:72ch;margin:0}
+.pm-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.2rem}
+.pm-tile{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1rem;position:relative;overflow:hidden}
+.pm-tile.total{border-color:var(--line-strong)}
+.pm-tile .n{font-family:var(--serif);font-size:2rem;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.pm-tile .n small{font-size:.9rem;color:var(--gold)}
+.pm-tile .l{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-soft);margin-top:.35rem}
+.pm-tile .d{font-size:.78rem;color:var(--txt-mute);margin-top:.1rem}
+.pm-bar{height:5px;background:rgba(255,255,255,.08);border-radius:3px;margin-top:.55rem;overflow:hidden}
+.pm-bar span{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.pm-tile.done .pm-bar span{background:#28a745}
+.pm-phase{margin-top:1.6rem;border:1px solid var(--line);border-radius:var(--r-lg);background:rgba(255,255,255,.02);padding:1.1rem 1.2rem}
+.pm-phase-head{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
+.pm-step{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--navy-3);border:1px solid var(--line-strong);padding:.3rem .7rem;border-radius:6px}
+.pm-step i{width:7px;height:7px;background:var(--gold);border-radius:50%;display:inline-block}
+.pm-dates{font-size:.85rem;color:var(--txt-soft)}
+.pm-cnt{font-size:.85rem;color:var(--txt-soft);margin-left:auto;font-variant-numeric:tabular-nums}
+.pm-phase h2{font-family:var(--serif);font-size:1.45rem;color:#fff;margin:.5rem 0 .2rem;font-weight:600}
+.pm-phase .pm-intro{color:var(--txt-soft);font-size:.9rem;margin:0 0 .5rem}
+.pm-goal{border-left:3px solid var(--gold);background:rgba(201,169,110,.08);padding:.55rem .8rem;font-size:.88rem;color:var(--txt);border-radius:0 6px 6px 0;margin:.4rem 0 .2rem}
+.pm-group{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--gold);margin:1rem 0 .4rem}
+.pm-list{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:rgba(0,0,0,.15)}
+.pm-task{display:grid;grid-template-columns:26px 1fr auto;gap:.3rem .8rem;align-items:start;padding:.7rem .85rem;border-bottom:1px solid var(--line)}
+.pm-task:last-child{border-bottom:0}
+.pm-box{width:22px;height:22px;border:2px solid var(--txt-mute);border-radius:5px;background:transparent;cursor:pointer;display:grid;place-items:center;padding:0;margin-top:2px}
+.pm-box svg{width:13px;height:13px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.pm-task.done .pm-box{background:#28a745;border-color:#28a745}
+.pm-task.done .pm-box svg{opacity:1}
+.pm-task .t{font-weight:600;color:#fff;font-size:.95rem;line-height:1.35}
+.pm-task.done .t{color:var(--txt-mute);text-decoration:line-through}
+.pm-task .dtl{font-size:.83rem;color:var(--txt-soft);margin-top:.15rem;max-width:70ch}
+.pm-task.done .dtl{color:var(--txt-mute)}
+.pm-tags{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:flex-end;align-items:center}
+.pm-date{font-size:.75rem;color:var(--txt-soft);white-space:nowrap;font-weight:600}
+.pm-who,.pm-kind{font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:.15rem .5rem;border-radius:4px;white-space:nowrap}
+.pm-who.sal{background:rgba(96,140,220,.18);color:#9fc0f5}
+.pm-who.ang{background:rgba(220,120,160,.18);color:#f0a9c9}
+.pm-who.amb{background:rgba(201,169,110,.18);color:var(--gold-l)}
+.pm-kind{background:rgba(255,255,255,.06);color:var(--txt-soft);border:1px solid var(--line)}
+.pm-act{background:transparent;border:1px solid var(--line);color:var(--txt-soft);border-radius:5px;padding:.15rem .45rem;cursor:pointer;font-size:.8rem;line-height:1.2}
+.pm-act:hover{border-color:var(--gold);color:#fff}
+.pm-dots{grid-column:2/4;display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;margin-top:.35rem}
+.pm-dots .d{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--txt-soft);font-size:.68rem;font-weight:700;cursor:pointer;padding:0}
+.pm-dots .d.on{background:#28a745;border-color:#28a745;color:#fff}
+.pm-dots .dl{font-size:.72rem;color:var(--txt-mute);margin-left:.3rem}
+.pm-chip{border:1px solid var(--line);background:transparent;color:var(--txt);font:inherit;font-size:.82rem;font-weight:600;padding:.3rem .8rem;border-radius:999px;cursor:pointer}
+.pm-chip.on{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.pm-tog{display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--txt-soft);cursor:pointer}
+@media(max-width:700px){.pm-task{grid-template-columns:26px 1fr}.pm-tags{grid-column:2;justify-content:flex-start}.pm-dots{grid-column:2}.pm-cnt{margin-left:0}}
+</style>
 </head>
 <body>
 <div class="topbar">
@@ -173,6 +226,7 @@ textarea{resize:vertical;min-height:70px}
 <div class="tab active" data-panel="plan" onclick="switchTab('plan')">&#128203; Planificador</div>
 <div class="tab" data-panel="cal" onclick="switchTab('cal')">&#128197; Calendario visual</div>
 <div class="tab" data-panel="agente" onclick="switchTab('agente')">&#129302; Agente de Marketing IA</div>
+<div class="tab" data-panel="marca" onclick="switchTab('marca')">&#127919; Plan de Marca</div>
 </div>
 
 <div class="panel active" id="panel-plan">
@@ -180,7 +234,7 @@ textarea{resize:vertical;min-height:70px}
 <select id="fRed" onchange="render()"><option value="">Todas las redes</option></select>
 <select id="fEnfoque" onchange="render()"><option value="">Todos los enfoques</option></select>
 <select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>Borrador</option><option>Programado</option><option>Publicado</option></select>
-<input type="text" id="fSearch" placeholder="&#128269; Buscar tema, copy..." oninput="render()" style="min-width:200px">
+<input type="text" id="fSearch" placeholder="&#128269; Buscar tema, copy..." oninput="render()" autocomplete="off" style="min-width:200px">
 <div class="spacer"></div>
 <button class="btn btn-secondary" onclick="clearFilters()">Limpiar</button>
 <button class="btn btn-primary" onclick="openEditor()">+ Nueva</button>
@@ -199,6 +253,30 @@ textarea{resize:vertical;min-height:70px}
 <span><i style="background:#28a745"></i>Publicado</span>
 </div>
 <div class="cal-grid" id="calGrid"></div>
+</div>
+
+<div class="panel" id="panel-marca">
+<div class="pm-head">
+  <div>
+    <div style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.25rem">Posicionamiento de marca &middot; Plan de acci&oacute;n</div>
+    <p>Todas las tareas del plan en un solo lugar. Marca lo hecho, cambia temas, fechas o responsables con el l&aacute;piz &#9998;, y agrega tareas o fases nuevas cuando el plan crezca. El avance se comparte con todo el equipo.</p>
+  </div>
+</div>
+<div class="pm-tiles" id="pmTiles"></div>
+<div class="toolbar">
+  <span style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-soft);font-weight:700">Qui&eacute;n</span>
+  <button class="pm-chip on" onclick="pmSetWho('all',this)">Todos</button>
+  <button class="pm-chip" onclick="pmSetWho('sal',this)">Salom&oacute;n</button>
+  <button class="pm-chip" onclick="pmSetWho('ang',this)">Ang&eacute;lica</button>
+  <button class="pm-chip" onclick="pmSetWho('amb',this)">Los dos</button>
+  <select id="pmFase" onchange="pmRender()"><option value="">Todas las fases</option></select>
+  <input type="text" id="pmQ" placeholder="&#128269; Buscar tarea..." oninput="pmRender()" autocomplete="off" style="min-width:180px">
+  <label class="pm-tog"><input type="checkbox" id="pmHide" onchange="pmRender()"> Ocultar hechas</label>
+  <div class="spacer"></div>
+  <button class="btn btn-secondary" onclick="pmOpenFase()">+ Nueva fase</button>
+  <button class="btn btn-primary" onclick="pmOpenEditor()">+ Nueva tarea</button>
+</div>
+<div id="pmHost"><div class="empty">Cargando el plan de marca...</div></div>
 </div>
 </div>
 
@@ -278,6 +356,58 @@ textarea{resize:vertical;min-height:70px}
 </div>
 </div>
 
+<div class="overlay" id="pmEditorOverlay">
+<div class="modal">
+<h3 id="pmEditorTitle">Nueva <em>tarea</em></h3>
+<input type="hidden" id="pmId">
+<div class="grid2">
+  <div class="fg"><label>Fase</label><select id="pmEFase"></select></div>
+  <div class="fg"><label>Grupo</label><input type="text" id="pmEGrupo" list="pmGrupos" placeholder="Ej: Producci&oacute;n"><datalist id="pmGrupos"></datalist></div>
+</div>
+<div class="fg"><label>Tarea</label><input type="text" id="pmETitulo" placeholder="Qu&eacute; hay que hacer"></div>
+<div class="fg"><label>Detalle (c&oacute;mo hacerlo)</label><textarea id="pmEDetalle" rows="3"></textarea></div>
+<div class="grid3">
+  <div class="fg"><label>Qui&eacute;n</label><select id="pmEQuien"><option value="sal">Salom&oacute;n</option><option value="ang">Ang&eacute;lica</option><option value="amb">Los dos</option></select></div>
+  <div class="fg"><label>Fecha (texto)</label><input type="text" id="pmEFecha" placeholder="Ej: Lun 21 sep"></div>
+  <div class="fg"><label>Tipo</label><input type="text" id="pmETipo" list="pmTipos" placeholder="Ej: Reel"><datalist id="pmTipos"></datalist></div>
+</div>
+<div class="grid2">
+  <div class="fg"><label>Rutina: veces a marcar (0 = una sola vez)</label><input type="number" id="pmERepetir" min="0" max="60" value="0"></div>
+  <div class="fg"><label>Desde (solo rutinas)</label><input type="text" id="pmEDesde" placeholder="Ej: 21 sep"></div>
+</div>
+<div class="modal-btns">
+  <button class="btn btn-danger" id="pmBtnDel" onclick="pmOpenDel()" style="margin-right:auto;display:none">Eliminar</button>
+  <button class="btn btn-secondary" onclick="pmCloseEditor()">Cancelar</button>
+  <button class="btn btn-primary" id="pmBtnSave" onclick="pmSave()">Guardar</button>
+</div>
+</div>
+</div>
+
+<div class="overlay" id="pmFaseOverlay">
+<div class="modal">
+<h3 id="pmFaseTitle">Nueva <em>fase</em></h3>
+<input type="hidden" id="pmFId">
+<div class="grid2">
+  <div class="fg"><label>Nombre corto</label><input type="text" id="pmFNombre" placeholder="Ej: Fase 3 &middot; Semanas 5&ndash;8"></div>
+  <div class="fg"><label>Fechas</label><input type="text" id="pmFFechas" placeholder="Ej: Lun 26 oct &ndash; Dom 22 nov"></div>
+</div>
+<div class="fg"><label>T&iacute;tulo</label><input type="text" id="pmFTitulo" placeholder="Qu&eacute; se logra en esta fase"></div>
+<div class="fg"><label>Meta de la fase</label><textarea id="pmFMeta" rows="2"></textarea></div>
+<div class="modal-btns">
+  <button class="btn btn-secondary" onclick="pmCloseFase()">Cancelar</button>
+  <button class="btn btn-primary" onclick="pmSaveFase()">Guardar</button>
+</div>
+</div>
+</div>
+
+<div class="overlay" id="pmDelOverlay">
+<div class="modal" style="max-width:420px">
+<h3>Eliminar <em>tarea</em></h3>
+<p style="color:var(--txt-soft);margin-bottom:1rem">Se borra la tarea y su avance. Esta acci&oacute;n no se puede deshacer.</p>
+<div class="modal-btns"><button class="btn btn-secondary" onclick="pmCloseDel()">Cancelar</button><button class="btn btn-danger" onclick="pmDoDel()">S&iacute;, eliminar</button></div>
+</div>
+</div>
+
 </div>
 
 <script>
@@ -298,7 +428,7 @@ function showAlert(msg,type){const a=document.getElementById("alert");a.textCont
   const{data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href="login.html";return;}
   uid=session.user.id;
-  document.getElementById("uEmail").textContent=session.user.email;
+  var uEl=document.getElementById("uEmail"); if(uEl) uEl.textContent=session.user.email;
   buildFilterOptions();
   loadFuentes();
   await loadPosts();
@@ -697,5 +827,179 @@ async function refinarConIA(g,red,pilar){
 
 </script>
 <script src="lomaz-admin-nav.js" defer></script>
+<script>
+/* ===== Plan de Marca (tablero editable con avance compartido) ===== */
+(function(){
+let pmFases=[], pmTareas=[], pmAvance={}, pmLoaded=false, pmWho='all', pmDelTarget=null;
+const PM_WHO={sal:'Salomón',ang:'Angélica',amb:'Los dos'};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nowIso=()=>new Date().toISOString();
+
+// Engancha la pestaña nueva al selector de pestañas existente
+const _sw=window.switchTab;
+window.switchTab=function(name){ if(typeof _sw==='function') _sw(name); const p=document.getElementById('panel-marca'); if(p) p.classList.toggle('active',name==='marca'); if(name==='marca') pmInit(); };
+async function pmInit(){ if(pmLoaded) return; pmLoaded=true; await pmLoad(); }
+
+window.pmLoad=async function(){
+  const host=document.getElementById('pmHost');
+  const [f,t,a]=await Promise.all([
+    sb.from('marketing_fases').select('*').order('orden'),
+    sb.from('marketing_tareas').select('*').eq('activo',true).order('orden'),
+    sb.from('marketing_avance').select('clave,hecho')
+  ]);
+  const err=f.error||t.error||a.error;
+  if(err){ host.innerHTML='<div class="empty">El plan a&uacute;n no est&aacute; en la base de datos. Ejecuta el archivo <b>plan_marca_supabase.sql</b> en Supabase y recarga esta p&aacute;gina.<br><small>'+esc(err.message)+'</small></div>'; return; }
+  pmFases=f.data||[]; pmTareas=t.data||[]; pmAvance={};
+  (a.data||[]).forEach(r=>{ if(r.hecho) pmAvance[r.clave]=true; });
+  pmFillSelects(); pmRender();
+};
+function pmFillSelects(){
+  const sel=document.getElementById('pmFase'); const cur=sel.value;
+  sel.innerHTML='<option value="">Todas las fases</option>'+pmFases.map(f=>'<option value="'+esc(f.id)+'">'+esc(f.nombre)+'</option>').join(''); sel.value=cur;
+  document.getElementById('pmEFase').innerHTML=pmFases.map(f=>'<option value="'+esc(f.id)+'">'+esc(f.nombre)+'</option>').join('');
+  const grupos=[...new Set(pmTareas.map(t=>t.grupo).filter(Boolean))];
+  document.getElementById('pmGrupos').innerHTML=grupos.map(g=>'<option value="'+esc(g)+'">').join('');
+  const tipos=[...new Set(pmTareas.map(t=>t.tipo).filter(Boolean))];
+  document.getElementById('pmTipos').innerHTML=tipos.map(g=>'<option value="'+esc(g)+'">').join('');
+}
+function pmDoneCount(t){ if(!t.repetir) return pmAvance[t.id]?1:0; let n=0; for(let i=0;i<t.repetir;i++) if(pmAvance[t.id+':'+i]) n++; return n; }
+function pmIsDone(t){ return t.repetir? pmDoneCount(t)===t.repetir : !!pmAvance[t.id]; }
+function pmVisible(t,q,hide){
+  if(pmWho!=='all' && t.quien!==pmWho) return false;
+  if(hide && pmIsDone(t)) return false;
+  if(q && !((t.titulo||'')+' '+(t.detalle||'')+' '+(t.grupo||'')+' '+(t.tipo||'')).toLowerCase().includes(q)) return false;
+  return true;
+}
+window.pmSetWho=function(w,btn){ pmWho=w; document.querySelectorAll('#panel-marca .pm-chip').forEach(b=>b.classList.toggle('on',b===btn)); pmRender(); };
+
+window.pmRender=function(){
+  const host=document.getElementById('pmHost');
+  const fFase=document.getElementById('pmFase').value, q=(document.getElementById('pmQ').value||'').toLowerCase().trim(), hide=document.getElementById('pmHide').checked;
+  const all=pmTareas.length, done=pmTareas.filter(pmIsDone).length, pct=all?Math.round(done/all*100):0;
+  let tiles='<div class="pm-tile total'+(all&&done===all?' done':'')+'"><div class="n">'+pct+'<small>%</small></div><div class="l">Avance total</div><div class="d">'+done+' de '+all+' tareas</div><div class="pm-bar"><span style="width:'+pct+'%"></span></div></div>';
+  for(const f of pmFases){ const ts=pmTareas.filter(t=>t.fase_id===f.id); const d=ts.filter(pmIsDone).length; const p=ts.length?Math.round(d/ts.length*100):0;
+    tiles+='<div class="pm-tile'+(ts.length&&d===ts.length?' done':'')+'"><div class="n">'+d+'<small>/'+ts.length+'</small></div><div class="l">'+esc(f.nombre)+'</div><div class="d">'+esc(f.fechas||'')+'</div><div class="pm-bar"><span style="width:'+p+'%"></span></div></div>'; }
+  document.getElementById('pmTiles').innerHTML=tiles;
+  if(!pmFases.length){ host.innerHTML='<div class="empty">No hay fases todav&iacute;a. Crea una con &laquo;+ Nueva fase&raquo; o ejecuta el SQL del plan.</div>'; return; }
+  const filtering=!!(q||hide||pmWho!=='all');
+  let html='';
+  for(const f of pmFases){
+    if(fFase && f.id!==fFase) continue;
+    const ts=pmTareas.filter(t=>t.fase_id===f.id);
+    const vis=ts.filter(t=>pmVisible(t,q,hide));
+    if(!fFase && filtering && !vis.length) continue;
+    const d=ts.filter(pmIsDone).length;
+    html+='<section class="pm-phase"><div class="pm-phase-head"><span class="pm-step"><i></i>'+esc(f.nombre)+'</span><span class="pm-dates">'+esc(f.fechas||'')+'</span><span class="pm-cnt">'+d+' / '+ts.length+' hechas</span><button class="pm-act" title="Editar fase" onclick="pmOpenFase(\''+esc(f.id)+'\')">&#9998; Fase</button></div>';
+    if(f.titulo) html+='<h2>'+esc(f.titulo)+'</h2>';
+    if(f.intro) html+='<p class="pm-intro">'+esc(f.intro)+'</p>';
+    if(f.meta) html+='<div class="pm-goal">'+esc(f.meta)+'</div>';
+    const grupos=[]; ts.forEach(t=>{ const g=t.grupo||'General'; if(!grupos.includes(g)) grupos.push(g); });
+    for(const g of grupos){
+      const gts=ts.filter(t=>(t.grupo||'General')===g && pmVisible(t,q,hide)); if(!gts.length) continue;
+      html+='<div class="pm-group">'+esc(g)+'</div><div class="pm-list">'+gts.map(pmTaskHtml).join('')+'</div>';
+    }
+    if(!vis.length) html+='<div class="empty" style="padding:.8rem">'+(ts.length?'Sin tareas con este filtro.':'Esta fase a&uacute;n no tiene tareas. Usa &laquo;+ Nueva tarea&raquo;.')+'</div>';
+    html+='</section>';
+  }
+  host.innerHTML=html||'<div class="empty">Sin tareas con este filtro.</div>';
+};
+function pmTaskHtml(t){
+  const done=pmIsDone(t); const id=esc(t.id);
+  let h='<div class="pm-task'+(done?' done':'')+'">';
+  if(!t.repetir) h+='<button class="pm-box" role="checkbox" aria-checked="'+done+'" title="Marcar hecha" onclick="pmToggle(\''+id+'\','+(!done)+')"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></button>';
+  else h+='<button class="pm-box" role="checkbox" aria-checked="'+done+'" title="Marcar toda la rutina" onclick="pmToggleAll(\''+id+'\','+t.repetir+','+(!done)+')"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></button>';
+  h+='<div><div class="t">'+esc(t.titulo)+'</div>'+(t.detalle?'<div class="dtl">'+esc(t.detalle)+'</div>':'')+'</div>';
+  h+='<div class="pm-tags">'+(t.fecha_txt?'<span class="pm-date">'+esc(t.fecha_txt)+'</span>':'')+'<span class="pm-who '+esc(t.quien)+'">'+esc(PM_WHO[t.quien]||t.quien||'')+'</span>'+(t.tipo?'<span class="pm-kind">'+esc(t.tipo)+'</span>':'')+'<button class="pm-act" title="Editar tarea" onclick="pmOpenEditor(\''+id+'\')">&#9998;</button></div>';
+  if(t.repetir){ h+='<div class="pm-dots">'; for(let i=0;i<t.repetir;i++){ const on=!!pmAvance[t.id+':'+i]; h+='<button class="d'+(on?' on':'')+'" title="Vez '+(i+1)+'" onclick="pmToggle(\''+id+':'+i+'\','+(!on)+')">'+(i+1)+'</button>'; } h+=(t.desde?'<span class="dl">desde el '+esc(t.desde)+'</span>':'')+'</div>'; }
+  return h+'</div>';
+}
+
+window.pmToggle=async function(clave,on){
+  if(on) pmAvance[clave]=true; else delete pmAvance[clave];
+  pmRender();
+  const r= on ? await sb.from('marketing_avance').upsert({clave:clave,hecho:true,hecho_por:uid,hecho_en:nowIso()})
+              : await sb.from('marketing_avance').delete().eq('clave',clave);
+  if(r.error) showAlert('No se pudo guardar el avance: '+r.error.message,'error');
+};
+window.pmToggleAll=async function(id,n,on){
+  const rows=[]; for(let i=0;i<n;i++){ const k=id+':'+i; if(on){ pmAvance[k]=true; rows.push({clave:k,hecho:true,hecho_por:uid,hecho_en:nowIso()}); } else delete pmAvance[k]; }
+  pmRender();
+  const r= on ? await sb.from('marketing_avance').upsert(rows) : await sb.from('marketing_avance').delete().like('clave',id+':%');
+  if(r.error) showAlert('No se pudo guardar el avance: '+r.error.message,'error');
+};
+
+/* ---- editor de tareas ---- */
+window.pmOpenEditor=function(id){
+  const t=id?pmTareas.find(x=>x.id===id):null;
+  document.getElementById('pmId').value=t?t.id:'';
+  document.getElementById('pmEditorTitle').innerHTML=t?'Editar <em>tarea</em>':'Nueva <em>tarea</em>';
+  document.getElementById('pmBtnDel').style.display=t?'inline-block':'none';
+  document.getElementById('pmEFase').value=t?t.fase_id:(document.getElementById('pmFase').value||(pmFases[0]?pmFases[0].id:''));
+  document.getElementById('pmEGrupo').value=t?(t.grupo||''):'';
+  document.getElementById('pmETitulo').value=t?(t.titulo||''):'';
+  document.getElementById('pmEDetalle').value=t?(t.detalle||''):'';
+  document.getElementById('pmEQuien').value=t?(t.quien||'sal'):'sal';
+  document.getElementById('pmEFecha').value=t?(t.fecha_txt||''):'';
+  document.getElementById('pmETipo').value=t?(t.tipo||''):'';
+  document.getElementById('pmERepetir').value=t?(t.repetir||0):0;
+  document.getElementById('pmEDesde').value=t?(t.desde||''):'';
+  document.getElementById('pmEditorOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('pmETitulo').focus(),60);
+};
+window.pmCloseEditor=function(){ document.getElementById('pmEditorOverlay').classList.remove('show'); };
+window.pmSave=async function(){
+  const id=document.getElementById('pmId').value;
+  const rec={ fase_id:document.getElementById('pmEFase').value, grupo:document.getElementById('pmEGrupo').value.trim()||null,
+    titulo:document.getElementById('pmETitulo').value.trim(), detalle:document.getElementById('pmEDetalle').value.trim()||null,
+    quien:document.getElementById('pmEQuien').value, fecha_txt:document.getElementById('pmEFecha').value.trim()||null,
+    tipo:document.getElementById('pmETipo').value.trim()||null, repetir:parseInt(document.getElementById('pmERepetir').value)||0,
+    desde:document.getElementById('pmEDesde').value.trim()||null, updated_at:nowIso() };
+  if(!rec.titulo){ showAlert('Escribe el nombre de la tarea.','error'); return; }
+  if(!rec.fase_id){ showAlert('Elige una fase.','error'); return; }
+  const btn=document.getElementById('pmBtnSave'); btn.disabled=true; btn.textContent='Guardando...';
+  let r;
+  if(id){ r=await sb.from('marketing_tareas').update(rec).eq('id',id); }
+  else { rec.id='t-'+Date.now().toString(36); rec.activo=true; const same=pmTareas.filter(t=>t.fase_id===rec.fase_id); rec.orden=(same.length?Math.max(...same.map(t=>t.orden||0)):0)+10; r=await sb.from('marketing_tareas').insert(rec); }
+  btn.disabled=false; btn.textContent='Guardar';
+  if(r.error){ showAlert('No se pudo guardar: '+r.error.message,'error'); return; }
+  pmCloseEditor(); showAlert(id?'Tarea actualizada':'Tarea creada','success'); await pmLoad();
+};
+
+/* ---- eliminar tarea ---- */
+window.pmOpenDel=function(){ pmDelTarget=document.getElementById('pmId').value; if(!pmDelTarget) return; document.getElementById('pmDelOverlay').classList.add('show'); };
+window.pmCloseDel=function(){ document.getElementById('pmDelOverlay').classList.remove('show'); };
+window.pmDoDel=async function(){
+  const id=pmDelTarget; if(!id) return;
+  const r=await sb.from('marketing_tareas').delete().eq('id',id);
+  if(r.error){ showAlert('No se pudo eliminar: '+r.error.message,'error'); return; }
+  await sb.from('marketing_avance').delete().eq('clave',id);
+  await sb.from('marketing_avance').delete().like('clave',id+':%');
+  pmCloseDel(); pmCloseEditor(); showAlert('Tarea eliminada','success'); await pmLoad();
+};
+
+/* ---- fases ---- */
+window.pmOpenFase=function(id){
+  const f=id?pmFases.find(x=>x.id===id):null;
+  document.getElementById('pmFId').value=f?f.id:'';
+  document.getElementById('pmFaseTitle').innerHTML=f?'Editar <em>fase</em>':'Nueva <em>fase</em>';
+  document.getElementById('pmFNombre').value=f?(f.nombre||''):'';
+  document.getElementById('pmFFechas').value=f?(f.fechas||''):'';
+  document.getElementById('pmFTitulo').value=f?(f.titulo||''):'';
+  document.getElementById('pmFMeta').value=f?(f.meta||''):'';
+  document.getElementById('pmFaseOverlay').classList.add('show');
+};
+window.pmCloseFase=function(){ document.getElementById('pmFaseOverlay').classList.remove('show'); };
+window.pmSaveFase=async function(){
+  const id=document.getElementById('pmFId').value;
+  const rec={ nombre:document.getElementById('pmFNombre').value.trim(), fechas:document.getElementById('pmFFechas').value.trim()||null, titulo:document.getElementById('pmFTitulo').value.trim()||null, meta:document.getElementById('pmFMeta').value.trim()||null };
+  if(!rec.nombre){ showAlert('Escribe el nombre de la fase.','error'); return; }
+  let r;
+  if(id){ r=await sb.from('marketing_fases').update(rec).eq('id',id); }
+  else { rec.id='fase-'+Date.now().toString(36); rec.orden=(pmFases.length?Math.max(...pmFases.map(f=>f.orden||0)):0)+1; r=await sb.from('marketing_fases').insert(rec); }
+  if(r.error){ showAlert('No se pudo guardar la fase: '+r.error.message,'error'); return; }
+  pmCloseFase(); showAlert('Fase guardada','success'); await pmLoad();
+};
+})();
+</script>
 </body>
 </html>
