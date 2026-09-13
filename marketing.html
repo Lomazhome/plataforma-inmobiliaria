@@ -171,6 +171,7 @@ textarea{resize:vertical;min-height:70px}
 .pm-who.ang{background:rgba(220,120,160,.18);color:#f0a9c9}
 .pm-who.amb{background:rgba(201,169,110,.18);color:var(--gold-l)}
 .pm-kind{background:rgba(255,255,255,.06);color:var(--txt-soft);border:1px solid var(--line)}
+.pm-kind.pm-min{color:var(--gold-l);border-color:rgba(201,169,110,.35)}
 .pm-act{background:transparent;border:1px solid var(--line);color:var(--txt-soft);border-radius:5px;padding:.15rem .45rem;cursor:pointer;font-size:.8rem;line-height:1.2}
 .pm-act:hover{border-color:var(--gold);color:#fff}
 .pm-dots{grid-column:2/4;display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;margin-top:.35rem}
@@ -409,7 +410,8 @@ textarea{resize:vertical;min-height:70px}
   <div class="fg"><label>Fecha (texto)</label><input type="text" id="pmEFecha" placeholder="Ej: Lun 21 sep"></div>
   <div class="fg"><label>Tipo</label><input type="text" id="pmETipo" list="pmTipos" placeholder="Ej: Reel"><datalist id="pmTipos"></datalist></div>
 </div>
-<div class="grid2">
+<div class="grid3">
+  <div class="fg"><label>Minutos estimados</label><input type="number" id="pmEMin" min="0" max="600" step="5" value="0"></div>
   <div class="fg"><label>Rutina: veces a marcar (0 = una sola vez)</label><input type="number" id="pmERepetir" min="0" max="60" value="0"></div>
   <div class="fg"><label>Desde (solo rutinas)</label><input type="text" id="pmEDesde" placeholder="Ej: 21 sep"></div>
 </div>
@@ -895,6 +897,7 @@ let pmFases=[], pmTareas=[], pmAvance={}, pmLoaded=false, pmWho='all', pmDelTarg
 const PM_WHO={sal:'Salomón',ang:'Angélica',amb:'Los dos'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nowIso=()=>new Date().toISOString();
+const fmtH=m=>m>=60?Math.floor(m/60)+' h'+(m%60?' '+(m%60)+' min':''):m+' min';
 
 // Engancha la pestaña nueva al selector de pestañas existente
 const _sw=window.switchTab;
@@ -950,7 +953,9 @@ window.pmRender=function(){
     const vis=ts.filter(t=>pmVisible(t,q,hide));
     if(!fFase && filtering && !vis.length) continue;
     const d=ts.filter(pmIsDone).length;
-    html+='<section class="pm-phase"><div class="pm-phase-head"><span class="pm-step"><i></i>'+esc(f.nombre)+'</span><span class="pm-dates">'+esc(f.fechas||'')+'</span><span class="pm-cnt">'+d+' / '+ts.length+' hechas</span><button class="pm-act" title="Editar fase" onclick="pmOpenFase(\''+esc(f.id)+'\')">&#9998; Fase</button></div>';
+    const mm={sal:0,ang:0}; ts.forEach(t=>{ if(t.repetir||!t.minutos) return; if(t.quien==='amb'){mm.sal+=t.minutos/2;mm.ang+=t.minutos/2;} else if(mm[t.quien]!=null) mm[t.quien]+=t.minutos; });
+    const carga=(mm.sal+mm.ang)>=60?'<span class="pm-dates" title="Suma de los minutos de las tareas con fecha (sin rutinas)">&#8776; Salom&oacute;n '+fmtH(Math.round(mm.sal))+' &middot; Ang&eacute;lica '+fmtH(Math.round(mm.ang))+'</span>':'';
+    html+='<section class="pm-phase"><div class="pm-phase-head"><span class="pm-step"><i></i>'+esc(f.nombre)+'</span><span class="pm-dates">'+esc(f.fechas||'')+'</span>'+carga+'<span class="pm-cnt">'+d+' / '+ts.length+' hechas</span><button class="pm-act" title="Editar fase" onclick="pmOpenFase(\''+esc(f.id)+'\')">&#9998; Fase</button></div>';
     if(f.titulo) html+='<h2>'+esc(f.titulo)+'</h2>';
     if(f.intro) html+='<p class="pm-intro">'+esc(f.intro)+'</p>';
     if(f.meta) html+='<div class="pm-goal">'+esc(f.meta)+'</div>';
@@ -970,7 +975,7 @@ function pmTaskHtml(t){
   if(!t.repetir) h+='<button class="pm-box" role="checkbox" aria-checked="'+done+'" title="Marcar hecha" onclick="pmToggle(\''+id+'\','+(!done)+')"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></button>';
   else h+='<button class="pm-box" role="checkbox" aria-checked="'+done+'" title="Marcar toda la rutina" onclick="pmToggleAll(\''+id+'\','+t.repetir+','+(!done)+')"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></button>';
   h+='<div><div class="t">'+esc(t.titulo)+'</div>'+(t.detalle?'<div class="dtl">'+esc(t.detalle)+'</div>':'')+'</div>';
-  h+='<div class="pm-tags">'+(t.fecha_txt?'<span class="pm-date">'+esc(t.fecha_txt)+'</span>':'')+'<span class="pm-who '+esc(t.quien)+'">'+esc(PM_WHO[t.quien]||t.quien||'')+'</span>'+(t.tipo?'<span class="pm-kind">'+esc(t.tipo)+'</span>':'')+'<button class="pm-act" title="Editar tarea" onclick="pmOpenEditor(\''+id+'\')">&#9998;</button></div>';
+  h+='<div class="pm-tags">'+(t.fecha_txt?'<span class="pm-date">'+esc(t.fecha_txt)+'</span>':'')+'<span class="pm-who '+esc(t.quien)+'">'+esc(PM_WHO[t.quien]||t.quien||'')+'</span>'+(t.tipo?'<span class="pm-kind">'+esc(t.tipo)+'</span>':'')+(t.minutos?'<span class="pm-kind pm-min">~'+t.minutos+' min</span>':'')+'<button class="pm-act" title="Editar tarea" onclick="pmOpenEditor(\''+id+'\')">&#9998;</button></div>';
   if(t.repetir){ h+='<div class="pm-dots">'; for(let i=0;i<t.repetir;i++){ const on=!!pmAvance[t.id+':'+i]; h+='<button class="d'+(on?' on':'')+'" title="Vez '+(i+1)+'" onclick="pmToggle(\''+id+':'+i+'\','+(!on)+')">'+(i+1)+'</button>'; } h+=(t.desde?'<span class="dl">desde el '+esc(t.desde)+'</span>':'')+'</div>'; }
   return h+'</div>';
 }
@@ -1003,6 +1008,7 @@ window.pmOpenEditor=function(id){
   document.getElementById('pmEFecha').value=t?(t.fecha_txt||''):'';
   document.getElementById('pmETipo').value=t?(t.tipo||''):'';
   document.getElementById('pmERepetir').value=t?(t.repetir||0):0;
+  document.getElementById('pmEMin').value=t?(t.minutos||0):0;
   document.getElementById('pmEDesde').value=t?(t.desde||''):'';
   document.getElementById('pmEditorOverlay').classList.add('show');
   setTimeout(()=>document.getElementById('pmETitulo').focus(),60);
@@ -1014,7 +1020,7 @@ window.pmSave=async function(){
     titulo:document.getElementById('pmETitulo').value.trim(), detalle:document.getElementById('pmEDetalle').value.trim()||null,
     quien:document.getElementById('pmEQuien').value, fecha_txt:document.getElementById('pmEFecha').value.trim()||null,
     tipo:document.getElementById('pmETipo').value.trim()||null, repetir:parseInt(document.getElementById('pmERepetir').value)||0,
-    desde:document.getElementById('pmEDesde').value.trim()||null, updated_at:nowIso() };
+    desde:document.getElementById('pmEDesde').value.trim()||null, minutos:parseInt(document.getElementById('pmEMin').value)||0, updated_at:nowIso() };
   if(!rec.titulo){ showAlert('Escribe el nombre de la tarea.','error'); return; }
   if(!rec.fase_id){ showAlert('Elige una fase.','error'); return; }
   const btn=document.getElementById('pmBtnSave'); btn.disabled=true; btn.textContent='Guardando...';
