@@ -420,7 +420,7 @@ async function testPortal(portal){
   // Metrocuadrado: verificacion real contra su API (antes solo mostraba un mensaje de adorno)
   if(portal==='metrocuadrado'){
     try {
-      const { data: est, error: errEst } = await sb.functions.invoke('metrocuadrado-integracion/estado?t='+Date.now(), { method: 'GET' });
+      const { data: est, error: errEst } = await sb.functions.invoke('metrocuadrado-integracion/estado?forzar=1&t='+Date.now(), { method: 'GET' }); // forzar=1: el boton Probar si reintenta aunque haya un rechazo reciente (un solo intento)
       if(errEst || !est){
         resultEl.className='test-result fail';
         resultEl.textContent='No se pudo verificar con Metrocuadrado. Intenta de nuevo en un momento.';
