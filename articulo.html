@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Articulo | LoMaz Home</title>
-<meta name="description" content="Articulo del blog inmobiliario de LoMaz Home."/>
+<title>Artículo | LoMaz Home</title>
+<meta name="description" content="Artículo del blog inmobiliario de LoMaz Home."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -63,13 +63,13 @@ nav{background:rgba(13,27,46,0.97);backdrop-filter:blur(12px);border-bottom:1px 
 </ul>
 </nav>
 <div id="art-root">
-<div class="state-msg"><p>Cargando articulo...</p></div>
+<div class="state-msg"><p>Cargando artículo...</p></div>
 </div>
 <footer class="site-footer">
 <div class="footer-inner">
 <div class="footer-brand">LoMaz <span>Home</span></div>
-<p>Inmobiliaria boutique en Bogota, Colombia.</p>
-<p class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</p>
+<p>Inmobiliaria boutique en Bogotá, Colombia.</p>
+<p class="footer-copy">&copy; <span id="footer-year">2026</span> LoMaz Home. Todos los derechos reservados.</p>
 </div>
 </footer>
 <script src="config.js"></script>
@@ -79,6 +79,7 @@ var SB_URL=(window.SUPABASE_URL)||"https://lniouebpuuuqctrgxoiw.supabase.co";
 var SB_KEY=(window.SUPABASE_ANON_KEY)||"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var root=document.getElementById("art-root");
+var fy=document.getElementById("footer-year"); if(fy){fy.textContent=new Date().getFullYear();}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function fmtDate(iso){
 if(!iso)return "";
@@ -89,8 +90,8 @@ return d.getDate()+" de "+meses[d.getMonth()]+" de "+d.getFullYear();
 }catch(e){return "";}
 }
 function notFound(){
-root.innerHTML='<div class="state-msg"><h2>Articulo no encontrado</h2><p>El articulo que buscas no existe o fue removido.</p><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
-document.title="Articulo no encontrado | LoMaz Home";
+root.innerHTML='<div class="state-msg"><h2>Este artículo está en preparación</h2><p>Estamos reescribiendo nuestras guías para que cada una sea completa, verificada y útil de verdad. Mientras tanto, revisa las propiedades disponibles o usa la calculadora.</p><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
+document.title="Artículo en preparación | LoMaz Home";
 }
 function render(a){
 document.title=a.titulo+" | LoMaz Home";
@@ -127,7 +128,7 @@ if(res.error)throw res.error;
 if(!res.data||!res.data.length){notFound();return;}
 render(res.data[0]);
 }catch(e){
-root.innerHTML='<div class="state-msg"><h2>No pudimos cargar el articulo</h2><p>Intenta de nuevo en un momento.</p><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
+root.innerHTML='<div class="state-msg"><h2>No pudimos cargar el artículo</h2><p>Intenta de nuevo en un momento.</p><a class="art-back" href="blog.html">&larr; Volver al blog</a></div>';
 }
 }
 load();

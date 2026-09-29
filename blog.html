@@ -8,9 +8,14 @@
 <meta name="keywords" content="blog inmobiliario Bogotá, cómo arrendar apartamento Bogotá, requisitos comprar vivienda Colombia, crédito hipotecario Colombia, mejores barrios Bogotá"/>
 <meta property="og:title" content="Blog Inmobiliario | LoMaz Home"/>
 <meta property="og:description" content="Guías expertas sobre el mercado inmobiliario de Bogotá y Colombia."/>
-<meta property="og:image" content="https://plataforma-inmobiliaria-two.vercel.app/og-image.jpg"/>
+<meta property="og:url" content="https://www.lomazhome.com/blog.html"/>
+<meta property="og:image" content="https://www.lomazhome.com/og-blog.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta property="og:type" content="website"/>
+<meta property="og:locale" content="es_CO"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.lomazhome.com/og-blog.jpg"/>
 <link rel="canonical" href="https://www.lomazhome.com/blog.html"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -100,6 +105,18 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 .nl-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
 .reveal.visible{opacity:1;transform:none;}
+[hidden]{display:none!important;}
+/* Estado "en preparación" del blog (cuando no hay artículos publicados) */
+.blog-empty{max-width:1200px;margin:4rem auto 0;padding:0 2rem 3rem;}
+.blog-empty-inner{max-width:760px;margin:0 auto;text-align:center;}
+.blog-empty .section-title{margin-bottom:1.2rem;}
+.blog-empty-text{color:var(--muted);line-height:1.8;font-size:1rem;margin:0 auto 2rem;max-width:640px;}
+.blog-empty-text strong{color:var(--navy);font-weight:600;}
+.blog-empty-actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-bottom:1.5rem;}
+.feat-cta--dark{color:var(--navy);border-color:var(--gold);justify-content:center;min-height:44px;}
+.feat-cta--dark:hover{background:var(--gold);color:var(--navy);}
+.blog-empty-note{font-size:.85rem;color:var(--muted);}
+@media(max-width:600px){.blog-empty{margin-top:3rem;padding:0 1.2rem 2rem;}.blog-empty-actions a{flex:1 1 100%;}}
 .aria-fab{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;background:var(--navy);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;box-shadow:0 4px 20px rgba(13,27,46,.35);transition:all .25s;}
 .aria-fab:hover{background:var(--gold);transform:scale(1.08);}
 .aria-fab span{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--cream);}
@@ -211,7 +228,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
     <li><a href="contacto.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Contacto</a></li>
   </ul>
   <a href="login.html" style="border:1px solid #C4992A;color:#F4E5C2;padding:.5rem 1.2rem;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .3s">Acceso Asesores</a>
-  <button class="nav-ham" id="nav-ham" aria-label="Abrir menu" aria-expanded="false" onclick="var n=document.getElementById('nav-links');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.classList.toggle('is-open',o);"><span></span><span></span><span></span></button>
+  <button class="nav-ham" id="nav-ham" aria-label="Abrir menú" aria-expanded="false" onclick="var n=document.getElementById('nav-links');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.classList.toggle('is-open',o);"><span></span><span></span><span></span></button>
 </nav>
 <section class="blog-hero">
   <p class="blog-hero-eyebrow">Blog Inmobiliario</p>
@@ -219,7 +236,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
   <p class="blog-hero-sub">Guías expertas sobre el mercado inmobiliario de Bogotá y Colombia. Todo lo que necesitas saber antes de arrendar, comprar o vender.</p>
 </section>
 <div class="gold-div"></div>
-<div class="cat-bar">
+<div class="cat-bar" id="cat-bar" hidden>
   <div class="cat-bar-inner">
     <span class="cat-label">Temas:</span>
     <button class="cat-chip active" data-cat="" onclick="filterCat(this)">Todos</button>
@@ -229,187 +246,44 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
     <button class="cat-chip" data-cat="Mercado" onclick="filterCat(this)">Mercado</button>
     <button class="cat-chip" data-cat="Zonas" onclick="filterCat(this)">Zonas</button>
     <button class="cat-chip" data-cat="Trámites" onclick="filterCat(this)">Trámites</button>
-    <input type="search" class="cat-search" placeholder="Buscar por tema..." aria-label="Buscar articulos por tema" oninput="filterSearch(this)">
+    <input type="search" class="cat-search" placeholder="Buscar por tema..." aria-label="Buscar artículos por tema" oninput="filterSearch(this)">
   </div>
 </div>
-<section class="featured-section reveal">
+<!-- Estado "en preparación": se muestra solo cuando no hay artículos publicados en Supabase -->
+<section class="blog-empty" id="blog-empty" hidden>
+  <div class="blog-empty-inner">
+    <p class="section-eyebrow">N&deg;01 &mdash; En preparación</p>
+    <h2 class="section-title">Estamos escribiendo las guías más completas para arrendar y comprar en Bogotá</h2>
+    <p class="blog-empty-text">Cada guía se publica solo cuando está terminada: con la ley citada, las cifras verificadas y los consejos que les damos a nuestros clientes en Bogotá. La primera, <strong>Cómo arrendar un apartamento en Bogotá</strong>, está en camino.</p>
+    <div class="blog-empty-actions">
+      <a href="propiedades.html" class="feat-cta feat-cta--dark">Ver propiedades</a>
+      <a href="calculadora.html" class="feat-cta feat-cta--dark">Usar la calculadora</a>
+    </div>
+    <p class="blog-empty-note">¿Quieres que te avisemos cuando salga? Déjanos tu correo aquí abajo.</p>
+  </div>
+</section>
+<!-- Artículo destacado y catálogo: se llenan desde Supabase (tabla articulos_blog) -->
+<section class="featured-section reveal" id="featured-section" hidden>
   <p class="section-eyebrow">N&deg;01 &mdash; Destacado</p>
   <h2 class="section-title">Artículo de la semana</h2>
-  <a href="/blog/contrato-arrendamiento-ley-820-colombia/" class="featured-card" data-cat="Arrendamiento">
-    <div class="featured-img">
-      <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80&auto=format" alt="Cómo arrendar un apartamento en Bogotá paso a paso" loading="lazy"/>
-      <span class="feat-badge">Arrendamiento</span>
-    </div>
-    <div class="featured-body">
-      <p class="feat-cat">Guía completa &middot; 2026</p>
-      <h3 class="feat-title">Cómo arrendar un apartamento en Bogotá: guía paso a paso</h3>
-      <p class="feat-excerpt">Desde los documentos que necesitas hasta la firma del contrato, esta guía cubre cada etapa del proceso de arrendamiento en la capital colombiana con consejos prácticos de nuestros asesores.</p>
-      <div class="feat-meta">
-        <span class="feat-date">Mayo 2026</span>
-        <span class="feat-read">&#128338; 8 min de lectura</span>
-      </div>
-      <span class="feat-cta">Leer artículo &rarr;</span>
-    </div>
-  </a>
+  <a href="blog.html" class="featured-card" data-cat=""></a>
 </section>
-<div class="gold-div" style="margin:3rem 0 0;"></div>
-<section class="blog-section">
+<div class="gold-div" id="catalog-divider" style="margin:3rem 0 0;" hidden></div>
+<section class="blog-section" id="catalog-section" hidden>
   <p class="section-eyebrow">N&deg;02 &mdash; Catálogo</p>
   <h2 class="section-title">Todos los artículos</h2>
-  <div class="blog-grid" id="blog-grid">
-    <article class="blog-card reveal" data-cat="Compraventa">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1582407947304-fd86f28f5dc6?w=600&q=80&auto=format" alt="Requisitos para comprar vivienda en Colombia 2026" loading="lazy"/>
-        <span class="blog-card-cat">Compraventa</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Requisitos para comprar vivienda en Colombia en 2026</h3>
-        <p class="blog-card-excerpt">Documentos, capacidad de endeudamiento, subsidios y todo lo que debes preparar antes de iniciar la búsqueda de tu casa o apartamento.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Abril 2026 &middot; 7 min</span>
-          <a href="/blog/como-comprar-apartamento-bogota-2026/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Financiación">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&q=80&auto=format" alt="Crédito hipotecario en Colombia guía 2026" loading="lazy"/>
-        <span class="blog-card-cat">Financiación</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Crédito hipotecario en Colombia: tasas, plazos y cómo aplicar en 2026</h3>
-        <p class="blog-card-excerpt">Comparamos las tasas de los principales bancos colombianos y te explicamos paso a paso cómo solicitar un crédito para vivienda.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Abril 2026 &middot; 9 min</span>
-          <a href="/blog/credito-hipotecario-colombia-2026/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Trámites">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80&auto=format" alt="Gastos notariales compraventa Colombia" loading="lazy"/>
-        <span class="blog-card-cat">Trámites</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Gastos notariales en una compraventa: cuánto debes pagar en Colombia</h3>
-        <p class="blog-card-excerpt">Escritura, registro, retensión en la fuente, IVA notarial: desglosamos cada rubro y quién paga qué en una transacción inmobiliaria.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Marzo 2026 &middot; 6 min</span>
-          <a href="/blog/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Financiación">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80&auto=format" alt="Subsidio Mi Casa Ya 2026 Colombia" loading="lazy"/>
-        <span class="blog-card-cat">Financiación</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Subsidio Mi Casa Ya 2026: requisitos, montos y cómo aplicar</h3>
-        <p class="blog-card-excerpt">El programa gubernamental de subsidios para vivienda nueva en Colombia. Todo lo que necesitas saber para acceder al beneficio este año.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Marzo 2026 &middot; 8 min</span>
-          <a href="/blog/subsidio-mi-casa-ya-2026-como-aplicar/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Compraventa">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1586880244406-556ebe35f282?w=600&q=80&auto=format" alt="Documentos para vender una propiedad en Colombia" loading="lazy"/>
-        <span class="blog-card-cat">Compraventa</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Documentos indispensables para vender una propiedad en Colombia</h3>
-        <p class="blog-card-excerpt">Certificado de tradición, paz y salvo predial, promesa de compraventa y más. La lista completa para vendedores en 2026.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Febrero 2026 &middot; 5 min</span>
-          <a href="/blog/como-vender-apartamento-rapido-bogota/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Mercado">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80&auto=format" alt="Cuánto cuesta el metro cuadrado en Bogotá 2026" loading="lazy"/>
-        <span class="blog-card-cat">Mercado</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Cuánto cuesta el metro cuadrado en Bogotá por barrio en 2026</h3>
-        <p class="blog-card-excerpt">Análisis por zona: Chapinero, Usaquén, Chicó, Suba, Kennedy y más. Comparativa de precios para tomar decisiones informadas.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Febrero 2026 &middot; 7 min</span>
-          <a href="/blog/mejores-barrios-invertir-bogota-2026/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Zonas">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1587818093010-1c574d56730e?w=600&q=80&auto=format" alt="Mejores barrios para vivir en Bogotá" loading="lazy"/>
-        <span class="blog-card-cat">Zonas</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Los mejores barrios para vivir en Bogotá en 2026</h3>
-        <p class="blog-card-excerpt">Seguridad, accesibilidad, restaurantes, parques y calidad de vida: evaluamos los 8 barrios preferidos por familias y profesionales en Bogotá.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Enero 2026 &middot; 10 min</span>
-          <a href="/blog/mejores-barrios-invertir-bogota-2026/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Trámites">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80&auto=format" alt="Impuesto predial Bogotá cómo pagar" loading="lazy"/>
-        <span class="blog-card-cat">Trámites</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Impuesto predial Bogotá 2026: cómo calcular y dónde pagar</h3>
-        <p class="blog-card-excerpt">Fechas límite, descuentos por pronto pago y el paso a paso para liquidar tu impuesto predial en Bogotá este año sin contratiempos.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Enero 2026 &middot; 5 min</span>
-          <a href="/blog/retencion-en-la-fuente-venta-inmueble/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-    <article class="blog-card reveal" data-cat="Arrendamiento">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80&auto=format" alt="Arriendo seguro en Bogotá cómo protegerse" loading="lazy"/>
-        <span class="blog-card-cat">Arrendamiento</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Arriendo seguro en Bogotá: cómo protegerte como propietario o inquilino</h3>
-        <p class="blog-card-excerpt">Póliza de arrendamiento, contratos legales, cláusulas clave y derechos y deberes de ambas partes según la ley colombiana vigente.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Diciembre 2025 &middot; 8 min</span>
-          <a href="/blog/contrato-arrendamiento-ley-820-colombia/" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-
-    <article class="blog-card reveal">
-      <div class="blog-card-img">
-        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format" alt="Integración de inmuebles LoMaz Home con Fincaraiz" loading="lazy"/>
-        <span class="blog-card-cat">Trámites</span>
-      </div>
-      <div class="blog-card-body">
-        <h3 class="blog-card-title">Cómo publicar tus inmuebles en Fincaraiz: guía de integración para LoMaz Home</h3>
-        <p class="blog-card-excerpt">Paso a paso para conectar el portafolio de LoMaz Home con el portal Fincaraiz: documentación técnica, validación de campos y prueba en producción.</p>
-        <div class="blog-card-footer">
-          <span class="blog-card-date">Mayo 2026 &middot; 5 min</span>
-          <a href="blog-fincaraiz.html" class="blog-card-link">Leer &rarr;</a>
-        </div>
-      </div>
-    </article>
-  </div>
+  <div class="blog-grid" id="blog-grid"></div>
 </section>
 <section class="quote-section reveal">
   <div class="quote-inner">
     <div class="quote-mark">&#8220;</div>
-    <p class="quote-text">Comprar o arrendar una propiedad es una de las decisiones más importantes de tu vida. Informárte bien es el primer paso hacia una elección que realmente te represente.</p>
+    <p class="quote-text">Comprar o arrendar una propiedad es una de las decisiones más importantes de tu vida. Informarte bien es el primer paso hacia una elección que realmente te represente.</p>
     <p class="quote-author">Equipo LoMaz Home &middot; Asesores Inmobiliarios</p>
   </div>
 </section>
 <section class="nl-section reveal">
   <div class="nl-inner">
-    <p class="nl-eyebrow">N&deg;03 &mdash; Newsletter</p>
+    <p class="nl-eyebrow" id="nl-eyebrow">N&deg;03 &mdash; Newsletter</p>
     <h2 class="nl-title">Recibe consejos inmobiliarios cada semana</h2>
     <p class="nl-sub">Artículos, análisis de mercado y oportunidades de inversión directo en tu bandeja de entrada. Sin spam.</p>
     <form class="nl-form" onsubmit="handleNL(event)">
@@ -429,7 +303,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
         <div class="footer-social">
           <a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">&#128222;</a>
           <a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email">&#9993;</a>
-          <a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a>
+          <a href="https://www.instagram.com/lomazhome" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a>
         </div>
       </div>
       <div class="footer-col">
@@ -445,10 +319,10 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
       <div class="footer-col">
         <h4>Blog</h4>
         <ul>
-          <li><a href="blog.html">Cómo arrendar</a></li>
-          <li><a href="blog.html">Crédito hipotecario</a></li>
-          <li><a href="blog.html">Mejores barrios</a></li>
-          <li><a href="blog.html">Mi Casa Ya</a></li>
+          <li><a href="blog.html?cat=Arrendamiento">Arrendamiento</a></li>
+          <li><a href="blog.html?cat=Compraventa">Compraventa</a></li>
+          <li><a href="blog.html?cat=Financiación">Financiación</a></li>
+          <li><a href="blog.html?cat=Trámites">Trámites</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -461,7 +335,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</span>
+      <span class="footer-copy">&copy; <span id="footer-year">2026</span> LoMaz Home. Todos los derechos reservados.</span>
       <span class="footer-city">Bogotá &middot; Desde 2024</span>
       <a href="login.html" class="footer-admin-link">Acceso asesores</a>
     </div>
@@ -587,7 +461,7 @@ function processAria(txt){
     addBotMsg("Tenemos propiedades en arriendo en Bogotá. Puedes ver el catálogo completo aquí: <a href='propiedades.html?tipo=arriendo' style='color:var(--gold)'>Ver propiedades en arriendo</a>. También te recomiendo leer nuestra <a href='blog/como-arrendar-apartamento-bogota.html' style='color:var(--gold)'>guía completa</a>.");return;
   }
   if(t.includes("comprar")||t.includes("venta")){
-    addBotMsg("Excelente decisión. Tenemos propiedades en venta en Bogotá: <a href='propiedades.html?tipo=venta' style='color:var(--gold)'>Ver propiedades en venta</a>. También puedes leer sobre los <a href='blog/requisitos-comprar-vivienda-colombia.html' style='color:var(--gold)'>requisitos para comprar vivienda</a>.");return;
+    addBotMsg("Excelente decisión. Tenemos propiedades en venta en Bogotá: <a href='propiedades.html?tipo=venta' style='color:var(--gold)'>Ver propiedades en venta</a>. También puedes leer sobre los <a href='blog.html?cat=Compraventa' style='color:var(--gold)'>requisitos para comprar vivienda</a>.");return;
   }
   if(t.includes("propiedad")||t.includes("catálogo")||t.includes("ver")){
     addBotMsg("Puedes explorar todo nuestro catálogo en: <a href='propiedades.html' style='color:var(--gold)'>Ver todas las propiedades</a>. ¿Tienes alguna preferencia de zona o tipo de inmueble?");return;
@@ -598,32 +472,6 @@ const revObs=new IntersectionObserver((entries)=>{
   entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("visible"),i*80);revObs.unobserve(e.target);}});
 },{threshold:.1});
 document.querySelectorAll(".reveal").forEach(el=>revObs.observe(el));
-const articles=[
-  {name:"Cómo arrendar un apartamento en Bogotá",url:"blog/como-arrendar-apartamento-bogota.html",date:"2026-05-01"},
-  {name:"Requisitos para comprar vivienda en Colombia",url:"blog/requisitos-comprar-vivienda-colombia.html",date:"2026-04-15"},
-  {name:"Crédito hipotecario en Colombia",url:"blog/credito-hipotecario-colombia.html",date:"2026-04-10"},
-  {name:"Gastos notariales en Colombia",url:"blog/gastos-notariales-compraventa-colombia.html",date:"2026-03-20"},
-  {name:"Subsidio Mi Casa Ya 2026",url:"blog/subsidio-mi-casa-ya-2026.html",date:"2026-03-10"},
-  {name:"Documentos para vender una propiedad",url:"blog/documentos-para-vender-propiedad.html",date:"2026-02-20"},
-  {name:"Metro cuadrado en Bogotá",url:"blog/metro-cuadrado-bogota-por-barrio.html",date:"2026-02-10"},
-  {name:"Mejores barrios de Bogotá",url:"blog/mejores-barrios-para-vivir-bogota.html",date:"2026-01-25"},
-  {name:"Impuesto predial Bogotá",url:"blog/impuesto-predial-bogota.html",date:"2026-01-15"},
-  {name:"Arriendo seguro en Bogotá",url:"blog/arriendo-seguro-bogota.html",date:"2025-12-20"}
-];
-const blogSchema={
-  "@context":"https://schema.org","@type":"Blog",
-  "name":"Blog LoMaz Home","url":"https://www.lomazhome.com/blog.html",
-  "description":"Blog inmobiliario de Bogotá con guías, consejos y análisis del mercado",
-  "publisher":{"@type":"Organization","name":"LoMaz Home","url":"https://www.lomazhome.com"},
-  "blogPost":articles.map(a=>({
-    "@type":"BlogPosting","headline":a.name,
-    "url":"https://www.lomazhome.com/"+a.url,
-    "datePublished":a.date,
-    "author":{"@type":"Organization","name":"LoMaz Home"},
-    "publisher":{"@type":"Organization","name":"LoMaz Home"}
-  }))
-};
-const sc=document.createElement("script");sc.type="application/ld+json";sc.text=JSON.stringify(blogSchema);document.head.appendChild(sc);
 
 // URL PARAMS - AUTO-ACTIVATE BLOG CATEGORY FILTERS
 (function applyBlogUrlFilters() {
@@ -692,51 +540,87 @@ document.addEventListener("DOMContentLoaded", function() {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
+  // Año automático en el pie de página
+  var fy=document.getElementById("footer-year"); if(fy){fy.textContent=new Date().getFullYear();}
+
   function ready(fn){ if(document.readyState!=="loading"){fn();} else {document.addEventListener("DOMContentLoaded",fn);} }
+  function show(id,on){ var el=document.getElementById(id); if(!el)return; if(on){el.removeAttribute("hidden");el.classList.add("visible");} else {el.setAttribute("hidden","");} }
+  function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+  function fmtDate(iso){ if(!iso)return ""; try{ var m=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]; var d=new Date(iso); return m[d.getMonth()]+" "+d.getFullYear(); }catch(e){return "";} }
+  var PLACEHOLDER="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format";
+
+  // Sin artículos publicados: mostramos el aviso "en preparación" y ocultamos filtros, destacado y catálogo
+  function renderEmpty(){
+    show("blog-empty",true); show("cat-bar",false); show("featured-section",false); show("catalog-divider",false); show("catalog-section",false);
+    var nl=document.getElementById("nl-eyebrow"); if(nl){nl.innerHTML="N&deg;02 &mdash; Newsletter";}
+    injectSchema([]);
+  }
+  function card(a){
+    var img=a.imagen_url||PLACEHOLDER;
+    var meta=fmtDate(a.published_at||a.created_at)+(a.tiempo_lectura?(" &middot; "+a.tiempo_lectura+" min"):"");
+    return '<article class="blog-card reveal visible" data-cat="'+esc(a.categoria||"")+'">'+
+      '<div class="blog-card-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
+      (a.categoria?'<span class="blog-card-cat">'+esc(a.categoria)+'</span>':"")+'</div>'+
+      '<div class="blog-card-body">'+
+      '<h3 class="blog-card-title">'+esc(a.titulo)+'</h3>'+
+      '<p class="blog-card-excerpt">'+esc(a.extracto||"")+'</p>'+
+      '<div class="blog-card-footer"><span class="blog-card-date">'+meta+'</span>'+
+      '<a href="articulo.html?slug='+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Leer &rarr;</a></div>'+
+      '</div></article>';
+  }
+  function featured(a){
+    var fc=document.querySelector(".featured-card"); if(!fc)return;
+    var img=a.imagen_url||PLACEHOLDER;
+    fc.setAttribute("href","articulo.html?slug="+encodeURIComponent(a.slug||""));
+    fc.setAttribute("data-cat",a.categoria||"");
+    fc.innerHTML='<div class="featured-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
+      (a.categoria?'<span class="feat-badge">'+esc(a.categoria)+'</span>':"")+'</div>'+
+      '<div class="featured-body"><p class="feat-cat">'+esc(a.categoria||"Artículo")+' &middot; '+fmtDate(a.published_at||a.created_at)+'</p>'+
+      '<h3 class="feat-title">'+esc(a.titulo)+'</h3>'+
+      '<p class="feat-excerpt">'+esc(a.extracto||"")+'</p>'+
+      '<div class="feat-meta"><span class="feat-date">'+fmtDate(a.published_at||a.created_at)+'</span>'+
+      (a.tiempo_lectura?'<span class="feat-read">&#128338; '+a.tiempo_lectura+' min de lectura</span>':"")+'</div>'+
+      '<span class="feat-cta">Leer artículo &rarr;</span></div>';
+  }
+  // Datos estructurados (schema.org) generados con los artículos reales; sin artículos, solo el blog
+  function injectSchema(arts){
+    var s={"@context":"https://schema.org","@type":"Blog","name":"Blog LoMaz Home","url":"https://www.lomazhome.com/blog.html",
+      "description":"Blog inmobiliario de Bogotá con guías para arrendar, comprar y vender vivienda en Colombia",
+      "publisher":{"@type":"Organization","name":"LoMaz Home","url":"https://www.lomazhome.com"}};
+    if(arts&&arts.length){
+      s.blogPost=arts.map(function(a){
+        var autor=(a.autor_nombre&&!/lomaz/i.test(a.autor_nombre))?{"@type":"Person","name":a.autor_nombre}:{"@type":"Organization","name":"LoMaz Home"};
+        var post={"@type":"BlogPosting","headline":a.titulo,"url":"https://www.lomazhome.com/articulo.html?slug="+encodeURIComponent(a.slug||""),"author":autor,"publisher":{"@type":"Organization","name":"LoMaz Home"}};
+        if(a.published_at||a.created_at){post.datePublished=a.published_at||a.created_at;}
+        if(a.imagen_url){post.image=a.imagen_url;}
+        return post;
+      });
+    }
+    var sc=document.createElement("script"); sc.type="application/ld+json"; sc.text=JSON.stringify(s); document.head.appendChild(sc);
+  }
+  function renderList(arts){
+    var grid=document.getElementById("blog-grid");
+    featured(arts[0]);
+    if(grid){grid.innerHTML=arts.map(card).join("");}
+    show("blog-empty",false); show("cat-bar",true); show("featured-section",true); show("catalog-divider",true); show("catalog-section",true);
+    injectSchema(arts);
+    if(typeof applyBlogFilters==="function"){try{applyBlogFilters();}catch(e){}}
+  }
+
   ready(function(){
-    if(!window.supabase){return;}
+    var done=false;
+    function finish(fn){ if(done)return; done=true; fn(); }
+    // Si Supabase no responde en 6 segundos, mostramos el aviso en vez de una página en blanco
+    var timer=setTimeout(function(){ finish(renderEmpty); },6000);
+    if(!window.supabase){ clearTimeout(timer); finish(renderEmpty); return; }
     var SB_URL=(window.SUPABASE_URL)||"https://lniouebpuuuqctrgxoiw.supabase.co";
     var SB_KEY=(window.SUPABASE_ANON_KEY)||"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
     var sb=window.supabase.createClient(SB_URL,SB_KEY);
-    var grid=document.getElementById("blog-grid");
-    if(!grid){return;}
-    function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
-    function fmtDate(iso){ if(!iso)return ""; try{ var m=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]; var d=new Date(iso); return m[d.getMonth()]+" "+d.getFullYear(); }catch(e){return "";} }
-    function card(a){
-      var img=a.imagen_url||"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format";
-      var meta=fmtDate(a.published_at||a.created_at)+(a.tiempo_lectura?(" &middot; "+a.tiempo_lectura+" min"):"");
-      return '<article class="blog-card reveal visible" data-cat="'+esc(a.categoria||"")+'">'+
-        '<div class="blog-card-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
-        (a.categoria?'<span class="blog-card-cat">'+esc(a.categoria)+'</span>':"")+'</div>'+
-        '<div class="blog-card-body">'+
-        '<h3 class="blog-card-title">'+esc(a.titulo)+'</h3>'+
-        '<p class="blog-card-excerpt">'+esc(a.extracto||"")+'</p>'+
-        '<div class="blog-card-footer"><span class="blog-card-date">'+meta+'</span>'+
-        '<a href="articulo.html?slug='+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Leer &rarr;</a></div>'+
-        '</div></article>';
-    }
-    function featured(a){
-      var fc=document.querySelector(".featured-card");
-      if(!fc)return;
-      var img=a.imagen_url||"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80&auto=format";
-      fc.setAttribute("href","articulo.html?slug="+encodeURIComponent(a.slug||""));
-      fc.setAttribute("data-cat",a.categoria||"");
-      fc.innerHTML='<div class="featured-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
-        (a.categoria?'<span class="feat-badge">'+esc(a.categoria)+'</span>':"")+'</div>'+
-        '<div class="featured-body"><p class="feat-cat">'+esc(a.categoria||"Articulo")+' &middot; '+fmtDate(a.published_at||a.created_at)+'</p>'+
-        '<h3 class="feat-title">'+esc(a.titulo)+'</h3>'+
-        '<p class="feat-excerpt">'+esc(a.extracto||"")+'</p>'+
-        '<div class="feat-meta"><span class="feat-date">'+fmtDate(a.published_at||a.created_at)+'</span>'+
-        (a.tiempo_lectura?'<span class="feat-read">&#128338; '+a.tiempo_lectura+' min de lectura</span>':"")+'</div>'+
-        '<span class="feat-cta">Leer articulo &rarr;</span></div>';
-    }
     sb.from("articulos_blog").select("*").eq("estado","publicado").order("published_at",{ascending:false}).then(function(res){
-      if(res.error||!res.data||!res.data.length){return;}
-      var arts=res.data;
-      featured(arts[0]);
-      grid.innerHTML=arts.map(card).join("");
-      if(typeof applyBlogFilters==="function"){try{applyBlogFilters();}catch(e){}}
-    });
+      clearTimeout(timer);
+      if(res.error||!res.data||!res.data.length){ finish(renderEmpty); return; }
+      finish(function(){ renderList(res.data); });
+    }).catch(function(){ clearTimeout(timer); finish(renderEmpty); });
   });
 })();
 </script>

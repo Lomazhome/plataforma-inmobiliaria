@@ -311,7 +311,7 @@ const NAV = [
   {l:'Contacto',h:'contacto.html',d:[
     {i:'📞',l:'Hablar con un Asesor',s:'Asesoría personalizada',h:'contacto.html'},
     {i:'📍',l:'Nuestra Oficina',s:'Bogotá, Colombia',h:'contacto.html#ubicacion'},
-    {i:'✉️',l:'Escríbenos',s:'info@lomazhome.com',h:'mailto:info@lomazhome.com'},
+    {i:'✉️',l:'Escríbenos',s:'lomazhome@gmail.com',h:'mailto:lomazhome@gmail.com'},
   ]},
 ];
 

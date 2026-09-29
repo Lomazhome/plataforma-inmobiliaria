@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/blog/:path*",
+      "destination": "/blog.html",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/semaforo-del-inversionista",
