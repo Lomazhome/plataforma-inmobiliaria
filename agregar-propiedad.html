@@ -895,9 +895,12 @@ var tk = await sb.rpc("mc_create_ticket", {p_property_id: propId});
 if(tk.error){
 return {ok:false, msg:"No se pudo generar ticket: "+tk.error.message};
 }
+// Por el gateway va la anon key; la sesion del asesor viaja en x-user-token (base64) y ademas el ticket de un solo uso.
+var _hdr = {"Content-Type":"application/json", apikey: SB_KEY, Authorization:"Bearer "+SB_KEY};
+try{ var _s = await sb.auth.getSession(); var _at = _s && _s.data && _s.data.session ? _s.data.session.access_token : ""; if(_at) _hdr["x-user-token"] = btoa(_at); }catch(_e){}
 var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish", {
 method:"POST",
-headers:{"Content-Type":"application/json", Authorization:"Bearer "+SB_KEY},
+headers:_hdr,
 body: JSON.stringify({propertyId: propId, ticket: tk.data})
 });
 var json = await resp.json().catch(function(){return {};});
@@ -1537,7 +1540,10 @@ try {
   }
   async function llamar(path,body){
     var c=cli(); var key=(c&&c.supabaseKey)||"";
-    var resp=await fetch(FN+path,{ method:"POST", headers:{ "Content-Type":"application/json", apikey:key, Authorization:"Bearer "+key }, body:JSON.stringify(body) });
+    var hdr={ "Content-Type":"application/json", apikey:key, Authorization:"Bearer "+key };
+    // Metrocuadrado necesita saber que asesor hace el cambio: la sesion va en x-user-token (base64), no en Authorization (gateway).
+    if(String(path).indexOf("metrocuadrado")===0){ try{ var s=await c.auth.getSession(); var at=s&&s.data&&s.data.session?s.data.session.access_token:""; if(at) hdr["x-user-token"]=btoa(at); }catch(_e){} }
+    var resp=await fetch(FN+path,{ method:"POST", headers:hdr, body:JSON.stringify(body) });
     var j=null; try{ j=await resp.json(); }catch(_e){ j={}; }
     return { status:resp.status, json:(j||{}) };
   }
