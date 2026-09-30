@@ -213,6 +213,33 @@ textarea{resize:vertical;min-height:70px}
   .cev-mono{min-width:16px;height:16px;font-size:.58rem}
 }
 </style>
+<style id="fab-style">
+/* ===== Fabricacion de cada pieza + articulo madre ===== */
+.b-conf{background:rgba(179,157,219,.14);color:#cdbcf0;border:1px dashed rgba(179,157,219,.6)}
+.art-tag{display:inline-block;margin-top:.35rem;font-size:.64rem;font-weight:700;letter-spacing:.3px;padding:.14rem .55rem;border-radius:10px;background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.32);color:var(--gold-l);line-height:1.35}
+.fab{font-size:.7rem;color:var(--txt-soft);line-height:1.55;white-space:nowrap;margin-top:.35rem}
+.fab b{display:inline-block;min-width:3.9em;font-weight:600}
+.fab .fg-g b{color:#7fd1c7}.fab .fg-t b{color:#f0b27a}.fab .fg-e b{color:#c3a6e8}
+.fab-hint{font-size:.72rem;color:var(--txt-mute);margin:-.4rem 0 1rem;line-height:1.5}
+.cev-art{flex:0 0 auto;font-size:.54rem;font-weight:800;color:var(--gold-l);border:1px solid rgba(201,169,110,.45);border-radius:4px;padding:0 3px;line-height:1.35}
+.cal-evt.conf{border-left-style:dashed;opacity:.9}
+@media(min-width:701px){.cal-cell{min-width:0}.cal-evt .cev-t{white-space:normal;line-height:1.2;max-height:2.4em}#panel-plan .toolbar select{width:auto}#panel-plan .toolbar input{width:auto;flex:1 1 200px}}
+.cal-fab{display:flex;flex-wrap:wrap;gap:.22rem;margin-top:auto;padding-top:.15rem}
+.cfab{font-size:.58rem;font-weight:700;padding:.13rem .34rem;border-radius:4px;cursor:pointer;border:1px dashed;line-height:1.25;white-space:nowrap;background:transparent;font-family:var(--sans)}
+.cfab:hover{filter:brightness(1.2)}
+.cfab.g{color:#7fd1c7;border-color:rgba(127,209,199,.55);background:rgba(127,209,199,.08)}
+.cfab.t{color:#f0b27a;border-color:rgba(240,178,122,.55);background:rgba(240,178,122,.08)}
+.cfab.e{color:#c3a6e8;border-color:rgba(195,166,232,.55);background:rgba(195,166,232,.08)}
+.cfab .cf-s{display:none}
+.legend .lg-fab{display:inline-block;font-size:.6rem;font-weight:700;padding:.08rem .3rem;border-radius:4px;border:1px dashed;margin-right:.3rem}
+.fab-sec{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin:1rem 0 .4rem}
+.fab-sec.g{color:#7fd1c7}.fab-sec.t{color:#f0b27a}.fab-sec.e{color:#c3a6e8}
+.fab-item{display:block;width:100%;text-align:left;background:rgba(13,27,46,.55);border:1px solid var(--line);border-radius:var(--r-sm);padding:.6rem .8rem;margin-bottom:.4rem;cursor:pointer;color:var(--txt);font-family:var(--sans)}
+.fab-item:hover{border-color:var(--gold)}
+.fab-item .fi-t{font-size:.86rem;font-weight:600;color:#fff;line-height:1.35}
+.fab-item .fi-m{font-size:.72rem;color:var(--txt-soft);margin-top:.2rem}
+@media(max-width:700px){.cfab .cf-l{display:none}.cfab .cf-s{display:inline}.cev-art,.legend .lg-art{display:none}}
+</style>
 </head>
 <body>
 <div class="topbar">
@@ -247,7 +274,7 @@ textarea{resize:vertical;min-height:70px}
 <div class="alert" id="alert"></div>
 
 <div class="kpi-row">
-<div class="kpi"><div class="lbl">Volumen mensual</div><div class="num" id="kVol">0</div><div class="mini"><span><b id="kBorr">0</b> borrador</span><span><b id="kProg">0</b> prog.</span><span><b id="kPub">0</b> pub.</span></div></div>
+<div class="kpi"><div class="lbl">Volumen mensual</div><div class="num" id="kVol">0</div><div class="mini"><span><b id="kBorr">0</b> borrador</span><span><b id="kConf">0</b> por confirmar</span><span><b id="kProg">0</b> prog.</span><span><b id="kPub">0</b> pub.</span></div></div>
 <div class="kpi"><div class="lbl">Mix de redes</div><div class="num" id="kRedes">0</div><div class="mini" id="kRedesMini" style="font-size:.7rem">&mdash;</div></div>
 <div class="kpi"><div class="lbl">Balance de marca</div><div class="num" id="kMarcaTop">&mdash;</div><div class="mini" id="kMarcaMini">&mdash;</div></div>
 <div class="kpi"><div class="lbl">Pilares estrategicos</div><div class="num" id="kPilarTop">&mdash;</div><div class="mini" id="kPilarMini">&mdash;</div></div>
@@ -264,7 +291,8 @@ textarea{resize:vertical;min-height:70px}
 <div class="toolbar">
 <select id="fRed" onchange="render()"><option value="">Todas las redes</option></select>
 <select id="fEnfoque" onchange="render()"><option value="">Todos los enfoques</option></select>
-<select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>Borrador</option><option>Programado</option><option>Publicado</option></select>
+<select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>Borrador</option><option>Por confirmar</option><option>Programado</option><option>Publicado</option></select>
+<select id="fArt" onchange="render()"><option value="">Todos los art&iacute;culos</option></select>
 <input type="text" id="fSearch" placeholder="&#128269; Buscar tema, copy..." oninput="render()" autocomplete="off" style="min-width:200px">
 <div class="spacer"></div>
 <button class="btn btn-secondary" onclick="clearFilters()">Limpiar</button>
@@ -287,8 +315,16 @@ textarea{resize:vertical;min-height:70px}
 <span class="lg-sep">|</span>
 <span class="lg-grp">Estado</span>
 <span><i class="lg-dot" style="background:#a8a29e"></i>Borrador</span>
+<span><i class="lg-dot" style="background:#b39ddb"></i>Por confirmar</span>
 <span><i class="lg-dot" style="background:#c9a96e"></i>Programado</span>
 <span><i class="lg-dot" style="background:#28a745"></i>Publicado</span>
+<span class="lg-sep">|</span>
+<span class="lg-grp">Fabricaci&oacute;n</span>
+<span><b class="lg-fab" style="color:#7fd1c7;border-color:rgba(127,209,199,.55)">Guion</b>guion o texto</span>
+<span><b class="lg-fab" style="color:#f0b27a;border-color:rgba(240,178,122,.55)">Tomas</b>grabaci&oacute;n</span>
+<span><b class="lg-fab" style="color:#c3a6e8;border-color:rgba(195,166,232,.55)">Edici&oacute;n</b>edici&oacute;n o dise&ntilde;o</span>
+<span class="lg-sep lg-art">|</span>
+<span class="lg-art"><b class="cev-art" style="margin-right:.3rem">A1</b>sale del art&iacute;culo 1</span>
 </div>
 <div class="cal-summary" id="calSummary"></div>
 <div class="cal-grid" id="calGrid"></div>
@@ -357,8 +393,14 @@ textarea{resize:vertical;min-height:70px}
 <div class="grid3">
 <div class="fg"><label>Fecha</label><input type="date" id="eFecha"></div>
 <div class="fg"><label>Hora</label><input type="time" id="eHora"></div>
-<div class="fg"><label>Estado</label><select id="eEstado"><option>Borrador</option><option>Programado</option><option>Publicado</option></select></div>
+<div class="fg"><label>Estado</label><select id="eEstado"><option>Borrador</option><option>Por confirmar</option><option>Programado</option><option>Publicado</option></select></div>
 </div>
+<div class="grid3">
+<div class="fg"><label>Guion o texto</label><input type="date" id="eFGuion"></div>
+<div class="fg"><label>Grabaci&oacute;n</label><input type="date" id="eFGrab"></div>
+<div class="fg"><label>Edici&oacute;n o dise&ntilde;o</label><input type="date" id="eFEdic"></div>
+</div>
+<div class="fab-hint">Fechas de fabricaci&oacute;n: el d&iacute;a en que se escribe, se graba y se edita o dise&ntilde;a la pieza, antes de publicarla. Si un paso no aplica (un carrusel no se graba), d&eacute;jalo vac&iacute;o.</div>
 <div class="grid3">
 <div class="fg"><label>Red social</label><select id="eRed"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>YouTube</option><option>Threads</option><option>WhatsApp</option><option>X</option></select></div>
 <div class="fg"><label>Enfoque de marca</label><select id="eEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
@@ -374,13 +416,23 @@ textarea{resize:vertical;min-height:70px}
 <button type="button" class="btn btn-secondary" style="margin-top:.7rem" onclick="autollenarDesdeFuente()">&#8595; Traer datos al formulario</button>
 </div>
 <div class="fg full"><label>Titulo / Tema central</label><input type="text" id="eTitulo" placeholder="Ej: Tour exclusivo penthouse..."></div>
+<div class="fg full"><label>Art&iacute;culo madre</label><input type="text" id="eArticulo" list="dlArticulos" autocomplete="off" placeholder="Ej: 2 &middot; Cr&eacute;dito con el FNA (vac&iacute;o si la pieza no sale de un art&iacute;culo)"><datalist id="dlArticulos"></datalist></div>
 <div class="fg full"><label>Hook (gancho de apertura)</label><textarea id="eHook" placeholder="La primera linea que detiene el scroll..."></textarea></div>
 <div class="fg full"><label>Copy / Guion</label><textarea id="eCopy" placeholder="Cuerpo del post, guion o descripcion..." style="min-height:120px"></textarea></div>
 <div class="fg full"><label>Responsable</label><input type="text" id="eResp" placeholder="Ej: Salomon Mazabell / Equipo de contenido"></div>
+<div id="eMsg" style="display:none;font-size:.82rem;color:#ff8a93;background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);border-radius:var(--r-sm);padding:.6rem .8rem"></div>
 <div class="modal-btns">
 <button class="btn btn-secondary" onclick="closeEditor()">Cancelar</button>
 <button class="btn btn-primary" id="btnSave" onclick="savePost()">Guardar</button>
 </div>
+</div>
+</div>
+
+<div class="overlay" id="fabOverlay">
+<div class="modal" style="max-width:560px">
+<h3 id="fabTitle">Fabricaci&oacute;n <em>del d&iacute;a</em></h3>
+<div id="fabBody"></div>
+<div class="modal-btns"><button class="btn btn-secondary" onclick="closeFab()">Cerrar</button></div>
 </div>
 </div>
 
@@ -459,8 +511,31 @@ let uid=null, posts=[], delId=null;
 let calRef=new Date();
 
 const RED_ICON={TikTok:"\u{1F3B5}",Instagram:"\u{1F4F8}",Facebook:"\u{1F465}",LinkedIn:"\u{1F4BC}",YouTube:"\u{1F3AC}",Threads:"\u{1F9F5}",WhatsApp:"\u{1F4AC}",X:"\u{2716}"};
-const EST_BADGE={Borrador:"b-borr",Programado:"b-prog",Publicado:"b-pub"};
-const EST_COLOR={Borrador:"#a8a29e",Programado:"#c9a96e",Publicado:"#28a745"};
+const EST_BADGE={Borrador:"b-borr","Por confirmar":"b-conf",Programado:"b-prog",Publicado:"b-pub"};
+const EST_COLOR={Borrador:"#a8a29e","Por confirmar":"#b39ddb",Programado:"#c9a96e",Publicado:"#28a745"};
+
+/* ---- Fabricacion de cada pieza (guion, grabacion, edicion) y articulo madre ---- */
+const FAB=[
+  {k:"fecha_guion",c:"g",lab:"Guion",s:"G",nom:"Guion o texto"},
+  {k:"fecha_grabacion",c:"t",lab:"Tomas",s:"T",nom:"Grabación"},
+  {k:"fecha_edicion",c:"e",lab:"Edición",s:"E",nom:"Edición o diseño"}
+];
+const DIA_C=["dom","lun","mar","mié","jue","vie","sáb"];
+const DIA_L=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const MES_C=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MES_L=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function fCorta(f){if(!f)return "";const d=new Date(f+"T00:00:00");if(isNaN(d))return f;return DIA_C[d.getDay()]+" "+d.getDate()+" "+MES_C[d.getMonth()];}
+function fLarga(f){if(!f)return "";const d=new Date(f+"T00:00:00");if(isNaN(d))return f;return DIA_L[d.getDay()]+" "+d.getDate()+" de "+MES_L[d.getMonth()];}
+function artNum(a){const m=/^\s*(\d{1,3})\s*(?:[\u00b7.:\-\u2013\u2014]|$)/.exec(a||"");return m?m[1]:"";}
+function artLabel(a){return a?(artNum(a)?"Artículo "+a:a):"";}
+function artList(){return [...new Set(posts.map(p=>p.articulo_madre).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es",{numeric:true}));}
+function fillArtOptions(){
+  const list=artList();
+  const sel=document.getElementById("fArt");
+  if(sel){const cur=sel.value;sel.innerHTML='<option value="">Todos los artículos</option>'+list.map(a=>'<option value="'+escAttr(esc(a))+'">'+esc(artLabel(a))+'</option>').join("")+'<option value="__sin__">Sin artículo</option>';sel.value=cur;if(sel.value!==cur)sel.value="";}
+  const dl=document.getElementById("dlArticulos");
+  if(dl)dl.innerHTML=list.map(a=>'<option value="'+escAttr(esc(a))+'">').join("");
+}
 
 function showAlert(msg,type){const a=document.getElementById("alert");a.textContent=msg;a.className="alert "+type;setTimeout(()=>{a.className="alert";},4000);}
 
@@ -485,6 +560,7 @@ async function loadPosts(){
   const{data,error}=await sb.from(TABLE).select("*").eq("asesor_id",uid).order("fecha",{ascending:true,nullsFirst:false});
   if(error){document.getElementById("tableHost").innerHTML='<div class="empty">Error: '+error.message+'</div>';return;}
   posts=data||[];
+  fillArtOptions();
   updateKPIs();render();renderCalendar();
 }
 
@@ -492,14 +568,22 @@ function filtered(){
   const r=document.getElementById("fRed").value;
   const e=document.getElementById("fEnfoque").value;
   const s=document.getElementById("fEstado").value;
+  const a=document.getElementById("fArt").value;
   const q=(document.getElementById("fSearch").value||"").toLowerCase();
   return posts.filter(p=>{
     if(r&&p.red_social!==r)return false;
     if(e&&p.enfoque_marca!==e)return false;
     if(s&&p.estado!==s)return false;
-    if(q){const blob=((p.titulo||"")+" "+(p.hook||"")+" "+(p.copy||"")+" "+(p.responsable||"")).toLowerCase();if(!blob.includes(q))return false;}
+    if(a==="__sin__"){if(p.articulo_madre)return false;}
+    else if(a&&p.articulo_madre!==a)return false;
+    if(q){const blob=((p.titulo||"")+" "+(p.hook||"")+" "+(p.copy||"")+" "+(p.responsable||"")+" "+artLabel(p.articulo_madre)).toLowerCase();if(!blob.includes(q))return false;}
     return true;
   });
+}
+
+function fabCell(p){
+  const parts=FAB.filter(x=>p[x.k]).map(x=>'<div class="fg-'+x.c+'" title="'+escAttr(x.nom+": "+fLarga(p[x.k]))+'"><b>'+x.lab+'</b> '+esc(fCorta(p[x.k]))+'</div>');
+  return parts.length?'<div class="fab" title="Fabricación: cuándo se escribe, se graba y se edita o diseña la pieza">'+parts.join("")+'</div>':'';
 }
 
 function esc(t){return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
@@ -509,16 +593,16 @@ function render(){
   const host=document.getElementById("tableHost");
   const list=filtered();
   if(!list.length){host.innerHTML='<div class="empty">No hay publicaciones que coincidan. Crea tu primera con el boton "+ Nueva".</div>';return;}
-  let h='<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Red</th><th>Enfoque</th><th>Pilar</th><th>Titulo / Tema</th><th>Preview</th><th>Estado</th><th>Resp.</th><th></th></tr></thead><tbody>';
+  let h='<div class="table-wrap"><table><thead><tr><th title="Fecha de publicación y, debajo, las fechas de fabricación de la pieza">Fecha</th><th>Red</th><th>Enfoque</th><th>Pilar</th><th>Titulo / Tema</th><th>Preview</th><th>Estado</th><th>Resp.</th><th></th></tr></thead><tbody>';
   list.forEach(p=>{
     const ic=RED_ICON[p.red_social]||"";
     const prev=esc((p.hook||p.copy||"").slice(0,120))+((p.hook||p.copy||"").length>120?"...":"");
     h+='<tr>'
-      +'<td style="white-space:nowrap">'+fmtFecha(p.fecha)+(p.hora?'<div style="font-size:.7rem;color:var(--txt-mute)">'+esc(p.hora)+'</div>':'')+'</td>'
+      +'<td style="white-space:nowrap">'+fmtFecha(p.fecha)+(p.hora?'<div style="font-size:.7rem;color:var(--txt-mute)">'+esc(p.hora)+'</div>':'')+fabCell(p)+'</td>'
       +'<td><span class="rs">'+ic+' '+esc(p.red_social||"")+'</span></td>'
       +'<td style="font-size:.78rem">'+esc(p.enfoque_marca||"")+'</td>'
       +'<td style="font-size:.78rem">'+esc(p.pilar_contenido||"")+'</td>'
-      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin titulo)")+'</strong></td>'
+      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin titulo)")+'</strong>'+(p.articulo_madre?'<br><span class="art-tag" title="Artículo madre: la pieza sale de este artículo del blog">'+esc(artLabel(p.articulo_madre))+'</span>':'')+'</td>'
       +'<td><div class="tprev">'+prev+'</div></td>'
       +'<td><span class="badge '+(EST_BADGE[p.estado]||"b-borr")+'">'+esc(p.estado||"Borrador")+'</span></td>'
       +'<td style="font-size:.76rem;color:var(--txt-soft)">'+esc(p.responsable||"")+'</td>'
@@ -533,6 +617,7 @@ function updateKPIs(){
   const total=posts.length;
   document.getElementById("kVol").textContent=total;
   document.getElementById("kBorr").textContent=posts.filter(p=>p.estado==="Borrador").length;
+  var kc=document.getElementById("kConf");if(kc)kc.textContent=posts.filter(p=>p.estado==="Por confirmar").length;
   document.getElementById("kProg").textContent=posts.filter(p=>p.estado==="Programado").length;
   document.getElementById("kPub").textContent=posts.filter(p=>p.estado==="Publicado").length;
   const byRed={};posts.forEach(p=>{if(p.red_social)byRed[p.red_social]=(byRed[p.red_social]||0)+1;});
@@ -555,7 +640,7 @@ function switchTab(name){
   var ag=document.getElementById("panel-agente");if(ag)ag.classList.toggle("active",name==="agente");
   if(name==="cal")renderCalendar();
 }
-function clearFilters(){document.getElementById("fRed").value="";document.getElementById("fEnfoque").value="";document.getElementById("fEstado").value="";document.getElementById("fSearch").value="";render();}
+function clearFilters(){document.getElementById("fRed").value="";document.getElementById("fEnfoque").value="";document.getElementById("fEstado").value="";document.getElementById("fArt").value="";document.getElementById("fSearch").value="";render();}
 
 function calMove(d){calRef.setMonth(calRef.getMonth()+d);renderCalendar();}
 const CAL_WHO={
@@ -579,32 +664,61 @@ function renderCalendar(){
   let h="";dows.forEach(d=>h+='<div class="cal-dow">'+d+'</div>');
   for(let i=0;i<startDow;i++)h+='<div class="cal-cell empty-cell"></div>';
   const today=new Date();const isCurMonth=today.getFullYear()===y&&today.getMonth()===m;
-  const cnt={sal:0,ang:0,amb:0,otro:0};let monthTotal=0,maxDay=0,daysWith=0;
+  const cnt={sal:0,ang:0,amb:0,otro:0};let monthTotal=0,maxDay=0,daysWith=0,fabDays=0;
   for(let d=1;d<=days;d++){
     const ds=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
     const evs=posts.filter(p=>p.fecha===ds);
     if(evs.length){daysWith++;monthTotal+=evs.length;if(evs.length>maxDay)maxDay=evs.length;}
     const todayCls=(isCurMonth&&today.getDate()===d)?" today":"";
     h+='<div class="cal-cell'+todayCls+'"><div class="cal-daynum">'+d+'</div>';
-    evs.slice(0,4).forEach(p=>{const w=calWho(p.responsable);const meta=CAL_WHO[w];cnt[w]++;const est=EST_COLOR[p.estado]||"#a8a29e";h+='<div class="cal-evt cw-'+w+'" style="border-left-color:'+meta.bd+';background:'+meta.bg+'" title="'+escAttr((p.titulo||p.red_social||"")+" \u2014 "+meta.lab+" \u00b7 "+(p.red_social||"")+" \u00b7 "+(p.estado||""))+'" onclick="openEditor(\''+p.id+'\')"><span class="cev-mono" style="background:'+meta.bd+'">'+meta.ini+'</span><span class="cev-ic">'+(RED_ICON[p.red_social]||"")+'</span><span class="cev-t">'+esc((p.titulo||p.red_social||"").slice(0,22))+'</span><span class="cev-est" style="background:'+est+'"></span></div>';});
+    evs.slice(0,4).forEach(p=>{const w=calWho(p.responsable);const meta=CAL_WHO[w];cnt[w]++;const est=EST_COLOR[p.estado]||"#a8a29e";const an=artNum(p.articulo_madre);h+='<div class="cal-evt cw-'+w+(p.estado==="Por confirmar"?" conf":"")+'" style="border-left-color:'+meta.bd+';background:'+meta.bg+'" title="'+escAttr((p.titulo||p.red_social||"")+" \u2014 "+meta.lab+" \u00b7 "+(p.red_social||"")+" \u00b7 "+(p.estado||"")+(p.articulo_madre?" \u00b7 "+artLabel(p.articulo_madre):""))+'" onclick="openEditor(\''+p.id+'\')"><span class="cev-mono" style="background:'+meta.bd+'">'+meta.ini+'</span><span class="cev-ic">'+(RED_ICON[p.red_social]||"")+'</span>'+(an?'<span class="cev-art">A'+an+'</span>':'')+'<span class="cev-t">'+esc((p.titulo||p.red_social||"").slice(0,34))+'</span><span class="cev-est" style="background:'+est+'"></span></div>';});
     if(evs.length>4)h+='<div class="cal-more">+'+(evs.length-4)+' mas</div>';
+    // Fabricacion: que piezas se escriben, se graban o se editan ese dia
+    let fabH="";
+    FAB.forEach(x=>{
+      const list=posts.filter(p=>p[x.k]===ds);
+      if(!list.length)return;
+      const tip=x.nom+": "+list.length+(list.length>1?" piezas":" pieza")+" \u2014 "+list.map(p=>p.titulo||"(sin t\u00edtulo)").join(" | ");
+      fabH+='<button type="button" class="cfab '+x.c+'" title="'+escAttr(tip)+'" onclick="openFab(\''+ds+'\')"><span class="cf-l">'+x.lab+' </span><span class="cf-s">'+x.s+'</span>'+list.length+'</button>';
+    });
+    if(fabH){fabDays++;h+='<div class="cal-fab">'+fabH+'</div>';}
     h+='</div>';
   }
   document.getElementById("calGrid").innerHTML=h;
   const sEl=document.getElementById("calSummary");
   if(sEl){
-    if(!monthTotal){sEl.innerHTML='<span class="cs-note">Sin publicaciones programadas este mes.</span>';}
+    const fabNote=fabDays?'<span class="cs-note">'+fabDays+' d\u00eda'+(fabDays>1?'s':'')+' de fabricaci\u00f3n (guion, tomas o edici\u00f3n)</span>':'';
+    if(!monthTotal){sEl.innerHTML='<span class="cs-note">Sin publicaciones programadas este mes.</span>'+fabNote;}
     else{
       let parts='<span class="cs-total">'+monthTotal+' publicaci'+(monthTotal>1?'ones':'on')+'</span>';
       ["sal","ang","amb","otro"].forEach(k=>{if(cnt[k]){const meta=CAL_WHO[k];parts+='<span class="cs-who"><i style="background:'+meta.bd+'"></i>'+cnt[k]+' '+meta.lab+'</span>';}});
-      parts+='<span class="cs-note">m\u00e1x '+maxDay+' en un d\u00eda \u00b7 '+daysWith+' d\u00edas con contenido</span>';
+      parts+='<span class="cs-note">m\u00e1x '+maxDay+' en un d\u00eda \u00b7 '+daysWith+' d\u00edas con contenido</span>'+fabNote;
       sEl.innerHTML=parts;
     }
   }
 }
 
+/* Lista de lo que hay que fabricar un dia: se abre desde el Calendario */
+function openFab(ds){
+  document.getElementById("fabTitle").innerHTML='Fabricaci\u00f3n <em>'+esc(fLarga(ds))+'</em>';
+  let h="";
+  FAB.forEach(x=>{
+    const list=posts.filter(p=>p[x.k]===ds).sort((a,b)=>(a.fecha||"9999").localeCompare(b.fecha||"9999"));
+    if(!list.length)return;
+    h+='<div class="fab-sec '+x.c+'">'+x.nom+' \u00b7 '+list.length+(list.length>1?' piezas':' pieza')+'</div>';
+    list.forEach(p=>{
+      const meta=[p.fecha?'Publica '+fCorta(p.fecha):'Sin fecha de publicaci\u00f3n',p.responsable||'',p.articulo_madre?artLabel(p.articulo_madre):'',p.estado||''].filter(Boolean).join(' \u00b7 ');
+      h+='<button type="button" class="fab-item" onclick="closeFab();openEditor(\''+p.id+'\')"><div class="fi-t">'+esc(p.titulo||"(sin t\u00edtulo)")+'</div><div class="fi-m">'+esc(meta)+'</div></button>';
+    });
+  });
+  document.getElementById("fabBody").innerHTML=h||'<div class="empty" style="padding:1rem">Ese d\u00eda no hay piezas por fabricar.</div>';
+  document.getElementById("fabOverlay").classList.add("show");
+}
+function closeFab(){document.getElementById("fabOverlay").classList.remove("show");}
+
 function openEditor(id){
   document.getElementById("ePostId").value=id||"";
+  document.getElementById("eMsg").style.display="none";
   const t=document.getElementById("editorTitle");
   if(id){
     const p=posts.find(x=>x.id===id);if(!p)return;
@@ -619,9 +733,13 @@ function openEditor(id){
     document.getElementById("eHook").value=p.hook||"";
     document.getElementById("eCopy").value=p.copy||"";
     document.getElementById("eResp").value=p.responsable||"";
+    document.getElementById("eFGuion").value=p.fecha_guion||"";
+    document.getElementById("eFGrab").value=p.fecha_grabacion||"";
+    document.getElementById("eFEdic").value=p.fecha_edicion||"";
+    document.getElementById("eArticulo").value=p.articulo_madre||"";
   }else{
     t.innerHTML="Nueva <em>publicacion</em>";
-    ["eFecha","eHora","eTitulo","eHook","eCopy","eResp"].forEach(i=>document.getElementById(i).value="");
+    ["eFecha","eHora","eTitulo","eHook","eCopy","eResp","eFGuion","eFGrab","eFEdic","eArticulo"].forEach(i=>document.getElementById(i).value="");
     document.getElementById("eEstado").value="Borrador";
     document.getElementById("eRed").value="Instagram";
     document.getElementById("eEnfoque").value="LOMAZ HOME";
@@ -643,8 +761,17 @@ async function savePost(){
     titulo:document.getElementById("eTitulo").value||null,
     hook:document.getElementById("eHook").value||null,
     copy:document.getElementById("eCopy").value||null,
-    responsable:document.getElementById("eResp").value||null
+    responsable:document.getElementById("eResp").value||null,
+    fecha_guion:document.getElementById("eFGuion").value||null,
+    fecha_grabacion:document.getElementById("eFGrab").value||null,
+    fecha_edicion:document.getElementById("eFEdic").value||null,
+    articulo_madre:(document.getElementById("eArticulo").value||"").trim()||null
   };
+  // La fabricacion va antes de la publicacion: no deja guardar si una fecha quedo despues
+  const tarde=FAB.filter(x=>rec.fecha&&rec[x.k]&&rec[x.k]>rec.fecha).map(x=>x.nom.toLowerCase());
+  const eMsg=document.getElementById("eMsg");
+  if(tarde.length){eMsg.textContent="Revisa las fechas de fabricación: "+tarde.join(", ")+" queda después de la fecha de publicación.";eMsg.style.display="block";return;}
+  eMsg.style.display="none";
   const btn=document.getElementById("btnSave");btn.disabled=true;btn.textContent="Guardando...";
   let error;
   if(id){const r=await sb.from(TABLE).update(rec).eq("id",id);error=r.error;}
@@ -669,25 +796,19 @@ document.addEventListener("click",function(e){if(e.target.classList&&e.target.cl
 /* ====== AGENTE DE MARKETING: datos + generador ====== */
 let _props=[], _arts=[], _agKey='';
 
-const BLOG_ARTS=[
- {t:'Como arrendar un apartamento en Bogota: guia paso a paso',c:'Arrendamiento',u:'blog.html',e:'Documentos, contrato y firma: cada etapa del arriendo en la capital.'},
- {t:'Requisitos para comprar vivienda en Colombia en 2026',c:'Compraventa',u:'blog.html',e:'Capacidad de endeudamiento, subsidios y documentos antes de comprar.'},
- {t:'Credito hipotecario en Colombia: tasas, plazos y como aplicar',c:'Financiacion',u:'blog.html',e:'Comparativa de tasas de los principales bancos y como solicitarlo.'},
- {t:'Gastos notariales en una compraventa: cuanto debes pagar',c:'Tramites',u:'blog.html',e:'Escritura, registro e impuestos: quien paga que en la transaccion.'},
- {t:'Subsidio Mi Casa Ya 2026: requisitos, montos y como aplicar',c:'Financiacion',u:'blog.html',e:'El programa de subsidios para vivienda nueva en Colombia.'},
- {t:'Documentos indispensables para vender una propiedad en Colombia',c:'Compraventa',u:'blog.html',e:'Certificado de tradicion, paz y salvo predial y mas.'},
- {t:'Cuanto cuesta el metro cuadrado en Bogota por barrio en 2026',c:'Mercado',u:'blog.html',e:'Analisis de precios por zona para decidir con datos.'},
- {t:'Los mejores barrios para vivir en Bogota en 2026',c:'Zonas',u:'blog.html',e:'Seguridad, accesibilidad y calidad de vida por barrio.'},
- {t:'Impuesto predial Bogota 2026: como calcular y donde pagar',c:'Tramites',u:'blog.html',e:'Fechas, descuentos por pronto pago y paso a paso.'},
- {t:'Arriendo seguro en Bogota: como protegerte',c:'Arrendamiento',u:'blog.html',e:'Poliza de arrendamiento, contratos y clausulas clave.'}
-];
-
+/* Los articulos del blog se leen de la base de datos: solo los publicados */
+let _artsErr=false;
 async function loadFuentes(){
-  _arts=BLOG_ARTS.slice();
+  _arts=[];_artsErr=false;
+  const qa=sb.from('articulos_blog').select('id,titulo,slug,categoria,extracto,published_at').eq('estado','publicado').order('published_at',{ascending:false}).limit(100);
+  const qp=sb.from('propiedades').select('id,clave,titulo,descripcion,tipo_operacion,tipo_propiedad,precio,moneda,ciudad,departamento,barrio,estrato,habitaciones,banos,garajes,m2_construccion,m2_terreno,amenidades,tiene_piscina,acepta_mascotas').eq('asesor_id',uid).order('id',{ascending:false}).limit(200);
   try{
-    const{data,error}=await sb.from('propiedades').select('id,clave,titulo,descripcion,tipo_operacion,tipo_propiedad,precio,moneda,ciudad,departamento,barrio,estrato,habitaciones,banos,garajes,m2_construccion,m2_terreno,amenidades,tiene_piscina,acepta_mascotas').eq('asesor_id',uid).order('id',{ascending:false}).limit(200);
-    if(!error)_props=data||[];
-  }catch(e){_props=[];}
+    const res=await Promise.all([qa,qp]);
+    const ra=res[0],rp=res[1];
+    if(ra.error){_artsErr=true;console.warn('No se pudieron leer los articulos del blog: '+ra.error.message);}
+    else _arts=(ra.data||[]).map(function(a){return {t:a.titulo||'(sin titulo)',c:a.categoria||'Blog',e:a.extracto||'',u:'articulo.html?slug='+encodeURIComponent(a.slug||'')};});
+    if(!rp.error)_props=rp.data||[];
+  }catch(e){_artsErr=true;_props=_props||[];}
   fillFuenteSelectors();
   _agKey=localStorage.getItem('lomaz_ag_openai')||'';
   var k=document.getElementById('agKey');if(k&&_agKey)k.value=_agKey;
@@ -708,6 +829,7 @@ function fillItemSelect(sel, type, withDash){
     if(!_props.length)opts+='<option value="">(No tienes propiedades aun)</option>';
     _props.forEach(function(p){opts+='<option value="'+p.id+'">'+escAttr(propLabel(p))+'</option>';});
   }else if(type==='articulo'){
+    if(!_arts.length)opts+='<option value="">'+(_artsErr?'(No se pudieron cargar los articulos; recarga la pagina)':'(Aun no hay articulos publicados en el blog)')+'</option>';
     _arts.forEach(function(a,i){opts+='<option value="'+i+'">'+escAttr(a.t)+'</option>';});
   }else{opts+='<option value="">&mdash;</option>';}
   sel.innerHTML=opts;
@@ -739,7 +861,7 @@ function onAgSrcItem(){
     meta.innerHTML=bits.join(' &middot; ')+(feat.length?'<br>'+feat.join(' &middot; '):'');meta.className='src-meta show';
   }else if(type==='articulo'){
     var a=_arts[parseInt(val,10)];if(!a){meta.className='src-meta';return;}
-    meta.innerHTML='<b>'+a.c+'</b> &middot; '+a.e;meta.className='src-meta show';
+    meta.innerHTML='<b>'+esc(a.c)+'</b>'+(a.e?' &middot; '+esc(a.e):'');meta.className='src-meta show';
   }
 }
 function saveAgKey(){var v=document.getElementById('agKey').value.trim();_agKey=v;localStorage.setItem('lomaz_ag_openai',v);}
@@ -824,8 +946,8 @@ function generarParaArticulo(a,red){
  var em=emojiRed(red);
  var titulo=a.t;
  var hook=em+' '+a.t+' \u2014 lo que muchos ignoran y a ti te puede ahorrar dinero.';
- var copy=[a.e,'En este contenido de LOMAZ HOME te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guia completa en nuestro blog.'].join('\n\n');
- if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Hook a camara] '+a.t+'\n[Desarrollo] '+a.e+'\n[Cierre] '+(CTA_RED[red]||'');}
+ var copy=[a.e,'En este contenido de LOMAZ HOME te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guia completa en nuestro blog.'].filter(Boolean).join('\n\n');
+ if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Hook a camara] '+a.t+'\n[Desarrollo] '+(a.e||a.t)+'\n[Cierre] '+(CTA_RED[red]||'');}
  var tags='#LomazHome #'+a.c.replace(/\s+/g,'')+' #Inmobiliaria #Bogota #Colombia #Inversion #ConsejosInmobiliarios';
  return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
 }
