@@ -903,7 +903,9 @@ if(tk.error){
 return {ok:false, msg:"No se pudo generar ticket: "+tk.error.message};
 }
 // Por el gateway va la anon key; la sesion del asesor viaja en x-user-token (base64) y ademas el ticket de un solo uso.
-var _hdr = {"Content-Type":"application/json", apikey: SB_KEY, Authorization:"Bearer "+SB_KEY};
+// (Antes se usaba una variable SB_KEY que no existe en esta pagina, y por eso toda publicacion fallaba con "SB_KEY is not defined".)
+var _anon = (typeof SKEY!=="undefined" && SKEY) ? SKEY : ((sb && sb.supabaseKey) || "");
+var _hdr = {"Content-Type":"application/json", apikey: _anon, Authorization:"Bearer "+_anon};
 try{ var _s = await sb.auth.getSession(); var _at = _s && _s.data && _s.data.session ? _s.data.session.access_token : ""; if(_at) _hdr["x-user-token"] = btoa(_at); }catch(_e){}
 var resp = await fetch("https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/metrocuadrado-integracion/publish", {
 method:"POST",
