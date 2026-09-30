@@ -245,13 +245,15 @@ function limpiarTexto(t: any, max: number) {
   return s;
 }
 
+// Valores EXACTOS que acepta Metrocuadrado para builtTime (con tildes y enie; probado el 30-09-2026):
+// "Entre 0 y 5 años", "Entre 5 y 10 años", "Entre 10 y 20 años", "Más de 20 años", "Remodelado".
 function builtTimeDesde(p: any) {
   const a = Number(p.antiguedad ?? p.edad_inmueble ?? -1);
   if (!(a >= 0)) return null;
-  if (a <= 5) return "Entre 0 y 5 anos";
-  if (a <= 10) return "Entre 5 y 10 anos";
-  if (a <= 20) return "Entre 10 y 20 anos";
-  return "Mas de 20 anos";
+  if (a <= 5) return "Entre 0 y 5 años";
+  if (a <= 10) return "Entre 5 y 10 años";
+  if (a <= 20) return "Entre 10 y 20 años";
+  return "Más de 20 años";
 }
 
 function agentIdDe(p: any, cfg: any) {
