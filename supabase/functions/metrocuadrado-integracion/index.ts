@@ -259,6 +259,28 @@ function agentIdDe(p: any, cfg: any) {
   return Number.isFinite(v) && v > 0 ? v : null;
 }
 
+// Un usuario es admin si en perfiles_usuarios (clave: id = auth.users.id) tiene rol_id 1 o el rol se llama "admin".
+// (Antes se buscaba por una columna user_id que no existe, y por eso ningun admin podia publicar propiedades de otro asesor.)
+async function esAdmin(admin: any, uid: string | null): Promise<boolean> {
+  if (!uid) return false;
+  try {
+    const { data } = await admin.from("perfiles_usuarios").select("rol_id, roles(nombre)").eq("id", uid).maybeSingle();
+    if (!data) return false;
+    const rol: any = Array.isArray(data.roles) ? data.roles[0] : data.roles;
+    const nombre = String((rol && rol.nombre) || "").toLowerCase();
+    return Number(data.rol_id) === 1 || nombre === "admin";
+  } catch (_e) {
+    return false;
+  }
+}
+
+// El asesor dueno de la propiedad o un admin pueden publicar/actualizar/retirar el aviso.
+async function puedeGestionar(admin: any, prop: any, uid: string | null): Promise<boolean> {
+  if (!uid) return false;
+  if (prop && prop.asesor_id === uid) return true;
+  return await esAdmin(admin, uid);
+}
+
 // Arma el payload segun la documentacion PTEC: valida lo obligatorio y omite lo vacio.
 function buildPayload(p: any, responseUrl: string, cfg?: any) {
   const faltan: string[] = [];
@@ -392,12 +414,33 @@ Deno.serve(async (req) => {
     userToken = userToken.trim();
     const authHeader = userToken ? ("Bearer " + userToken) : rawAuth;
     const userClient = createClient(SUPABASE_URL, ANON_KEY, { global: { headers: { Authorization: authHeader } } });
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
     const isCatalogRoute = parts.includes("catalog");
-    if ((userErr || !userData?.user) && !isCatalogRoute) {
-      return json({ error: "No autenticado" }, 401);
+    let uid: string | null = null;
+
+    // 1) Ticket de publicacion: lo crea mc_create_ticket con la sesion del asesor (vale 30 minutos, un solo uso).
+    //    Permite publicar mandando por el gateway solo la anon key (evita el bloqueo del gateway con el JWT del usuario).
+    //    Antes este ticket se revisaba DESPUES del chequeo de sesion, asi que toda publicacion respondia "No autenticado".
+    let bodyPublish: any = null;
+    if (action === "publish" && req.method === "POST") {
+      bodyPublish = await req.json().catch(() => ({}));
+      if (bodyPublish && bodyPublish.ticket) {
+        const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+        const { data: tk } = await admin.from("metro_publish_tickets").select("*").eq("ticket", String(bodyPublish.ticket)).eq("used", false).gte("created_at", cutoff).maybeSingle();
+        if (tk && String(tk.property_id) === String(bodyPublish.propertyId)) {
+          await admin.from("metro_publish_tickets").update({ used: true }).eq("ticket", String(bodyPublish.ticket));
+          uid = tk.user_id;
+        }
+      }
     }
-    let uid = (userData && userData.user) ? userData.user.id : null;
+
+    // 2) Sin ticket valido: se exige la sesion del usuario (JWT en Authorization o en x-user-token en base64).
+    if (!uid) {
+      const { data: userData, error: userErr } = await userClient.auth.getUser();
+      if ((userErr || !userData?.user) && !isCatalogRoute) {
+        return json({ error: "No autenticado" }, 401);
+      }
+      uid = (userData && userData.user) ? userData.user.id : null;
+    }
 
     // Ruta de estado: revisa de verdad si Metrocuadrado esta listo (no devuelve secretos).
     if (parts.includes('estado')) {
@@ -502,23 +545,12 @@ Deno.serve(async (req) => {
       }
 
       if (action === "publish" && req.method === "POST") {
-        const body = await req.json();
-        if (body && body.ticket) {
-          const svcTicket = createClient(SUPABASE_URL, SERVICE_ROLE);
-          const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
-          const { data: tk } = await svcTicket.from("metro_publish_tickets").select("*").eq("ticket", body.ticket).eq("used", false).gte("created_at", cutoff).maybeSingle();
-          if (tk && String(tk.property_id) === String(body.propertyId)) {
-            await svcTicket.from("metro_publish_tickets").update({ used: true }).eq("ticket", body.ticket);
-            uid = tk.user_id;
-          }
-        }
+        const body = bodyPublish || {}; // el cuerpo ya se leyo arriba (ticket)
         if (!uid) { return json({ error: "No autenticado" }, 401); }
+        if (!body.propertyId) return json({ error: "Falta propertyId" }, 400);
         const { data: prop, error } = await admin.from("propiedades").select("*").eq("id", body.propertyId).single();
         if (error || !prop) return json({ error: "Propiedad no encontrada" }, 404);
-        if (prop.asesor_id !== uid) {
-          const { data: perfil } = await admin.from("perfiles_usuarios").select("roles(nombre)").eq("user_id", uid).single();
-          if ((perfil?.roles?.nombre) !== "admin") return json({ error: "No tienes permiso sobre esta propiedad" }, 403);
-        }
+        if (!(await puedeGestionar(admin, prop, uid))) return json({ error: "No tienes permiso sobre esta propiedad" }, 403);
         const token = await getToken(admin, ambiente, cfg);
         const payload = buildPayload(prop, responseUrl, cfg);
         const urls = baseUrls(ambiente);
@@ -545,6 +577,7 @@ Deno.serve(async (req) => {
         const body = await req.json();
         const { data: prop, error } = await admin.from("propiedades").select("*").eq("id", body.propertyId).single();
         if (error || !prop) return json({ error: "Propiedad no encontrada" }, 404);
+        if (!(await puedeGestionar(admin, prop, uid))) return json({ error: "No tienes permiso sobre esta propiedad" }, 403);
         const token = await getToken(admin, ambiente, cfg);
         const payload: any = buildPayload(prop, responseUrl, cfg);
         if (prop.metro_realestate_id) payload.realEstateId = prop.metro_realestate_id;
@@ -564,6 +597,7 @@ Deno.serve(async (req) => {
         const body = await req.json();
         const { data: prop, error } = await admin.from("propiedades").select("*").eq("id", body.propertyId).single();
         if (error || !prop) return json({ error: "Propiedad no encontrada" }, 404);
+        if (!(await puedeGestionar(admin, prop, uid))) return json({ error: "No tienes permiso sobre esta propiedad" }, 403);
         if (!prop.metro_realestate_id) return json({ error: "Esta propiedad no tiene un realEstateId de Metrocuadrado registrado" }, 400);
         const token = await getToken(admin, ambiente, cfg);
         const urls = baseUrls(ambiente);
