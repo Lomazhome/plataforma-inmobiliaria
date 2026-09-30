@@ -564,13 +564,32 @@ Deno.serve(async (req) => {
         const respBody = await resp.text();
         let parsed: any = {};
         try { parsed = JSON.parse(respBody); } catch (_e) { /* noop */ }
-        if (resp.status === 201) {
+        // Metrocuadrado responde 200 "Transaccion de publicacion recibida" con un transactionId (no 201):
+        // cualquier 2xx es exito. El codigo del inmueble (resourceId, ej. 20387-M7103637) llega unos
+        // segundos despues en la transaccion, asi que se consulta un par de veces antes de responder.
+        const txId = parsed.transactionId || parsed.transaction_id || null;
+        if (resp.status >= 200 && resp.status < 300) {
+          let realEstateId = parsed.realEstateId || parsed.realEstateid || parsed.resourceId || null;
+          const mensajes: string[] = [];
+          if (txId && !realEstateId) {
+            for (let i = 0; i < 4 && !realEstateId; i++) {
+              await new Promise((r) => setTimeout(r, 5000));
+              try {
+                const rt = await fetch(urls.base + "/rest-api/transactions/" + txId, { headers: { "x-api-key": xApiKey(ambiente), token } });
+                const dt: any = await rt.json().catch(() => null);
+                if (dt && dt.resourceId) realEstateId = String(dt.resourceId);
+                if (dt && Array.isArray(dt.messageList)) for (const m of dt.messageList) if (m && m.message) mensajes.push(String(m.message));
+                if (dt && Number(dt.code) >= 400) { mensajes.push("Metrocuadrado rechazo la transaccion (code " + dt.code + ")."); break; }
+              } catch (_e) { /* se reintenta */ }
+            }
+          }
           await admin.from("propiedades").update({
-              metro_transaction_id: parsed.transactionId || parsed.transaction_id || null,
-              metro_realestate_id: parsed.realEstateId || parsed.realEstateid || prop.metro_realestate_id || null,
+              metro_transaction_id: txId,
+              metro_realestate_id: realEstateId || prop.metro_realestate_id || null,
               metro_status: "publicado",
               metro_last_published_at: new Date().toISOString(),
             }).eq("id", prop.id);
+          return json({ status: resp.status, ok: true, transactionId: txId, realEstateId: realEstateId || null, mensajes, respuesta: Object.keys(parsed).length ? parsed : respBody }, 200);
         }
         return json({ status: resp.status, respuesta: Object.keys(parsed).length ? parsed : respBody }, resp.status);
       }
