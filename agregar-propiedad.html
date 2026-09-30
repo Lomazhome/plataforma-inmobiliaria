@@ -1453,11 +1453,19 @@ try {
   }
   // ---------- Proppit: no existe una pagina propia del aviso; se muestra el estado del feed y donde buscarlo ----------
   async function mostrarPanelProppit(r){
-    var p=null; try{ var c=cli(); var q=await c.from("propiedades").select("titulo,barrio,ciudad,estado,latitud,longitud").eq("id",EDIT_ID).maybeSingle(); p=q.data||null; }catch(_e){}
+    var p=null; try{ var c=cli(); var q=await c.from("propiedades").select("titulo,barrio,ciudad,estado,latitud,longitud,tipo_propiedad,fotos,foto_principal,m2_construccion,area_construida,area_privada,m2_terreno,area_total").eq("id",EDIT_ID).maybeSingle(); p=q.data||null; }catch(_e){}
     var faltas=[];
     if(p){
+      // Mismas exigencias que aplica el feed (supabase/functions/proppit-feed): sin estos datos Proppit descarta el aviso.
       if(["activo","activa","publicada"].indexOf(String(p.estado||"").toLowerCase())===-1) faltas.push("la propiedad no esta activa en Lomaz Home (estado: "+(p.estado||"sin estado")+")");
       if(p.latitud==null||p.longitud==null||p.latitud===""||p.longitud==="") faltas.push("no tiene ubicacion en el mapa (latitud/longitud), y Proppit la exige");
+      var _fl=p.fotos; if(typeof _fl==="string"){ try{ _fl=JSON.parse(_fl); }catch(_j){ _fl=_fl.split(","); } } if(!Array.isArray(_fl)) _fl=[]; _fl=_fl.map(function(u){return String(u||"").trim();}).filter(function(u){return /^https?:\/\//i.test(u);});
+      if(!_fl.length && !/^https?:\/\//i.test(String(p.foto_principal||""))) faltas.push("no tiene fotos, y Proppit exige al menos una");
+      var _n=function(v){ var x=Number(String(v==null?"":v).replace(",",".")); return isFinite(x)?x:0; };
+      var _esLote=String(p.tipo_propiedad||"").toLowerCase()==="lote";
+      var _constr=_n(p.m2_construccion)||_n(p.area_construida)||_n(p.area_privada), _terr=_n(p.m2_terreno)||_n(p.area_total);
+      if(_esLote){ if(!(_terr>0||_constr>0)) faltas.push("no tiene area del terreno (m2), obligatoria en Proppit para lotes"); }
+      else if(!(_constr>0)) faltas.push("no tiene area construida (m2), obligatoria en Proppit");
     }
     if(pausado(r.estado)||retirado(r.estado)) faltas.push("el aviso esta "+(pausado(r.estado)?"pausado":"retirado")+" en Proppit; usa Reactivar");
     var enFeed=!faltas.length;
