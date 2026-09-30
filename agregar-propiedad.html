@@ -752,6 +752,13 @@ async function sincronizarPortalesDePropiedad(propId){
     if (q.error || !q.data) return null;
     var RE_UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
     var porPortal = {};
+    // Punto de partida: lo que la propiedad ya tiene guardado. Asi un admin que actualiza un portal no borra
+    // los demas portales cuyo historial pertenece a otro asesor (y que por permisos no alcanza a ver).
+    try {
+      var pr0 = await sb.from("propiedades").select("publicado_portales").eq("id", propId).single();
+      var prev0 = (pr0.data && pr0.data.publicado_portales) || [];
+      if (Array.isArray(prev0)) prev0.forEach(function(x){ if (x && x.portal) porPortal[String(x.portal).toLowerCase()] = x; });
+    } catch (_e0) {}
     q.data.forEach(function(r){
       var portal = (r.portal || "").toLowerCase();
       if (!portal) return;
@@ -1333,13 +1340,21 @@ try {
       var arr=(pr.data&&pr.data.publicado_portales)||[];
       if(Array.isArray(arr)) arr.forEach(function(x){ if(x&&x.portal) ids[String(x.portal).toLowerCase()]=x; });
     }catch(_e){}
-    return Object.keys(last).map(function(k){
+    var lista=Object.keys(last).map(function(k){
       var r=last[k], x=ids[k]||{}, up=String(r.url_publicacion||"").trim();
       return { portal:k, rowId:r.id, estado:r.estado||"", fecha:r.fecha||"", mensaje:r.mensaje||"",
         url:(x.url||(/^https?:/i.test(up)?up:"")),
         listing_id:(x.listing_id||(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(up)?up:"")),
         property_id:(x.property_id||((String(r.mensaje||"").match(/fr_property_id[=\s:]+(\d{4,})/i)||[])[1])||""), task_id:(x.task_id||((String(r.mensaje||"").match(/task(?:_id)?[=\s:(]+([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i)||[])[1])||""), url_publicacion:up };
     });
+    // Portales cuyo historial no es visible para este usuario (p. ej. avisos creados por otro asesor):
+    // se muestran con el resumen guardado en la propiedad, para que un admin tambien pueda gestionarlos.
+    Object.keys(ids).forEach(function(k){
+      if(last[k]) return;
+      var x=ids[k]||{}; var u=String(x.url||"").trim();
+      lista.push({ portal:k, rowId:null, estado:x.estado||"", fecha:x.fecha||"", mensaje:"", url:u, listing_id:x.listing_id||"", property_id:x.property_id||"", task_id:x.task_id||"", url_publicacion:(u||x.listing_id||"") });
+    });
+    return lista;
   }
 
   function chip(t,bg,fg){ return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:.66rem;font-weight:700;background:'+bg+';color:'+fg+'">'+esc(t)+'</span>'; }
