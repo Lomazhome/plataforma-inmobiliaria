@@ -1,6 +1,20 @@
 // Edge Function: proppit-feed
-// Genera XML feed compatible con Proppit (Colombia). Solo incluye propiedades activas que el asesor haya enviado a Proppit (casilla "Proppit" marcada) y no esten pausadas/retiradas.
-// Distribucion: Trovit, Mitula, Nestoria, Nuroa, puntopropiedad
+// Genera el feed XML para Proppit (Colombia) siguiendo al pie de la letra la
+// "Guia de especificaciones Proppit XML Feed - COLOMBIA" (actualizada el 22 de septiembre de 2026):
+// https://docs.google.com/document/d/1AoHgr9W7FS6SCAi9KeN2NmsFTMQxKsO8oi8Q_NPh2ts
+//
+// Reglas de esa guia que aplica esta funcion:
+//  - Etiquetas obligatorias: reference_id, contact (email + phone con +57), title, description,
+//    prices, propertyType, coordinates, bedrooms, bathrooms, areas (floorArea + usableArea, o plotArea en lotes) y pictures.
+//    Si falta una sola, Proppit descarta el aviso. Por eso, si a una propiedad le falta un dato,
+//    NO se incluye en el feed y se deja el motivo en un comentario al inicio del XML.
+//  - Los textos van en CDATA (sin HTML), los numeros de dormitorios/banos son enteros.
+//  - Las amenidades solo pueden ser las de la lista oficial: un valor fuera de la lista hace que
+//    Proppit descarte el aviso ENTERO. Aqui se traducen y se filtran contra esa lista.
+//
+// Solo incluye propiedades activas que el asesor haya enviado a Proppit (casilla "Proppit" marcada)
+// y que no esten pausadas/retiradas en ese portal (evita duplicar avisos creados a mano en Proppit).
+// Distribucion: puntopropiedad, Trovit, Mitula, Nestoria, Nuroa. Proppit lee el feed una vez al dia.
 // URL publica: https://lniouebpuuuqctrgxoiw.supabase.co/functions/v1/proppit-feed
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -8,155 +22,357 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
-const TIPO_MAP: Record<string,string> = {
+// Contacto de respaldo de la agencia (se usa cuando el asesor no tiene el dato en su perfil)
+const AGENCIA = {
+  phone: "+573003300343",
+  whatsapp: "+573003300343",
+  email: "lomazhome@gmail.com",
+  name: "Lomaz Home",
+};
+
+// Tipo de inmueble de LoMaz Home -> valor exacto que acepta Proppit Colombia
+const TIPO_MAP: Record<string, string> = {
   apartamento: "apartment",
+  apartaestudio: "studio",
   casa: "house",
   finca: "villa",
   local: "commercial",
   bodega: "industrial unit",
   oficina: "office",
+  consultorio: "office",
   lote: "land",
   parqueadero: "car park",
-  consultorio: "office",
-  habitacion: "apartment"
+  habitacion: "apartment",
 };
 
-const AMENITY_MAP: Record<string,string> = {
-  "Piscina": "swimming pool",
-  "Piscina climatizada": "swimming pool",
-  "Piscina privada": "swimming pool",
-  "Gimnasio": "gym",
-  "Jacuzzi": "jacuzzi",
-  "Sauna": "sauna",
-  "Cancha de tenis": "tennis court",
-  "Aire acondicionado": "air conditioning",
-  "Calefaccion": "heating",
-  "Ascensor": "lift",
-  "Gas natural": "natural gas",
-  "Internet fibra optica": "internet",
-  "Cocina integral": "integral kitchen",
-  "Seguridad 24h": "security",
-  "Porteria 24h": "security",
-  "Cuarto servicio": "service room",
-  "Terraza": "terrace",
-  "Vista panoramica": "panoramic view",
-  "Vista al mar": "panoramic view",
-  "Vista a la monta\u00f1a": "panoramic view",
-  "Pozo agua": "water",
-  "Cisterna": "water tank",
-  "Jardin": "yard",
-  "Patio": "yard",
-  "Estudio": "office",
+// Segun la guia: dormitorios = 0 para land, commercial, industrial unit y car park; banos = 0 para land, industrial unit y car park.
+const CERO_DORMITORIOS = new Set(["land", "commercial", "industrial unit", "car park"]);
+const CERO_BANOS = new Set(["land", "industrial unit", "car park"]);
+// plotArea: obligatorio en land, opcional en house / industrial unit / car park y NO se envia en apartment, villa, commercial, office ni studio.
+const PLOT_OPCIONAL = new Set(["house", "industrial unit", "car park"]);
+// Las reglas (pets allowed, etc.) solo aplican a house, apartment y villa en arriendo.
+const TIPOS_CON_REGLAS = new Set(["house", "apartment", "villa"]);
+
+// Lista oficial de amenidades de Proppit Colombia. Nada fuera de esta lista puede salir en el feed.
+const AMENITIES_PROPPIT = new Set([
+  "air conditioning", "alarm", "balcony", "car park", "children's area", "disabled access",
+  "equipped kitchen", "fireplace", "garden", "grill", "gym", "guardhouse", "heating", "internet",
+  "jacuzzi", "lift", "natural gas", "panoramic view", "sauna", "security", "service room",
+  "swimming pool", "tennis court", "terrace", "water", "water tank", "yard",
+]);
+
+// Amenidad de LoMaz Home (como se guarda en la tabla propiedades) -> amenidades de Proppit.
+// Las claves se comparan sin tildes ni mayusculas (ver normalizar()).
+const AMENITY_MAP: Record<string, string[]> = {
+  "aire acondicionado": ["air conditioning"],
+  "balcon": ["balcony"],
+  "parqueadero privado": ["car park"],
+  "parqueadero cubierto": ["car park"],
+  "parqueadero descubierto": ["car park"],
+  "parqueadero doble": ["car park"],
+  "parqueadero comunal": ["car park"],
+  "juegos infantiles": ["children's area"],
+  "parque infantil": ["children's area"],
+  "cocina integral": ["equipped kitchen"],
+  "cocina semi-integral": ["equipped kitchen"],
+  "chimenea": ["fireplace"],
+  "jardin": ["garden"],
+  "zona bbq": ["grill"],
+  "terraza bbq": ["grill", "terrace"],
+  "gimnasio": ["gym"],
+  "porteria 24h": ["guardhouse", "security"],
+  "conserjeria": ["guardhouse"],
+  "calefaccion": ["heating"],
+  "internet fibra optica": ["internet"],
+  "jacuzzi": ["jacuzzi"],
+  "ascensor": ["lift"],
+  "gas natural": ["natural gas"],
+  "vista panoramica": ["panoramic view"],
+  "vista al mar": ["panoramic view"],
+  "vista a la montana": ["panoramic view"],
+  "vista ciudad": ["panoramic view"],
+  "vista al lago": ["panoramic view"],
+  "sauna": ["sauna"],
+  "seguridad 24h": ["security"],
+  "vigilancia privada": ["security"],
+  "camara seguridad": ["security"],
+  "control acceso": ["security"],
+  "cuarto servicio": ["service room"],
+  "piscina": ["swimming pool"],
+  "piscina climatizada": ["swimming pool"],
+  "piscina privada": ["swimming pool"],
+  "cancha de tenis": ["tennis court"],
+  "terraza": ["terrace"],
+  "pozo agua": ["water"],
+  "cisterna": ["water tank"],
+  "patio": ["yard"],
 };
 
-function cdata(s: any): string {
-  const t = String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/[\u0080-\uFFFF]/g, (c) => "&#" + c.charCodeAt(0) + ";");
-  return t;
+// ---------- utilidades ----------
+
+function normalizar(s: any): string {
+  return String(s ?? "")
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .toLowerCase().trim().replace(/\s+/g, " ");
 }
 
-function escapeAttr(s: any): string {
-  return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// Texto seguro dentro de CDATA: sin caracteres invalidos en XML 1.0, sin etiquetas HTML y sin cerrar el CDATA.
+function cd(s: any): string {
+  const t = String(s ?? "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]/g, "")
+    .replace(/<\/?[a-zA-Z][^>]*>/g, "")
+    .replace(/\]\]>/g, "]]]]><![CDATA[>");
+  return "<![CDATA[" + t + "]]>";
 }
+
+function num(v: any): number {
+  const n = Number(String(v ?? "").replace(",", "."));
+  return isFinite(n) ? n : 0;
+}
+
+function entero(v: any): number {
+  return Math.max(0, Math.round(num(v)));
+}
+
+// Telefono colombiano con prefijo internacional (+57XXXXXXXXXX), como pide la guia. Devuelve "" si no sirve.
+function telCO(v: any): string {
+  const d = String(v ?? "").replace(/\D/g, "");
+  if (!d) return "";
+  if (d.length === 10) return "+57" + d;
+  if (d.length === 12 && d.startsWith("57")) return "+" + d;
+  if (d.length === 13 && d.startsWith("057")) return "+" + d.slice(1);
+  if (d.length >= 11 && d.length <= 15) return "+" + d; // otro pais, ya con indicativo
+  return "";
+}
+
+function emailValido(v: any): string {
+  const e = String(v ?? "").trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) ? e : "";
+}
+
+function listaTexto(v: any): string[] {
+  if (Array.isArray(v)) return v.map((x) => String(x ?? "").trim()).filter(Boolean);
+  if (typeof v === "string" && v.trim()) {
+    try { const j = JSON.parse(v); if (Array.isArray(j)) return listaTexto(j); } catch (_e) { /* no es JSON */ }
+    return v.split(",").map((s) => s.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+function urlHttp(u: any): string {
+  const s = String(u ?? "").trim();
+  return /^https?:\/\//i.test(s) ? s : "";
+}
+
+// ---------- datos derivados de una propiedad ----------
+
+function tipoProppit(p: any): string {
+  return TIPO_MAP[normalizar(p.tipo_propiedad)] || "";
+}
+
+function operacionProppit(p: any): string {
+  const op = normalizar(p.tipo_operacion || p.tipo_negocio);
+  if (op === "venta" || op === "permuta") return "sale";
+  if (op === "arriendo" || op === "arriendo_temporal" || op === "alquiler" || op === "alquiler_vacacional") return "rent";
+  return "";
+}
+
+function areas(p: any) {
+  const construida = num(p.m2_construccion) || num(p.area_construida);
+  const privada = num(p.area_privada) || construida;
+  const usable = construida || privada;
+  const terreno = num(p.m2_terreno) || num(p.area_total);
+  return { construida, privada, usable, terreno };
+}
+
+function fotos(p: any): string[] {
+  const lista = listaTexto(p.fotos).map(urlHttp).filter(Boolean);
+  const principal = urlHttp(p.foto_principal);
+  if (principal && lista.indexOf(principal) > 0) { // la principal siempre de primera: es la portada en los portales
+    lista.splice(lista.indexOf(principal), 1);
+    lista.unshift(principal);
+  }
+  return Array.from(new Set(lista)).slice(0, 200);
+}
+
+function amenidadesProppit(p: any): string[] {
+  const out = new Set<string>();
+  for (const a of listaTexto(p.amenidades).concat(listaTexto(p.caracteristicas))) {
+    const m = AMENITY_MAP[normalizar(a)];
+    if (!m) continue;
+    for (const v of m) if (AMENITIES_PROPPIT.has(v)) out.add(v);
+  }
+  return Array.from(out);
+}
+
+function amoblado(p: any): string {
+  const set = new Set(listaTexto(p.amenidades).concat(listaTexto(p.caracteristicas)).map(normalizar));
+  if (set.has("amoblado")) return "FULLY";
+  if (set.has("semi amoblado") || set.has("semiamoblado")) return "PARTIALLY";
+  const amo = normalizar(p.amoblado);
+  if (amo === "si" || amo === "true" || amo === "amoblado") return "FULLY";
+  return "";
+}
+
+function anioConstruccion(p: any): number {
+  const hoy = new Date().getFullYear();
+  const edad = num(p.antiguedad) || num(p.edad_inmueble);
+  let anio = 0;
+  if (edad > 0) anio = hoy - Math.round(edad);
+  else if (num(p.ano_construccion) > 0) anio = Math.round(num(p.ano_construccion));
+  return (anio >= 1500 && anio <= 2100) ? anio : 0;
+}
+
+// Motivos por los que Proppit descartaria el aviso. Si hay alguno, la propiedad no entra al feed.
+function faltantes(p: any): string[] {
+  const f: string[] = [];
+  const tipo = tipoProppit(p);
+  if (!String(p.titulo ?? "").trim()) f.push("sin titulo");
+  if (!String(p.descripcion ?? "").trim()) f.push("sin descripcion");
+  if (!(num(p.precio) > 0)) f.push("sin precio");
+  if (!operacionProppit(p)) f.push("tipo de negocio no valido para Proppit (" + String(p.tipo_operacion ?? "") + ")");
+  if (!tipo) f.push("tipo de inmueble no valido para Proppit (" + String(p.tipo_propiedad ?? "") + ")");
+  const lat = num(p.latitud), lng = num(p.longitud);
+  if (!(lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180 && (lat !== 0 || lng !== 0))) f.push("sin ubicacion en el mapa (latitud/longitud)");
+  if (fotos(p).length === 0) f.push("sin fotos");
+  const a = areas(p);
+  if (tipo === "land") { if (!(a.terreno > 0 || a.construida > 0)) f.push("sin area del terreno"); }
+  else if (tipo && !(a.usable > 0)) f.push("sin area construida");
+  return f;
+}
+
+// ---------- XML de un aviso ----------
 
 function buildListing(p: any, contact: any): string {
-  const tipoProppit = TIPO_MAP[p.tipo_propiedad] || "apartment";
-  const operation = p.tipo_operacion === "venta" ? "sale" : "rent";
-  const precio = Math.round(Number(p.precio) || 0);
-  const lat = Number(p.latitud) || null;
-  const lng = Number(p.longitud) || null;
-  const fotos = Array.isArray(p.fotos) ? p.fotos : [];
-  const amenidades = Array.isArray(p.amenidades) ? p.amenidades : [];
-  const isLand = tipoProppit === "land";
+  const tipo = tipoProppit(p);
+  const operacion = operacionProppit(p);
+  const esLote = tipo === "land";
+  const a = areas(p);
+  const L: string[] = [];
 
-  const lines: string[] = [];
-  lines.push("  <listing>");
-  lines.push("    <reference_id>" + cdata(p.id) + "</reference_id>");
-  lines.push("    <contact>");
-  lines.push("      <phone>" + cdata(contact.phone || "3003300343") + "</phone>");
-  lines.push("      <whatsapp>" + cdata(contact.whatsapp || "3003300343") + "</whatsapp>");
-  if (contact.email) lines.push("      <email>" + cdata(contact.email) + "</email>");
-  lines.push("      <name>" + cdata(contact.name || "Lomaz Home") + "</name>");
-  lines.push("    </contact>");
-  lines.push("    <title>" + cdata(p.titulo || "") + "</title>");
-  lines.push("    <description>" + cdata(p.descripcion || "") + "</description>");
-  lines.push("    <prices>");
-  lines.push("      <price currency=\"COP\" operation=\"" + escapeAttr(operation) + "\">" + precio + "</price>");
-  lines.push("    </prices>");
-  lines.push("    <property_type>" + cdata(tipoProppit) + "</property_type>");
+  L.push("  <listing>");
+  L.push("    <reference_id>" + cd(p.id) + "</reference_id>");
 
-  lines.push("    <address>");
-  if (p.direccion) lines.push("      <street>" + cdata(p.direccion) + "</street>");
-  if (p.barrio) lines.push("      <neighborhood>" + cdata(p.barrio) + "</neighborhood>");
-  if (p.ciudad) lines.push("      <city>" + cdata(p.ciudad) + "</city>");
-  if (p.departamento) lines.push("      <region>" + cdata(p.departamento) + "</region>");
-  lines.push("      <country>" + cdata("Colombia") + "</country>");
-  lines.push("    </address>");
+  // Contacto: email y telefono (con +57) son obligatorios
+  const email = emailValido(contact.email) || AGENCIA.email;
+  const phone = telCO(contact.phone) || AGENCIA.phone;
+  const whatsapp = telCO(contact.whatsapp) || phone;
+  const name = String(contact.name ?? "").trim() || AGENCIA.name;
+  L.push("    <contact>");
+  L.push("      <email>" + cd(email) + "</email>");
+  L.push("      <phone>" + cd(phone) + "</phone>");
+  L.push("      <whatsapp>" + cd(whatsapp) + "</whatsapp>");
+  L.push("      <name>" + cd(name) + "</name>");
+  L.push("    </contact>");
 
-  if (lat !== null && lng !== null) {
-    lines.push("    <coordinates>");
-    lines.push("      <latitude>" + cdata(lat) + "</latitude>");
-    lines.push("      <longitude>" + cdata(lng) + "</longitude>");
-    lines.push("    </coordinates>");
-    lines.push("    <positionOnMap>" + (p.direccion ? "Accurate" : "Approximate") + "</positionOnMap>");
+  L.push("    <title>" + cd(String(p.titulo).trim()) + "</title>");
+  L.push("    <description>" + cd(String(p.descripcion).trim()) + "</description>");
+
+  L.push("    <prices>");
+  L.push("      <price currency=\"COP\" operation=\"" + operacion + "\">" + Math.round(num(p.precio)) + "</price>");
+  L.push("    </prices>");
+
+  L.push("    <propertyType>" + cd(tipo) + "</propertyType>");
+
+  L.push("    <coordinates>");
+  L.push("      <latitude>" + cd(num(p.latitud)) + "</latitude>");
+  L.push("      <longitude>" + cd(num(p.longitud)) + "</longitude>");
+  L.push("    </coordinates>");
+  L.push("    <positionOnMap>" + (String(p.direccion ?? "").trim() ? "Accurate" : "Approximate") + "</positionOnMap>");
+
+  // Dormitorios y banos: siempre presentes, enteros, con los minimos que exige la guia
+  const dormitorios = CERO_DORMITORIOS.has(tipo) ? 0 : Math.min(500, Math.max(1, entero(p.habitaciones)));
+  const banos = CERO_BANOS.has(tipo) ? 0 : Math.min(500, Math.max(1, entero(p.banos)));
+  L.push("    <bedrooms>" + cd(dormitorios) + "</bedrooms>");
+  L.push("    <bathrooms>" + cd(banos) + "</bathrooms>");
+
+  const furn = amoblado(p);
+  if (furn) L.push("    <furnished>" + cd(furn) + "</furnished>");
+  const anio = anioConstruccion(p);
+  if (anio) L.push("    <year>" + cd(anio) + "</year>");
+  if (entero(p.piso) > 0) L.push("    <floor>" + cd(entero(p.piso)) + "</floor>");
+  const admin = Math.round(num(p.precio_admin) || num(p.administracion));
+  if (admin > 0) L.push("    <communityFeesPrice>" + cd(admin) + "</communityFeesPrice>");
+  const estrato = entero(p.estrato);
+  if (estrato >= 1 && estrato <= 7) L.push("    <stratum>" + cd(estrato) + "</stratum>");
+
+  // Areas (en m2). Guia Colombia: usableArea = area construida, floorArea = area privada, plotArea = terreno.
+  if (esLote) {
+    L.push("    <plotArea unit=\"sqm\">" + Math.round(a.terreno || a.construida) + "</plotArea>");
+  } else {
+    L.push("    <floorArea unit=\"sqm\">" + Math.round(a.privada) + "</floorArea>");
+    if (PLOT_OPCIONAL.has(tipo) && a.terreno > 0) L.push("    <plotArea unit=\"sqm\">" + Math.round(a.terreno) + "</plotArea>");
+    L.push("    <usableArea unit=\"sqm\">" + Math.round(a.usable) + "</usableArea>");
   }
 
-  const bedrooms = isLand || tipoProppit === "commercial" || tipoProppit === "industrial unit" || tipoProppit === "car park"
-    ? 0 : Math.max(1, Number(p.habitaciones) || 1);
-  lines.push("    <bedrooms>" + cdata(bedrooms) + "</bedrooms>");
+  L.push("    <pictures>");
+  for (const u of fotos(p)) L.push("      <url>" + cd(u) + "</url>");
+  L.push("    </pictures>");
 
-  if (p.banos) lines.push("    <bathrooms>" + cdata(Math.round(Number(p.banos) || 0)) + "</bathrooms>");
-  if (p.piso) lines.push("    <floor>" + cdata(Math.round(Number(p.piso) || 0)) + "</floor>");
-  if (p.precio_admin && Number(p.precio_admin) > 0) lines.push("    <maintenanceFee currency=\"COP\">" + Math.round(Number(p.precio_admin)) + "</maintenanceFee>");
-
-  if (!isLand && (Number(p.m2_construccion) || Number(p.area_construida))) {
-    lines.push("    <floorArea unit=\"sqm\">" + Math.round(Number(p.m2_construccion) || Number(p.area_construida)) + "</floorArea>");
+  const video = urlHttp(p.video_url);
+  if (video) {
+    L.push("    <videos>");
+    L.push("      <video>" + cd(video) + "</video>");
+    L.push("    </videos>");
   }
-  if (isLand && (Number(p.m2_terreno) || Number(p.area_total))) {
-    lines.push("    <plotArea unit=\"sqm\">" + Math.round(Number(p.m2_terreno) || Number(p.area_total)) + "</plotArea>");
-  } else if ((Number(p.m2_terreno) || Number(p.area_total)) && (tipoProppit === "house" || tipoProppit === "villa")) {
-    lines.push("    <plotArea unit=\"sqm\">" + Math.round(Number(p.m2_terreno) || Number(p.area_total)) + "</plotArea>");
+  const tour = urlHttp(p.tour_virtual_url);
+  if (tour) {
+    L.push("    <virtualTours>");
+    L.push("      <virtualTour>" + cd(tour) + "</virtualTour>");
+    L.push("    </virtualTours>");
   }
 
-  if (fotos.length > 0) {
-    lines.push("    <pictures>");
-    for (const u of fotos.slice(0, 30)) {
-      lines.push("      <url>" + cdata(u) + "</url>");
+  const excl = normalizar(p.exclusiva);
+  if (excl === "si" || excl === "true") L.push("    <isExclusive>true</isExclusive>");
+
+  const am = amenidadesProppit(p);
+  if (am.length > 0) {
+    L.push("    <amenities>");
+    for (const v of am) L.push("      <amenity>" + cd(v) + "</amenity>");
+    L.push("    </amenities>");
+  }
+
+  // Mascotas: solo casa, apartamento o finca en arriendo (unico caso donde la guia acepta <rules>)
+  if (operacion === "rent" && TIPOS_CON_REGLAS.has(tipo)) {
+    const set = new Set(listaTexto(p.amenidades).concat(listaTexto(p.caracteristicas)).map(normalizar));
+    if (set.has("pet friendly") || set.has("acepta mascotas")) {
+      L.push("    <rules>");
+      L.push("      <rule>" + cd("pets allowed") + "</rule>");
+      L.push("    </rules>");
     }
-    lines.push("    </pictures>");
   }
 
-  if (p.video_url) {
-    lines.push("    <videos>");
-    lines.push("      <video>" + cdata(p.video_url) + "</video>");
-    lines.push("    </videos>");
-  }
-
-  if (p.tour_virtual_url) {
-    lines.push("    <virtualTours>");
-    lines.push("      <virtualTour>" + cdata(p.tour_virtual_url) + "</virtualTour>");
-    lines.push("    </virtualTours>");
-  }
-
-  const proppitAmenities = new Set<string>();
-  for (const a of amenidades) {
-    const mapped = AMENITY_MAP[a];
-    if (mapped) proppitAmenities.add(mapped);
-  }
-  if (proppitAmenities.size > 0) {
-    lines.push("    <amenities>");
-    for (const a of proppitAmenities) {
-      lines.push("      <amenity>" + cdata(a) + "</amenity>");
-    }
-    lines.push("    </amenities>");
-  }
-
-  lines.push("  </listing>");
-  return lines.join("\n");
+  L.push("  </listing>");
+  return L.join("\n");
 }
+
+// Arma el documento completo. `props` ya viene filtrado (activas y enviadas a Proppit).
+function generarXml(props: any[], contactosPorAsesor: Record<string, any>): { xml: string; incluidas: number; excluidas: string[] } {
+  const body: string[] = [];
+  const excluidas: string[] = [];
+  body.push("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+  const cuerpo: string[] = [];
+  for (const p of props) {
+    const f = faltantes(p);
+    if (f.length) { excluidas.push("propiedad " + p.id + ": " + f.join(", ")); continue; }
+    cuerpo.push(buildListing(p, contactosPorAsesor[p.asesor_id] || {}));
+  }
+  body.push("<listings>");
+  if (excluidas.length) {
+    // Comentario informativo (Proppit lo ignora): sirve para ver desde el navegador por que una propiedad no salio.
+    body.push("  <!-- LoMaz Home: " + excluidas.length + " propiedad(es) NO incluida(s) por datos incompletos que Proppit exige: " + excluidas.join(" | ").replace(/--/g, "- -") + " -->");
+  }
+  body.push(...cuerpo);
+  body.push("</listings>");
+  return { xml: body.join("\n"), incluidas: cuerpo.length, excluidas };
+}
+
+// ---------- servidor ----------
 
 Deno.serve(async (_req) => {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE);
-  
+
   const { data: propsRaw, error } = await supabase
     .from("propiedades")
     .select("*")
@@ -165,9 +381,9 @@ Deno.serve(async (_req) => {
     .not("longitud", "is", null);
 
   if (error) {
-    return new Response("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<error>" + error.message + "</error>", {
+    return new Response("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<error>" + cd(error.message) + "</error>", {
       status: 500,
-      headers: { "Content-Type": "application/xml; charset=utf-8" }
+      headers: { "Content-Type": "application/xml; charset=utf-8" },
     });
   }
 
@@ -215,59 +431,48 @@ Deno.serve(async (_req) => {
   };
   const props = (propsRaw || []).filter((p: any) => enviadaAProppit(p));
 
-  // Cargar perfiles de asesores y emails de auth.users
-  const asesorIds = [...new Set((props||[]).map((p: any) => p.asesor_id).filter(Boolean))];
+  // Contacto de cada asesor (perfiles) con respaldo en auth.users para el email
+  const asesorIds = [...new Set(props.map((p: any) => p.asesor_id).filter(Boolean))];
   const contactosPorAsesor: Record<string, any> = {};
-  
+
   if (asesorIds.length > 0) {
-    // Perfiles tiene email, telefono, whatsapp
     const { data: perfiles } = await supabase
       .from("perfiles")
       .select("*")
       .in("user_id", asesorIds);
-    
+
     for (const perfil of (perfiles || [])) {
       contactosPorAsesor[perfil.user_id] = {
         email: perfil.email || null,
         phone: perfil.telefono || null,
         whatsapp: perfil.whatsapp || null,
-        name: perfil.nombre_completo || perfil.nombre || null
+        name: perfil.nombre_completo || perfil.nombre || null,
       };
     }
-    
-    // Fallback: auth.users.email para los que no tengan perfil
+
     for (const aid of asesorIds) {
-      if (!contactosPorAsesor[aid] || !contactosPorAsesor[aid].email) {
+      if (!contactosPorAsesor[aid] || !emailValido(contactosPorAsesor[aid].email)) {
         try {
           const { data: u } = await supabase.auth.admin.getUserById(aid);
           if (u && u.user) {
             contactosPorAsesor[aid] = contactosPorAsesor[aid] || {};
-            contactosPorAsesor[aid].email = contactosPorAsesor[aid].email || u.user.email || null;
+            contactosPorAsesor[aid].email = emailValido(contactosPorAsesor[aid].email) || u.user.email || null;
           }
-        } catch (e) { /* ignore */ }
+        } catch (_e) { /* se usa el correo de la agencia */ }
       }
     }
   }
 
-  const validProps = (props || []).filter((p: any) => {
-    return p.titulo && p.descripcion && p.precio && p.tipo_propiedad && p.tipo_operacion;
-  });
+  const { xml, incluidas, excluidas } = generarXml(props, contactosPorAsesor);
 
-  const body: string[] = [];
-  body.push("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-  body.push("<listings>");
-  for (const p of validProps) {
-    const contact = contactosPorAsesor[p.asesor_id] || {};
-    body.push(buildListing(p, contact));
-  }
-  body.push("</listings>");
-
-  return new Response(body.join("\n"), {
+  return new Response(xml, {
     status: 200,
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=3600"
-    }
+      "Cache-Control": "public, max-age=3600",
+      "Access-Control-Allow-Origin": "*",
+      "X-Lomaz-Incluidas": String(incluidas),
+      "X-Lomaz-Excluidas": String(excluidas.length),
+    },
   });
 });
-
