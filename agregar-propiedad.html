@@ -770,12 +770,13 @@ async function sincronizarPortalesDePropiedad(propId){
       var esUuid = !esUrl && RE_UUID.test(up);
       var mL = msg.match(/listing_id[\s\S]{0,4}?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
       var mP = msg.match(/(?:fr_)?property_id[\s\S]{0,4}?(\d{4,})/i);
+      var mM = msg.match(/Codigo Metrocuadrado[:\s]+(\d+-M\d+)/i); // codigo del inmueble en Metrocuadrado (ej. 20387-M7103637)
       var mT = msg.match(/task[\s\S]{0,16}?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
       porPortal[portal] = {
         portal: portal,
         estado: r.estado || "",
         listing_id: esUuid ? up : (mL ? mL[1] : ""),
-        property_id: mP ? mP[1] : "",
+        property_id: mP ? mP[1] : (mM ? mM[1] : ""),
         task_id: mT ? mT[1] : "",
         url: esUrl ? up : "",
         fecha: r.fecha || new Date().toISOString()
@@ -913,9 +914,11 @@ headers:_hdr,
 body: JSON.stringify({propertyId: propId, ticket: tk.data})
 });
 var json = await resp.json().catch(function(){return {};});
-if(resp.status === 201){
-var tid = (json.respuesta && (json.respuesta.transactionId || json.respuesta.transaction_id)) || "";
-return {ok:true, msg:"Publicado en Metrocuadrado correctamente."+(tid?(" Transaction ID: "+tid):"")};
+// Metrocuadrado responde 200 "Transaccion de publicacion recibida" (no 201): cualquier 2xx es exito.
+if(resp.status >= 200 && resp.status < 300 && json && json.status >= 200 && json.status < 300){
+var tid = json.transactionId || (json.respuesta && (json.respuesta.transactionId || json.respuesta.transaction_id)) || "";
+var rid = json.realEstateId || "";
+return {ok:true, msg:"Publicado en Metrocuadrado correctamente."+(rid?(" Codigo Metrocuadrado: "+rid):"")+(tid?(" Transaction ID: "+tid):"")};
 }
 var errMsg = (json && (json.error || (json.respuesta && (json.respuesta.message || JSON.stringify(json.respuesta))))) || ("Error HTTP "+resp.status);
 var _pend = (window.lmzMetroPendiente ? window.lmzMetroPendiente(errMsg) : "");
@@ -1510,6 +1513,10 @@ try {
     var r=(window.__LMZ_LISTA||[]).filter(function(x){return x.portal===portal;})[0]||{};
     if(r.url){ window.open(r.url,"_blank","noopener"); return; }
     if(portal==="proppit"){ mostrarPanelProppit(r); return; }
+    if(portal==="metrocuadrado"){
+      var mc=String(r.property_id||"").match(/^\d+-M\d+$/) ? r.property_id : ((String(r.mensaje||"").match(/Codigo Metrocuadrado[:\s]+(\d+-M\d+)/i)||[])[1]||"");
+      if(mc){ avisar("Abriendo el aviso "+mc+" en Metrocuadrado. Si dice que esta en proceso de publicacion, Metrocuadrado aun lo esta revisando (suele tardar unas horas).","info"); window.open("https://www.metrocuadrado.com/inmueble/inmueble/"+encodeURIComponent(mc),"_blank","noopener"); return; }
+    }
     if(portal==="fincaraiz"){
       if(r.property_id){ window.open(frUrl(r.property_id),"_blank","noopener"); return; }
       // La pestana se abre ANTES de consultar, para que el navegador no la bloquee como ventana emergente
