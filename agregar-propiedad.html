@@ -1392,6 +1392,8 @@ try {
       var acc=boton("Ver","ver",r.portal,"#60a5fa");
       if(activo(r.estado)) acc+=boton("Pausar","pausar",r.portal,"#eab308");
       if(pausado(r.estado)||retirado(r.estado)) acc+=boton("Reactivar","reactivar",r.portal,"#22c55e");
+      // Metrocuadrado con error: se puede volver a enviar el aviso sin tener que guardar la propiedad de nuevo.
+      if(r.portal==="metrocuadrado"&&/^error$/i.test(String(r.estado||""))) acc+=boton("Reintentar","reintentar",r.portal,"#22c55e");
       if(!retirado(r.estado)) acc+=boton("Retirar","retirar",r.portal,"#f87171");
       return '<div class="portal-row" style="align-items:center;justify-content:space-between"><div><div class="portal-name">'+esc(nombre(r.portal))+'</div><div class="portal-desc">'+esc(det.join(" - "))+'</div></div><div style="display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;justify-content:flex-end">'+chipEstado(r.estado)+acc+'</div></div>';
     }).join("");
@@ -1563,7 +1565,7 @@ try {
       return {ok:false,msg:String(j.msg||j.error||("HTTP "+o.status)).substring(0,300)};
     }
     if(portal==="metrocuadrado"){
-      if(accion==="reactivar"){
+      if(accion==="reactivar"||accion==="reintentar"){
         if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"La publicacion de Metrocuadrado no esta disponible en esta pagina."};
         var m=await window.publicarEnMetrocuadrado(EDIT_ID);
         return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
@@ -1582,13 +1584,14 @@ try {
     var r=(window.__LMZ_LISTA||[]).filter(function(x){return x.portal===portal;})[0];
     if(!r) return;
     var n=nombre(portal);
-    var titulos={ pausar:"Pausar el aviso en "+n, reactivar:"Reactivar el aviso en "+n, retirar:"Retirar el aviso de "+n };
+    var titulos={ pausar:"Pausar el aviso en "+n, reactivar:"Reactivar el aviso en "+n, retirar:"Retirar el aviso de "+n, reintentar:"Reintentar la publicacion en "+n };
     var textos={
       pausar:"El aviso deja de mostrarse en "+n+". La propiedad sigue publicada en Lomaz Home y puedes reactivarla cuando quieras.",
       reactivar:"El aviso vuelve a mostrarse en "+n+" con la informacion actual de Lomaz Home.",
-      retirar:"<b>El aviso se retira de "+n+".</b><br>Segun el portal esta accion puede ser definitiva y habria que volver a publicarlo desde cero. La propiedad NO se borra de Lomaz Home."
+      retirar:"<b>El aviso se retira de "+n+".</b><br>Segun el portal esta accion puede ser definitiva y habria que volver a publicarlo desde cero. La propiedad NO se borra de Lomaz Home.",
+      reintentar:"Se vuelve a enviar el aviso a "+n+" con la informacion actual de Lomaz Home."
     };
-    var okBtn={ pausar:"Si, pausar", reactivar:"Si, reactivar", retirar:"Si, retirar el aviso" };
+    var okBtn={ pausar:"Si, pausar", reactivar:"Si, reactivar", retirar:"Si, retirar el aviso", reintentar:"Si, reintentar" };
     var ok=await confirmar(titulos[accion]||"Confirmar",textos[accion]||"",okBtn[accion]||"Confirmar",accion==="retirar");
     if(!ok) return;
     if(window.__LMZ_BUSY){ avisar("Espera a que termine la accion anterior.","info"); return; }
@@ -1596,9 +1599,9 @@ try {
     avisar("Procesando en "+n+"... puede tardar hasta 2 minutos. No cierres esta pagina.","info");
     var res={ok:false,msg:""};
     try{ res=await ejecutar(r,portal,accion); }catch(e){ res={ok:false,msg:(e&&e.message)||String(e)}; }
-    var nuevos={ pausar:"pausado", reactivar:"activo", retirar:"retirado" };
+    var nuevos={ pausar:"pausado", reactivar:"activo", retirar:"retirado", reintentar:"activo" };
     if(res.ok){ await registrar(r,nuevos[accion],res.msg); avisar(n+": "+(res.msg||"listo."),"success"); }
-    else{ avisar(n+": no se pudo completar. "+(res.msg||""),"error"); }
+    else{ if(accion==="reintentar") await registrar(r,"error",res.msg); avisar(n+": no se pudo completar. "+(res.msg||""),"error"); }
     window.__LMZ_BUSY=false;
     render();
   };
