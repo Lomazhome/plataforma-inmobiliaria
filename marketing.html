@@ -1118,7 +1118,7 @@ function generarParaArticulo(a,red){
  var titulo=a.t;
  var hook=em+' '+a.t+' \u2014 lo que muchos ignoran y a ti te puede ahorrar dinero.';
  var copy=[a.e,'En este contenido de LoMaz Home te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guía completa en nuestro blog.'].filter(Boolean).join('\n\n');
- if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Hook a camara] '+a.t+'\n[Desarrollo] '+(a.e||a.t)+'\n[Cierre] '+(CTA_RED[red]||'');}
+ if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Gancho a cámara] '+a.t+'\n[Desarrollo] '+(a.e||a.t)+'\n[Cierre] '+(CTA_RED[red]||'');}
  var tags='#LomazHome #'+a.c.replace(/\s+/g,'')+' #Inmobiliaria #Bogotá #Colombia #Inversión #ConsejosInmobiliarios';
  return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
 }
