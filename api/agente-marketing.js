@@ -29,6 +29,7 @@ const VOZ = [
   "- Prohibidas las frases hechas de publicidad y de inteligencia artificial: «en el mundo actual», «sin duda», «no busques más», «no te lo pierdas», «descubre», «sumérgete», «te contamos todo», «¿sabías que…?», «hoy te traemos», «el hogar de tus sueños», «somos tu mejor opción». No exageres ni prometas resultados.",
   "- Ortografía impecable: tildes, signos de apertura y cierre (¿? ¡!) y mayúscula solo al inicio y en nombres propios. Cifras como se escriben en Colombia: $2.000.000 y 5,10 %.",
   "- La marca se escribe LoMaz Home. El hashtag de la marca es #LomazHome.",
+  "- Hashtags: con sus tildes y eñes, como el resto del texto (#ArriendoBogotá, #GuíaDelInquilino), y escritos igual de una pieza a otra. De lugar, solo Bogotá o el barrio del que trata la pieza.",
   "- Emojis: máximo dos por texto en Instagram, Facebook, TikTok y WhatsApp; ninguno en LinkedIn, YouTube ni Google; ninguno dentro de guiones, láminas ni listas."
 ].join("\n");
 
