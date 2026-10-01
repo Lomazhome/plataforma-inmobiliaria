@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marketing / Contenido - Lomaz Home</title>
+<title>Marketing / Contenido - LoMaz Home</title>
 <meta name="google" content="notranslate">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,6 +28,7 @@ a{color:inherit;text-decoration:none}
 .page-sub{color:var(--txt-soft);font-size:.92rem;margin-bottom:1.8rem;font-weight:300;max-width:760px}
 .hero-strip{background:linear-gradient(135deg,#0A1626 0%,#13233d 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.4rem 1.6rem;margin-bottom:1.6rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:relative;overflow:hidden}
 .hero-strip::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5}
+.hero-strip>div:first-child{flex:1 1 320px;min-width:0}
 .hero-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
 .chip{font-size:.72rem;padding:.3rem .7rem;border-radius:20px;background:rgba(201,169,110,.10);border:1px solid rgba(201,169,110,.25);color:var(--gold-l);letter-spacing:.3px}
 .alert{padding:.9rem 1.2rem;border-radius:var(--r-sm);font-size:.88rem;font-weight:500;margin-bottom:1.2rem;display:none}
@@ -70,7 +71,17 @@ td .tprev{max-width:340px;color:var(--txt-soft);font-size:.78rem;line-height:1.4
 .b-borr{background:rgba(168,162,158,.15);color:#cfcac4;border:1px solid rgba(168,162,158,.35)}
 .b-prog{background:rgba(201,169,110,.14);color:var(--gold);border:1px solid rgba(201,169,110,.4)}
 .b-pub{background:rgba(40,167,69,.14);color:#7dd87d;border:1px solid rgba(40,167,69,.4)}
-.rs{display:inline-flex;align-items:center;gap:.35rem;font-weight:600;font-size:.8rem}
+.rs{display:inline-block;font-weight:600;font-size:.74rem;line-height:1.55;color:var(--txt);min-width:6.4rem;max-width:8.8rem}
+.red-chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.red-chip{position:relative;display:inline-block;cursor:pointer;margin:0;text-transform:none;letter-spacing:0;font-size:inherit}
+.red-chip input{position:absolute;opacity:0;width:1px;height:1px;padding:0;margin:0;pointer-events:none}
+.red-chip span{display:inline-block;font-size:.78rem;font-weight:600;padding:.5rem .9rem;border-radius:20px;border:1px solid var(--line);color:var(--txt-soft);background:rgba(13,27,46,.6);transition:all .15s ease;user-select:none}
+.red-chip:hover span{border-color:var(--line-strong);color:var(--txt)}
+.red-chip input:checked+span{background:rgba(201,169,110,.16);border-color:var(--gold);color:var(--gold-l)}
+.red-chip input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.red-nota{display:flex;flex-wrap:wrap;gap:.3rem .8rem;align-items:baseline;font-size:.72rem;color:var(--txt-mute);line-height:1.5}
+.red-auto{background:none;border:0;padding:0;color:var(--gold-l);font:inherit;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+@media(max-width:700px){.red-chip span{padding:.6rem .95rem}.red-auto{padding:.35rem 0}}
 .ico-act{cursor:pointer;color:var(--txt-soft);font-size:.95rem;padding:.2rem .35rem;border-radius:6px;transition:all .2s}
 .ico-act:hover{color:var(--gold);background:rgba(201,169,110,.08)}
 .ico-act.del:hover{color:#ff8a93;background:rgba(220,53,69,.1)}
@@ -353,22 +364,22 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 </svg>
 <div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
 </a>
-<div class="topbar-right"><button class="btn-back" onclick="window.location.href='dashboard.html'">← Dashboard</button><div style="position:relative"><div id="topAvatarMini" title="Perfil" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07840);color:#0D1B2E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(201,169,110,.3)">?</div><div id="topAvatarMenu" style="display:none;position:absolute;right:0;top:52px;background:#122036;border:1px solid rgba(201,169,110,.25);border-radius:12px;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;z-index:9999"><div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.25)"><div id="topName" style="font-size:.9rem;color:#f5f1ea;font-weight:600;white-space:nowrap">&nbsp;</div><div id="topRole" style="font-size:.7rem;color:#c9a96e;letter-spacing:1px;text-transform:uppercase;margin-top:2px">&nbsp;</div></div><a href="perfil-asesor.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem">Mi Perfil</a><a href="mis-propiedades.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Mis Propiedades</a><a href="clientes.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Clientes</a><a href="#" id="topLogoutBtn" style="display:block;padding:.75rem 1.1rem;color:#e57373;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Cerrar Sesion</a></div></div><script>(function(){function fmtRol(r){if(!r)return"Usuario";var map={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};var k=String(r).toLowerCase();return map[k]||(r.charAt(0).toUpperCase()+r.slice(1));}async function fillTop(){try{var s=(await sb.auth.getSession()).data.session;if(!s)return;var email=s.user.email||"";var av=document.getElementById("topAvatarMini");if(av&&email)av.textContent=email.charAt(0).toUpperCase();var r=await sb.from("perfiles_usuarios").select("nombre_completo,rol_id,roles(nombre)").eq("id",s.user.id).single();var p=r.data;if(p){var nombre=(p.nombre_completo||"").trim();if(nombre){document.getElementById("topName").textContent=nombre;if(av)av.textContent=nombre.charAt(0).toUpperCase();}var rn=p.roles&&p.roles.nombre?p.roles.nombre:null;document.getElementById("topRole").textContent=fmtRol(rn);}}catch(e){}}(function w(){if(typeof sb!=='undefined'&&sb&&sb.from){fillTop();}else{setTimeout(w,150);}})();var av=document.getElementById("topAvatarMini"),mn=document.getElementById("topAvatarMenu");if(av){av.addEventListener("click",function(e){e.stopPropagation();mn.style.display=(mn.style.display==="none")?"block":"none";});document.addEventListener("click",function(){mn.style.display="none";});}var lo=document.getElementById("topLogoutBtn");if(lo){lo.addEventListener("click",function(e){e.preventDefault();try{Object.keys(localStorage).filter(function(x){return /sb-.*-auth-token/.test(x)}).forEach(function(x){localStorage.removeItem(x);});}catch(_){}window.location.href="login.html";});}})();</script></div>
+<div class="topbar-right"><button class="btn-back" onclick="window.location.href='dashboard.html'">← Dashboard</button><div style="position:relative"><div id="topAvatarMini" title="Perfil" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07840);color:#0D1B2E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(201,169,110,.3)">?</div><div id="topAvatarMenu" style="display:none;position:absolute;right:0;top:52px;background:#122036;border:1px solid rgba(201,169,110,.25);border-radius:12px;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;z-index:9999"><div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.25)"><div id="topName" style="font-size:.9rem;color:#f5f1ea;font-weight:600;white-space:nowrap">&nbsp;</div><div id="topRole" style="font-size:.7rem;color:#c9a96e;letter-spacing:1px;text-transform:uppercase;margin-top:2px">&nbsp;</div></div><a href="perfil-asesor.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem">Mi Perfil</a><a href="mis-propiedades.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Mis Propiedades</a><a href="clientes.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Clientes</a><a href="#" id="topLogoutBtn" style="display:block;padding:.75rem 1.1rem;color:#e57373;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Cerrar sesión</a></div></div><script>(function(){function fmtRol(r){if(!r)return"Usuario";var map={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};var k=String(r).toLowerCase();return map[k]||(r.charAt(0).toUpperCase()+r.slice(1));}async function fillTop(){try{var s=(await sb.auth.getSession()).data.session;if(!s)return;var email=s.user.email||"";var av=document.getElementById("topAvatarMini");if(av&&email)av.textContent=email.charAt(0).toUpperCase();var r=await sb.from("perfiles_usuarios").select("nombre_completo,rol_id,roles(nombre)").eq("id",s.user.id).single();var p=r.data;if(p){var nombre=(p.nombre_completo||"").trim();if(nombre){document.getElementById("topName").textContent=nombre;if(av)av.textContent=nombre.charAt(0).toUpperCase();}var rn=p.roles&&p.roles.nombre?p.roles.nombre:null;document.getElementById("topRole").textContent=fmtRol(rn);}}catch(e){}}(function w(){if(typeof sb!=='undefined'&&sb&&sb.from){fillTop();}else{setTimeout(w,150);}})();var av=document.getElementById("topAvatarMini"),mn=document.getElementById("topAvatarMenu");if(av){av.addEventListener("click",function(e){e.stopPropagation();mn.style.display=(mn.style.display==="none")?"block":"none";});document.addEventListener("click",function(){mn.style.display="none";});}var lo=document.getElementById("topLogoutBtn");if(lo){lo.addEventListener("click",function(e){e.preventDefault();try{Object.keys(localStorage).filter(function(x){return /sb-.*-auth-token/.test(x)}).forEach(function(x){localStorage.removeItem(x);});}catch(_){}window.location.href="login.html";});}})();</script></div>
 </div>
 
 <div class="container">
 <div class="page-title">&#128241; Centro de Mando <em>Social</em></div>
-<div class="page-sub">Controla tu calendario de creacion de contenido digital y toda la publicidad y marketing que realizas en redes sociales cada mes. Planifica, programa y haz seguimiento de cada publicacion de LOMAZ HOME y tu marca personal.</div>
+<div class="page-sub">Controla tu calendario de creación de contenido digital y toda la publicidad y el marketing que haces en redes sociales cada mes. Planifica, programa y haz seguimiento de cada publicación de LoMaz Home y de tu marca personal.</div>
 
 <div class="hero-strip">
 <div>
-<div style="font-family:var(--serif);font-size:1.25rem;color:#fff">Matriz de Publicacion Mensual</div>
-<div style="font-size:.82rem;color:var(--txt-soft);margin-top:.3rem">Fusion de marca corporativa <b style="color:var(--gold-l)">LOMAZ HOME</b> + marca personal del asesor para proyectar autoridad en el sector.</div>
+<div style="font-family:var(--serif);font-size:1.25rem;color:#fff">Matriz de publicación mensual</div>
+<div style="font-size:.82rem;color:var(--txt-soft);margin-top:.3rem">Cada pieza sale el mismo día en todas las redes que admiten su formato. Fusión de la marca <b style="color:var(--gold-l)">LoMaz Home</b> con la marca personal del asesor, para proyectar autoridad en el sector.</div>
 <div class="hero-chips">
-<span class="chip">TikTok</span><span class="chip">Instagram</span><span class="chip">Facebook</span><span class="chip">LinkedIn</span><span class="chip">YouTube</span><span class="chip">Threads</span><span class="chip">WhatsApp</span><span class="chip">X</span>
+<span class="chip">Instagram</span><span class="chip">Facebook</span><span class="chip">TikTok</span><span class="chip">YouTube</span><span class="chip">WhatsApp</span><span class="chip">LinkedIn</span><span class="chip">Google</span><span class="chip">Marketplace</span><span class="chip">Threads</span>
 </div>
 </div>
-<button class="btn btn-primary" onclick="openEditor()">+ Nueva publicacion</button>
+<button class="btn btn-primary" onclick="openEditor()">+ Nueva publicación</button>
 </div>
 
 <div class="alert" id="alert"></div>
@@ -377,7 +388,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="kpi"><div class="lbl">Volumen mensual</div><div class="num" id="kVol">0</div><div class="mini"><span><b id="kBorr">0</b> borrador</span><span><b id="kConf">0</b> por confirmar</span><span><b id="kProg">0</b> prog.</span><span><b id="kPub">0</b> pub.</span></div></div>
 <div class="kpi"><div class="lbl">Mix de redes</div><div class="num" id="kRedes">0</div><div class="mini" id="kRedesMini" style="font-size:.7rem">&mdash;</div></div>
 <div class="kpi"><div class="lbl">Balance de marca</div><div class="num" id="kMarcaTop">&mdash;</div><div class="mini" id="kMarcaMini">&mdash;</div></div>
-<div class="kpi"><div class="lbl">Pilares estrategicos</div><div class="num" id="kPilarTop">&mdash;</div><div class="mini" id="kPilarMini">&mdash;</div></div>
+<div class="kpi"><div class="lbl">Pilares estratégicos</div><div class="num" id="kPilarTop">&mdash;</div><div class="mini" id="kPilarMini">&mdash;</div></div>
 </div>
 
 <div class="tabs">
@@ -404,7 +415,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="panel" id="panel-cal">
 <div class="cal-head">
 <div class="cal-nav"><button onclick="calMove(-1)">&#8592;</button><div class="cal-month" id="calMonth"></div><button onclick="calMove(1)">&#8594;</button></div>
-<button class="btn btn-primary" onclick="openEditor()">+ Nueva publicacion</button>
+<button class="btn btn-primary" onclick="openEditor()">+ Nueva publicación</button>
 </div>
 <div class="legend" id="calLegend">
 <span class="lg-grp">Responsable</span>
@@ -507,8 +518,8 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="fg"><label>Formato</label><select id="agFormato"><option value="reel">Reel (video vertical)</option><option value="carrusel">Carrusel</option><option value="lista">Lista de chequeo</option><option value="imagen">Imagen</option><option value="historia">Historia</option></select></div>
 <div class="fg" id="agTemaWrap"><label id="agTemaLabel">Tema de la pieza</label><input type="text" id="agTema" autocomplete="off" placeholder="Ej: Vendido en 21 d&iacute;as: qu&eacute; hicimos"></div>
 <div class="fg" id="agNotasWrap"><label>Datos o indicaciones (opcional)</label><textarea id="agNotas" placeholder="Los datos reales de la pieza: barrio, d&iacute;as, cifras, nombres. El agente no inventa cifras."></textarea></div>
-<div class="fg"><label>Enfoque de marca</label><select id="agEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
-<div class="fg"><label>Pilar / Objetivo</label><select id="agPilar" onchange="_agTocoPilar=true"><option>Portafolio Inmobiliario</option><option>Educacion y Autoridad</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
+<div class="fg"><label>Enfoque de marca</label><select id="agEnfoque"><option value="LOMAZ HOME">LoMaz Home</option><option value="Marca personal">Marca personal</option><option value="Fusion">Fusión</option></select></div>
+<div class="fg"><label>Pilar / Objetivo</label><select id="agPilar" onchange="_agTocoPilar=true"><option value="Portafolio Inmobiliario">Portafolio Inmobiliario</option><option value="Educacion y Autoridad">Educación y Autoridad</option><option value="Detras de Escena">Detrás de Escena</option><option value="Tendencias y Estilo de vida">Tendencias y Estilo de vida</option></select></div>
 <button type="button" class="btn btn-primary" id="agBtnPieza" style="width:100%;margin-top:.4rem" onclick="generarContenido()">&#10024; Generar pieza</button>
 </div>
 <div class="agent-card">
@@ -518,7 +529,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 </div>
 <div class="overlay" id="editorOverlay">
 <div class="modal">
-<h3 id="editorTitle">Nueva <em>publicacion</em></h3>
+<h3 id="editorTitle">Nueva <em>publicación</em></h3>
 <input type="hidden" id="ePostId">
 <div class="grid3">
 <div class="fg"><label>Fecha</label><input type="date" id="eFecha"></div>
@@ -531,25 +542,28 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="fg"><label>Edici&oacute;n o dise&ntilde;o</label><input type="date" id="eFEdic"></div>
 </div>
 <div class="fab-hint">Fechas de fabricaci&oacute;n: el d&iacute;a en que se escribe, se graba y se edita o dise&ntilde;a la pieza, antes de publicarla. Si un paso no aplica (un carrusel no se graba), d&eacute;jalo vac&iacute;o.</div>
-<div class="grid3">
-<div class="fg"><label>Red social</label><select id="eRed"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>YouTube</option><option>Threads</option><option>WhatsApp</option><option>X</option></select></div>
-<div class="fg"><label>Enfoque de marca</label><select id="eEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
-<div class="fg"><label>Pilar de contenido</label><select id="ePilar"><option>Educacion y Autoridad</option><option>Portafolio Inmobiliario</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
+<div class="fg full"><label>Redes en las que sale</label>
+<div class="red-chips" id="eRedes"></div>
+<div class="red-nota"><button type="button" class="red-auto" onclick="eRedesSegunFormato()">Poner las de su formato</button><span>Un Reel sale en Instagram, Facebook, TikTok, YouTube Shorts, el estado de WhatsApp y LinkedIn. Un carrusel, una imagen o una lista de chequeo, en Instagram, Facebook, TikTok, WhatsApp, LinkedIn y la novedad de Google. Threads se comparte solo desde Instagram.</span></div>
+</div>
+<div class="grid2">
+<div class="fg"><label>Enfoque de marca</label><select id="eEnfoque"><option value="LOMAZ HOME">LoMaz Home</option><option value="Marca personal">Marca personal</option><option value="Fusion">Fusión</option></select></div>
+<div class="fg"><label>Pilar de contenido</label><select id="ePilar"><option value="Educacion y Autoridad">Educación y Autoridad</option><option value="Portafolio Inmobiliario">Portafolio Inmobiliario</option><option value="Detras de Escena">Detrás de Escena</option><option value="Tendencias y Estilo de vida">Tendencias y Estilo de vida</option></select></div>
 </div>
 <div class="src-box" style="margin-bottom:1rem">
 <div class="src-row">
 <div class="fg" style="margin:0"><label>Autollenar desde</label>
-<select id="eSrcType" onchange="onEditorSrcType()"><option value="">(Manual)</option><option value="propiedad">Propiedad del portafolio</option><option value="articulo">Articulo del blog</option></select></div>
+<select id="eSrcType" onchange="onEditorSrcType()"><option value="">(Manual)</option><option value="propiedad">Propiedad del portafolio</option><option value="articulo">Artículo del blog</option></select></div>
 <div class="fg" style="margin:0"><label>Selecciona</label>
 <select id="eSrcItem"><option value="">&mdash;</option></select></div>
 </div>
 <button type="button" class="btn btn-secondary" style="margin-top:.7rem" onclick="autollenarDesdeFuente()">&#8595; Traer datos al formulario</button>
 </div>
-<div class="fg full"><label>Titulo / Tema central</label><input type="text" id="eTitulo" placeholder="Ej: Tour exclusivo penthouse..."></div>
+<div class="fg full"><label>Título / Tema central</label><input type="text" id="eTitulo" placeholder="Ej: Reel · Recorrido del apartamento en Suba" oninput="eRedesAutoTitulo()"></div>
 <div class="fg full"><label>Art&iacute;culo madre</label><input type="text" id="eArticulo" list="dlArticulos" autocomplete="off" placeholder="Ej: 2 &middot; Cr&eacute;dito con el FNA (vac&iacute;o si la pieza no sale de un art&iacute;culo)"><datalist id="dlArticulos"></datalist></div>
-<div class="fg full"><label>Hook (gancho de apertura)</label><textarea id="eHook" placeholder="La primera linea que detiene el scroll..."></textarea></div>
-<div class="fg full"><label>Copy / Guion</label><textarea id="eCopy" placeholder="Cuerpo del post, guion o descripcion..." style="min-height:120px"></textarea></div>
-<div class="fg full"><label>Responsable</label><input type="text" id="eResp" placeholder="Ej: Salomon Mazabell / Equipo de contenido"></div>
+<div class="fg full"><label>Hook (gancho de apertura)</label><textarea id="eHook" placeholder="La primera línea que detiene el scroll..."></textarea></div>
+<div class="fg full"><label>Copy / Guion</label><textarea id="eCopy" placeholder="Cuerpo del post, guion o descripción..." style="min-height:120px"></textarea></div>
+<div class="fg full"><label>Responsable</label><input type="text" id="eResp" placeholder="Ej: Salomón, Angélica o Los dos"></div>
 <div id="eMsg" style="display:none;font-size:.82rem;color:#ff8a93;background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);border-radius:var(--r-sm);padding:.6rem .8rem"></div>
 <div class="modal-btns">
 <button class="btn btn-secondary" onclick="closeEditor()">Cancelar</button>
@@ -568,11 +582,11 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 
 <div class="overlay" id="delOverlay">
 <div class="modal" style="max-width:400px">
-<h3>Eliminar <em>publicacion</em></h3>
-<p style="color:var(--txt-soft);font-size:.9rem;margin-bottom:.5rem">Esta accion no se puede deshacer. La publicacion se eliminara de tu calendario.</p>
+<h3>Eliminar <em>publicación</em></h3>
+<p style="color:var(--txt-soft);font-size:.9rem;margin-bottom:.5rem">Esta acción no se puede deshacer. La publicación se eliminará de tu calendario.</p>
 <div class="modal-btns">
 <button class="btn btn-secondary" onclick="closeDel()">Cancelar</button>
-<button class="btn btn-danger" id="btnConfDel">Si, eliminar</button>
+<button class="btn btn-danger" id="btnConfDel">Sí, eliminar</button>
 </div>
 </div>
 </div>
@@ -641,6 +655,42 @@ let uid=null, posts=[], delId=null;
 let calRef=new Date();
 
 const RED_ICON={TikTok:"\u{1F3B5}",Instagram:"\u{1F4F8}",Facebook:"\u{1F465}",LinkedIn:"\u{1F4BC}",YouTube:"\u{1F3AC}",Threads:"\u{1F9F5}",WhatsApp:"\u{1F4AC}",X:"\u{2716}"};
+/* ---- Redes de cada publicacion: una pieza sale el mismo dia en todas las redes que admiten su formato ---- */
+const REDES=["Instagram","Facebook","TikTok","YouTube","WhatsApp","LinkedIn","Google","Marketplace","Threads"];
+const RED_ABR={Instagram:"IG",Facebook:"FB",TikTok:"TT",YouTube:"YT",WhatsApp:"WA",LinkedIn:"LI",Google:"G",Marketplace:"Marketplace",Threads:"Threads",X:"X"};
+/* Tabla «Que formato va a que red» del calendario de produccion */
+const REDES_FMT={
+  reel:["Instagram","Facebook","TikTok","YouTube","WhatsApp","LinkedIn"],
+  carrusel:["Instagram","Facebook","TikTok","WhatsApp","LinkedIn","Google"],
+  lista:["Instagram","Facebook","TikTok","WhatsApp","LinkedIn","Google"],
+  imagen:["Instagram","Facebook","TikTok","WhatsApp","LinkedIn","Google"],
+  historia:["Instagram","Facebook","WhatsApp"]
+};
+/* La casilla red_social guarda la lista separada por comas («Instagram, Facebook, TikTok»); aqui sale en el orden del plan */
+function redesDe(p){
+  const crudo=String((p&&p.red_social)||"").split(/\s*[,;|·]\s*/).map(x=>x.trim()).filter(Boolean);
+  const out=[];
+  REDES.concat(["X"]).forEach(r=>{if(crudo.some(x=>x.toLowerCase()===r.toLowerCase()))out.push(r);});
+  crudo.forEach(x=>{if(!out.some(r=>r.toLowerCase()===x.toLowerCase()))out.push(x);});
+  return out;
+}
+function redesAbr(l){return (l||[]).map(r=>RED_ABR[r]||r).join(" · ");}
+/* En la tabla el punto va pegado a la red anterior, para que al partir el renglon no quede un punto al comienzo */
+function redesCelda(l){return (l||[]).map(r=>RED_ABR[r]||r).join(String.fromCharCode(160)+"· ");}
+/* Redes que le tocan a una pieza por su formato. Un inmueble va a LinkedIn solo si es local o inversion, y a Marketplace si es arriendo */
+function redesDeFormato(titulo,pilar){
+  const l=(REDES_FMT[agFormatoDe(titulo)]||REDES_FMT.imagen).slice(), t=(titulo||"").toLowerCase();
+  if(/portafolio/i.test(pilar||"")||/inmueble/.test(t)){
+    if(!/local|lote|bodega|oficina|inversi/.test(t)){const i=l.indexOf("LinkedIn");if(i>=0)l.splice(i,1);}
+    if(/arriend/.test(t)&&l.indexOf("Marketplace")<0)l.push("Marketplace");
+  }
+  return l;
+}
+/* Los valores guardados no llevan tilde; en pantalla si */
+const ENF_LBL={"LOMAZ HOME":"LoMaz Home","Fusion":"Fusión"};
+const PILAR_LBL={"Educacion y Autoridad":"Educación y Autoridad","Detras de Escena":"Detrás de Escena"};
+function enfLbl(v){return ENF_LBL[v]||v||"";}
+function pilarLbl(v){return PILAR_LBL[v]||v||"";}
 const EST_BADGE={Borrador:"b-borr","Por confirmar":"b-conf",Programado:"b-prog",Publicado:"b-pub"};
 const EST_COLOR={Borrador:"#a8a29e","Por confirmar":"#b39ddb",Programado:"#c9a96e",Publicado:"#28a745"};
 
@@ -681,10 +731,9 @@ function showAlert(msg,type){const a=document.getElementById("alert");a.textCont
 })();
 
 function buildFilterOptions(){
-  const reds=["TikTok","Instagram","Facebook","LinkedIn","YouTube","Threads","WhatsApp","X"];
   const enf=["LOMAZ HOME","Marca personal","Fusion"];
-  const fr=document.getElementById("fRed"); reds.forEach(r=>{const o=document.createElement("option");o.value=r;o.textContent=r;fr.appendChild(o);});
-  const fe=document.getElementById("fEnfoque"); enf.forEach(e=>{const o=document.createElement("option");o.value=e;o.textContent=e;fe.appendChild(o);});
+  const fr=document.getElementById("fRed"); REDES.forEach(r=>{const o=document.createElement("option");o.value=r;o.textContent=r;fr.appendChild(o);});
+  const fe=document.getElementById("fEnfoque"); enf.forEach(e=>{const o=document.createElement("option");o.value=e;o.textContent=enfLbl(e);fe.appendChild(o);});
 }
 
 async function loadPosts(){
@@ -703,12 +752,12 @@ function filtered(){
   const a=document.getElementById("fArt").value;
   const q=(document.getElementById("fSearch").value||"").toLowerCase();
   return posts.filter(p=>{
-    if(r&&p.red_social!==r)return false;
+    if(r&&redesDe(p).indexOf(r)<0)return false;
     if(e&&p.enfoque_marca!==e)return false;
     if(s&&p.estado!==s)return false;
     if(a==="__sin__"){if(p.articulo_madre)return false;}
     else if(a&&p.articulo_madre!==a)return false;
-    if(q){const blob=((p.titulo||"")+" "+(p.hook||"")+" "+(p.copy||"")+" "+(p.responsable||"")+" "+artLabel(p.articulo_madre)).toLowerCase();if(!blob.includes(q))return false;}
+    if(q){const blob=((p.titulo||"")+" "+(p.hook||"")+" "+(p.copy||"")+" "+(p.responsable||"")+" "+artLabel(p.articulo_madre)+" "+redesDe(p).join(" ")).toLowerCase();if(!blob.includes(q))return false;}
     return true;
   });
 }
@@ -724,17 +773,17 @@ function fmtFecha(f){if(!f)return "Sin fecha";const d=new Date(f+"T00:00:00");re
 function render(){
   const host=document.getElementById("tableHost");
   const list=filtered();
-  if(!list.length){host.innerHTML='<div class="empty">No hay publicaciones que coincidan. Crea tu primera con el boton "+ Nueva".</div>';return;}
-  let h='<div class="table-wrap"><table><thead><tr><th title="Fecha de publicación y, debajo, las fechas de fabricación de la pieza">Fecha</th><th>Red</th><th>Enfoque</th><th>Pilar</th><th>Titulo / Tema</th><th>Preview</th><th>Estado</th><th>Resp.</th><th></th></tr></thead><tbody>';
+  if(!list.length){host.innerHTML='<div class="empty">No hay publicaciones que coincidan. Crea la primera con el botón «+ Nueva».</div>';return;}
+  let h='<div class="table-wrap"><table><thead><tr><th title="Fecha de publicación y, debajo, las fechas de fabricación de la pieza">Fecha</th><th title="Redes en las que sale la pieza">Redes</th><th>Enfoque</th><th>Pilar</th><th>Título / Tema</th><th>Vista previa</th><th>Estado</th><th>Resp.</th><th></th></tr></thead><tbody>';
   list.forEach(p=>{
-    const ic=RED_ICON[p.red_social]||"";
+    const rl=redesDe(p);
     const prev=esc((p.hook||p.copy||"").slice(0,120))+((p.hook||p.copy||"").length>120?"...":"");
     h+='<tr>'
       +'<td style="white-space:nowrap">'+fmtFecha(p.fecha)+(p.hora?'<div style="font-size:.7rem;color:var(--txt-mute)">'+esc(p.hora)+'</div>':'')+fabCell(p)+'</td>'
-      +'<td><span class="rs">'+ic+' '+esc(p.red_social||"")+'</span></td>'
-      +'<td style="font-size:.78rem">'+esc(p.enfoque_marca||"")+'</td>'
-      +'<td style="font-size:.78rem">'+esc(p.pilar_contenido||"")+'</td>'
-      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin titulo)")+'</strong>'+(p.articulo_madre?'<br><span class="art-tag" title="Artículo madre: la pieza sale de este artículo del blog">'+esc(artLabel(p.articulo_madre))+'</span>'+qnMarca(p):'')+'</td>'
+      +'<td><span class="rs" title="'+escAttr(rl.join(", "))+'">'+esc(redesCelda(rl))+'</span></td>'
+      +'<td style="font-size:.78rem">'+esc(enfLbl(p.enfoque_marca))+'</td>'
+      +'<td style="font-size:.78rem">'+esc(pilarLbl(p.pilar_contenido))+'</td>'
+      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin título)")+'</strong>'+(p.articulo_madre?'<br><span class="art-tag" title="Artículo madre: la pieza sale de este artículo del blog">'+esc(artLabel(p.articulo_madre))+'</span>'+qnMarca(p):'')+'</td>'
       +'<td><div class="tprev">'+prev+'</div></td>'
       +'<td><span class="badge '+(EST_BADGE[p.estado]||"b-borr")+'">'+esc(p.estado||"Borrador")+'</span></td>'
       +'<td style="font-size:.76rem;color:var(--txt-soft)">'+esc(p.responsable||"")+'</td>'
@@ -752,17 +801,17 @@ function updateKPIs(){
   var kc=document.getElementById("kConf");if(kc)kc.textContent=posts.filter(p=>p.estado==="Por confirmar").length;
   document.getElementById("kProg").textContent=posts.filter(p=>p.estado==="Programado").length;
   document.getElementById("kPub").textContent=posts.filter(p=>p.estado==="Publicado").length;
-  const byRed={};posts.forEach(p=>{if(p.red_social)byRed[p.red_social]=(byRed[p.red_social]||0)+1;});
+  const byRed={};posts.forEach(p=>{redesDe(p).forEach(r=>{byRed[r]=(byRed[r]||0)+1;});});
   document.getElementById("kRedes").textContent=Object.keys(byRed).length;
-  document.getElementById("kRedesMini").innerHTML=Object.keys(byRed).sort((a,b)=>byRed[b]-byRed[a]).slice(0,4).map(r=>'<span><b>'+byRed[r]+'</b> '+r+'</span>').join("");
+  document.getElementById("kRedesMini").innerHTML=Object.keys(byRed).sort((a,b)=>byRed[b]-byRed[a]||REDES.indexOf(a)-REDES.indexOf(b)).map(r=>'<span title="'+escAttr(r)+'"><b>'+byRed[r]+'</b> '+esc(RED_ABR[r]||r)+'</span>').join("")||"—";
   const byMarca={};posts.forEach(p=>{if(p.enfoque_marca)byMarca[p.enfoque_marca]=(byMarca[p.enfoque_marca]||0)+1;});
   const mk=Object.keys(byMarca).sort((a,b)=>byMarca[b]-byMarca[a]);
-  document.getElementById("kMarcaTop").textContent=mk.length?mk[0]:"\u2014";
-  document.getElementById("kMarcaMini").innerHTML=mk.map(m=>'<span><b>'+(total?Math.round(byMarca[m]/total*100):0)+'%</b> '+m+'</span>').join("")||"\u2014";
+  document.getElementById("kMarcaTop").textContent=mk.length?enfLbl(mk[0]):"\u2014";
+  document.getElementById("kMarcaMini").innerHTML=mk.map(m=>'<span><b>'+(total?Math.round(byMarca[m]/total*100):0)+'%</b> '+esc(enfLbl(m))+'</span>').join("")||"\u2014";
   const byPilar={};posts.forEach(p=>{if(p.pilar_contenido)byPilar[p.pilar_contenido]=(byPilar[p.pilar_contenido]||0)+1;});
   const pk=Object.keys(byPilar).sort((a,b)=>byPilar[b]-byPilar[a]);
   document.getElementById("kPilarTop").textContent=pk.length?(byPilar[pk[0]]):"\u2014";
-  document.getElementById("kPilarMini").innerHTML=pk.slice(0,3).map(p=>'<span><b>'+byPilar[p]+'</b> '+p+'</span>').join("")||"\u2014";
+  document.getElementById("kPilarMini").innerHTML=pk.slice(0,3).map(p=>'<span><b>'+byPilar[p]+'</b> '+esc(pilarLbl(p))+'</span>').join("")||"\u2014";
 }
 
 function switchTab(name){
@@ -777,8 +826,8 @@ function clearFilters(){document.getElementById("fRed").value="";document.getEle
 
 function calMove(d){calRef.setMonth(calRef.getMonth()+d);renderCalendar();}
 const CAL_WHO={
-  sal:{ini:"S",lab:"Salomon",bd:"#9fc0f5",bg:"rgba(96,140,220,.16)"},
-  ang:{ini:"A",lab:"Angelica",bd:"#f0a9c9",bg:"rgba(220,120,160,.16)"},
+  sal:{ini:"S",lab:"Salomón",bd:"#9fc0f5",bg:"rgba(96,140,220,.16)"},
+  ang:{ini:"A",lab:"Angélica",bd:"#f0a9c9",bg:"rgba(220,120,160,.16)"},
   amb:{ini:"S\u00b7A",lab:"Los dos",bd:"#e8d5b0",bg:"rgba(201,169,110,.16)"},
   otro:{ini:"\u2022",lab:"Equipo",bd:"#a8a29e",bg:"rgba(255,255,255,.05)"}
 };
@@ -793,7 +842,7 @@ function renderCalendar(){
   document.getElementById("calMonth").textContent=meses[m]+" "+y;
   const first=new Date(y,m,1);const startDow=(first.getDay()+6)%7;
   const days=new Date(y,m+1,0).getDate();
-  const dows=["Lun","Mar","Mie","Jue","Vie","Sab","Dom"];
+  const dows=["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
   let h="";dows.forEach(d=>h+='<div class="cal-dow">'+d+'</div>');
   for(let i=0;i<startDow;i++)h+='<div class="cal-cell empty-cell"></div>';
   const today=new Date();const isCurMonth=today.getFullYear()===y&&today.getMonth()===m;
@@ -804,8 +853,8 @@ function renderCalendar(){
     if(evs.length){daysWith++;monthTotal+=evs.length;if(evs.length>maxDay)maxDay=evs.length;}
     const todayCls=(isCurMonth&&today.getDate()===d)?" today":"";
     h+='<div class="cal-cell'+todayCls+'"><div class="cal-daynum">'+d+'</div>';
-    evs.slice(0,4).forEach(p=>{const w=calWho(p.responsable);const meta=CAL_WHO[w];cnt[w]++;const est=EST_COLOR[p.estado]||"#a8a29e";const an=artNum(p.articulo_madre);h+='<div class="cal-evt cw-'+w+(p.estado==="Por confirmar"?" conf":"")+'" style="border-left-color:'+meta.bd+';background:'+meta.bg+'" title="'+escAttr((p.titulo||p.red_social||"")+" \u2014 "+meta.lab+" \u00b7 "+(p.red_social||"")+" \u00b7 "+(p.estado||"")+(p.articulo_madre?" \u00b7 "+artLabel(p.articulo_madre):""))+'" onclick="openEditor(\''+p.id+'\')"><span class="cev-mono" style="background:'+meta.bd+'">'+meta.ini+'</span><span class="cev-ic">'+(RED_ICON[p.red_social]||"")+'</span>'+(an?'<span class="cev-art">A'+an+'</span>':'')+'<span class="cev-t">'+esc((p.titulo||p.red_social||"").slice(0,34))+'</span><span class="cev-est" style="background:'+est+'"></span></div>';});
-    if(evs.length>4)h+='<div class="cal-more">+'+(evs.length-4)+' mas</div>';
+    evs.slice(0,4).forEach(p=>{const rl=redesDe(p);const w=calWho(p.responsable);const meta=CAL_WHO[w];cnt[w]++;const est=EST_COLOR[p.estado]||"#a8a29e";const an=artNum(p.articulo_madre);h+='<div class="cal-evt cw-'+w+(p.estado==="Por confirmar"?" conf":"")+'" style="border-left-color:'+meta.bd+';background:'+meta.bg+'" title="'+escAttr((p.titulo||rl.join(", ")||"")+" \u2014 "+meta.lab+" \u00b7 "+redesAbr(rl)+" \u00b7 "+(p.estado||"")+(p.articulo_madre?" \u00b7 "+artLabel(p.articulo_madre):""))+'" onclick="openEditor(\''+p.id+'\')"><span class="cev-mono" style="background:'+meta.bd+'">'+meta.ini+'</span>'+(rl.length===1&&RED_ICON[rl[0]]?'<span class="cev-ic">'+RED_ICON[rl[0]]+'</span>':'')+(an?'<span class="cev-art">A'+an+'</span>':'')+'<span class="cev-t">'+esc((p.titulo||rl.join(", ")||"").slice(0,34))+'</span><span class="cev-est" style="background:'+est+'"></span></div>';});
+    if(evs.length>4)h+='<div class="cal-more">+'+(evs.length-4)+' más</div>';
     // Fabricacion: que piezas se escriben, se graban o se editan ese dia
     let fabH="";
     FAB.forEach(x=>{
@@ -823,7 +872,7 @@ function renderCalendar(){
     const fabNote=fabDays?'<span class="cs-note">'+fabDays+' d\u00eda'+(fabDays>1?'s':'')+' de fabricaci\u00f3n (guion, tomas o edici\u00f3n)</span>':'';
     if(!monthTotal){sEl.innerHTML='<span class="cs-note">Sin publicaciones programadas este mes.</span>'+fabNote;}
     else{
-      let parts='<span class="cs-total">'+monthTotal+' publicaci'+(monthTotal>1?'ones':'on')+'</span>';
+      let parts='<span class="cs-total">'+monthTotal+' publicaci'+(monthTotal>1?'ones':'ón')+'</span>';
       ["sal","ang","amb","otro"].forEach(k=>{if(cnt[k]){const meta=CAL_WHO[k];parts+='<span class="cs-who"><i style="background:'+meta.bd+'"></i>'+cnt[k]+' '+meta.lab+'</span>';}});
       parts+='<span class="cs-note">m\u00e1x '+maxDay+' en un d\u00eda \u00b7 '+daysWith+' d\u00edas con contenido</span>'+fabNote;
       sEl.innerHTML=parts;
@@ -849,17 +898,37 @@ function openFab(ds){
 }
 function closeFab(){document.getElementById("fabOverlay").classList.remove("show");}
 
+/* ---- Redes del editor: una casilla por red, en vez de una sola lista ---- */
+let _eRedesTocadas=false;
+function eRedesPintar(lista){
+  const sel=(lista||[]).slice(), todas=REDES.slice();
+  sel.forEach(r=>{if(todas.indexOf(r)<0)todas.push(r);});      // una red que ya no esta en el plan (X) se conserva si la pieza la tenia
+  const host=document.getElementById("eRedes"), hay=Array.from(host.querySelectorAll("input"));
+  // Si las casillas ya estan, solo se marcan o desmarcan: rehacerlas haria perder el clic que viene justo despues de escribir el titulo
+  if(hay.length===todas.length&&hay.every((i,n)=>i.value===todas[n])){hay.forEach(i=>{i.checked=sel.indexOf(i.value)>=0;});return;}
+  host.innerHTML=todas.map(r=>'<label class="red-chip"><input type="checkbox" value="'+escAttr(r)+'"'+(sel.indexOf(r)>=0?" checked":"")+' onchange="_eRedesTocadas=true"><span>'+esc(r)+'</span></label>').join("");
+}
+function eRedesLeer(){return Array.from(document.querySelectorAll("#eRedes input:checked")).map(i=>i.value);}
+function eRedesSegunFormato(){eRedesPintar(redesDeFormato(document.getElementById("eTitulo").value,document.getElementById("ePilar").value));_eRedesTocadas=true;}
+/* En una publicacion nueva las redes siguen al formato que diga el titulo, hasta que alguien las toque */
+function eRedesAutoTitulo(){
+  if(document.getElementById("ePostId").value||_eRedesTocadas)return;
+  const t=document.getElementById("eTitulo").value;
+  if(/\breels?\b|\bcarrusel|lista de chequeo|checklist|\bhistorias?\b|\bimagen\b/i.test(t))eRedesPintar(redesDeFormato(t,document.getElementById("ePilar").value));
+}
+
 function openEditor(id){
   document.getElementById("ePostId").value=id||"";
   document.getElementById("eMsg").style.display="none";
+  _eRedesTocadas=false;
   const t=document.getElementById("editorTitle");
   if(id){
     const p=posts.find(x=>x.id===id);if(!p)return;
-    t.innerHTML="Editar <em>publicacion</em>";
+    t.innerHTML="Editar <em>publicación</em>";
     document.getElementById("eFecha").value=p.fecha||"";
     document.getElementById("eHora").value=p.hora||"";
     document.getElementById("eEstado").value=p.estado||"Borrador";
-    document.getElementById("eRed").value=p.red_social||"Instagram";
+    eRedesPintar(redesDe(p));
     document.getElementById("eEnfoque").value=p.enfoque_marca||"LOMAZ HOME";
     document.getElementById("ePilar").value=p.pilar_contenido||"Educacion y Autoridad";
     document.getElementById("eTitulo").value=p.titulo||"";
@@ -871,10 +940,10 @@ function openEditor(id){
     document.getElementById("eFEdic").value=p.fecha_edicion||"";
     document.getElementById("eArticulo").value=p.articulo_madre||"";
   }else{
-    t.innerHTML="Nueva <em>publicacion</em>";
+    t.innerHTML="Nueva <em>publicación</em>";
     ["eFecha","eHora","eTitulo","eHook","eCopy","eResp","eFGuion","eFGrab","eFEdic","eArticulo"].forEach(i=>document.getElementById(i).value="");
     document.getElementById("eEstado").value="Borrador";
-    document.getElementById("eRed").value="Instagram";
+    eRedesPintar(["Instagram","Facebook","WhatsApp"]);
     document.getElementById("eEnfoque").value="LOMAZ HOME";
     document.getElementById("ePilar").value="Educacion y Autoridad";
   }
@@ -888,7 +957,7 @@ async function savePost(){
     fecha:document.getElementById("eFecha").value||null,
     hora:document.getElementById("eHora").value||null,
     estado:document.getElementById("eEstado").value,
-    red_social:document.getElementById("eRed").value,
+    red_social:eRedesLeer().join(", "),
     enfoque_marca:document.getElementById("eEnfoque").value,
     pilar_contenido:document.getElementById("ePilar").value,
     titulo:document.getElementById("eTitulo").value||null,
@@ -903,6 +972,7 @@ async function savePost(){
   // La fabricacion va antes de la publicacion: no deja guardar si una fecha quedo despues
   const tarde=FAB.filter(x=>rec.fecha&&rec[x.k]&&rec[x.k]>rec.fecha).map(x=>x.nom.toLowerCase());
   const eMsg=document.getElementById("eMsg");
+  if(!rec.red_social){eMsg.textContent="Elige al menos una red en la que sale la pieza.";eMsg.style.display="block";return;}
   if(tarde.length){eMsg.textContent="Revisa las fechas de fabricación: "+tarde.join(", ")+" queda después de la fecha de publicación.";eMsg.style.display="block";return;}
   eMsg.style.display="none";
   const btn=document.getElementById("btnSave");btn.disabled=true;btn.textContent="Guardando...";
@@ -911,7 +981,7 @@ async function savePost(){
   else{rec.asesor_id=uid;const r=await sb.from(TABLE).insert(rec);error=r.error;}
   btn.disabled=false;btn.textContent="Guardar";
   if(error){showAlert("Error al guardar: "+error.message,"error");return;}
-  closeEditor();showAlert("Publicacion guardada correctamente.","success");
+  closeEditor();showAlert("Publicación guardada correctamente.","success");
   await loadPosts();
 }
 
@@ -919,7 +989,7 @@ function openDel(id){delId=id;document.getElementById("delOverlay").classList.ad
   document.getElementById("btnConfDel").onclick=async function(){
     const{error}=await sb.from(TABLE).delete().eq("id",delId);
     if(error){showAlert("Error al eliminar: "+error.message,"error");return;}
-    closeDel();showAlert("Publicacion eliminada.","success");await loadPosts();
+    closeDel();showAlert("Publicación eliminada.","success");await loadPosts();
   };
 }
 function closeDel(){document.getElementById("delOverlay").classList.remove("show");delId=null;}
@@ -942,8 +1012,8 @@ async function loadFuentes(){
   try{
     const res=await Promise.all([qa,qp]);
     const ra=res[0],rp=res[1];
-    if(ra.error){_artsErr=true;console.warn('No se pudieron leer los articulos del blog: '+ra.error.message);}
-    else _arts=(ra.data||[]).map(function(a){return {t:a.titulo||'(sin titulo)',c:a.categoria||'Blog',e:a.extracto||'',u:'articulo.html?slug='+encodeURIComponent(a.slug||'')};});
+    if(ra.error){_artsErr=true;console.warn('No se pudieron leer los artículos del blog: '+ra.error.message);}
+    else _arts=(ra.data||[]).map(function(a){return {t:a.titulo||'(sin título)',c:a.categoria||'Blog',e:a.extracto||'',u:'articulo.html?slug='+encodeURIComponent(a.slug||'')};});
     if(!rp.error)_props=rp.data||[];
   }catch(e){_artsErr=true;_props=_props||[];}
   agRefrescar();
@@ -957,10 +1027,10 @@ function propLabel(p){var parts=[p.titulo||('Propiedad '+(p.clave||p.id))];var l
 function fillItemSelect(sel, type, withDash){
   var opts = withDash ? '<option value="">&mdash;</option>' : '';
   if(type==='propiedad'){
-    if(!_props.length)opts+='<option value="">(No tienes propiedades aun)</option>';
+    if(!_props.length)opts+='<option value="">(Aún no tienes propiedades)</option>';
     _props.forEach(function(p){opts+='<option value="'+p.id+'">'+escAttr(propLabel(p))+'</option>';});
   }else if(type==='articulo'){
-    if(!_arts.length)opts+='<option value="">'+(_artsErr?'(No se pudieron cargar los articulos; recarga la pagina)':'(Aun no hay articulos publicados en el blog)')+'</option>';
+    if(!_arts.length)opts+='<option value="">'+(_artsErr?'(No se pudieron cargar los artículos; recarga la página)':'(Aún no hay artículos publicados en el blog)')+'</option>';
     _arts.forEach(function(a,i){opts+='<option value="'+i+'">'+escAttr(a.t)+'</option>';});
   }else{opts+='<option value="">&mdash;</option>';}
   sel.innerHTML=opts;
@@ -974,72 +1044,72 @@ function autollenarDesdeFuente(){
   if(!type||!val){showAlert('Elige una fuente y un elemento para autollenar.','error');return;}
   if(type==='propiedad'){
     var p=_props.find(function(x){return String(x.id)===String(val);});if(!p)return;
-    var g=generarParaPropiedad(p, document.getElementById('eRed').value||'Instagram');
+    var g=generarParaPropiedad(p, (eRedesLeer()[0]||'Instagram'));
     if(!document.getElementById('eTitulo').value)document.getElementById('eTitulo').value=g.titulo;
     document.getElementById('eHook').value=g.hook;
     document.getElementById('eCopy').value=g.copy+'\n\n'+g.hashtags;
     document.getElementById('ePilar').value='Portafolio Inmobiliario';
   }else if(type==='articulo'){
     var a=_arts[parseInt(val,10)];if(!a)return;
-    var g=generarParaArticulo(a, document.getElementById('eRed').value||'Instagram');
+    var g=generarParaArticulo(a, (eRedesLeer()[0]||'Instagram'));
     if(!document.getElementById('eTitulo').value)document.getElementById('eTitulo').value=g.titulo;
     document.getElementById('eHook').value=g.hook;
     document.getElementById('eCopy').value=g.copy+'\n\n'+g.hashtags;
     document.getElementById('ePilar').value='Educacion y Autoridad';
   }
-  showAlert('Datos traidos al formulario. Revisalos y guarda.','success');
+  showAlert('Datos traídos al formulario. Revísalos y guarda.','success');
 }
 
 
 /* ====== MOTOR LOCAL DE PLANTILLAS (respaldo sin IA y autollenado del editor) ====== */
-const HASH_BASE='#LomazHome #Inmobiliaria #BienesRaices #Bogota #Colombia';
+const HASH_BASE='#LomazHome #Inmobiliaria #BienesRaíces #Bogotá #Colombia';
 const CTA_RED={
  Instagram:'Escribe la palabra clave por mensaje directo para recibir la ficha completa y agendar tu visita.',
- Facebook:'Comenta o envianos un mensaje y un asesor de LOMAZ HOME te contactara hoy mismo.',
- TikTok:'Sigue a LOMAZ HOME y guarda este video. Escribenos para mas detalles.',
- LinkedIn:'Conecta conmigo o escribeme por mensaje para una asesoria profesional.',
- YouTube:'Mira el recorrido completo y suscribete al canal de LOMAZ HOME.',
- Threads:'Responde este hilo o escribenos para conocer mas oportunidades.',
- WhatsApp:'Responde QUIERO DETALLES y te envio la ficha tecnica al instante.',
- X:'Da RT y escribeme por mensaje directo para los detalles.'
+ Facebook:'Comenta o envíanos un mensaje y un asesor de LoMaz Home te contactará hoy mismo.',
+ TikTok:'Sigue a LoMaz Home y guarda este video. Escríbenos para más detalles.',
+ LinkedIn:'Conecta conmigo o escríbeme por mensaje para una asesoría profesional.',
+ YouTube:'Mira el recorrido completo y suscríbete al canal de LoMaz Home.',
+ Threads:'Responde este hilo o escríbenos para conocer más oportunidades.',
+ WhatsApp:'Responde QUIERO DETALLES y te envío la ficha técnica al instante.',
+ X:'Da RT y escríbeme por mensaje directo para los detalles.'
 };
 function emojiRed(r){return ({Instagram:'\u{1F4F8}',Facebook:'\u{1F465}',TikTok:'\u{1F3B5}',LinkedIn:'\u{1F4BC}',YouTube:'\u{1F3AC}',Threads:'\u{1F9F5}',WhatsApp:'\u{1F4AC}',X:'\u{2716}'})[r]||'';}
 
 function hashtagsPropiedad(p){
- var tags=['#LomazHome','#Inmobiliaria','#BienesRaices'];
+ var tags=['#LomazHome','#Inmobiliaria','#BienesRaíces'];
  if(p.ciudad)tags.push('#'+String(p.ciudad).replace(/\s+/g,''));
  if(p.barrio)tags.push('#'+String(p.barrio).replace(/\s+/g,''));
  if(p.tipo_propiedad)tags.push('#'+String(p.tipo_propiedad).replace(/\s+/g,''));
  tags.push(opTxt(p.tipo_operacion)==='arriendo'?'#Arriendo':'#Venta');
- tags.push('#Inversion','#Colombia');
+ tags.push('#Inversión','#Colombia');
  return tags.slice(0,11).join(' ');
 }
 
 function generarParaPropiedad(p,red){
  var op=opTxt(p.tipo_operacion);
  var tipo=p.tipo_propiedad||'Inmueble';
- var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ')||'Bogota';
+ var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ')||'Bogotá';
  var precio=p.precio?precioFmt(p.precio,p.moneda):'';
  var feats=[];
  if(p.habitaciones)feats.push(p.habitaciones+' habitaciones');
- if(p.banos)feats.push(p.banos+' banos');
+ if(p.banos)feats.push(p.banos+' baños');
  if(p.garajes)feats.push(p.garajes+' garaje(s)');
- if(p.m2_construccion)feats.push(p.m2_construccion+' m2 construidos');
- if(p.m2_terreno)feats.push(p.m2_terreno+' m2 de terreno');
+ if(p.m2_construccion)feats.push(p.m2_construccion+' m² construidos');
+ if(p.m2_terreno)feats.push(p.m2_terreno+' m² de terreno');
  if(p.estrato)feats.push('estrato '+p.estrato);
  if(p.tiene_piscina)feats.push('piscina');
  if(p.acepta_mascotas)feats.push('pet friendly');
  var titulo=(op==='arriendo'?'En arriendo':'En venta')+': '+tipo+' en '+loc;
  var em=emojiRed(red);
- var hook=em+' '+tipo+' en '+loc+(precio?' por '+precio:'')+'. Una oportunidad que no veras dos veces.';
+ var hook=em+' '+tipo+' en '+loc+(precio?' por '+precio:'')+'. Una oportunidad que no verás dos veces.';
  var cuerpo=[];
  cuerpo.push('Te presentamos este '+tipo.toLowerCase()+' en '+op+', ubicado en '+loc+'.');
- if(feats.length)cuerpo.push('Caracteristicas: '+feats.join(', ')+'.');
+ if(feats.length)cuerpo.push('Características: '+feats.join(', ')+'.');
  if(p.descripcion)cuerpo.push(String(p.descripcion).slice(0,220).trim()+(String(p.descripcion).length>220?'...':''));
- cuerpo.push('En LOMAZ HOME evaluamos cada detalle para que tomes la mejor decision. '+(CTA_RED[red]||CTA_RED.Instagram));
+ cuerpo.push('En LoMaz Home evaluamos cada detalle para que tomes la mejor decisión. '+(CTA_RED[red]||CTA_RED.Instagram));
  var copy=cuerpo.join('\n\n');
  if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Plano general del '+tipo.toLowerCase()+'] '+hook+'\n[Recorrido] '+(feats.length?'Destacamos: '+feats.join(', ')+'.':'')+'\n[Cierre] '+(CTA_RED[red]||'');}
- if(red==='LinkedIn'){copy='Oportunidad de '+(op==='arriendo'?'arriendo':'inversion')+' en '+loc+'.\n\n'+cuerpo.slice(1).join('\n\n');}
+ if(red==='LinkedIn'){copy='Oportunidad de '+(op==='arriendo'?'arriendo':'inversión')+' en '+loc+'.\n\n'+cuerpo.slice(1).join('\n\n');}
  return {titulo:titulo,hook:hook,copy:copy,hashtags:hashtagsPropiedad(p),cta:(CTA_RED[red]||'')};
 }
 
@@ -1047,18 +1117,18 @@ function generarParaArticulo(a,red){
  var em=emojiRed(red);
  var titulo=a.t;
  var hook=em+' '+a.t+' \u2014 lo que muchos ignoran y a ti te puede ahorrar dinero.';
- var copy=[a.e,'En este contenido de LOMAZ HOME te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guia completa en nuestro blog.'].filter(Boolean).join('\n\n');
+ var copy=[a.e,'En este contenido de LoMaz Home te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guía completa en nuestro blog.'].filter(Boolean).join('\n\n');
  if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Hook a camara] '+a.t+'\n[Desarrollo] '+(a.e||a.t)+'\n[Cierre] '+(CTA_RED[red]||'');}
- var tags='#LomazHome #'+a.c.replace(/\s+/g,'')+' #Inmobiliaria #Bogota #Colombia #Inversion #ConsejosInmobiliarios';
+ var tags='#LomazHome #'+a.c.replace(/\s+/g,'')+' #Inmobiliaria #Bogotá #Colombia #Inversión #ConsejosInmobiliarios';
  return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
 }
 
 function generarParaTema(tema,red,pilar){
  var em=emojiRed(red);
  var titulo=tema||'Contenido de marca';
- var hook=em+' '+(tema||'Hablemos de bienes raices')+': la perspectiva que tu competencia no te da.';
- var copy=['Desde LOMAZ HOME compartimos nuestra vision sobre '+(tema||'el mercado inmobiliario')+'.','Nuestra experiencia asesorando compradores, vendedores e inversionistas nos permite darte criterio real, no formulas genericas.',(CTA_RED[red]||CTA_RED.Instagram)].join('\n\n');
- var tags=HASH_BASE+' #Inversion #ConsejosInmobiliarios';
+ var hook=em+' '+(tema||'Hablemos de bienes raíces')+': la perspectiva que tu competencia no te da.';
+ var copy=['Desde LoMaz Home compartimos nuestra visión sobre '+(tema||'el mercado inmobiliario')+'.','Nuestra experiencia asesorando compradores, vendedores e inversionistas nos permite darte criterio real, no fórmulas genéricas.',(CTA_RED[red]||CTA_RED.Instagram)].join('\n\n');
+ var tags=HASH_BASE+' #Inversión #ConsejosInmobiliarios';
  return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
 }
 
@@ -1073,6 +1143,17 @@ const AG_REDES={
  historia:[]
 };
 const AG_ABR={instagram:"IG",facebook:"FB",tiktok:"TT",youtube:"YT",linkedin:"LI",whatsapp:"WA",google:"G",marketplace:"Marketplace"};
+/* El agente escribe para las redes que el Planificador le pone a cada pieza; si la pieza solo tiene una, usa las de su formato */
+const AG_CLAVE={Instagram:"instagram",Facebook:"facebook",TikTok:"tiktok",YouTube:"youtube",LinkedIn:"linkedin",WhatsApp:"whatsapp",Google:"google",Marketplace:"marketplace"};
+const AG_ORDEN=["instagram","facebook","tiktok","youtube","linkedin","whatsapp","google","marketplace"];
+function agRedesDePost(p){
+ const f=agFormatoDe(p.titulo),l=redesDe(p).map(function(r){return AG_CLAVE[r];}).filter(Boolean);
+ if(f==="historia")return [];
+ if(l.length<2)return AG_REDES[f]||[];
+ return AG_ORDEN.filter(function(r){return l.indexOf(r)>=0;});
+}
+/* Abreviaturas en el orden del calendario: IG · FB · TT · YT · WA · LI · G */
+function agAbrPlan(l){return ["instagram","facebook","tiktok","youtube","whatsapp","linkedin","google","marketplace"].filter(function(r){return (l||[]).indexOf(r)>=0;}).map(function(r){return AG_ABR[r];}).join(" · ");}
 const AG_SIN_ENLACE="[enlace del artículo]";
 let _qFilas=[], _qTabla=true, _qArt="", _qEstado={}, _qTrabajando=false, _qCola=Promise.resolve(false), _qAvisoGuardar=false, _qEnlaceT=null;
 let _iaListo=null, _iaMotivo="", _agIniciado=false, _blogLista=null, _suelta=null, _agToastT=null, _agTocoPilar=false;
@@ -1256,13 +1337,13 @@ function qnEscrita(fila,k){
 /* Las piezas de la quincena: las que el Planificador tiene con ese articulo madre, en orden de publicacion */
 function qnPiezasPlan(art){
  const lista=posts.filter(function(p){return p.articulo_madre===art;}).map(function(p){
-  return {k:p.id,titulo:p.titulo||"",fecha:p.fecha||"",formato:agFormatoDe(p.titulo),responsable:p.responsable||"",gancho:p.hook||"",indicaciones:p.copy||"",enfoque:p.enfoque_marca||"",pilar:p.pilar_contenido||"",fg:p.fecha_guion||"",ft:p.fecha_grabacion||"",fe:p.fecha_edicion||""};
+  return {k:p.id,titulo:p.titulo||"",fecha:p.fecha||"",formato:agFormatoDe(p.titulo),responsable:p.responsable||"",gancho:p.hook||"",indicaciones:p.copy||"",enfoque:p.enfoque_marca||"",pilar:p.pilar_contenido||"",redes:agRedesDePost(p),fg:p.fecha_guion||"",ft:p.fecha_grabacion||"",fe:p.fecha_edicion||""};
  });
  const f=qnFila(art);
  if(f)Object.keys(f.paquete.piezas).forEach(function(k){
   if(lista.some(function(x){return x.k===k;}))return;
   const z=f.paquete.piezas[k]||{};
-  lista.push({k:k,titulo:z.titulo||"",fecha:z.fecha||"",formato:z.formato||"reel",responsable:z.responsable||"",gancho:"",indicaciones:"",enfoque:"",pilar:"",fg:"",ft:"",fe:""});
+  lista.push({k:k,titulo:z.titulo||"",fecha:z.fecha||"",formato:z.formato||"reel",responsable:z.responsable||"",gancho:"",indicaciones:"",enfoque:"",pilar:"",redes:AG_REDES[z.formato||"reel"]||[],fg:"",ft:"",fe:""});
  });
  return lista.sort(function(a,b){return (a.fecha||"9999").localeCompare(b.fecha||"9999");});
 }
@@ -1345,7 +1426,7 @@ function qnTarjeta(pz,abierta){
  let meta;
  if(rut)meta="Acompañan al artículo durante sus quince días: dos historias con preguntas, los dos martes de grupos y las respuestas guardadas.";
  else{
-  const redes=(AG_REDES[pz.formato]||[]).map(function(r){return AG_ABR[r];}).join(" · ")||"IG · FB · WA";
+  const redes=agAbrPlan(pz.redes||AG_REDES[pz.formato]||[])||"IG · FB · WA";
   const fab=[pz.fg?"Guion "+fCorta(pz.fg):"",pz.ft?"Tomas "+fCorta(pz.ft):"",pz.fe?(pz.formato==="reel"?"Edición ":"Diseño ")+fCorta(pz.fe):""].filter(Boolean).join(" · ");
   meta=[fab,"Sale en "+redes].filter(Boolean).join(" · ");
  }
@@ -1415,7 +1496,7 @@ function qnCuerpo(art,k,fila){
  });
  if(k==="rutinas")return {modo:"rutinas",fuente:fuente,quincena:quincena};
  const p=piezas.find(function(x){return x.k===k;})||{};
- return {modo:"pieza",fuente:fuente,quincena:quincena,pieza:{formato:p.formato,titulo:p.titulo,gancho:p.gancho,indicaciones:p.indicaciones,fecha:p.fecha,responsable:p.responsable,redes:AG_REDES[p.formato]||[]},marca:{enfoque:p.enfoque||"",pilar:p.pilar||""}};
+ return {modo:"pieza",fuente:fuente,quincena:quincena,pieza:{formato:p.formato,titulo:p.titulo,gancho:p.gancho,indicaciones:p.indicaciones,fecha:p.fecha,responsable:p.responsable,redes:p.redes||AG_REDES[p.formato]||[]},marca:{enfoque:p.enfoque||"",pilar:p.pilar||""}};
 }
 function qnFuenteLista(fila){
  if((fila.texto_fuente||"").trim().length>=300)return true;
@@ -1685,8 +1766,10 @@ async function generarContenido(){
  }else{
   if(!tema){agToast("Escribe el tema de la pieza.","error");document.getElementById("agTema").focus();return;}
   titulo=agPartesTitulo(tema,"").chip==="Pieza"?AG_FMT[formato]+" · "+tema:tema;
-  cuerpo={modo:"pieza",fuente:{tipo:"tema",titulo:tema,texto:notas},pieza:{formato:formato,titulo:titulo,redes:AG_REDES[formato]||[]},marca:marca};
-  local=function(){return agPiezaLocal("tema",tema,formato,AG_REDES[formato],titulo,"");};
+  const pl=posts.find(function(x){return String(x.id)===String(document.getElementById("agSrcItem").value);});
+  const redesL=(pl&&(pl.titulo||"")===tema&&agFormatoDe(pl.titulo)===formato)?agRedesDePost(pl):(AG_REDES[formato]||[]);
+  cuerpo={modo:"pieza",fuente:{tipo:"tema",titulo:tema,texto:notas},pieza:{formato:formato,titulo:titulo,redes:redesL},marca:marca};
+  local=function(){return agPiezaLocal("tema",tema,formato,redesL,titulo,"");};
  }
  btn.disabled=true;btn.textContent="Escribiendo…";
  out.innerHTML='<div class="agent-empty">Claude está escribiendo la pieza…</div>';
@@ -1695,7 +1778,7 @@ async function generarContenido(){
  if(_iaListo===true)r=await agEscribir(cuerpo);
  btn.disabled=false;btn.innerHTML="&#10024; Generar pieza";
  if(r&&r.ok&&r.pieza&&r.pieza.secciones){
-  _suelta={titulo:titulo,formato:formato,enlace:enlace,articulo:articulo,secciones:r.pieza.secciones};
+  _suelta={titulo:titulo,formato:formato,enlace:enlace,articulo:articulo,redes:(cuerpo.pieza&&cuerpo.pieza.redes)||[],secciones:r.pieza.secciones};
  }else if(local&&(_iaListo!==true||(r&&["sin_clave","sin_funcion"].indexOf(r.codigo)>=0))){
   _suelta=local();
  }else{
@@ -1725,7 +1808,10 @@ function usarEnPublicacion(){
  const cuerpo=bloque("guion")||bloque("laminas")||bloque("pieza")||bloque("historia1");
  openEditor();
  setTimeout(function(){
-  document.getElementById('eRed').value='Instagram';
+  const nom={};Object.keys(AG_CLAVE).forEach(function(n){nom[AG_CLAVE[n]]=n;});
+  const lr=(d.redes||[]).map(function(x){return nom[x];}).filter(Boolean);
+  eRedesPintar(lr.length?REDES.filter(function(x){return lr.indexOf(x)>=0;}):redesDeFormato(d.titulo||"",document.getElementById('agPilar').value));
+  _eRedesTocadas=true;
   document.getElementById('eEnfoque').value=document.getElementById('agEnfoque').value;
   document.getElementById('ePilar').value=document.getElementById('agPilar').value;
   document.getElementById('eTitulo').value=d.titulo||"";
