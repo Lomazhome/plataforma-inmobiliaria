@@ -240,6 +240,106 @@ textarea{resize:vertical;min-height:70px}
 .fab-item .fi-m{font-size:.72rem;color:var(--txt-soft);margin-top:.2rem}
 @media(max-width:700px){.cfab .cf-l{display:none}.cfab .cf-s{display:inline}.cev-art,.legend .lg-art{display:none}}
 </style>
+<style id="ag2-style">
+/* ===== Agente de Marketing: quincena con un clic y piezas en bloques ===== */
+.ag-aviso{border:1px solid var(--line-strong);background:rgba(201,169,110,.07);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:1rem;font-size:.84rem;color:var(--txt);line-height:1.55}
+.ag-aviso b{color:var(--gold-l)}
+.ag-aviso ol{margin:.5rem 0 0 1.2rem}
+.ag-aviso li{margin:.25rem 0;color:var(--txt-soft)}
+.ag-aviso code{background:rgba(255,255,255,.08);padding:.05rem .35rem;border-radius:4px;font-size:.8rem;color:#fff;font-family:ui-monospace,Menlo,Consolas,monospace}
+#panel-agente>.src-box .src-row{grid-template-columns:250px 1fr}
+.qn{margin-bottom:1.2rem}
+.qn-head{display:flex;flex-wrap:wrap;gap:.9rem 1.2rem;align-items:flex-end;justify-content:space-between;margin-bottom:1rem}
+.qn-kicker{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.3rem}
+.qn .qn-head h3{font-size:1.5rem;margin:0}
+.qn-sub{font-size:.8rem;color:var(--txt-soft);margin-top:.3rem;line-height:1.45}
+.qn-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+.qn-go{font-size:.8rem;padding:.8rem 1.3rem}
+.btn[disabled]{opacity:.55;cursor:default;transform:none!important;box-shadow:none!important}
+details.qn-src{border:1px solid var(--line);border-radius:var(--r-sm);background:rgba(13,27,46,.45);margin-bottom:1rem}
+details.qn-src>summary,details.pz>summary{list-style:none;cursor:pointer}
+details.qn-src>summary::-webkit-details-marker,details.pz>summary::-webkit-details-marker{display:none}
+details.qn-src>summary::before,details.pz>summary::before{content:"\25B8";color:var(--gold);font-size:.85rem;flex:0 0 auto;transition:transform .15s ease}
+details.qn-src[open]>summary::before,details.pz[open]>summary::before{transform:rotate(90deg)}
+details.qn-src>summary{padding:.7rem .9rem;font-size:.8rem;color:var(--txt-soft);display:flex;gap:.55rem;align-items:baseline;line-height:1.45}
+details.qn-src>summary b{color:var(--txt);font-weight:600}
+details.qn-src>summary .falta{color:#f0b27a;font-weight:600}
+.qn-src-body{padding:.3rem .9rem .9rem}
+.qn-src-body textarea{min-height:180px;font-size:.82rem;line-height:1.5}
+.qn-count{color:var(--txt-mute);font-weight:500;letter-spacing:0;text-transform:none;margin-left:.35rem}
+.qn-src-btns{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.qn-src-btns select{flex:1 1 240px;width:auto}
+.qn-prog{display:flex;align-items:center;gap:.8rem;margin:0 0 1rem;font-size:.8rem;color:var(--gold-l)}
+.qn-prog .bar{flex:1;margin:0}
+.qn-prog .bar>i{background:var(--gold);transition:width .4s ease}
+details.pz{border:1px solid var(--line);border-radius:var(--r-sm);background:rgba(13,27,46,.5);margin-bottom:.55rem;scroll-margin-top:90px}
+details.pz[open]{border-color:var(--line-strong)}
+details.pz>summary{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;padding:.75rem .9rem}
+details.pz>summary:hover{background:rgba(201,169,110,.04)}
+.pz-date{font-size:.76rem;font-weight:600;color:var(--txt-soft);white-space:nowrap;min-width:5.6em}
+.pz-fmt{font-size:.64rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.16rem .5rem;border-radius:4px;border:1px solid;white-space:nowrap}
+.pz-fmt.f-reel{color:#9fc0f5;border-color:rgba(159,192,245,.45);background:rgba(96,140,220,.12)}
+.pz-fmt.f-carrusel{color:var(--gold-l);border-color:rgba(201,169,110,.45);background:rgba(201,169,110,.10)}
+.pz-fmt.f-lista{color:#7fd1c7;border-color:rgba(127,209,199,.45);background:rgba(127,209,199,.09)}
+.pz-fmt.f-imagen{color:#c3a6e8;border-color:rgba(195,166,232,.45);background:rgba(195,166,232,.09)}
+.pz-fmt.f-historia{color:#f0b27a;border-color:rgba(240,178,122,.45);background:rgba(240,178,122,.09)}
+.pz-fmt.f-rutinas{color:#cfcac4;border-color:rgba(168,162,158,.45);background:rgba(255,255,255,.04)}
+.pz-t{flex:1 1 240px;font-weight:600;color:#fff;font-size:.92rem;line-height:1.35}
+.pz-who{font-size:.72rem;color:var(--txt-soft);white-space:nowrap}
+.pz-st{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .6rem;border-radius:12px;white-space:nowrap;border:1px solid}
+.pz-st.ok{color:#7dd87d;border-color:rgba(40,167,69,.45);background:rgba(40,167,69,.12)}
+.pz-st.no{color:#cfcac4;border-color:rgba(168,162,158,.35);background:rgba(168,162,158,.10)}
+.pz-st.wait{color:#cfcac4;border-color:rgba(168,162,158,.5);border-style:dashed;background:transparent}
+.pz-st.run{color:var(--gold);border-color:rgba(201,169,110,.5);background:rgba(201,169,110,.12);animation:pzpulse 1.2s ease-in-out infinite}
+.pz-st.err{color:#ff8a93;border-color:rgba(220,53,69,.45);background:rgba(220,53,69,.10)}
+@keyframes pzpulse{50%{opacity:.5}}
+.pz-body{padding:.1rem .9rem .9rem}
+.pz-bar{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+.pz-meta{font-size:.72rem;color:var(--txt-mute);line-height:1.5}
+.pz-btns{display:flex;gap:.4rem;flex-wrap:wrap}
+.pz-btns .pm-act{font-family:var(--sans);font-size:.72rem;padding:.3rem .65rem}
+.pz-btns .pm-act[disabled]{opacity:.5;cursor:default}
+.pz-sec{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold);margin:1.1rem 0 .5rem;padding-bottom:.3rem;border-bottom:1px solid var(--line)}
+.pz-nota{font-size:.74rem;color:var(--txt-mute);margin:-.3rem 0 .8rem;line-height:1.5}
+.pz-vacia{font-size:.84rem;color:var(--txt-mute);font-style:italic;padding:.6rem 0 .2rem}
+.pz-err{font-size:.8rem;color:#ff8a93;background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);border-radius:var(--r-sm);padding:.55rem .75rem;margin:.3rem 0 .6rem;line-height:1.45}
+.pz-suelta{display:flex;flex-wrap:wrap;gap:.5rem .7rem;align-items:center;margin-bottom:.2rem}
+.gen-block .gb-acts{display:flex;gap:.4rem;flex:0 0 auto}
+.gen-block .gb-head{gap:.6rem;align-items:flex-start}
+.gen-block .gb-label{line-height:1.4}
+.gen-block .gb-copy{white-space:nowrap;user-select:none}
+.gen-block .gb-edit{border-color:transparent}
+.gen-block.editando .gb-acts{visibility:hidden}
+.gb-ta{min-height:110px;font-size:.86rem;line-height:1.55}
+.gb-edbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:flex-end;margin-top:.5rem}
+.gb-edbar .gb-tip{flex:1 1 180px;font-size:.7rem;color:var(--txt-mute)}
+.gb-edbar .btn{padding:.45rem .9rem;font-size:.7rem}
+.ag-link{color:var(--gold-l);word-break:break-all}
+.ag-link.falta{color:#f0b27a;border-bottom:1px dashed rgba(240,178,122,.7);word-break:normal}
+.art-tag.guion-ok{cursor:pointer;background:rgba(40,167,69,.12);border-color:rgba(40,167,69,.4);color:#7dd87d}
+.art-tag.guion-ok:hover{filter:brightness(1.2)}
+.ag-toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);max-width:min(92vw,520px);background:#122036;border:1px solid var(--line-strong);color:var(--txt);padding:.7rem 1rem;border-radius:10px;font-size:.84rem;line-height:1.45;box-shadow:var(--sh-card);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.ag-toast.show{opacity:1;transform:translate(-50%,0)}
+.ag-toast.error{border-color:rgba(220,53,69,.55);color:#ffb3b9}
+.ag-toast.ok{border-color:rgba(40,167,69,.55);color:#a5e6a5}
+@media(max-width:700px){
+  .qn-head{align-items:stretch}
+  .qn-btns{width:100%}
+  .qn-btns .btn{flex:1 1 100%}
+  .qn .qn-head h3{font-size:1.3rem}
+  #panel-agente>.src-box .src-row{grid-template-columns:1fr}
+  details.pz>summary{padding:.7rem .7rem;gap:.35rem .5rem}
+  .pz-date{min-width:0}
+  .pz-st{order:4;margin-left:auto}
+  .pz-t{order:5;flex-basis:100%}
+  .pz-who{order:6;flex-basis:100%;padding-left:1.25rem}
+  .pz-body{padding:.1rem .7rem .8rem}
+  .gen-block{padding:.85rem .8rem}
+  .gen-block .gb-copy{padding:.5rem .8rem;font-size:.76rem}
+  .gen-block .gb-label{font-size:.62rem;letter-spacing:1px;padding-top:.45rem}
+  .pz-btns .pm-act{padding:.4rem .7rem}
+}
+</style>
 </head>
 <body>
 <div class="topbar">
@@ -353,36 +453,66 @@ textarea{resize:vertical;min-height:70px}
 </div>
 <div id="pmHost"><div class="empty">Cargando el plan de marca...</div></div>
 </div>
-</div>
 
 <div class="panel" id="panel-agente">
 <div class="src-box">
 <div class="src-row">
 <div class="fg" style="margin:0"><label>Fuente de contenido</label>
-<select id="agSrcType" onchange="onAgSrcType()"><option value="propiedad">Propiedad del portafolio</option><option value="articulo">Articulo del blog</option><option value="libre">Tema libre</option></select>
+<select id="agSrcType" onchange="onAgSrcType()"><option value="articulo">Art&iacute;culo madre del plan</option><option value="propiedad">Propiedad del portafolio</option><option value="libre">Pieza del plan o tema libre</option></select>
 </div>
-<div class="fg" style="margin:0"><label id="agSrcLabel">Elige una propiedad</label>
+<div class="fg" style="margin:0"><label id="agSrcLabel">Elige el art&iacute;culo madre</label>
 <select id="agSrcItem" onchange="onAgSrcItem()"><option value="">Cargando...</option></select>
 </div>
 </div>
 <div class="src-meta" id="agMeta"></div>
 </div>
+<div id="agAviso"></div>
+
+<div class="agent-card qn" id="qnCard" style="display:none">
+<div class="qn-head">
+<div>
+<div class="qn-kicker">Quincena completa &middot; un clic</div>
+<h3 id="qnTitulo">&nbsp;</h3>
+<div class="qn-sub" id="qnSub"></div>
+</div>
+<div class="qn-btns">
+<button type="button" class="btn btn-secondary" id="qnBtnCopiar" onclick="qnCopiarTodo(this)" style="display:none">Copiar toda la quincena</button>
+<button type="button" class="btn btn-primary qn-go" id="qnBtn" onclick="qnGenerar()">&#10024; Generar la quincena completa</button>
+</div>
+</div>
+<details class="qn-src" id="qnSrc">
+<summary><span id="qnSrcRes">Fuente: el texto del art&iacute;culo</span></summary>
+<div class="qn-src-body">
+<div class="grid2">
+<div class="fg"><label>T&iacute;tulo del art&iacute;culo</label><input type="text" id="qnTit" autocomplete="off" placeholder="El t&iacute;tulo tal como se publica" onchange="qnGuardarFuente(true)"></div>
+<div class="fg"><label>Enlace del art&iacute;culo</label><input type="url" id="qnUrl" autocomplete="off" placeholder="https://www.lomazhome.com/..." oninput="qnEnlaceCambio()" onchange="qnGuardarFuente(true)"></div>
+</div>
+<div class="fg"><label>Texto aprobado del art&iacute;culo <span class="qn-count" id="qnPalabras"></span></label>
+<textarea id="qnTexto" placeholder="Pega aqu&iacute; el texto aprobado del art&iacute;culo. Si a&uacute;n no est&aacute; escrito, pega su esquema aprobado y la gu&iacute;a de la que sale." oninput="qnContar()"></textarea></div>
+<div class="qn-src-btns">
+<select id="qnBlog" onchange="qnTraerDelBlog()"><option value="">Traer el texto desde el blog&hellip;</option></select>
+<button type="button" class="btn btn-secondary" onclick="qnGuardarFuente()">Guardar</button>
+</div>
+<div class="fab-hint" style="margin:.7rem 0 0">Todo sale de este texto: si un dato no est&aacute; aqu&iacute;, el agente no lo escribe. El enlace se puede poner despu&eacute;s: todos los textos lo toman solos.</div>
+</div>
+</details>
+<div id="qnProg"></div>
+<div id="qnOut"></div>
+</div>
+
 <div class="agent-wrap">
 <div class="agent-card">
-<h3>Agente de <em>Marketing</em></h3>
-<div class="hint">Genero hooks, copys, hashtags y CTA listos para publicar, con el tono de autoridad de LOMAZ HOME. Elige la fuente, la red y el enfoque, y pulsa Generar.</div>
-<div class="fg"><label>Red social</label><select id="agRed"><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>LinkedIn</option><option>YouTube</option><option>Threads</option><option>WhatsApp</option><option>X</option></select></div>
+<h3>Pieza <em>suelta</em></h3>
+<div class="hint" id="agHint">Una pieza a la vez, con el copy de cada red donde sale ese formato.</div>
+<div class="fg"><label>Formato</label><select id="agFormato"><option value="reel">Reel (video vertical)</option><option value="carrusel">Carrusel</option><option value="lista">Lista de chequeo</option><option value="imagen">Imagen</option><option value="historia">Historia</option></select></div>
+<div class="fg" id="agTemaWrap"><label id="agTemaLabel">Tema de la pieza</label><input type="text" id="agTema" autocomplete="off" placeholder="Ej: Vendido en 21 d&iacute;as: qu&eacute; hicimos"></div>
+<div class="fg" id="agNotasWrap"><label>Datos o indicaciones (opcional)</label><textarea id="agNotas" placeholder="Los datos reales de la pieza: barrio, d&iacute;as, cifras, nombres. El agente no inventa cifras."></textarea></div>
 <div class="fg"><label>Enfoque de marca</label><select id="agEnfoque"><option>LOMAZ HOME</option><option>Marca personal</option><option>Fusion</option></select></div>
-<div class="fg"><label>Pilar / Objetivo</label><select id="agPilar"><option>Portafolio Inmobiliario</option><option>Educacion y Autoridad</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
-<div class="fg" id="agTemaWrap" style="display:none"><label>Tema libre</label><input type="text" id="agTema" placeholder="Ej: 5 errores al vender tu casa"></div>
-<button class="btn btn-primary" style="width:100%;margin-top:.4rem" onclick="generarContenido()">&#10024; Generar contenido</button>
-<div class="ai-key-row">
-<span title="Opcional: si configuras una clave de OpenAI, el agente usara IA avanzada. Sin clave, usa el motor local.">&#9881; IA avanzada (opcional)</span>
-<input type="password" id="agKey" placeholder="OpenAI API key (opcional)" autocomplete="new-password" style="flex:1" onchange="saveAgKey()">
-</div>
+<div class="fg"><label>Pilar / Objetivo</label><select id="agPilar" onchange="_agTocoPilar=true"><option>Portafolio Inmobiliario</option><option>Educacion y Autoridad</option><option>Detras de Escena</option><option>Tendencias y Estilo de vida</option></select></div>
+<button type="button" class="btn btn-primary" id="agBtnPieza" style="width:100%;margin-top:.4rem" onclick="generarContenido()">&#10024; Generar pieza</button>
 </div>
 <div class="agent-card">
-<div class="agent-out" id="agOut"><div class="agent-empty">Aun no has generado contenido. Elige una fuente y pulsa &laquo;Generar contenido&raquo;.</div></div>
+<div class="agent-out" id="agOut"><div class="agent-empty">A&uacute;n no has generado una pieza suelta. Elige el formato y pulsa &laquo;Generar pieza&raquo;.</div></div>
 </div>
 </div>
 </div>
@@ -546,6 +676,7 @@ function showAlert(msg,type){const a=document.getElementById("alert");a.textCont
   var uEl=document.getElementById("uEmail"); if(uEl) uEl.textContent=session.user.email;
   buildFilterOptions();
   loadFuentes();
+  await qnCargar();
   await loadPosts();
 })();
 
@@ -562,6 +693,7 @@ async function loadPosts(){
   posts=data||[];
   fillArtOptions();
   updateKPIs();render();renderCalendar();
+  agRefrescar();
 }
 
 function filtered(){
@@ -602,7 +734,7 @@ function render(){
       +'<td><span class="rs">'+ic+' '+esc(p.red_social||"")+'</span></td>'
       +'<td style="font-size:.78rem">'+esc(p.enfoque_marca||"")+'</td>'
       +'<td style="font-size:.78rem">'+esc(p.pilar_contenido||"")+'</td>'
-      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin titulo)")+'</strong>'+(p.articulo_madre?'<br><span class="art-tag" title="Artículo madre: la pieza sale de este artículo del blog">'+esc(artLabel(p.articulo_madre))+'</span>':'')+'</td>'
+      +'<td><strong style="color:#fff">'+esc(p.titulo||"(sin titulo)")+'</strong>'+(p.articulo_madre?'<br><span class="art-tag" title="Artículo madre: la pieza sale de este artículo del blog">'+esc(artLabel(p.articulo_madre))+'</span>'+qnMarca(p):'')+'</td>'
       +'<td><div class="tprev">'+prev+'</div></td>'
       +'<td><span class="badge '+(EST_BADGE[p.estado]||"b-borr")+'">'+esc(p.estado||"Borrador")+'</span></td>'
       +'<td style="font-size:.76rem;color:var(--txt-soft)">'+esc(p.responsable||"")+'</td>'
@@ -639,6 +771,7 @@ function switchTab(name){
   document.getElementById("panel-cal").classList.toggle("active",name==="cal");
   var ag=document.getElementById("panel-agente");if(ag)ag.classList.toggle("active",name==="agente");
   if(name==="cal")renderCalendar();
+  if(name==="agente")agAbrirPestana();
 }
 function clearFilters(){document.getElementById("fRed").value="";document.getElementById("fEnfoque").value="";document.getElementById("fEstado").value="";document.getElementById("fArt").value="";document.getElementById("fSearch").value="";render();}
 
@@ -793,11 +926,15 @@ function closeDel(){document.getElementById("delOverlay").classList.remove("show
 
 document.addEventListener("click",function(e){if(e.target.classList&&e.target.classList.contains("overlay"))e.target.classList.remove("show");});
 
-/* ====== AGENTE DE MARKETING: datos + generador ====== */
-let _props=[], _arts=[], _agKey='';
+/* ====== AGENTE DE MARKETING ======
+   Escribe la quincena completa de un articulo madre (guiones, textos de piezas y el copy de cada red)
+   y piezas sueltas de un inmueble, de una pieza del plan o de un tema libre.
+   La escritura la hace Claude en el servidor (api/agente-marketing.js). Aqui se arma el pedido con lo
+   que dice el Planificador, se muestra el resultado en bloques con boton Copiar y se guarda en la
+   tabla marketing_quincenas. */
+let _props=[], _arts=[], _artsErr=false;
 
-/* Los articulos del blog se leen de la base de datos: solo los publicados */
-let _artsErr=false;
+/* Inmuebles del asesor y articulos publicados del blog (estos ultimos los usa el autollenado del editor) */
 async function loadFuentes(){
   _arts=[];_artsErr=false;
   const qa=sb.from('articulos_blog').select('id,titulo,slug,categoria,extracto,published_at').eq('estado','publicado').order('published_at',{ascending:false}).limit(100);
@@ -809,20 +946,14 @@ async function loadFuentes(){
     else _arts=(ra.data||[]).map(function(a){return {t:a.titulo||'(sin titulo)',c:a.categoria||'Blog',e:a.extracto||'',u:'articulo.html?slug='+encodeURIComponent(a.slug||'')};});
     if(!rp.error)_props=rp.data||[];
   }catch(e){_artsErr=true;_props=_props||[];}
-  fillFuenteSelectors();
-  _agKey=localStorage.getItem('lomaz_ag_openai')||'';
-  var k=document.getElementById('agKey');if(k&&_agKey)k.value=_agKey;
+  agRefrescar();
 }
 
 function precioFmt(p,m){if(!p)return '';var s=Number(p).toLocaleString('es-CO');return (m==='USD'?'USD ':'$')+s;}
 function opTxt(o){o=(o||'').toLowerCase();if(o.indexOf('arrend')>=0||o.indexOf('arriend')>=0||o.indexOf('renta')>=0)return 'arriendo';return 'venta';}
 function propLabel(p){var parts=[p.titulo||('Propiedad '+(p.clave||p.id))];var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ');if(loc)parts.push(loc);return parts.join(' - ');}
 
-function fillFuenteSelectors(){
-  // editor modal selector starts empty until type chosen; agent selector filled on type change too
-  onAgSrcType();
-}
-
+/* Lista de inmuebles o de articulos publicados para el autollenado del editor de publicaciones */
 function fillItemSelect(sel, type, withDash){
   var opts = withDash ? '<option value="">&mdash;</option>' : '';
   if(type==='propiedad'){
@@ -835,36 +966,6 @@ function fillItemSelect(sel, type, withDash){
   sel.innerHTML=opts;
 }
 function escAttr(s){return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
-
-/* ----- Agent tab source handling ----- */
-function onAgSrcType(){
-  var type=document.getElementById('agSrcType').value;
-  var lbl=document.getElementById('agSrcLabel');
-  var sel=document.getElementById('agSrcItem');
-  var temaWrap=document.getElementById('agTemaWrap');
-  document.getElementById('agMeta').className='src-meta';
-  if(type==='libre'){temaWrap.style.display='';sel.parentElement.style.display='none';return;}
-  temaWrap.style.display='none';sel.parentElement.style.display='';
-  lbl.textContent= type==='propiedad'?'Elige una propiedad':'Elige un articulo';
-  fillItemSelect(sel,type,false);
-  onAgSrcItem();
-}
-function onAgSrcItem(){
-  var type=document.getElementById('agSrcType').value;
-  var val=document.getElementById('agSrcItem').value;
-  var meta=document.getElementById('agMeta');
-  if(type==='propiedad'){
-    var p=_props.find(function(x){return String(x.id)===String(val);});
-    if(!p){meta.className='src-meta';return;}
-    var bits=[];if(p.tipo_propiedad)bits.push('<b>'+p.tipo_propiedad+'</b>');bits.push('en '+opTxt(p.tipo_operacion));if(p.precio)bits.push(precioFmt(p.precio,p.moneda));var loc=[p.barrio,p.ciudad].filter(Boolean).join(', ');if(loc)bits.push(loc);
-    var feat=[];if(p.habitaciones)feat.push(p.habitaciones+' hab');if(p.banos)feat.push(p.banos+' banos');if(p.garajes)feat.push(p.garajes+' garaje(s)');if(p.m2_construccion)feat.push(p.m2_construccion+' m2');
-    meta.innerHTML=bits.join(' &middot; ')+(feat.length?'<br>'+feat.join(' &middot; '):'');meta.className='src-meta show';
-  }else if(type==='articulo'){
-    var a=_arts[parseInt(val,10)];if(!a){meta.className='src-meta';return;}
-    meta.innerHTML='<b>'+esc(a.c)+'</b>'+(a.e?' &middot; '+esc(a.e):'');meta.className='src-meta show';
-  }
-}
-function saveAgKey(){var v=document.getElementById('agKey').value.trim();_agKey=v;localStorage.setItem('lomaz_ag_openai',v);}
 
 /* ----- Editor modal source handling ----- */
 function onEditorSrcType(){var type=document.getElementById('eSrcType').value;var sel=document.getElementById('eSrcItem');fillItemSelect(sel,type,true);}
@@ -890,7 +991,7 @@ function autollenarDesdeFuente(){
 }
 
 
-/* ====== MOTOR DE GENERACION LOCAL (sin API) ====== */
+/* ====== MOTOR LOCAL DE PLANTILLAS (respaldo sin IA y autollenado del editor) ====== */
 const HASH_BASE='#LomazHome #Inmobiliaria #BienesRaices #Bogota #Colombia';
 const CTA_RED={
  Instagram:'Escribe la palabra clave por mensaje directo para recibir la ficha completa y agendar tu visita.',
@@ -961,53 +1062,677 @@ function generarParaTema(tema,red,pilar){
  return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
 }
 
-function renderGen(g,red){
- var out=document.getElementById('agOut');
- function block(label,body,cls){return '<div class="gen-block"><div class="gb-head"><span class="gb-label">'+label+'</span><span class="gb-copy" onclick="copiarTexto(this)">Copiar</span></div><div class="gb-body '+(cls||'')+'">'+(body||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</div></div>';}
- var html='';
- html+=block('Titulo / Tema',g.titulo);
- html+=block('Hook (gancho)',g.hook);
- html+=block('Copy / Guion',g.copy);
- html+=block('Hashtags',g.hashtags,'hashtags');
- html+=block('CTA',g.cta);
- html+='<button class="btn btn-primary" style="width:100%;margin-top:.3rem" onclick="usarEnPublicacion()">&#10003; Usar en una publicacion nueva</button>';
- out.innerHTML=html;
- window.__lastGen=g;window.__lastRed=red;
-}
-function copiarTexto(el){var body=el.closest('.gen-block').querySelector('.gb-body');var txt=body.innerText;navigator.clipboard.writeText(txt).then(function(){el.textContent='Copiado';setTimeout(function(){el.textContent='Copiar';},1500);});}
+/* ====== AGENTE: formatos, redes y utilidades ====== */
+const AG_FMT={reel:"Reel",carrusel:"Carrusel",lista:"Lista de chequeo",imagen:"Imagen",historia:"Historia",rutinas:"Rutinas"};
+/* A que redes va cada formato: es la tabla «Que formato va a que red» del calendario de produccion */
+const AG_REDES={
+ reel:["instagram","facebook","tiktok","youtube","linkedin","whatsapp"],
+ carrusel:["instagram","facebook","tiktok","linkedin","whatsapp","google"],
+ lista:["instagram","facebook","tiktok","linkedin","whatsapp","google"],
+ imagen:["instagram","facebook","tiktok","linkedin","whatsapp","google"],
+ historia:[]
+};
+const AG_ABR={instagram:"IG",facebook:"FB",tiktok:"TT",youtube:"YT",linkedin:"LI",whatsapp:"WA",google:"G",marketplace:"Marketplace"};
+const AG_SIN_ENLACE="[enlace del artículo]";
+let _qFilas=[], _qTabla=true, _qArt="", _qEstado={}, _qTrabajando=false, _qCola=Promise.resolve(false), _qAvisoGuardar=false, _qEnlaceT=null;
+let _iaListo=null, _iaMotivo="", _agIniciado=false, _blogLista=null, _suelta=null, _agToastT=null, _agTocoPilar=false;
 
+/* El formato de una pieza del plan sale de su titulo: «Reel 1 · ...», «Carrusel · ...», «Lista de chequeo · ...» */
+function agFormatoDe(t){
+ const s=(t||"").toLowerCase();
+ const pruebas=[["reel",/\breels?\b/],["carrusel",/\bcarrusel(es)?\b/],["lista",/lista de chequeo|checklist/],["historia",/\bhistorias?\b/],["imagen",/\bimagen\b/]];
+ let mejor="reel",pos=1e9;
+ pruebas.forEach(function(x){const m=x[1].exec(s);if(m&&m.index<pos){pos=m.index;mejor=x[0];}});
+ return mejor;
+}
+function agPartesTitulo(t,f){
+ const m=/^\s*((?:reel|carrusel|lista de chequeo|imagen|historias?)(?:\s+\d+)?)\s*[·:]\s*(.+)$/i.exec(t||"");
+ if(m)return {chip:m[1].charAt(0).toUpperCase()+m[1].slice(1).toLowerCase(),titulo:m[2]};
+ return {chip:AG_FMT[f]||"Pieza",titulo:t||"(sin título)"};
+}
+/* En los textos, {{ENLACE}} se cambia por el enlace real al mostrar y al copiar */
+function agDiaLocal(iso){const d=new Date(iso);if(isNaN(d))return "";return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function agConEnlace(t,url){return String(t||"").replace(/\{\{\s*ENLACE\s*\}\}/g,url||AG_SIN_ENLACE);}
+function agHtml(t,url){
+ return esc(String(t||"")).replace(/\{\{\s*ENLACE\s*\}\}/g,url?'<span class="ag-link">'+esc(url)+'</span>':'<span class="ag-link falta" title="Falta el enlace: escríbelo en «Fuente» y todos los textos lo toman">'+AG_SIN_ENLACE+'</span>');
+}
+function agAlPortapapeles(txt){
+ // Respaldo para navegadores o marcos donde el portapapeles moderno no esta permitido
+ function antiguo(){
+  return new Promise(function(ok,no){
+   try{const ta=document.createElement("textarea");ta.value=txt;ta.setAttribute("readonly","");ta.style.cssText="position:fixed;left:-9999px;top:0";document.body.appendChild(ta);ta.select();const r=document.execCommand("copy");ta.remove();if(r)ok();else no();}catch(e){no(e);}
+  });
+ }
+ if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(txt).catch(antiguo);
+ return antiguo();
+}
+function agCopiarYAvisar(txt,btn,rotulo){
+ agAlPortapapeles(txt).then(function(){
+  if(btn){btn.textContent="Copiado";setTimeout(function(){btn.textContent=rotulo;},1500);}
+  if(txt.indexOf(AG_SIN_ENLACE)>=0)agToast("Copiado, pero falta el enlace: escríbelo en «Fuente» y vuelve a copiar.","error");
+ }).catch(function(){agToast("No se pudo copiar. Selecciona el texto y cópialo a mano.","error");});
+}
+function agToast(msg,tipo){
+ let el=document.getElementById("agToast");
+ if(!el){el=document.createElement("div");el.id="agToast";el.setAttribute("role","status");document.body.appendChild(el);}
+ el.textContent=msg;el.className="ag-toast show "+(tipo||"");
+ clearTimeout(_agToastT);_agToastT=setTimeout(function(){el.className="ag-toast "+(tipo||"");},tipo==="error"?6000:3200);
+}
+
+/* Los botones Copiar y Editar tambien responden al teclado */
+document.addEventListener("keydown",function(e){
+ if((e.key==="Enter"||e.key===" ")&&e.target&&e.target.classList&&e.target.classList.contains("gb-copy")){e.preventDefault();e.target.click();}
+});
+
+/* ====== AGENTE: hablar con el servidor (api/agente-marketing.js) ====== */
+async function agLlamar(cuerpo){
+ let token="";
+ try{const s=(await sb.auth.getSession()).data.session;token=s?s.access_token:"";}catch(e){}
+ let r;
+ try{r=await fetch("/api/agente-marketing",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify(cuerpo)});}
+ catch(e){return {ok:false,codigo:"red",mensaje:"No hay conexión con el servidor. Revisa tu internet e inténtalo de nuevo.",reintentar:true};}
+ let d=null;try{d=await r.json();}catch(e){}
+ if(d&&typeof d==="object"&&("ok" in d))return d;
+ if(r.status===404||r.status===405)return {ok:false,codigo:"sin_funcion",mensaje:"El agente todavía no está publicado en el servidor."};
+ if(r.status>=502&&r.status<=504)return {ok:false,codigo:"tiempo",mensaje:"El servidor tardó más de lo esperado. Vuelve a intentarlo.",reintentar:true};
+ return {ok:false,codigo:"error",mensaje:"El servidor respondió con un error ("+r.status+")."};
+}
+/* Pide una pieza; si el servidor dice que vale la pena reintentar (saturado, limite, tiempo), lo hace hasta 3 veces */
+async function agEscribir(cuerpo){
+ let d=null;
+ for(let i=0;i<3;i++){
+  d=await agLlamar(cuerpo);
+  if(d.ok||!d.reintentar)break;
+  if(i<2)await new Promise(function(ok){setTimeout(ok,((d.esperar||3)+i*3)*1000);});
+ }
+ return d;
+}
+async function agEstadoIA(){
+ const d=await agLlamar({modo:"estado"});
+ if(d.ok){_iaListo=!!d.listo;_iaMotivo="";}else{_iaListo=null;_iaMotivo=d.codigo||"error";}
+ agPintarAviso();
+ return _iaListo;
+}
+async function agHayIA(){
+ if(_iaListo!==true)await agEstadoIA();
+ if(_iaListo===true)return true;
+ const av=document.getElementById("agAviso");if(av&&av.innerHTML)av.scrollIntoView({behavior:"smooth",block:"center"});
+ agToast(_iaListo===false?"Falta conectar la clave de Claude en Vercel: mira los tres pasos arriba.":_iaMotivo==="sesion"?"Tu sesión venció. Vuelve a entrar a la plataforma.":_iaMotivo==="sin_funcion"?"El agente todavía no está publicado en el servidor.":"El agente no respondió. Recarga la página e inténtalo de nuevo.","error");
+ return false;
+}
+function agPintarAviso(){
+ const el=document.getElementById("agAviso");if(!el)return;
+ let h="";
+ if(_iaListo===false){
+  h+='<div class="ag-aviso"><b>Falta conectar la clave de Claude.</b> El agente escribe con Claude por API y eso se configura una sola vez:<ol>'
+   +'<li>En <b>platform.claude.com</b> abre <b>Settings &gt; API keys</b> y crea una clave. En <b>Settings &gt; Billing</b> compra créditos: cada quincena cuesta centavos de dólar.</li>'
+   +'<li>En <b>Vercel</b>, entra al proyecto y abre <b>Settings &gt; Environment Variables</b>. Crea la variable <code>ANTHROPIC_API_KEY</code> y pega la clave.</li>'
+   +'<li>En Vercel, en <b>Deployments</b>, abre el último despliegue y pulsa <b>Redeploy</b>. Cuando termine, recarga esta página.</li></ol></div>';
+ }else if(_iaListo===null&&_iaMotivo==="sin_funcion"){
+  h+='<div class="ag-aviso"><b>El agente todavía no está publicado en el servidor.</b> Falta el archivo <code>api/agente-marketing.js</code> en el sitio. Mientras tanto, las piezas sueltas de inmuebles y de temas se arman con las plantillas de respaldo.</div>';
+ }else if(_iaListo===null&&_iaMotivo==="sesion"){
+  h+='<div class="ag-aviso"><b>Tu sesión venció.</b> Vuelve a entrar a la plataforma para usar el agente.</div>';
+ }
+ if(!_qTabla){
+  h+='<div class="ag-aviso"><b>Falta crear la tabla donde se guardan las quincenas.</b> Ejecuta en Supabase el archivo <code>supabase/marketing_quincenas.sql</code> y recarga esta página. Mientras tanto, lo que generes se pierde al salir.</div>';
+ }
+ el.innerHTML=h;
+}
+
+/* ====== AGENTE: una pieza en pantalla (bloques con Copiar y Editar) ====== */
+// ctx "q" = pieza de la quincena abierta; ctx "s" = pieza suelta. k = clave de la pieza.
+function agDatos(ctx,k){
+ if(ctx==="s")return _suelta;
+ const f=qnFila(_qArt);if(!f)return null;
+ return k==="rutinas"?f.paquete.rutinas:f.paquete.piezas[k];
+}
+function agUrl(ctx){return ctx==="s"?((_suelta&&_suelta.enlace)||""):qnUrl();}
+function agBloque(g){
+ if(!g)return null;
+ const d=agDatos(g.dataset.ctx,g.dataset.k);
+ const s=d&&d.secciones?d.secciones[+g.dataset.s]:null;
+ return s&&s.bloques?s.bloques[+g.dataset.b]||null:null;
+}
+function agSeccionesHtml(ctx,k,d){
+ const url=agUrl(ctx);let h="";
+ (d.secciones||[]).forEach(function(s,si){
+  h+='<div class="pz-sec">'+esc(String(s.titulo||""))+'</div>';
+  (s.notas||[]).forEach(function(n){h+='<div class="pz-nota">'+esc(String(n))+'</div>';});
+  (s.bloques||[]).forEach(function(b,bi){
+   h+='<div class="gen-block" data-ctx="'+ctx+'" data-k="'+escAttr(String(k))+'" data-s="'+si+'" data-b="'+bi+'"><div class="gb-head"><span class="gb-label">'+esc(String(b.etiqueta||""))+'</span><span class="gb-acts"><span class="gb-copy gb-edit" role="button" tabindex="0" onclick="agEditar(this)">Editar</span><span class="gb-copy" role="button" tabindex="0" onclick="agCopiar(this)">Copiar</span></span></div><div class="gb-body">'+agHtml(b.texto,url)+'</div></div>';
+  });
+ });
+ return h;
+}
+function agCopiar(el){
+ const g=el.closest(".gen-block"),b=agBloque(g);if(!b)return;
+ agCopiarYAvisar(agConEnlace(b.texto,agUrl(g.dataset.ctx)),el,"Copiar");
+}
+function agEditar(el){
+ const g=el.closest(".gen-block"),b=agBloque(g);if(!b||g.classList.contains("editando"))return;
+ g.classList.add("editando");
+ const body=g.querySelector(".gb-body");
+ body.innerHTML='<textarea class="gb-ta"></textarea><div class="gb-edbar"><span class="gb-tip">'+(/\{\{\s*ENLACE\s*\}\}/.test(b.texto||"")?"{{ENLACE}} se cambia solo por el enlace.":"")+'</span><button type="button" class="btn btn-secondary" onclick="agEditarFin(this,false)">Cancelar</button><button type="button" class="btn btn-primary" onclick="agEditarFin(this,true)">Guardar</button></div>';
+ const ta=body.querySelector("textarea");ta.value=b.texto||"";
+ ta.style.height=Math.min(Math.max(ta.scrollHeight+4,110),460)+"px";ta.focus();
+}
+function agEditarFin(btn,guardar){
+ const g=btn.closest(".gen-block"),b=agBloque(g);if(!b)return;
+ if(guardar){
+  b.texto=g.querySelector("textarea").value.replace(/\s+$/,"");
+  const d=agDatos(g.dataset.ctx,g.dataset.k);if(d)d.editado=true;
+  if(g.dataset.ctx==="q"){qnGuardar(qnFila(_qArt)).then(function(ok){if(ok)agToast("Cambio guardado.","ok");});qnPintarChip(g.dataset.k);}
+ }
+ g.classList.remove("editando");
+ g.querySelector(".gb-body").innerHTML=agHtml(b.texto,agUrl(g.dataset.ctx));
+}
+function agTextoPieza(d,titulo,url){
+ let t=titulo?String(titulo).toUpperCase()+"\n":"";
+ (d.secciones||[]).forEach(function(s){
+  t+="\n— "+String(s.titulo||"").toUpperCase()+" —\n";
+  (s.bloques||[]).forEach(function(b){t+="\n"+(b.etiqueta||"")+":\n"+agConEnlace(b.texto,url)+"\n";});
+ });
+ return t.trim();
+}
+
+/* ====== AGENTE: quincena completa de un articulo madre ====== */
+async function qnCargar(){
+ const r=await sb.from("marketing_quincenas").select("*").order("articulo");
+ if(r.error){_qTabla=false;console.warn("Quincenas: "+r.error.message);}
+ else{_qTabla=true;_qFilas=r.data||[];}
+}
+function qnFila(art,crear){
+ if(!art)return null;
+ let f=_qFilas.find(function(q){return q.articulo===art&&q.asesor_id===uid;})||_qFilas.find(function(q){return q.articulo===art;});
+ if(!f&&crear){f={articulo:art,asesor_id:uid,titulo:"",url:"",texto_fuente:"",paquete:{v:1,piezas:{},rutinas:null}};_qFilas.push(f);}
+ if(f){if(!f.paquete||typeof f.paquete!=="object")f.paquete={v:1,piezas:{},rutinas:null};if(!f.paquete.piezas)f.paquete.piezas={};}
+ return f||null;
+}
+function qnEscrita(fila,k){
+ if(!fila)return false;
+ const d=k==="rutinas"?fila.paquete.rutinas:fila.paquete.piezas[k];
+ return !!(d&&d.secciones&&d.secciones.length);
+}
+/* Las piezas de la quincena: las que el Planificador tiene con ese articulo madre, en orden de publicacion */
+function qnPiezasPlan(art){
+ const lista=posts.filter(function(p){return p.articulo_madre===art;}).map(function(p){
+  return {k:p.id,titulo:p.titulo||"",fecha:p.fecha||"",formato:agFormatoDe(p.titulo),responsable:p.responsable||"",gancho:p.hook||"",indicaciones:p.copy||"",enfoque:p.enfoque_marca||"",pilar:p.pilar_contenido||"",fg:p.fecha_guion||"",ft:p.fecha_grabacion||"",fe:p.fecha_edicion||""};
+ });
+ const f=qnFila(art);
+ if(f)Object.keys(f.paquete.piezas).forEach(function(k){
+  if(lista.some(function(x){return x.k===k;}))return;
+  const z=f.paquete.piezas[k]||{};
+  lista.push({k:k,titulo:z.titulo||"",fecha:z.fecha||"",formato:z.formato||"reel",responsable:z.responsable||"",gancho:"",indicaciones:"",enfoque:"",pilar:"",fg:"",ft:"",fe:""});
+ });
+ return lista.sort(function(a,b){return (a.fecha||"9999").localeCompare(b.fecha||"9999");});
+}
+function qnRutinasPz(){return {k:"rutinas",titulo:"Historias, grupos de Facebook y respuesta «GUÍA»",fecha:"",formato:"rutinas",responsable:""};}
+function qnUrl(){const el=document.getElementById("qnUrl");return el?el.value.trim():"";}
+
+function qnAbrir(art){
+ _qArt=art||"";if(!_qTrabajando)_qEstado={};
+ const card=document.getElementById("qnCard");
+ if(!_qArt){card.style.display="none";return;}
+ card.style.display="";
+ const f=qnFila(_qArt);
+ document.getElementById("qnTit").value=f?(f.titulo||""):"";
+ document.getElementById("qnUrl").value=f?(f.url||""):"";
+ document.getElementById("qnTexto").value=f?(f.texto_fuente||""):"";
+ document.getElementById("qnBlog").value="";
+ document.getElementById("qnProg").innerHTML="";
+ document.getElementById("qnOut").innerHTML="";
+ document.getElementById("qnSrc").open=qnContar()<50;
+ qnPintar();
+}
+function qnContar(){
+ const t=document.getElementById("qnTexto").value.trim(),n=t?t.split(/\s+/).length:0,u=qnUrl();
+ document.getElementById("qnPalabras").textContent=n?"· "+n.toLocaleString("es-CO")+" palabras":"";
+ document.getElementById("qnSrcRes").innerHTML=n<50
+  ?'<span class="falta">Falta el texto aprobado del artículo.</span> Ábrelo aquí y pégalo: de ahí sale todo.'
+  :'<b>Fuente:</b> el texto del artículo, '+n.toLocaleString("es-CO")+' palabras. '+(u?'<b>Enlace:</b> '+esc(u):'<span class="falta">Falta el enlace del artículo</span>: se pone cuando se publique.');
+ return n;
+}
+function qnCabecera(){
+ if(!_qArt)return;
+ const fila=qnFila(_qArt),piezas=qnPiezasPlan(_qArt);
+ const total=piezas.length+1,hechas=piezas.filter(function(p){return qnEscrita(fila,p.k);}).length+(qnEscrita(fila,"rutinas")?1:0);
+ const et=artLabel(_qArt),corte=et.indexOf("·");
+ document.getElementById("qnTitulo").innerHTML=corte>0?esc(et.slice(0,corte+1))+" <em>"+esc(et.slice(corte+1).trim())+"</em>":esc(et);
+ const fechas=piezas.map(function(p){return p.fecha;}).filter(Boolean).sort();
+ const rango=fechas.length>1?"del "+fCorta(fechas[0])+" al "+fCorta(fechas[fechas.length-1]):fechas.length?"el "+fCorta(fechas[0]):"";
+ document.getElementById("qnSub").textContent=[piezas.length+(piezas.length===1?" pieza":" piezas")+" del plan y las rutinas",rango,hechas+" de "+total+" escritas"].filter(Boolean).join(" · ");
+ const b=document.getElementById("qnBtn");
+ b.disabled=_qTrabajando;
+ b.innerHTML=_qTrabajando?"Escribiendo…":hechas===0?"&#10024; Generar la quincena completa":hechas<total?"&#10024; Escribir lo que falta ("+(total-hechas)+")":"&#8635; Volver a escribir toda la quincena";
+ b.className="btn qn-go "+(hechas>=total&&!_qTrabajando?"btn-secondary":"btn-primary");
+ document.getElementById("qnBtnCopiar").style.display=hechas?"":"none";
+}
+function qnPintar(){
+ if(!_qArt)return;
+ qnCabecera();qnContar();
+ const out=document.getElementById("qnOut");
+ if(out.querySelector(".gen-block.editando"))return;   // no se pisa un bloque que se esta editando
+ const abiertas={};out.querySelectorAll("details.pz[open]").forEach(function(d){abiertas[d.id]=1;});
+ const piezas=qnPiezasPlan(_qArt);
+ let h=piezas.map(function(p){return qnTarjeta(p,!!abiertas["pz-"+p.k]);}).join("");
+ if(!piezas.length)h='<div class="pz-vacia" style="padding-bottom:.8rem">En el Planificador no hay piezas con este artículo madre. Se pueden escribir las rutinas y piezas sueltas.</div>';
+ out.innerHTML=h+qnTarjeta(qnRutinasPz(),!!abiertas["pz-rutinas"]);
+}
+function qnPintarUna(k){
+ const el=document.getElementById("pz-"+k);
+ const pz=k==="rutinas"?qnRutinasPz():qnPiezasPlan(_qArt).find(function(x){return x.k===k;});
+ if(!el||!pz){qnPintar();return;}
+ if(el.querySelector(".gen-block.editando")){qnPintarChip(k);qnCabecera();return;}
+ const tmp=document.createElement("div");tmp.innerHTML=qnTarjeta(pz,el.open);
+ el.replaceWith(tmp.firstElementChild);
+ qnCabecera();
+}
+function qnChip(k,d){
+ const est=_qEstado[k]||"";
+ if(est==="escribiendo")return ["run","Escribiendo…"];
+ if(est==="cola")return ["wait","En cola"];
+ if(est.indexOf("error:")===0)return ["err","No se pudo"];
+ if(d&&d.secciones&&d.secciones.length)return ["ok",d.editado?"Lista · editada":"Lista"];
+ return ["no","Sin escribir"];
+}
+function qnPintarChip(k){
+ const card=document.getElementById("pz-"+k),el=card?card.querySelector("summary .pz-st"):null;if(!el)return;
+ const c=qnChip(k,agDatos("q",k));el.className="pz-st "+c[0];el.textContent=c[1];
+}
+function qnTarjeta(pz,abierta){
+ const fila=qnFila(_qArt),rut=pz.k==="rutinas",d=fila?(rut?fila.paquete.rutinas:fila.paquete.piezas[pz.k]):null;
+ const est=_qEstado[pz.k]||"",lista=!!(d&&d.secciones&&d.secciones.length),chip=qnChip(pz.k,d),pt=agPartesTitulo(pz.titulo,pz.formato);
+ let meta;
+ if(rut)meta="Acompañan al artículo durante sus quince días: dos historias con preguntas, los dos martes de grupos y las respuestas guardadas.";
+ else{
+  const redes=(AG_REDES[pz.formato]||[]).map(function(r){return AG_ABR[r];}).join(" · ")||"IG · FB · WA";
+  const fab=[pz.fg?"Guion "+fCorta(pz.fg):"",pz.ft?"Tomas "+fCorta(pz.ft):"",pz.fe?(pz.formato==="reel"?"Edición ":"Diseño ")+fCorta(pz.fe):""].filter(Boolean).join(" · ");
+  meta=[fab,"Sale en "+redes].filter(Boolean).join(" · ");
+ }
+ if(lista&&d.generado_en){const cuando=agDiaLocal(d.generado_en);if(cuando)meta+=" · Escrita el "+fCorta(cuando);}
+ let h='<details class="pz" id="pz-'+escAttr(pz.k)+'"'+(abierta?" open":"")+'><summary><span class="pz-date">'+esc(rut?"Quincena":pz.fecha?fCorta(pz.fecha):"Sin fecha")+'</span><span class="pz-fmt f-'+pz.formato+'">'+esc(pt.chip)+'</span><span class="pz-t">'+esc(pt.titulo)+'</span>'+(pz.responsable?'<span class="pz-who">'+esc(pz.responsable)+'</span>':'')+'<span class="pz-st '+chip[0]+'">'+chip[1]+'</span></summary><div class="pz-body">';
+ h+='<div class="pz-bar"><span class="pz-meta">'+esc(meta)+'</span><span class="pz-btns">'+(lista?'<button type="button" class="pm-act" onclick="qnCopiarPieza(\''+pz.k+'\',this)">Copiar todo</button>':'')+'<button type="button" class="pm-act" onclick="qnEscribirUna(\''+pz.k+'\')">'+(lista?"Volver a escribir":"Escribir esta pieza")+'</button></span></div>';
+ if(est.indexOf("error:")===0)h+='<div class="pz-err">'+esc(est.slice(6))+'</div>';
+ if(est==="escribiendo"||est==="cola")h+='<div class="pz-vacia">Claude está escribiendo esta pieza con el artículo y el plan delante…</div>';
+ else if(lista)h+=agSeccionesHtml("q",pz.k,d);
+ else if(!est)h+='<div class="pz-vacia">Aún no está escrita. Pulsa «Generar la quincena completa» o «Escribir esta pieza».</div>';
+ return h+'</div></details>';
+}
+
+/* --- la fuente: titulo, enlace y texto aprobado del articulo --- */
+function qnLeerFuente(fila){
+ if(!fila)return;
+ fila.titulo=document.getElementById("qnTit").value.trim();
+ fila.url=qnUrl();
+ fila.texto_fuente=document.getElementById("qnTexto").value.trim();
+}
+async function qnGuardarFuente(silencio){
+ if(!_qArt)return;
+ const fila=qnFila(_qArt,true);qnLeerFuente(fila);qnContar();
+ const ok=await qnGuardar(fila);
+ if(!silencio)agToast(ok?"Fuente guardada.":_qTabla?"No se pudo guardar la fuente.":"Falta la tabla de quincenas: la fuente solo queda en esta pestaña.",ok?"ok":"error");
+}
+function qnEnlaceCambio(){clearTimeout(_qEnlaceT);_qEnlaceT=setTimeout(qnPintar,350);}
+async function qnCargarBlog(){
+ if(_blogLista)return;
+ _blogLista=[];
+ const r=await sb.from("articulos_blog").select("id,titulo,estado").order("updated_at",{ascending:false}).limit(100);
+ if(!r.error)_blogLista=r.data||[];
+ const sel=document.getElementById("qnBlog");if(!sel)return;
+ sel.innerHTML='<option value="">Traer el texto desde el blog…</option>'+_blogLista.map(function(a){return '<option value="'+escAttr(String(a.id))+'">'+esc(String(a.titulo||"(sin título)")+(a.estado&&a.estado!=="publicado"?" · "+a.estado:""))+'</option>';}).join("");
+}
+function agTextoDeHtml(html){
+ const marcado=String(html||"").replace(/<\s*br\s*\/?>/gi,"\n").replace(/<\/(p|div|h[1-6]|li|tr|blockquote|section|table|ul|ol)>/gi,"$&\n\n");
+ const doc=new DOMParser().parseFromString(marcado,"text/html");
+ return (doc.body.textContent||"").replace(/\u00a0/g," ").replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim();
+}
+async function qnTraerDelBlog(){
+ const sel=document.getElementById("qnBlog"),id=sel.value,ta=document.getElementById("qnTexto");
+ if(!id)return;
+ if(ta.value.trim()&&!confirm("Se reemplaza el texto de la casilla por el del blog. ¿Continuar?")){sel.value="";return;}
+ const r=await sb.from("articulos_blog").select("titulo,contenido").eq("id",id).single();
+ sel.value="";
+ if(r.error||!r.data){agToast("No se pudo leer ese artículo del blog.","error");return;}
+ ta.value=agTextoDeHtml(r.data.contenido);
+ const ti=document.getElementById("qnTit");if(!ti.value.trim())ti.value=r.data.titulo||"";
+ const n=qnContar();
+ agToast(n<50?"Ese artículo del blog casi no tiene texto todavía.":"Texto traído del blog. Revísalo y pulsa Guardar.",n<50?"error":"ok");
+}
+
+/* --- escribir --- */
+/* Lo principal de una pieza ya escrita (guion, laminas o lista): viaja con el pedido de las demas para que no repitan sus ideas */
+function qnResumen(d){
+ const s=d&&d.secciones&&d.secciones[0];if(!s)return "";
+ return (s.bloques||[]).filter(function(b){return ["guion","laminas","pieza"].indexOf(b.id)>=0;}).map(function(b){return b.texto;}).join("\n").slice(0,1500);
+}
+function qnCuerpo(art,k,fila){
+ const piezas=qnPiezasPlan(art);
+ const fuente={tipo:"articulo",titulo:(fila.titulo||"").trim()||artLabel(art),texto:fila.texto_fuente||""};
+ const quincena=piezas.map(function(p){
+  const q={fecha:p.fecha,formato:p.formato,titulo:p.titulo};
+  if(p.k!==k&&!_qEstado[p.k]){const r=qnResumen(fila.paquete.piezas[p.k]);if(r)q.resumen=r;}
+  return q;
+ });
+ if(k==="rutinas")return {modo:"rutinas",fuente:fuente,quincena:quincena};
+ const p=piezas.find(function(x){return x.k===k;})||{};
+ return {modo:"pieza",fuente:fuente,quincena:quincena,pieza:{formato:p.formato,titulo:p.titulo,gancho:p.gancho,indicaciones:p.indicaciones,fecha:p.fecha,responsable:p.responsable,redes:AG_REDES[p.formato]||[]},marca:{enfoque:p.enfoque||"",pilar:p.pilar||""}};
+}
+function qnFuenteLista(fila){
+ if((fila.texto_fuente||"").trim().length>=300)return true;
+ const det=document.getElementById("qnSrc");det.open=true;det.scrollIntoView({behavior:"smooth",block:"center"});
+ document.getElementById("qnTexto").focus({preventScroll:true});
+ agToast("Pega primero el texto aprobado del artículo: de ahí sale todo.","error");
+ return false;
+}
+async function qnGenerar(){
+ if(_qTrabajando||!_qArt)return;
+ const fila=qnFila(_qArt,true);qnLeerFuente(fila);
+ if(!qnFuenteLista(fila))return;
+ if(!(await agHayIA()))return;
+ const claves=qnPiezasPlan(_qArt).map(function(p){return p.k;}).concat(["rutinas"]);
+ let pendientes=claves.filter(function(k){return !qnEscrita(fila,k);});
+ if(!pendientes.length){
+  if(!confirm("La quincena ya está escrita. ¿Volver a escribirla toda? Se pierden los cambios hechos a mano."))return;
+  pendientes=claves;
+ }
+ await qnEscribir(pendientes);
+}
+async function qnEscribirUna(k){
+ if(_qTrabajando){agToast("Espera a que termine lo que se está escribiendo.","error");return;}
+ if(!_qArt)return;
+ const fila=qnFila(_qArt,true);qnLeerFuente(fila);
+ if(!qnFuenteLista(fila))return;
+ if(!(await agHayIA()))return;
+ if(qnEscrita(fila,k)&&!confirm("Se vuelve a escribir esta pieza y se pierde lo que tiene ahora. ¿Continuar?"))return;
+ await qnEscribir([k]);
+ const el=document.getElementById("pz-"+k);if(el)el.open=true;
+}
+function qnProgreso(n,total){
+ const el=document.getElementById("qnProg");if(!el)return;
+ el.innerHTML=n>=total?"":'<div class="qn-prog"><span>Escribiendo… '+n+' de '+total+' listas</span><div class="bar"><i style="width:'+Math.round(n/total*100)+'%"></i></div></div>';
+}
+async function qnEscribir(claves){
+ const art=_qArt,fila=qnFila(art,true),total=claves.length,cola=claves.slice();
+ _qTrabajando=true;_qAvisoGuardar=false;
+ await qnGuardar(fila);            // el texto y el enlace quedan guardados antes de empezar
+ claves.forEach(function(k){_qEstado[k]="cola";});
+ if(_qArt===art){qnPintar();qnProgreso(0,total);}
+ let listas=0,errores=0,fatal="";
+ async function obrero(){
+  while(cola.length){
+   const k=cola.shift();
+   _qEstado[k]="escribiendo";if(_qArt===art)qnPintarUna(k);
+   const r=await agEscribir(qnCuerpo(art,k,fila));
+   if(r&&r.ok&&r.pieza&&r.pieza.secciones){
+    const base={secciones:r.pieza.secciones,generado_en:new Date().toISOString(),modelo:r.modelo||""};
+    if(k==="rutinas")fila.paquete.rutinas=base;
+    else{
+     const pz=qnPiezasPlan(art).find(function(x){return x.k===k;})||{};
+     fila.paquete.piezas[k]=Object.assign({titulo:pz.titulo||"",fecha:pz.fecha||"",formato:pz.formato||r.pieza.formato,responsable:pz.responsable||""},base);
+    }
+    delete _qEstado[k];listas++;
+    qnGuardar(fila);
+   }else{
+    const msj=(r&&r.mensaje)||"No se pudo escribir esta pieza. Vuelve a intentarlo.";
+    _qEstado[k]="error:"+msj;errores++;
+    if(r&&["sin_clave","clave_invalida","sin_saldo","tope_mensual","sesion","sin_funcion"].indexOf(r.codigo)>=0){
+     fatal=msj;
+     cola.splice(0).forEach(function(x){_qEstado[x]="error:"+msj;errores++;if(_qArt===art)qnPintarUna(x);});
+     if(r.codigo==="sin_clave"){_iaListo=false;agPintarAviso();}
+    }
+   }
+   if(_qArt===art){qnPintarUna(k);qnProgreso(listas+errores,total);}
+  }
+ }
+ await Promise.all([obrero(),obrero()]);
+ const guardado=await _qCola;
+ _qTrabajando=false;
+ if(_qArt===art){qnCabecera();qnProgreso(total,total);}
+ render();                         // el Planificador marca las piezas que ya tienen guion
+ if(fatal)agToast(fatal,"error");
+ else if(errores)agToast(listas+" de "+total+" quedaron escritas. Las demás tienen el botón «Escribir esta pieza» para reintentar.","error");
+ else agToast(total===1?"Pieza escrita"+(guardado?" y guardada.":"."):"Quincena lista: "+listas+" piezas escritas"+(guardado?" y guardadas.":"."),"ok");
+}
+
+/* --- guardar: una sola escritura a la vez, en fila --- */
+function qnGuardar(fila){
+ _qCola=_qCola.then(function(){return qnGuardarYa(fila);}).catch(function(){return false;});
+ return _qCola;
+}
+async function qnGuardarYa(fila){
+ if(!fila||!_qTabla)return false;
+ const rec={articulo:fila.articulo,titulo:fila.titulo||null,url:fila.url||null,texto_fuente:fila.texto_fuente||null,paquete:fila.paquete||{},updated_at:new Date().toISOString()};
+ let r;
+ if(fila.id)r=await sb.from("marketing_quincenas").update(rec).eq("id",fila.id).select("id").single();
+ else{rec.asesor_id=uid;r=await sb.from("marketing_quincenas").insert(rec).select("id").single();}
+ if(r.error){
+  if(!_qAvisoGuardar){_qAvisoGuardar=true;agToast("No se pudo guardar en la plataforma: "+r.error.message,"error");}
+  return false;
+ }
+ if(r.data&&r.data.id)fila.id=r.data.id;
+ return true;
+}
+
+/* --- copiar --- */
+function qnCopiarPieza(k,btn){
+ const d=agDatos("q",k);if(!d)return;
+ const pz=k==="rutinas"?qnRutinasPz():(qnPiezasPlan(_qArt).find(function(x){return x.k===k;})||{});
+ agCopiarYAvisar(agTextoPieza(d,(pz.fecha?fCorta(pz.fecha)+" · ":"")+(pz.titulo||""),qnUrl()),btn,"Copiar todo");
+}
+function qnCopiarTodo(btn){
+ const fila=qnFila(_qArt);if(!fila)return;
+ const url=qnUrl(),partes=[artLabel(_qArt).toUpperCase()+(url?"\n"+url:"")];
+ qnPiezasPlan(_qArt).concat([qnRutinasPz()]).forEach(function(pz){
+  if(!qnEscrita(fila,pz.k))return;
+  const d=pz.k==="rutinas"?fila.paquete.rutinas:fila.paquete.piezas[pz.k];
+  partes.push("════════════════════\n"+agTextoPieza(d,(pz.fecha?fCorta(pz.fecha)+" · ":"")+pz.titulo,url));
+ });
+ agCopiarYAvisar(partes.join("\n\n"),btn,"Copiar toda la quincena");
+}
+
+/* --- el Planificador marca las piezas que ya tienen guion y lleva a ellas --- */
+function qnMarca(p){
+ if(!p.articulo_madre||!qnEscrita(qnFila(p.articulo_madre),p.id))return "";
+ return ' <span class="art-tag guion-ok" title="Abrir el guion y los copys de esta pieza en el Agente de Marketing" onclick="agIrAPieza(\''+p.id+'\')">&#10003; Guion y copys</span>';
+}
+function agIrAPieza(id){
+ const p=posts.find(function(x){return x.id===id;});if(!p||!p.articulo_madre)return;
+ switchTab("agente");
+ document.getElementById("agSrcType").value="articulo";onAgSrcType();
+ const sel=document.getElementById("agSrcItem");sel.value=p.articulo_madre;onAgSrcItem();
+ setTimeout(function(){const el=document.getElementById("pz-"+id);if(el){el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"});}},80);
+}
+
+/* ====== AGENTE: fuente elegida (articulo madre, inmueble, pieza del plan o tema libre) ====== */
+function agAbrirPestana(){
+ if(_agIniciado)return;_agIniciado=true;
+ agEstadoIA();qnCargarBlog();
+}
+function agRefrescar(){if(document.getElementById("agSrcType"))onAgSrcType(true);}
+function agArticulos(){
+ const set={};artList().forEach(function(a){set[a]=1;});_qFilas.forEach(function(q){if(q.articulo)set[q.articulo]=1;});
+ return Object.keys(set).sort(function(a,b){return a.localeCompare(b,"es",{numeric:true});});
+}
+/* El articulo de la quincena en curso: el primero al que todavia le quedan piezas por publicar */
+function agArticuloVigente(arts){
+ const hoy=new Date(),h=hoy.getFullYear()+"-"+String(hoy.getMonth()+1).padStart(2,"0")+"-"+String(hoy.getDate()).padStart(2,"0");
+ let mejor="",fecha="9999";
+ arts.forEach(function(a){
+  const f=posts.filter(function(p){return p.articulo_madre===a&&p.fecha&&p.fecha>=h;}).map(function(p){return p.fecha;}).sort()[0];
+  if(f&&f<fecha){fecha=f;mejor=a;}
+ });
+ return mejor||arts[0]||"";
+}
+function onAgSrcType(conservar){
+ const type=document.getElementById("agSrcType").value,sel=document.getElementById("agSrcItem"),prev=conservar===true?sel.value:"";
+ let opts="",defecto="";
+ if(type==="articulo"){
+  document.getElementById("agSrcLabel").textContent="Elige el artículo madre";
+  const arts=agArticulos();
+  if(!arts.length)opts='<option value="">(Aún no hay piezas con artículo madre en el Planificador)</option>';
+  arts.forEach(function(a){opts+='<option value="'+escAttr(esc(a))+'">'+esc(artLabel(a))+'</option>';});
+  defecto=agArticuloVigente(arts);
+ }else if(type==="propiedad"){
+  document.getElementById("agSrcLabel").textContent="Elige una propiedad";
+  if(!_props.length)opts='<option value="">(No tienes propiedades aún)</option>';
+  _props.forEach(function(p){opts+='<option value="'+p.id+'">'+escAttr(propLabel(p))+'</option>';});
+ }else{
+  document.getElementById("agSrcLabel").textContent="Pieza del plan (opcional)";
+  opts='<option value="">(Tema libre)</option>';
+  posts.filter(function(p){return !p.articulo_madre;}).sort(function(a,b){return (a.fecha||"9999").localeCompare(b.fecha||"9999");}).forEach(function(p){
+   opts+='<option value="'+p.id+'">'+esc((p.fecha?fCorta(p.fecha)+" · ":"")+(p.titulo||"(sin título)"))+'</option>';
+  });
+ }
+ sel.innerHTML=opts;
+ if(prev)sel.value=prev;
+ if(!prev||sel.value!==prev){if(defecto)sel.value=defecto;else sel.selectedIndex=0;}
+ onAgSrcItem(conservar===true&&!!prev&&sel.value===prev);
+}
+function onAgSrcItem(mismo){
+ const type=document.getElementById("agSrcType").value,val=document.getElementById("agSrcItem").value,meta=document.getElementById("agMeta");
+ meta.className="src-meta";
+ if(type==="articulo"){
+  if(mismo===true&&_qArt===val&&val)qnPintar();else qnAbrir(val);
+ }else qnAbrir("");
+ agAjustarSuelta(type);
+ if(type==="propiedad"){
+  const p=_props.find(function(x){return String(x.id)===String(val);});
+  if(p){
+   const bits=[];if(p.tipo_propiedad)bits.push('<b>'+esc(String(p.tipo_propiedad))+'</b>');bits.push('en '+opTxt(p.tipo_operacion));if(p.precio)bits.push(precioFmt(p.precio,p.moneda));const loc=[p.barrio,p.ciudad].filter(Boolean).join(', ');if(loc)bits.push(esc(loc));
+   const feat=[];if(p.habitaciones)feat.push(p.habitaciones+' hab');if(p.banos)feat.push(p.banos+' baños');if(p.garajes)feat.push(p.garajes+' garaje(s)');if(p.m2_construccion)feat.push(p.m2_construccion+' m²');
+   meta.innerHTML=bits.join(' &middot; ')+(feat.length?'<br>'+feat.join(' &middot; '):'');meta.className='src-meta show';
+  }
+ }else if(type==="libre"&&mismo!==true){
+  const p=posts.find(function(x){return String(x.id)===String(val);});
+  if(p){
+   document.getElementById("agTema").value=p.titulo||"";
+   document.getElementById("agNotas").value=[p.hook?"Gancho del plan: "+p.hook:"",p.copy||""].filter(Boolean).join("\n\n");
+   document.getElementById("agFormato").value=agFormatoDe(p.titulo);
+   if(p.pilar_contenido)document.getElementById("agPilar").value=p.pilar_contenido;
+   if(p.enfoque_marca)document.getElementById("agEnfoque").value=p.enfoque_marca;
+  }
+ }
+}
+function agAjustarSuelta(type){
+ const hint=document.getElementById("agHint"),lab=document.getElementById("agTemaLabel"),tema=document.getElementById("agTema"),pilar=document.getElementById("agPilar");
+ if(type==="articulo"){
+  hint.textContent="Una pieza más que sale del mismo artículo, fuera de las del plan: elige el formato y escribe la pregunta o el tema.";
+  lab.textContent="Pregunta o tema de la pieza";tema.placeholder="Ej: ¿Es legal que me pidan un depósito?";
+  if(!_agTocoPilar)pilar.value="Educacion y Autoridad";
+ }else if(type==="propiedad"){
+  hint.textContent="El guion o el texto del inmueble elegido, con el copy de cada red donde sale ese formato.";
+  lab.textContent="Ángulo de la pieza (opcional)";tema.placeholder="Ej: para inversionistas";
+  if(!_agTocoPilar)pilar.value="Portafolio Inmobiliario";
+ }else{
+  hint.textContent="Una pieza del plan que no sale de un artículo (prueba, marca, comodín) o un tema nuevo. Escribe los datos reales: el agente no inventa cifras.";
+  lab.textContent="Tema de la pieza";tema.placeholder="Ej: Vendido en 21 días: qué hicimos";
+ }
+}
+
+/* ====== AGENTE: pieza suelta ====== */
+function agTextoPropiedad(p){
+ const op=opTxt(p.tipo_operacion),l=[];
+ l.push("Tipo de inmueble: "+(p.tipo_propiedad||"inmueble")+" en "+op);
+ if(p.titulo)l.push("Título del aviso: "+p.titulo);
+ const loc=[p.barrio,p.ciudad,p.departamento].filter(Boolean).join(", ");if(loc)l.push("Ubicación: "+loc);
+ if(p.precio)l.push((op==="arriendo"?"Canon mensual: ":"Precio: ")+precioFmt(p.precio,p.moneda));
+ if(p.m2_construccion)l.push("Área construida: "+p.m2_construccion+" m²");
+ if(p.m2_terreno)l.push("Área de terreno: "+p.m2_terreno+" m²");
+ if(p.habitaciones)l.push("Habitaciones: "+p.habitaciones);
+ if(p.banos)l.push("Baños: "+p.banos);
+ if(p.garajes)l.push("Garajes: "+p.garajes);
+ if(p.estrato)l.push("Estrato: "+p.estrato);
+ const extras=[];if(p.tiene_piscina)extras.push("piscina");if(p.acepta_mascotas)extras.push("acepta mascotas");
+ const am=Array.isArray(p.amenidades)?p.amenidades.join(", "):(typeof p.amenidades==="string"?p.amenidades:"");if(am)extras.push(am);
+ if(extras.length)l.push("Otros: "+extras.join(", "));
+ if(p.descripcion)l.push("Descripción del aviso: "+String(p.descripcion).slice(0,2500));
+ return l.join("\n");
+}
+/* Respaldo sin IA: las plantillas de siempre, un texto por red */
+function agPiezaLocal(tipo,x,formato,redes,titulo,enlace){
+ const NOM={instagram:"Instagram",facebook:"Facebook",tiktok:"TikTok",youtube:"YouTube",linkedin:"LinkedIn",whatsapp:"WhatsApp"};
+ const lista=(redes&&redes.length?redes:["instagram","facebook","whatsapp"]).filter(function(r){return NOM[r];});
+ const bloques=lista.map(function(r){
+  const g=tipo==="propiedad"?generarParaPropiedad(x,NOM[r]):generarParaTema(x,NOM[r],"");
+  return {id:r,etiqueta:NOM[r],texto:[g.hook,g.copy,g.hashtags].filter(Boolean).join("\n\n")};
+ });
+ return {titulo:titulo,formato:formato,enlace:enlace||"",plantilla:true,secciones:[{titulo:"Para publicar",bloques:bloques}]};
+}
+async function generarContenido(){
+ const type=document.getElementById("agSrcType").value,formato=document.getElementById("agFormato").value;
+ const tema=document.getElementById("agTema").value.trim(),notas=document.getElementById("agNotas").value.trim();
+ const marca={enfoque:document.getElementById("agEnfoque").value,pilar:document.getElementById("agPilar").value};
+ const btn=document.getElementById("agBtnPieza"),out=document.getElementById("agOut");
+ let cuerpo,titulo,enlace="",local=null,articulo="";
+ if(type==="propiedad"){
+  const p=_props.find(function(x){return String(x.id)===String(document.getElementById("agSrcItem").value);});
+  if(!p){agToast("Elige una propiedad.","error");return;}
+  const arriendo=opTxt(p.tipo_operacion)==="arriendo",comercial=/local|bodega|lote|oficina|consultorio|edificio/i.test((p.tipo_propiedad||"")+" "+(p.titulo||""));
+  let redes=formato==="historia"?[]:formato==="reel"?["instagram","facebook","tiktok","youtube","whatsapp"]:["instagram","facebook","tiktok","whatsapp","google"];
+  if(redes.length&&comercial)redes.splice(redes.indexOf("whatsapp"),0,"linkedin");
+  if(redes.length&&arriendo)redes.push("marketplace");
+  titulo=AG_FMT[formato]+" · "+(p.titulo||propLabel(p));
+  enlace="https://www.lomazhome.com/propiedad-publica.html?id="+encodeURIComponent(p.id);
+  cuerpo={modo:"pieza",fuente:{tipo:"propiedad",titulo:p.titulo||"",texto:agTextoPropiedad(p)},pieza:{formato:formato,titulo:titulo,indicaciones:[tema?"Ángulo de la pieza: "+tema:"",notas].filter(Boolean).join("\n"),redes:redes},marca:marca};
+  local=function(){return agPiezaLocal("propiedad",p,formato,redes,titulo,enlace);};
+ }else if(type==="articulo"){
+  if(!_qArt){agToast("Elige primero un artículo madre.","error");return;}
+  const fila=qnFila(_qArt,true);qnLeerFuente(fila);
+  if(!qnFuenteLista(fila))return;
+  if(!tema){agToast("Escribe la pregunta o el tema de la pieza.","error");document.getElementById("agTema").focus();return;}
+  titulo=AG_FMT[formato]+" · "+tema;enlace=qnUrl();articulo=_qArt;
+  cuerpo={modo:"pieza",fuente:{tipo:"articulo",titulo:(fila.titulo||"").trim()||artLabel(_qArt),texto:fila.texto_fuente},quincena:qnPiezasPlan(_qArt).map(function(p){return {fecha:p.fecha,formato:p.formato,titulo:p.titulo};}),pieza:{formato:formato,titulo:titulo,gancho:tema,indicaciones:notas,redes:AG_REDES[formato]||[]},marca:marca};
+ }else{
+  if(!tema){agToast("Escribe el tema de la pieza.","error");document.getElementById("agTema").focus();return;}
+  titulo=agPartesTitulo(tema,"").chip==="Pieza"?AG_FMT[formato]+" · "+tema:tema;
+  cuerpo={modo:"pieza",fuente:{tipo:"tema",titulo:tema,texto:notas},pieza:{formato:formato,titulo:titulo,redes:AG_REDES[formato]||[]},marca:marca};
+  local=function(){return agPiezaLocal("tema",tema,formato,AG_REDES[formato],titulo,"");};
+ }
+ btn.disabled=true;btn.textContent="Escribiendo…";
+ out.innerHTML='<div class="agent-empty">Claude está escribiendo la pieza…</div>';
+ let r=null;
+ if(_iaListo===null)await agEstadoIA();
+ if(_iaListo===true)r=await agEscribir(cuerpo);
+ btn.disabled=false;btn.innerHTML="&#10024; Generar pieza";
+ if(r&&r.ok&&r.pieza&&r.pieza.secciones){
+  _suelta={titulo:titulo,formato:formato,enlace:enlace,articulo:articulo,secciones:r.pieza.secciones};
+ }else if(local&&(_iaListo!==true||(r&&["sin_clave","sin_funcion"].indexOf(r.codigo)>=0))){
+  _suelta=local();
+ }else{
+  _suelta=null;
+  const msj=(r&&r.mensaje)||(_iaListo===false?"Falta conectar la clave de Claude en Vercel.":"El agente no respondió. Recarga la página e inténtalo de nuevo.");
+  out.innerHTML='<div class="pz-err">'+esc(msj)+'</div>';
+  agToast(msj,"error");return;
+ }
+ agPintarSuelta();
+}
+function agPintarSuelta(){
+ const out=document.getElementById("agOut"),d=_suelta;
+ if(!d){out.innerHTML='<div class="agent-empty">Aún no has generado una pieza suelta. Elige el formato y pulsa «Generar pieza».</div>';return;}
+ const pt=agPartesTitulo(d.titulo,d.formato);
+ let h='<div class="pz-suelta"><span class="pz-fmt f-'+d.formato+'">'+esc(pt.chip)+'</span><span class="pz-t">'+esc(pt.titulo)+'</span></div>';
+ if(d.plantilla)h+='<div class="pz-nota" style="margin:.5rem 0 0">Hecha con las plantillas de respaldo, sin IA: revísala antes de publicar. Con la clave de Claude conectada, el agente la escribe a partir de los datos.</div>';
+ h+=agSeccionesHtml("s","suelta",d);
+ h+='<div class="pz-bar" style="margin-top:.9rem;justify-content:flex-end"><span class="pz-btns"><button type="button" class="btn btn-secondary" onclick="agCopiarSuelta(this)">Copiar todo</button><button type="button" class="btn btn-primary" onclick="usarEnPublicacion()">&#10003; Usar en una publicación nueva</button></span></div>';
+ out.innerHTML=h;
+}
+function agCopiarSuelta(btn){if(_suelta)agCopiarYAvisar(agTextoPieza(_suelta,_suelta.titulo,_suelta.enlace),btn,"Copiar todo");}
+/* Lleva la pieza suelta al editor de publicaciones del Planificador */
 function usarEnPublicacion(){
- var g=window.__lastGen;if(!g)return;
+ const d=_suelta;if(!d)return;
+ function bloque(id){let t="";(d.secciones||[]).forEach(function(s){(s.bloques||[]).forEach(function(b){if(b.id===id&&!t)t=b.texto;});});return agConEnlace(t,d.enlace);}
+ const redes=bloque("instagram")||bloque("facebook")||bloque("whatsapp");
+ const cuerpo=bloque("guion")||bloque("laminas")||bloque("pieza")||bloque("historia1");
  openEditor();
  setTimeout(function(){
-  document.getElementById('eRed').value=window.__lastRed||'Instagram';
+  document.getElementById('eRed').value='Instagram';
   document.getElementById('eEnfoque').value=document.getElementById('agEnfoque').value;
   document.getElementById('ePilar').value=document.getElementById('agPilar').value;
-  document.getElementById('eTitulo').value=g.titulo;
-  document.getElementById('eHook').value=g.hook;
-  document.getElementById('eCopy').value=g.copy+'\n\n'+g.hashtags;
+  document.getElementById('eTitulo').value=d.titulo||"";
+  document.getElementById('eHook').value=bloque("gancho")||(redes||cuerpo).split("\n")[0]||"";
+  document.getElementById('eCopy').value=[cuerpo,redes].filter(Boolean).join("\n\n");
+  if(d.articulo)document.getElementById('eArticulo').value=d.articulo;
  },60);
-}
-
-async function generarContenido(){
- var red=document.getElementById('agRed').value;
- var type=document.getElementById('agSrcType').value;
- var pilar=document.getElementById('agPilar').value;
- var out=document.getElementById('agOut');
- var g=null;
- if(type==='propiedad'){var p=_props.find(function(x){return String(x.id)===String(document.getElementById('agSrcItem').value);});if(!p){showAlert('Elige una propiedad.','error');return;}g=generarParaPropiedad(p,red);}
- else if(type==='articulo'){var a=_arts[parseInt(document.getElementById('agSrcItem').value,10)];if(!a){showAlert('Elige un articulo.','error');return;}g=generarParaArticulo(a,red);}
- else {g=generarParaTema(document.getElementById('agTema').value,red,pilar);}
- // Optional: OpenAI refinement
- if(_agKey){out.innerHTML='<div class="agent-empty">Generando con IA avanzada...</div>';try{var refined=await refinarConIA(g,red,pilar);if(refined)g=refined;}catch(e){/* fallback to local */}}
- renderGen(g,red);
-}
-
-async function refinarConIA(g,red,pilar){
- var prompt='Eres el agente de marketing de LOMAZ HOME, inmobiliaria boutique en Bogota. Mejora este contenido para '+red+', objetivo '+pilar+', con tono de autoridad, cercano y profesional, en espanol de Colombia. Devuelve JSON con claves titulo, hook, copy, hashtags, cta. Base:\nTitulo: '+g.titulo+'\nHook: '+g.hook+'\nCopy: '+g.copy+'\nHashtags: '+g.hashtags+'\nCTA: '+g.cta;
- var r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_agKey},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],temperature:0.7})});
- if(!r.ok)return null;var d=await r.json();var txt=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;if(!txt)return null;
- var m=txt.match(/\{[\s\S]*\}/);if(!m)return null;try{var o=JSON.parse(m[0]);return {titulo:o.titulo||g.titulo,hook:o.hook||g.hook,copy:o.copy||g.copy,hashtags:o.hashtags||g.hashtags,cta:o.cta||g.cta};}catch(e){return null;}
 }
 
 </script>

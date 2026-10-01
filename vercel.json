@@ -1,5 +1,10 @@
 {
   "trailingSlash": false,
+  "functions": {
+    "api/agente-marketing.js": {
+      "maxDuration": 60
+    }
+  },
   "redirects": [
     {
       "source": "/blog/:path*",
