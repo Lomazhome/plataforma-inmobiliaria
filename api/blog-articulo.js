@@ -861,7 +861,8 @@ function paginaArticulo(a, perfil, otros, opciones){
   const imagen = absoluta(aj.imagen_compartir) || absoluta(a.imagen_url) || IMAGEN_BLOG;
   const imagenPropia = /^https:\/\/www\.lomazhome\.com\/og-/.test(imagen);
   const minutos = parseInt(a.tiempo_lectura, 10) > 0 ? parseInt(a.tiempo_lectura, 10) : Math.max(1, Math.round(info.palabras / 200));
-  const publicado = a.published_at || a.created_at || "";
+  // Un borrador todavía no tiene fecha de publicación: en la vista previa se muestra la de hoy, como si saliera ahora
+  const publicado = a.published_at || (borrador ? new Date().toISOString() : a.created_at) || "";
   let revisado = aj.revisado && fechaClave(aj.revisado) ? aj.revisado : "";
   if(!revisado && a.updated_at && publicado && Date.parse(a.updated_at) - Date.parse(publicado) > 36 * 3600 * 1000) revisado = a.updated_at;
   const muestraRevisado = revisado && fechaClave(revisado) > fechaClave(publicado);
