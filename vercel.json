@@ -7,12 +7,59 @@
   },
   "redirects": [
     {
-      "source": "/blog/:path*",
+      "source": "/blog",
+      "destination": "/blog.html",
+      "permanent": false
+    },
+    {
+      "source": "/blog/:carpeta/:resto+",
+      "destination": "/blog.html",
+      "permanent": false
+    },
+    {
+      "source": "/blog/:archivo(.*\\.[a-zA-Z0-9]{2,5})",
+      "destination": "/blog.html",
+      "permanent": false
+    },
+    {
+      "source": "/articulo.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "(?<slugviejo>[A-Za-z0-9-]+)"
+        }
+      ],
+      "destination": "/blog/:slugviejo",
+      "permanent": true
+    },
+    {
+      "source": "/articulo.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "(?<idviejo>[0-9a-fA-F-]{36})"
+        }
+      ],
+      "destination": "/api/blog-articulo?id=:idviejo",
+      "permanent": false
+    },
+    {
+      "source": "/articulo.html",
       "destination": "/blog.html",
       "permanent": false
     }
   ],
   "rewrites": [
+    {
+      "source": "/blog/:slug",
+      "destination": "/api/blog-articulo?slug=:slug"
+    },
+    {
+      "source": "/sitemap-blog.xml",
+      "destination": "/api/sitemap-blog"
+    },
     {
       "source": "/semaforo-del-inversionista",
       "destination": "/semaforo-del-inversionista.html"
