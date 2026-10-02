@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Vista previa de artículos | LoMaz Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0D1B2E;--gold:#C4992A;--cream:#F4E5C2;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--navy);color:#e9e4d8;min-height:100vh;padding:2.5rem 1.25rem;}
+.caja{max-width:820px;margin:0 auto;}
+.marca{font-family:"Playfair Display",Georgia,serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;color:var(--cream);margin-bottom:1.6rem;}
+.marca span{color:var(--gold);}
+h1{font-family:"Playfair Display",Georgia,serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);color:#fff;margin-bottom:.6rem;}
+.ayuda{color:rgba(255,255,255,.68);line-height:1.6;margin-bottom:1.6rem;max-width:640px;}
+#estado{padding:.9rem 1.1rem;border:1px solid rgba(196,153,42,.35);background:rgba(196,153,42,.08);color:var(--cream);margin-bottom:1.4rem;line-height:1.5;}
+#estado.error{border-color:rgba(220,80,80,.5);background:rgba(220,80,80,.1);color:#ffb3b3;}
+#estado:empty{display:none;}
+.fila{display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.fila-titulo{flex:1 1 320px;min-width:0;color:#fff;font-weight:500;line-height:1.4;}
+.fila-estado{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .55rem;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);margin-left:.5rem;vertical-align:middle;}
+.fila-estado.publicado{border-color:var(--gold);color:var(--gold);}
+.fila-fecha{display:block;font-size:.78rem;color:rgba(255,255,255,.5);font-weight:400;margin-top:.25rem;}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.6rem 1.1rem;border:1px solid var(--gold);color:var(--cream);font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:all .2s;white-space:nowrap;}
+.btn:hover{background:var(--gold);color:var(--navy);}
+.volver{display:inline-block;margin-top:1.8rem;color:rgba(255,255,255,.6);font-size:.85rem;}
+</style>
+</head>
+<body>
+<main class="caja">
+<p class="marca">LoMaz <span>Home</span></p>
+<h1>Vista previa de artículos</h1>
+<p class="ayuda">Aquí ves cada artículo del blog tal como quedará publicado, aunque todavía sea un borrador. Solo funciona con tu sesión de la plataforma: nadie más puede ver un borrador.</p>
+<div id="estado" role="status">Cargando…</div>
+<div id="lista"></div>
+<a class="volver" href="dashboard.html">← Volver al panel</a>
+</main>
+<script>
+(function(){
+  // Esta página no carga config.js: la vista previa reemplaza el documento y el artículo ya lo trae
+  var URL_SB = "https://lniouebpuuuqctrgxoiw.supabase.co";
+  var LLAVE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaW91ZWJwdXV1cWN0cmd4b2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODM5NjgsImV4cCI6MjA5MzY1OTk2OH0.8w-TcD8JKkHQpnybaj-ANz-4k4hznFoIwFr_ZatqPtA";
+  var estado = document.getElementById("estado"), lista = document.getElementById("lista");
+  function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function avisar(t, error){ estado.textContent = t || ""; estado.className = error ? "error" : ""; }
+  function fecha(iso){
+    if(!iso) return "";
+    var m = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"], d = new Date(iso);
+    return isNaN(d) ? "" : d.getDate() + " " + m[d.getMonth()] + " " + d.getFullYear();
+  }
+  async function listar(sb){
+    var r = await sb.from("articulos_blog").select("titulo,slug,estado,updated_at").order("updated_at", { ascending: false });
+    if(r.error){ avisar("No se pudo leer la lista de artículos. Recarga la página.", true); return; }
+    var filas = r.data || [];
+    if(!filas.length){ avisar("Todavía no hay artículos."); return; }
+    avisar("");
+    lista.innerHTML = filas.map(function(a){
+      var publicado = a.estado === "publicado";
+      return '<div class="fila"><div class="fila-titulo">' + esc(a.titulo || "(sin título)") +
+        '<span class="fila-estado' + (publicado ? " publicado" : "") + '">' + esc(publicado ? "Publicado" : "Borrador") + "</span>" +
+        '<span class="fila-fecha">Último cambio: ' + esc(fecha(a.updated_at)) + "</span></div>" +
+        (a.slug ? '<a class="btn" href="' + (publicado ? "/blog/" + encodeURIComponent(a.slug) : "vista-previa-articulo.html?slug=" + encodeURIComponent(a.slug)) + '">' + (publicado ? "Ver publicado" : "Ver vista previa") + "</a>" : "") +
+        "</div>";
+    }).join("");
+  }
+  async function iniciar(){
+    if(!window.supabase){ avisar("No se pudo cargar la conexión con la plataforma. Recarga la página.", true); return; }
+    var sb = window.supabase.createClient(URL_SB, LLAVE);
+    var s = (await sb.auth.getSession()).data.session;
+    if(!s){ window.location.href = "login.html"; return; }
+    var slug = new URLSearchParams(window.location.search).get("slug");
+    if(!slug){ await listar(sb); return; }
+    avisar("Armando la vista previa…");
+    var r;
+    try{
+      r = await fetch("/api/blog-articulo?slug=" + encodeURIComponent(slug) + "&borrador=1", { headers: { Authorization: "Bearer " + s.access_token }, cache: "no-store" });
+    }catch(e){ avisar("No hay conexión con el servidor. Revisa tu internet e inténtalo de nuevo.", true); await listar(sb); return; }
+    if(r.status === 200){
+      var html = await r.text();
+      document.open(); document.write(html); document.close();
+      return;
+    }
+    avisar(r.status === 401 ? "Tu sesión venció. Vuelve a entrar a la plataforma y abre de nuevo la vista previa." : r.status === 404 ? "No existe un artículo con esa dirección." : "No se pudo armar la vista previa (" + r.status + "). Inténtalo de nuevo en un momento.", true);
+    await listar(sb);
+  }
+  iniciar();
+})();
+</script>
+</body>
+</html>

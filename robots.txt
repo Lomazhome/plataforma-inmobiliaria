@@ -25,6 +25,7 @@ Disallow: /pipeline.html
 Disallow: /portales.html
 Disallow: /propiedad.html
 Disallow: /schema-fix.sql
+Disallow: /vista-previa-articulo.html
 
 # Crawl-delay for politeness
 Crawl-delay: 1

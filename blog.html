@@ -458,7 +458,7 @@ function processAria(txt){
     addBotMsg("Con gusto te comunico con un asesor:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'>&#128222; Hablar por WhatsApp</a>");return;
   }
   if(t.includes("arrendar")||t.includes("arriendo")){
-    addBotMsg("Tenemos propiedades en arriendo en Bogotá. Puedes ver el catálogo completo aquí: <a href='propiedades.html?tipo=arriendo' style='color:var(--gold)'>Ver propiedades en arriendo</a>. También te recomiendo leer nuestra <a href='blog/como-arrendar-apartamento-bogota.html' style='color:var(--gold)'>guía completa</a>.");return;
+    addBotMsg("Tenemos propiedades en arriendo en Bogotá. Puedes ver el catálogo completo aquí: <a href='propiedades.html?tipo=arriendo' style='color:var(--gold)'>Ver propiedades en arriendo</a>. También te recomiendo leer nuestra <a href='/blog/como-arrendar-apartamento-bogota' style='color:var(--gold)'>guía completa</a>.");return;
   }
   if(t.includes("comprar")||t.includes("venta")){
     addBotMsg("Excelente decisión. Tenemos propiedades en venta en Bogotá: <a href='propiedades.html?tipo=venta' style='color:var(--gold)'>Ver propiedades en venta</a>. También puedes leer sobre los <a href='blog.html?cat=Compraventa' style='color:var(--gold)'>requisitos para comprar vivienda</a>.");return;
@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function show(id,on){ var el=document.getElementById(id); if(!el)return; if(on){el.removeAttribute("hidden");el.classList.add("visible");} else {el.setAttribute("hidden","");} }
   function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
   function fmtDate(iso){ if(!iso)return ""; try{ var m=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]; var d=new Date(iso); return m[d.getMonth()]+" "+d.getFullYear(); }catch(e){return "";} }
-  var PLACEHOLDER="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format";
+  var PLACEHOLDER="/og-blog.jpg";
 
   // Sin artículos publicados: mostramos el aviso "en preparación" y ocultamos filtros, destacado y catálogo
   function renderEmpty(){
@@ -565,13 +565,13 @@ document.addEventListener("DOMContentLoaded", function() {
       '<h3 class="blog-card-title">'+esc(a.titulo)+'</h3>'+
       '<p class="blog-card-excerpt">'+esc(a.extracto||"")+'</p>'+
       '<div class="blog-card-footer"><span class="blog-card-date">'+meta+'</span>'+
-      '<a href="articulo.html?slug='+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Leer &rarr;</a></div>'+
+      '<a href="/blog/'+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Leer &rarr;</a></div>'+
       '</div></article>';
   }
   function featured(a){
     var fc=document.querySelector(".featured-card"); if(!fc)return;
     var img=a.imagen_url||PLACEHOLDER;
-    fc.setAttribute("href","articulo.html?slug="+encodeURIComponent(a.slug||""));
+    fc.setAttribute("href","/blog/"+encodeURIComponent(a.slug||""));
     fc.setAttribute("data-cat",a.categoria||"");
     fc.innerHTML='<div class="featured-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
       (a.categoria?'<span class="feat-badge">'+esc(a.categoria)+'</span>':"")+'</div>'+
@@ -590,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if(arts&&arts.length){
       s.blogPost=arts.map(function(a){
         var autor=(a.autor_nombre&&!/lomaz/i.test(a.autor_nombre))?{"@type":"Person","name":a.autor_nombre}:{"@type":"Organization","name":"LoMaz Home"};
-        var post={"@type":"BlogPosting","headline":a.titulo,"url":"https://www.lomazhome.com/articulo.html?slug="+encodeURIComponent(a.slug||""),"author":autor,"publisher":{"@type":"Organization","name":"LoMaz Home"}};
+        var post={"@type":"BlogPosting","headline":a.titulo,"url":"https://www.lomazhome.com/blog/"+encodeURIComponent(a.slug||""),"author":autor,"publisher":{"@type":"Organization","name":"LoMaz Home"}};
         if(a.published_at||a.created_at){post.datePublished=a.published_at||a.created_at;}
         if(a.imagen_url){post.image=a.imagen_url;}
         return post;
