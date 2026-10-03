@@ -737,7 +737,8 @@ function buildFilterOptions(){
 }
 
 async function loadPosts(){
-  const{data,error}=await sb.from(TABLE).select("*").eq("asesor_id",uid).order("fecha",{ascending:true,nullsFirst:false});
+  // Sin filtro por usuario: las reglas de Supabase muestran al equipo de marketing todo lo del equipo
+  const{data,error}=await sb.from(TABLE).select("*").order("fecha",{ascending:true,nullsFirst:false});
   if(error){document.getElementById("tableHost").innerHTML='<div class="empty">Error: '+error.message+'</div>';return;}
   posts=data||[];
   fillArtOptions();
@@ -1004,11 +1005,22 @@ document.addEventListener("click",function(e){if(e.target.classList&&e.target.cl
    tabla marketing_quincenas. */
 let _props=[], _arts=[], _artsErr=false;
 
-/* Inmuebles del asesor y articulos publicados del blog (estos ultimos los usa el autollenado del editor) */
+/* Equipo de marketing (tabla marketing_equipo): quien esta en el equipo ve lo mismo que los demas */
+let _equipoP=null;
+function equipoIds(){
+  if(!_equipoP)_equipoP=sb.from('marketing_equipo').select('usuario_id').then(function(r){
+    const ids=(!r.error&&r.data)?r.data.map(function(x){return x.usuario_id;}).filter(Boolean):[];
+    return ids.indexOf(uid)>=0?ids:[uid];
+  },function(){return [uid];});
+  return _equipoP;
+}
+
+/* Inmuebles del equipo y articulos publicados del blog (estos ultimos los usa el autollenado del editor) */
 async function loadFuentes(){
   _arts=[];_artsErr=false;
   const qa=sb.from('articulos_blog').select('id,titulo,slug,categoria,extracto,published_at').eq('estado','publicado').order('published_at',{ascending:false}).limit(100);
-  const qp=sb.from('propiedades').select('id,clave,titulo,descripcion,tipo_operacion,tipo_propiedad,precio,moneda,ciudad,departamento,barrio,estrato,habitaciones,banos,garajes,m2_construccion,m2_terreno,amenidades,tiene_piscina,acepta_mascotas').eq('asesor_id',uid).order('id',{ascending:false}).limit(200);
+  const ids=await equipoIds();
+  const qp=sb.from('propiedades').select('id,clave,titulo,descripcion,tipo_operacion,tipo_propiedad,precio,moneda,ciudad,departamento,barrio,estrato,habitaciones,banos,garajes,m2_construccion,m2_terreno,amenidades,tiene_piscina,acepta_mascotas').in('asesor_id',ids).order('id',{ascending:false}).limit(200);
   try{
     const res=await Promise.all([qa,qp]);
     const ra=res[0],rp=res[1];
@@ -1324,7 +1336,7 @@ async function qnCargar(){
 }
 function qnFila(art,crear){
  if(!art)return null;
- let f=_qFilas.find(function(q){return q.articulo===art&&q.asesor_id===uid;})||_qFilas.find(function(q){return q.articulo===art;});
+ let f=_qFilas.filter(function(q){return q.articulo===art;}).sort(function(a,b){return String(b.updated_at||"").localeCompare(String(a.updated_at||""));})[0];
  if(!f&&crear){f={articulo:art,asesor_id:uid,titulo:"",url:"",texto_fuente:"",paquete:{v:1,piezas:{},rutinas:null}};_qFilas.push(f);}
  if(f){if(!f.paquete||typeof f.paquete!=="object")f.paquete={v:1,piezas:{},rutinas:null};if(!f.paquete.piezas)f.paquete.piezas={};}
  return f||null;
