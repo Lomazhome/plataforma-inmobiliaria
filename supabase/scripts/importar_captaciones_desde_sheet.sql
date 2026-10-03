@@ -28,9 +28,13 @@ with campos as (
 filas as (
   select to_jsonb(i) as j from public.captaciones_import i
 )
-insert into public.captaciones (origen, propietario_nombre, datos_inmueble, datos_propietario)
+insert into public.captaciones (origen, created_at, propietario_nombre, datos_inmueble, datos_propietario)
 select
   'sheet_captacion',
+  -- "Fecha" llega del Sheet como texto d/MM/yyyy HH:mm:ss, hora de Bogotá.
+  case when f.j ->> 'Fecha' ~ '^\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2}:\d{2}$'
+       then to_timestamp(f.j ->> 'Fecha', 'DD/MM/YYYY HH24:MI:SS')::timestamp at time zone 'America/Bogota'
+       else now() end,
   nullif(trim(f.j ->> 'Propietario / Empresa'), ''),
   (select coalesce(jsonb_object_agg(key, value), '{}'::jsonb)
      from jsonb_each(f.j) where key = any (c.campos_inmueble)),
