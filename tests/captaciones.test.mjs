@@ -51,6 +51,17 @@ test("la tarjeta escapa los datos antes de pintarlos (sin XSS)", () => {
   assert.ok(!/Detalle: "\s*\+\s*\(\(d&&d\.error\)/.test(bloque), "el error se pinta sin escapar");
 });
 
+test("las áreas con decimales se importan sin multiplicarse", () => {
+  const bloque = bloqueImportacion();
+  const fuente = bloque.match(/function area\(val\)\{[^\n]*\}/);
+  assert.ok(fuente, "falta la función area()");
+  const area = new Function(`${fuente[0]}; return area;`)();
+  const casos = [[171.5, 171.5], ["171,5", 171.5], ["66.66", 66.66], ["120 m²", 120], ["1.250", 1250], ["1.250,5", 1250.5], ["", ""], [null, ""]];
+  for (const [entrada, esperado] of casos) assert.equal(area(entrada), esperado, `area(${JSON.stringify(entrada)})`);
+  assert.match(bloque, /setVal\("m2_construccion",\s*area\(/);
+  assert.match(bloque, /setVal\("m2_terreno",\s*area\(/);
+});
+
 test("la migración existe y activa RLS", () => {
   assert.ok(existsSync(join(RAIZ, MIGRACION)), `falta ${MIGRACION}`);
   const sql = leer(MIGRACION).toLowerCase();

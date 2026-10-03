@@ -215,8 +215,8 @@ img,video,iframe{max-width:100%}
 <div class="form-group full"><label>TITULO DEL AVISO *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
 <div class="form-group"><label>PRECIO (COP) *</label><input type="number" id="precio" placeholder="Ej: 450000000"/></div>
 <div class="form-group"><label>ADMINISTRACION (COP)</label><input type="number" id="precio_admin" placeholder="0 si no aplica"/></div>
-<div class="form-group"><label>AREA CONSTRUIDA (m2) *</label><input type="number" id="m2_construccion" placeholder="Ej: 120"/></div>
-<div class="form-group"><label>AREA DE TERRENO (m2)</label><input type="number" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
+<div class="form-group"><label>AREA CONSTRUIDA (m2) *</label><input type="number" step="any" id="m2_construccion" placeholder="Ej: 120"/></div>
+<div class="form-group"><label>AREA DE TERRENO (m2)</label><input type="number" step="any" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
 <div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
 <div class="form-group"><label>BAÑOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
 <div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div><div class="form-group"><label>TIPO DE PARQUEADERO</label><select id="tipo_parqueadero"><option value="">Seleccionar</option><option value="privado">Privado / Propio</option><option value="comunal">Comunal</option><option value="mixto">Privado y comunal</option></select></div>
@@ -1134,6 +1134,8 @@ try {
   function $(id){ return document.getElementById(id); }
   function esc(s){ var d=document.createElement("div"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
   function num(val){ if(val===null||val===undefined) return ""; var s=String(val).replace(/[^0-9]/g,""); return s===""?"":parseInt(s,10); }
+  /* Áreas con decimales: 171.5 o "171,5" → 171.5 (num() las volvía 1715). */
+  function area(val){ if(val===null||val===undefined||val==="") return ""; if(typeof val==="number") return val; var s=String(val).replace(/[^0-9.,]/g,""); if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,""); s=s.replace(",","."); var n=parseFloat(s); return isNaN(n)?"":n; }
   function intFromPlus(val){ if(val===null||val===undefined||val==="") return ""; var s=String(val).replace(/[^0-9]/g,""); return s===""?"":parseInt(s,10); }
   function setVal(id,val){ var el=$(id); if(!el) return; if(val===""||val===null||val===undefined) return; if(el.tagName==="SELECT"){ var ok=false; for(var i=0;i<el.options.length;i++){ if(String(el.options[i].value).toLowerCase()===String(val).toLowerCase()){ el.value=el.options[i].value; ok=true; break; } } if(!ok) return; } else { el.value=val; } el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
   function mapTipo(t){ t=String(t||"").toLowerCase(); if(t.indexOf("apart")>-1) return "apartamento"; if(t.indexOf("casa")>-1) return "casa"; if(t.indexOf("local")>-1) return "local"; if(t.indexOf("ofic")>-1) return "oficina"; if(t.indexOf("bodega")>-1) return "bodega"; if(t.indexOf("lote")>-1||t.indexOf("rural")>-1) return "lote"; if(t.indexOf("finca")>-1) return "finca"; if(t.indexOf("parqu")>-1) return "parqueadero"; if(t.indexOf("consult")>-1) return "consultorio"; return ""; }
@@ -1149,8 +1151,8 @@ try {
     var titulo=[ (tipoProp||g(p,"Tipo Inmueble")), barrio?("en "+barrio):"", ciudad?("- "+ciudad):"" ].filter(Boolean).join(" "); setVal("titulo", titulo.charAt(0).toUpperCase()+titulo.slice(1));
     var precio=num(g(p,"Precio Venta ($)")); if(tipoOp==="arriendo"){ var c=num(g(p,"Canon Arriendo ($)")); if(c) precio=c; } setVal("precio",precio); if(!precio) faltan.push("Precio (revisar valor del Sheet)");
     setVal("precio_admin", num(g(p,"Administración Plena ($)")));
-    setVal("m2_construccion", num(g(p,"Área Principal (m²)")));
-    setVal("m2_terreno", num(g(p,"Área Lote (m²)")));
+    setVal("m2_construccion", area(g(p,"Área Principal (m²)")));
+    setVal("m2_terreno", area(g(p,"Área Lote (m²)")));
     setVal("habitaciones", intFromPlus(g(p,"Habitaciones")));
     setVal("banos", intFromPlus(g(p,"Baños")));
     setVal("garajes", num(g(p,"Parqueaderos")));
