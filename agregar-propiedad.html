@@ -1128,9 +1128,11 @@ try {
 
 /* __LOMAZ_IMPORT__ Importar desde Captación */
 (function(){
-  var API_URL = "https://script.google.com/macros/s/AKfycbwOaGBYgtt_3Y3CHoybd9J1yWTyVwVOC4i6nGSZ5vzyyUFIwU4R3OpbBk_ko8mQ2DEI/exec";
+  /* Los datos viven en la tabla captaciones (solo admins, por RLS). Solo se piden
+     los datos del inmueble: cédulas y teléfonos no salen al navegador. */
   var cache = null;
   function $(id){ return document.getElementById(id); }
+  function esc(s){ var d=document.createElement("div"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
   function num(val){ if(val===null||val===undefined) return ""; var s=String(val).replace(/[^0-9]/g,""); return s===""?"":parseInt(s,10); }
   function intFromPlus(val){ if(val===null||val===undefined||val==="") return ""; var s=String(val).replace(/[^0-9]/g,""); return s===""?"":parseInt(s,10); }
   function setVal(id,val){ var el=$(id); if(!el) return; if(val===""||val===null||val===undefined) return; if(el.tagName==="SELECT"){ var ok=false; for(var i=0;i<el.options.length;i++){ if(String(el.options[i].value).toLowerCase()===String(val).toLowerCase()){ el.value=el.options[i].value; ok=true; break; } } if(!ok) return; } else { el.value=val; } el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
@@ -1174,9 +1176,9 @@ try {
     d.style.cssText="border:1px solid #e5e5e5;border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:.15s;";
     d.onmouseover=function(){ d.style.borderColor="#c8a24a"; d.style.background="#fffaf0"; };
     d.onmouseout=function(){ d.style.borderColor="#e5e5e5"; d.style.background="#fff"; };
-    d.innerHTML="<div style=\"font-weight:700;color:#222;\">"+nombre+"</div>"+
-      "<div style=\"font-size:13px;color:#666;margin-top:3px;\">"+[tipo,ciudad,dir].filter(Boolean).join(" · ")+"</div>"+
-      "<div style=\"font-size:12px;color:#c8a24a;margin-top:4px;text-transform:capitalize;\">"+modalidad+"</div>";
+    d.innerHTML="<div style=\"font-weight:700;color:#222;\">"+esc(nombre)+"</div>"+
+      "<div style=\"font-size:13px;color:#666;margin-top:3px;\">"+esc([tipo,ciudad,dir].filter(Boolean).join(" · "))+"</div>"+
+      "<div style=\"font-size:12px;color:#c8a24a;margin-top:4px;text-transform:capitalize;\">"+esc(modalidad)+"</div>";
     d.onclick=function(){
       var faltan=autofill(p);
       $("modalCaptacion").style.display="none";
@@ -1191,7 +1193,12 @@ try {
     function render(props){ lista.innerHTML=""; if(!props||!props.length){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#999;\">No hay inmuebles registrados aún.</div>"; return; } props.forEach(function(p,i){ lista.appendChild(tarjeta(p,i)); }); }
     if(cache){ render(cache); return; }
     lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#999;\">Cargando…</div>";
-    fetch(API_URL).then(function(r){ return r.json(); }).then(function(d){ if(d&&d.ok){ cache=d.properties; render(cache); } else { lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">Error al cargar.<br><small>Detalle: "+((d&&d.error)?d.error:"la respuesta de Captacion no es valida")+"</small></div>"; } }).catch(function(e){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">No se pudo conectar con Captación.<br><small>Detalle: "+((e&&e.message)?e.message:String(e))+"</small><br><small>Si el detalle dice Failed to fetch, revisa la CSP en vercel.json o que la app de Captacion este publicada para Cualquier persona.</small></div>"; try{ console.error("[Captacion] Error al conectar:", e); }catch(_ce){} });
+    function fallo(msg){ lista.innerHTML="<div style=\"text-align:center;padding:30px;color:#c00;\">"+esc(msg)+"</div>"; }
+    sb.from("captaciones").select("id,created_at,propietario_nombre,datos_inmueble").order("created_at",{ascending:false}).then(function(res){
+      if(res.error){ try{ console.error("[Captacion]", res.error); }catch(_ce){} fallo("No se pudieron cargar las captaciones. Intenta de nuevo."); return; }
+      cache=(res.data||[]).map(function(r){ var p=Object.assign({}, r.datos_inmueble||{}); if(r.propietario_nombre) p["Propietario / Empresa"]=r.propietario_nombre; return p; });
+      render(cache);
+    }, function(e){ try{ console.error("[Captacion]", e); }catch(_ce){} fallo("No se pudo conectar con la base de datos."); });
   }
   function init(){
     var b=$("btnImportarCaptacion"); if(b) b.addEventListener("click",abrir);
