@@ -281,13 +281,14 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
     <p class="quote-author">Equipo LoMaz Home &middot; Asesores Inmobiliarios</p>
   </div>
 </section>
-<section class="nl-section reveal">
+<section class="nl-section reveal" id="newsletter">
   <div class="nl-inner">
     <p class="nl-eyebrow" id="nl-eyebrow">N&deg;03 &mdash; Newsletter</p>
     <h2 class="nl-title">Recibe consejos inmobiliarios cada semana</h2>
     <p class="nl-sub">Artículos, análisis de mercado y oportunidades de inversión directo en tu bandeja de entrada. Sin spam.</p>
     <form class="nl-form" onsubmit="handleNL(event)">
       <input type="email" class="nl-input" placeholder="tu@correo.com" required aria-label="Email para newsletter"/>
+      <input type="text" name="web" class="nl-web" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;"/>
       <button type="submit" class="nl-btn">Suscribirse</button>
     </form>
     <p id="nl-msg" style="margin-top:1rem;font-size:.8rem;color:var(--gold);display:none;">¡Gracias! Te contactaremos pronto.</p>
@@ -379,6 +380,25 @@ function filterCat(btn){
   applyBlogFilters();
 }
 function filterSearch(el){applyBlogFilters();}
+const NL_INICIO = Date.now();
+(function(){
+  // Resultado del enlace de confirmación del correo (?suscripcion=...).
+  const r = new URLSearchParams(location.search).get("suscripcion");
+  const textos = {
+    confirmada: ["\u00a1Suscripci\u00f3n confirmada! Recibir\u00e1s nuestros art\u00edculos en tu correo.", "var(--gold)"],
+    vencida: ["El enlace de confirmaci\u00f3n venci\u00f3. Suscr\u00edbete de nuevo y te enviaremos otro.", "#c0392b"],
+    invalida: ["El enlace de confirmaci\u00f3n no es v\u00e1lido o ya fue usado.", "#c0392b"],
+    error: ["No pudimos confirmar tu suscripci\u00f3n. Intenta de nuevo en un momento.", "#c0392b"]
+  };
+  if(!r || !textos[r]) return;
+  document.addEventListener("DOMContentLoaded", function(){
+    const msg = document.getElementById("nl-msg");
+    if(!msg) return;
+    msg.textContent = textos[r][0];
+    msg.style.color = textos[r][1];
+    msg.style.display = "block";
+  });
+})();
 async function handleNL(e){
   e.preventDefault();
   const form = e.target;
@@ -386,6 +406,7 @@ async function handleNL(e){
   const btn = form.querySelector(".nl-btn");
   const msg = document.getElementById("nl-msg");
   const email = (input.value||"").trim();
+  const web = (form.querySelector(".nl-web")||{}).value || "";
   if(!email) return;
   btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = "Enviando...";
   msg.style.display = "none";
@@ -395,10 +416,10 @@ async function handleNL(e){
     const resp = await fetch(base + "/functions/v1/suscribir-blog", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key, "apikey": key },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email, web, t: Date.now() - NL_INICIO })
     });
     if(!resp.ok) throw new Error("fallo");
-    msg.textContent = "\u00a1Gracias! Revisa tu correo, te enviamos una confirmaci\u00f3n.";
+    msg.textContent = "\u00a1Gracias! Revisa tu correo y confirma tu suscripci\u00f3n con el bot\u00f3n que te enviamos.";
     msg.style.color = "var(--gold)";
     msg.style.display = "block";
     form.reset();
