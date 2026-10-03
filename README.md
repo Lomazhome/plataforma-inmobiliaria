@@ -87,7 +87,6 @@ plataforma-inmobiliaria/
 |-- perfil-asesor.html       # Perfil y configuracion del asesor
 |-- admin.html               # Panel de administracion global
 |-- config.js                # Configuracion Supabase y constantes
-|-- ux-widgets.js            # Utilidades UX globales reutilizables
 |-- schema-fix.sql           # SQL para crear/corregir el schema en Supabase
 |-- sitemap.xml              # Mapa del sitio para SEO
 |-- robots.txt               # Directivas para motores de busqueda
@@ -152,71 +151,6 @@ Lomaz Home se integra con tres portales principales de Colombia:
 
 ---
 
-## Atajos de Teclado (ux-widgets.js)
-
-Disponibles en todas las paginas del panel:
-
-| Atajo | Accion |
-|-------|--------|
-| `Alt + H` | Ir al Dashboard |
-| `Alt + P` | Ir a Propiedades |
-| `Alt + N` | Ir a Notificaciones |
-| `Alt + A` | Abrir chatbot ARIA |
-| `Alt + C` | Abrir Calculadora |
-| `Escape` | Cerrar modal abierto |
-
----
-
-## API de ux-widgets.js
-
-Incluye el archivo en cualquier pagina para activar todas las mejoras UX:
-
-```html
-<script src="ux-widgets.js"></script>
-```
-
-Funciones disponibles via `window.LH`:
-
-```javascript
-// Mostrar notificacion toast
-LH.toast("Propiedad guardada", "success");
-LH.toast("Error al guardar", "error");
-LH.toast("Informacion", "info");
-LH.toast("Advertencia", "warn");
-
-// Dialogo de confirmacion personalizado
-LH.confirm("Eliminar esta propiedad?", function() {
-  // confirmo
-}, function() {
-  // cancelo
-});
-
-// Copiar al portapapeles
-LH.copy("https://lomaz.home/propiedad?id=123", "Enlace");
-
-// Formatear moneda colombiana
-LH.money(250000000); // "$ 250.000.000"
-
-// Formatear fecha
-LH.date("2026-05-08"); // "08 may. 2026"
-
-// Tiempo relativo
-LH.relTime("2026-05-07"); // "hace 1 dia"
-
-// Loader de pagina
-LH.showLoader();
-LH.hideLoader();
-```
-
-Widgets que se inyectan automaticamente en todas las paginas:
-- Barra de progreso de scroll (naranja, parte superior)
-- Boton flotante de ARIA (esquina inferior derecha)
-- Boton volver arriba (aparece al bajar 320px)
-- Badge de notificaciones no leidas
-- Transiciones suaves entre paginas
-
----
-
 ## Historial de Sesiones de Desarrollo
 
 La plataforma fue construida en 24 sesiones, cada una con un entregable funcional completo:
@@ -244,7 +178,6 @@ La plataforma fue construida en 24 sesiones, cada una con un entregable funciona
 | 19 | aria.html | Chatbot ARIA con OpenAI gpt-4o-mini y fallback local |
 | 20 | admin.html | Panel de administracion global con estadisticas |
 | 21 | notificaciones.html | Centro de notificaciones con filtros y tiempo real |
-| 22 | ux-widgets.js | Libreria de mejoras UX globales reutilizables |
 | 23 | schema-fix.sql | Correcciones de schema y pruebas de la plataforma |
 | 24 | README.md | Documentacion completa y deploy final |
 
