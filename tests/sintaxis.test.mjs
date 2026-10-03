@@ -17,7 +17,6 @@ import { listarArchivos, leer, RAIZ } from "./utilidades.mjs";
 // Cada uno debe tener la razón al lado. Lo ideal es que esta lista quede vacía.
 const IGNORADOS = new Map([
   ["ux-widgets.js", "archivo roto (contenido duplicado a mitad) y ninguna página lo carga; pendiente decidir si se borra"],
-  ["supabase/functions/suscribir-blog/index.ts", "el import usa comillas invertidas (`) en vez de comillas normales; Deno no lo acepta. Pendiente corregir con aprobación"],
 ]);
 
 const archivos = listarArchivos().filter((f) => !f.startsWith("tests/") && !f.startsWith(".claude/"));
