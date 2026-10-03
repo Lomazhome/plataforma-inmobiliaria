@@ -1,30 +1,54 @@
 // Edge Function: suscribir-blog
 // Guarda el correo en public.suscriptores_blog y envia un email de
 // confirmacion (fondo azul + letras doradas + agradecimiento) via Resend.
-// Secretos: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, FROM_EMAIL
+// Secretos: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, RESEND_FROM
+//
+// Seguridad:
+// - Solo acepta llamadas del navegador desde lomazhome.com (CORS).
+// - Si el correo ya estaba suscrito no reenvia la bienvenida (evita usar la
+//   funcion para llenar de correos la bandeja de otra persona).
+// - El correo se limpia antes de insertarlo en el HTML del email.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
-const FROM_EMAIL = Deno.env.get("FROM_EMAIL") ?? "LoMaz Home <noreply@lomazhome.com>";
+const FROM_EMAIL = Deno.env.get("RESEND_FROM") ?? Deno.env.get("FROM_EMAIL") ?? "LoMaz Home <noreply@lomazhome.com>";
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+const ORIGENES_PERMITIDOS = new Set([
+  "https://www.lomazhome.com",
+  "https://lomazhome.com",
+]);
 
-function json(body: unknown, status = 200) {
+function cors(req: Request) {
+  const origen = req.headers.get("Origin") ?? "";
+  return {
+    "Access-Control-Allow-Origin": ORIGENES_PERMITIDOS.has(origen) ? origen : "https://www.lomazhome.com",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Vary": "Origin",
+  };
+}
+
+function json(req: Request, body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...CORS, "Content-Type": "application/json" },
+    headers: { ...cors(req), "Content-Type": "application/json" },
   });
 }
 
 function esValido(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return email.length <= 254 && /^[^\s@<>"'&]+@[^\s@<>"'&]+\.[^\s@<>"'&]+$/.test(email);
+}
+
+function escaparHTML(texto: string) {
+  return texto
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function plantillaHTML(email: string) {
@@ -56,7 +80,7 @@ function plantillaHTML(email: string) {
         </td></tr>
         <tr><td style="padding:0 40px;"><div style="height:1px;background:${GOLD};opacity:.25;"></div></td></tr>
         <tr><td align="center" style="padding:20px 40px 34px;">
-          <p style="margin:0;font-size:12px;color:${GOLD};opacity:.65;line-height:1.6;">LoMaz Home Inmobiliaria &middot; Bogota, Colombia<br>Recibiste este correo porque ${email} se suscribio a nuestro blog.</p>
+          <p style="margin:0;font-size:12px;color:${GOLD};opacity:.65;line-height:1.6;">LoMaz Home Inmobiliaria &middot; Bogota, Colombia<br>Recibiste este correo porque ${escaparHTML(email)} se suscribio a nuestro blog.</p>
         </td></tr>
       </table>
     </td></tr>
@@ -65,24 +89,39 @@ function plantillaHTML(email: string) {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
-  if (req.method !== "POST") return json({ error: "Metodo no permitido" }, 405);
+  if (req.method === "OPTIONS") return new Response("ok", { headers: cors(req) });
+  if (req.method !== "POST") return json(req, { error: "Metodo no permitido" }, 405);
 
   let email = "";
   try {
     const body = await req.json();
     email = (body?.email ?? "").toString().trim().toLowerCase();
   } catch (_e) {
-    return json({ error: "JSON invalido" }, 400);
+    return json(req, { error: "JSON invalido" }, 400);
   }
 
-  if (!esValido(email)) return json({ error: "Correo invalido" }, 400);
+  if (!esValido(email)) return json(req, { error: "Correo invalido" }, 400);
 
   const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
+
+  // Si ya estaba suscrito no se guarda de nuevo ni se reenvia la bienvenida.
+  // La respuesta es la misma en ambos casos para no revelar quien esta suscrito.
+  const { data: existente, error: buscarErr } = await sb
+    .from("suscriptores_blog")
+    .select("email")
+    .eq("email", email)
+    .maybeSingle();
+  if (buscarErr) return json(req, { error: "No se pudo guardar la suscripcion" }, 500);
+  if (existente) return json(req, { ok: true, mensaje: "Suscripcion registrada" });
+
   const { error: dbErr } = await sb
     .from("suscriptores_blog")
-    .upsert({ email, confirmado: true }, { onConflict: "email" });
-  if (dbErr) return json({ error: "No se pudo guardar la suscripcion" }, 500);
+    .insert({ email, confirmado: true });
+  if (dbErr) {
+    // 23505 = el correo ya existe (dos envios casi al mismo tiempo).
+    if (dbErr.code === "23505") return json(req, { ok: true, mensaje: "Suscripcion registrada" });
+    return json(req, { error: "No se pudo guardar la suscripcion" }, 500);
+  }
 
   if (RESEND_API_KEY) {
     try {
@@ -103,5 +142,5 @@ Deno.serve(async (req) => {
     } catch (e) { console.error("Fallo al enviar correo:", e); }
   }
 
-  return json({ ok: true, mensaje: "Suscripcion registrada" });
+  return json(req, { ok: true, mensaje: "Suscripcion registrada" });
 });
