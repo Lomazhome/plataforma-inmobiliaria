@@ -16,7 +16,6 @@ import { listarArchivos, leer, RAIZ } from "./utilidades.mjs";
 // Archivos con problemas ya conocidos que todavía no se han resuelto.
 // Cada uno debe tener la razón al lado. Lo ideal es que esta lista quede vacía.
 const IGNORADOS = new Map([
-  ["ux-widgets.js", "archivo roto (contenido duplicado a mitad) y ninguna página lo carga; pendiente decidir si se borra"],
 ]);
 
 const archivos = listarArchivos().filter((f) => !f.startsWith("tests/") && !f.startsWith(".claude/"));
