@@ -176,10 +176,10 @@ h1{color:#12233F !important;}
     '<form id="lhLeadForm" onsubmit="return LH_ENVIAR(event)" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.1)"><div style="font-size:13px;font-weight:600;color:inherit;margin-bottom:8px">¿Quieres más información? Te escribimos.</div>'+
     '<input name="nombre" required placeholder="Tu nombre" style="width:100%;margin-bottom:8px;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.18);background:#fff;color:#1b2a41;font-size:16px;font-family:inherit">'+
     '<input name="telefono" required inputmode="tel" placeholder="Tu WhatsApp" style="width:100%;margin-bottom:8px;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.18);background:#fff;color:#1b2a41;font-size:16px;font-family:inherit">'+
-    '<button class="btn btn-gold" type="submit" style="width:100%">Quiero que me contacten</button><div id="lhLeadMsg" style="font-size:12px;color:#1e8e4a;margin-top:6px;min-height:1em"></div></form>'+
+    '<div id="lhConsentBox" style="margin:4px 0 10px"></div><button class="btn btn-gold" type="submit" style="width:100%">Quiero que me contacten</button><div id="lhLeadMsg" style="font-size:12px;color:#1e8e4a;margin-top:6px;min-height:1em"></div></form>'+
     '<div class="miniref">REF: LH-'+esc(p.codigo_interno||p.id)+'</div></div></div>';
-  window.LH_ENVIAR=async function(ev){ ev.preventDefault(); var f=ev.target; var b=f.querySelector('button'); var m=document.getElementById('lhLeadMsg'); b.disabled=true; b.textContent='Enviando...';
-    try{ await lhCrearContacto(SB,{nombre:f.nombre.value,telefono:f.telefono.value,tipo:(op==='arriendo'?'inquilino':'comprador'),negocio:(op==='arriendo'?'arriendo':'venta'),propiedad_id:p.id,zonas_interes:p.barrio||null,tipo_inmueble_interes:p.tipo_propiedad||null,mensaje:'Le interesa: '+(p.titulo||''),canal:'ficha_propiedad'});
+  window.LH_ENVIAR=async function(ev){ ev.preventDefault(); var f=ev.target; if(!lhConsentOk(f)){ alert('Para enviar debes aceptar la autorización de tratamiento de datos.'); return false; } var b=f.querySelector('button'); var m=document.getElementById('lhLeadMsg'); b.disabled=true; b.textContent='Enviando...';
+    try{ await lhCrearContacto(SB,{nombre:f.nombre.value,telefono:f.telefono.value,tipo:(op==='arriendo'?'inquilino':'comprador'),negocio:(op==='arriendo'?'arriendo':'venta'),propiedad_id:p.id,zonas_interes:p.barrio||null,tipo_inmueble_interes:p.tipo_propiedad||null,mensaje:'Le interesa: '+(p.titulo||''),canal:'ficha_propiedad',consent:true});
       m.textContent='✓ Listo. Te escribimos por WhatsApp muy pronto.'; f.nombre.value=''; f.telefono.value='';
     }catch(e){ m.style.color='#c0392b'; m.textContent='No se pudo enviar. Escríbenos por WhatsApp.'; }
     b.disabled=false; b.textContent='Quiero que me contacten'; return false; };
@@ -200,6 +200,7 @@ h1{color:#12233F !important;}
       '<div class="sec"><h2>Caracteristicas</h2><div class="rule"></div><div class="specs">'+specsHtml+'</div></div>'+
       amenHtml+ mapHtml+
     '</div>'+sideHtml+'</div>';
+  if(window.lhCasillaConsent) lhCasillaConsent('lhConsentBox');
   var gi=0;
   window.GAL=function(d){GAL_SET((gi+d+fotos.length)%fotos.length);};
   window.GAL_SET=function(i){gi=i;var im=document.getElementById('mainImg');if(im)im.src=fotos[i];var gx=document.getElementById('gIdx');if(gx)gx.textContent=(i+1);document.querySelectorAll('.thumbs img').forEach(function(t,k){t.classList.toggle('active',k===i);});};

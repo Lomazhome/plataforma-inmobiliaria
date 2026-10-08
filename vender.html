@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Vende tu inmueble en Bogotá con estrategia | Diagnóstico LO MÁS · LoMaz Home</title>
+<meta name="description" content="No publicamos tu inmueble: lo convertimos en una campaña de venta medible. Pide el Diagnóstico LO MÁS: en 20 minutos sabemos si el problema es precio, presentación, demanda o estrategia."/>
+<link rel="canonical" href="https://www.lomazhome.com/vender.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Vende tu inmueble en Bogotá con una estrategia, no con una publicación"/>
+<meta property="og:description" content="Diagnóstico LO MÁS sin costo: precio, competencia, demanda y estrategia de comercialización de tu inmueble."/>
+<meta property="og:url" content="https://www.lomazhome.com/vender.html"/>
+<meta property="og:image" content="https://www.lomazhome.com/og-home.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="lomaz-contacto.js"></script>
+<style>
+:root{--ink:#1c1917;--cream:#faf9f6;--cream-dark:#f3f0e9;--gold:#c9a96e;--gold-d:#a07840;--navy:#0D1B2E;--s200:#e7e2d8;--s400:#8a847a;--s500:#6b665e;--s600:#4b4740;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--gut:clamp(20px,5vw,80px);--wa:#25D366}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.1}
+em{font-style:italic;color:var(--gold-d)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--gut)}
+.tag{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.tag::before{content:'';width:28px;height:1px;background:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 26px;background:var(--ink);color:var(--cream);font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;transition:transform .2s,background .2s;min-height:52px}
+.btn:hover{transform:translateY(-1px);background:var(--gold-d)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--cream)}
+.btn.wa{background:var(--wa);color:#062b14}
+
+/* HERO */
+.hero{padding:clamp(40px,9vh,110px) 0 clamp(36px,6vh,70px);display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,70px);align-items:center}
+.hero h1{font-size:clamp(2.3rem,5.6vw,4.4rem);letter-spacing:-.01em;margin-bottom:22px}
+.hero p{font-size:1.05rem;color:var(--s500);max-width:560px;margin-bottom:30px;font-weight:300}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap}
+.hero .proof{display:flex;gap:28px;margin-top:40px;padding-top:24px;border-top:1px solid var(--s200);flex-wrap:wrap}
+.hero .proof b{display:block;font-family:var(--serif);font-size:2rem;font-weight:500;line-height:1}
+.hero .proof span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s400)}
+.panel{background:#fff;border:1px solid var(--s200);padding:26px;box-shadow:0 30px 60px -30px rgba(28,25,23,.25)}
+.panel h3{font-size:1.6rem;margin-bottom:6px}
+.panel .sub{font-size:.84rem;color:var(--s500);margin-bottom:18px}
+.f{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.f label{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--s500);font-weight:600}
+.f input,.f select{width:100%;padding:13px 14px;border:1px solid var(--s200);background:var(--cream);font-family:var(--sans);font-size:16px;color:var(--ink);outline:none;border-radius:0;min-height:48px}
+.f input:focus,.f select:focus{border-color:var(--gold)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.steps-ind{display:flex;gap:6px;margin-bottom:16px}
+.steps-ind i{flex:1;height:3px;background:var(--s200)}
+.steps-ind i.on{background:var(--gold)}
+.paso{display:none}.paso.on{display:block}
+.note{font-size:.7rem;color:var(--s400);margin-top:10px;line-height:1.5}
+.ok{text-align:center;padding:20px 6px}
+.ok .big{font-size:3rem;line-height:1;margin-bottom:10px}
+.ok h3{font-size:1.8rem;margin-bottom:8px}
+.ok p{color:var(--s500);font-size:.92rem;margin-bottom:18px}
+
+/* SECCIONES */
+section{padding:clamp(48px,8vh,96px) 0;border-top:1px solid var(--s200)}
+.sec-h{max-width:720px;margin-bottom:38px}
+.sec-h h2{font-size:clamp(1.9rem,3.6vw,2.9rem);margin-bottom:12px}
+.sec-h p{color:var(--s500);font-size:1rem;font-weight:300}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--s200);border:1px solid var(--s200)}
+.cell{background:var(--cream);padding:28px 24px}
+.cell .n{font-family:var(--serif);font-size:2.4rem;color:var(--gold);line-height:1;margin-bottom:10px}
+.cell h3{font-size:1.35rem;margin-bottom:8px}
+.cell p{font-size:.88rem;color:var(--s500)}
+.lomas{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--s200);border:1px solid var(--s200)}
+.lomas .cell{padding:26px 20px}
+.lomas .l{font-family:var(--serif);font-size:3.4rem;color:var(--gold);line-height:1;margin-bottom:6px}
+.lomas h3{font-size:1.15rem;margin-bottom:6px}
+.lomas p{font-size:.82rem;color:var(--s500)}
+.promesa{margin-top:28px;font-family:var(--serif);font-size:clamp(1.3rem,2.4vw,1.8rem);color:var(--ink);max-width:760px}
+.inc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px;list-style:none}
+.inc li{display:flex;gap:12px;align-items:flex-start;font-size:.92rem;padding:12px 0;border-bottom:1px solid var(--s200)}
+.inc li::before{content:'✓';color:var(--gold-d);font-weight:700;flex-shrink:0}
+.dark{background:var(--navy);color:#f3efe6;border:none}
+.dark .sec-h p,.dark .cell p{color:#b9b3a7}
+.dark .cell{background:var(--navy)}
+.dark .grid3{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.12)}
+.dark .tag{color:var(--gold)}
+.dark em{color:var(--gold)}
+.faq{max-width:820px}
+.faq details{border-bottom:1px solid var(--s200);padding:16px 0}
+.faq summary{font-family:var(--serif);font-size:1.3rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq summary::after{content:'+';color:var(--gold-d);font-size:1.4rem}
+.faq details[open] summary::after{content:'−'}
+.faq p{margin-top:10px;color:var(--s500);font-size:.92rem}
+.cta-final{text-align:center;padding:clamp(56px,10vh,120px) 0}
+.cta-final h2{font-size:clamp(2rem,4.4vw,3.4rem);margin-bottom:14px}
+.cta-final p{color:var(--s500);margin-bottom:26px}
+footer{padding:28px 0;border-top:1px solid var(--s200);font-size:.74rem;color:var(--s400);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--gold-d)}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.grid3,.inc{grid-template-columns:1fr}.lomas{grid-template-columns:1fr 1fr}.lomas .cell:last-child{grid-column:1/-1}}
+@media(max-width:560px){.g2{grid-template-columns:1fr}.hero .proof{gap:18px}.panel{padding:20px 16px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="tag">Para propietarios · Bogotá</div>
+      <h1>Vende tu inmueble en Bogotá con una <em>estrategia</em>, no con una publicación.</h1>
+      <p>Analizamos precio, competencia y demanda; preparamos la propiedad, activamos compradores, filtramos prospectos y dirigimos la negociación. También para arriendo.</p>
+      <div class="acts">
+        <a class="btn" href="#diagnostico">Quiero mi Diagnóstico LO MÁS</a>
+        <a class="btn ghost" href="#metodo">Ver cómo funciona</a>
+      </div>
+      <div class="proof">
+        <div><b>11</b><span>Ventas cerradas</span></div>
+        <div><b>6</b><span>Arriendos cerrados</span></div>
+        <div><b>3</b><span>Portales por inmueble</span></div>
+        <div><b>20 min</b><span>Dura el diagnóstico</span></div>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="panel" id="diagnostico">
+      <div id="formBox">
+        <h3>Diagnóstico <em>LO MÁS</em> de venta</h3>
+        <p class="sub">Sin costo y sin compromiso. En 20 minutos identificamos si el problema de tu inmueble es precio, presentación, demanda o estrategia.</p>
+        <div class="steps-ind"><i class="on" id="ind1"></i><i id="ind2"></i></div>
+        <form id="dxForm" onsubmit="return enviar(event)">
+          <div class="paso on" id="paso1">
+            <div class="f"><label>Tu nombre *</label><input name="nombre" required placeholder="Nombre y apellido" autocomplete="name"></div>
+            <div class="f"><label>Tu WhatsApp *</label><input name="telefono" required inputmode="tel" placeholder="300 123 4567" autocomplete="tel"></div>
+            <div class="g2">
+              <div class="f"><label>Zona / barrio *</label><input name="zona" required placeholder="Ej: Colina Campestre"></div>
+              <div class="f"><label>Quieres *</label><select name="negocio" required><option value="venta">Vender</option><option value="arriendo">Arrendar</option><option value="ambos">Aún no lo decido</option></select></div>
+            </div>
+            <button type="button" class="btn" style="width:100%" onclick="irPaso(2)">Continuar →</button>
+            <p class="note">Solo 3 datos más y listo. Te escribimos por WhatsApp para agendar.</p>
+          </div>
+          <div class="paso" id="paso2">
+            <div class="g2">
+              <div class="f"><label>Tipo de inmueble</label><select name="tipo_inmueble"><option value="">Elegir…</option><option>Apartamento</option><option>Apartaestudio</option><option>Casa</option><option>Local</option><option>Oficina</option><option>Bodega</option><option>Lote</option><option>Otro</option></select></div>
+              <div class="f"><label>Metros (m²)</label><input name="m2" inputmode="decimal" placeholder="Ej: 80"></div>
+              <div class="f"><label>Precio que esperas</label><input name="precio_esperado" inputmode="numeric" placeholder="Ej: 450000000"></div>
+              <div class="f"><label>Habitaciones</label><input name="habitaciones" inputmode="numeric" placeholder="Ej: 3"></div>
+              <div class="f"><label>¿Está publicado?</label><select name="tiempo_publicado"><option value="">Elegir…</option><option>No publicado</option><option>Menos de 1 mes</option><option>1-3 meses</option><option>3-6 meses</option><option>Más de 6 meses</option></select></div>
+              <div class="f"><label>¿Para cuándo?</label><select name="fecha_venta"><option value="">Elegir…</option><option>Ya</option><option>1-3 meses</option><option>3-6 meses</option><option>Sin afán</option></select></div>
+            </div>
+            <div class="f"><label>¿Lo tienes con otra inmobiliaria?</label><input name="inmobiliaria_actual" placeholder="Ninguna / nombre"></div>
+            <div id="dxConsent" style="margin:6px 0 14px"></div>
+            <button type="submit" class="btn" style="width:100%" id="btnEnviar">Quiero mi Diagnóstico LO MÁS</button>
+            <p class="note"><a href="#" onclick="irPaso(1);return false" style="color:var(--gold-d)">← Volver</a> · No es un avalúo oficial: es un diagnóstico comercial.</p>
+            <p class="note" id="dxErr" style="color:#b23b3b"></p>
+          </div>
+        </form>
+      </div>
+      <div class="ok" id="okBox" style="display:none">
+        <div class="big">✓</div>
+        <h3>Listo, <span id="okNombre"></span>.</h3>
+        <p>Ya tenemos tu solicitud. Te escribimos por WhatsApp para agendar los 20 minutos del diagnóstico. Si prefieres, escríbenos tú ahora:</p>
+        <a class="btn wa" id="okWa" target="_blank" rel="noopener">💬 Escribir por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EL PROBLEMA -->
+<section>
+  <div class="wrap">
+    <div class="sec-h"><div class="tag">El problema</div><h2>Publicar es fácil. <em>Comercializar bien</em> es otra cosa.</h2><p>Si llevas meses publicado y no llega una oferta seria, el problema suele estar en una de estas tres cosas. Antes de bajar el precio, hay que saber cuál.</p></div>
+    <div class="grid3">
+      <div class="cell"><div class="n">01</div><h3>Precio</h3><p>Lo que pide tu vecino no es lo que vale tu inmueble. El precio se defiende con comparables reales, no con intuición.</p></div>
+      <div class="cell"><div class="n">02</div><h3>Presentación</h3><p>Tres fotos pueden matar una publicación. Un comprador decide en los primeros siete segundos si sigue mirando.</p></div>
+      <div class="cell"><div class="n">03</div><h3>Demanda</h3><p>Cincuenta mensajes no son cincuenta compradores. Sin filtro, se pierde tiempo en visitas que nunca iban a ofertar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO -->
+<section id="metodo">
+  <div class="wrap">
+    <div class="sec-h"><div class="tag">Así trabajamos</div><h2>Método <em>LO MÁS</em></h2><p>Cinco pasos, uno después del otro. Así convertimos un inmueble en una campaña de venta que se puede medir.</p></div>
+    <div class="lomas">
+      <div class="cell"><div class="l">L</div><h3>Lectura del mercado</h3><p>Comparables, competencia directa, demanda y rango de precio.</p></div>
+      <div class="cell"><div class="l">O</div><h3>Oferta y precio</h3><p>Cómo presentar el inmueble y cuál es el precio estratégico de salida.</p></div>
+      <div class="cell"><div class="l">M</div><h3>Marketing</h3><p>Fotografía, texto, publicación en Finca Raíz, Metrocuadrado y Proppit, y pauta cuando los números lo justifican.</p></div>
+      <div class="cell"><div class="l">A</div><h3>Atracción y filtro</h3><p>Captamos compradores y separamos curiosos de prospectos antes de cada visita.</p></div>
+      <div class="cell"><div class="l">S</div><h3>Seguimiento y cierre</h3><p>Visitas, ofertas, negociación y coordinación del proceso hasta la firma.</p></div>
+    </div>
+    <p class="promesa">«No publicamos y esperamos. Medimos, presentamos, atraemos, filtramos y negociamos.»</p>
+  </div>
+</section>
+
+<!-- QUÉ INCLUYE -->
+<section class="dark">
+  <div class="wrap">
+    <div class="sec-h"><div class="tag">Qué incluye el diagnóstico</div><h2>En 20 minutos te llevas <em>esto</em></h2><p>Es un diagnóstico comercial, no un avalúo oficial. Te sirve aunque decidas no trabajar con nosotros.</p></div>
+    <ul class="inc">
+      <li>Rango comercial estimado de tu inmueble</li>
+      <li>Competencia directa: quién más vende cerca y a cuánto</li>
+      <li>Posición de tu precio frente al mercado</li>
+      <li>Análisis de tu publicación actual (si la tienes)</li>
+      <li>Problemas de presentación que frenan la venta</li>
+      <li>Posibles objeciones de los compradores</li>
+      <li>Estrategia para los siguientes 30 a 90 días</li>
+      <li>Estimación de cuánto dinero te quedaría neto</li>
+      <li>Recomendación clara del siguiente paso</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PRUEBA -->
+<section>
+  <div class="wrap">
+    <div class="sec-h"><div class="tag">Hechos, no promesas</div><h2>17 negocios cerrados y <em>publicados</em></h2><p>Once ventas y seis arriendos en Colina Campestre, Suba, Bella Suiza, Chicó Navarra, Chapinero, La Alhambra, Kennedy, Villa Luz, Venecia y más. Cada uno está en nuestro Instagram, en los destacados «Ventas Exitosas» y «Arriendos».</p></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn ghost" href="index.html#cerrados">Ver los negocios cerrados</a><a class="btn ghost" href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener">Verificar en Instagram</a></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="sec-h"><div class="tag">Preguntas frecuentes</div><h2>Lo que todos <em>preguntan</em></h2></div>
+    <div class="faq">
+      <details><summary>¿El diagnóstico tiene costo o compromiso?</summary><p>No. Es sin costo y no te obliga a nada. Si después quieres que comercialicemos tu inmueble, lo conversamos aparte.</p></details>
+      <details><summary>¿Es un avalúo oficial?</summary><p>No. Es un diagnóstico comercial basado en comparables, competencia y demanda. Si necesitas un avalúo con fines legales o bancarios, te orientamos sobre cómo conseguirlo.</p></details>
+      <details><summary>¿Sirve si quiero arrendar en vez de vender?</summary><p>Sí. Trabajamos venta, arriendo y administración de inmuebles. El diagnóstico se adapta a lo que necesites.</p></details>
+      <details><summary>¿Mi inmueble ya está con otra inmobiliaria, puedo pedirlo?</summary><p>Sí. Revisamos cómo está publicado y qué se puede mejorar. Tú decides qué hacer con esa información.</p></details>
+      <details><summary>¿Qué pasa con mis datos?</summary><p>Los usamos solo para atender tu solicitud y contactarte, conforme a la Ley 1581 de 2012 y nuestra <a href="https://captacionlomaz.netlify.app/politica-datos" target="_blank" rel="noopener" style="color:var(--gold-d);text-decoration:underline">Política de Tratamiento de Datos Personales</a>. Puedes pedir que los actualicemos o eliminemos escribiendo a lomazhome@gmail.com.</p></details>
+      <details><summary>¿Cómo sé que de verdad cierran negocios?</summary><p>No tienes que creernos: cada negocio cerrado está publicado en nuestro Instagram con el tipo de inmueble y el sector. Míralos antes de hablar con nosotros.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="wrap">
+    <h2>¿Tu inmueble está realmente <em>listo para venderse</em>?</h2>
+    <p>Antes de bajar el precio, hay que saber qué está fallando.</p>
+    <a class="btn" href="#diagnostico">Quiero revisar mi inmueble</a>
+  </div>
+</section>
+
+<div class="wrap"><footer><span>© 2026 LoMaz Home · Bogotá · <a href="https://captacionlomaz.netlify.app/politica-datos" target="_blank" rel="noopener">Política de Tratamiento de Datos</a></span><span><a href="index.html">Inicio</a> · <a href="propiedades.html">Propiedades</a> · <a href="https://wa.me/573003300343" target="_blank" rel="noopener">WhatsApp 300 330 0343</a></span></footer></div>
+
+<script>
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+lhCasillaConsent('dxConsent');
+function irPaso(n){
+  const f=document.getElementById('dxForm');
+  if(n===2){ const req=['nombre','telefono','zona']; for(const k of req){ if(!f[k].value.trim()){ f[k].reportValidity(); f[k].focus(); return; } } if(f.telefono.value.replace(/\D/g,'').length<10){ f.telefono.setCustomValidity('Escribe tu WhatsApp con 10 dígitos'); f.telefono.reportValidity(); f.telefono.setCustomValidity(''); return; } }
+  document.getElementById('paso1').classList.toggle('on',n===1); document.getElementById('paso2').classList.toggle('on',n===2);
+  document.getElementById('ind2').classList.toggle('on',n===2);
+  document.getElementById('diagnostico').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function enviar(e){
+  e.preventDefault();
+  const f=e.target, err=document.getElementById('dxErr'), b=document.getElementById('btnEnviar');
+  if(!lhConsentOk(f)){ err.textContent='Para enviar debes aceptar la autorización de tratamiento de datos.'; return false; }
+  err.textContent=''; b.disabled=true; b.textContent='Enviando…';
+  const num=v=>{v=String(v||'').replace(/[^0-9.,]/g,'').replace(',','.'); return v?Number(v):null;};
+  const d={nombre:f.nombre.value.trim(),telefono:f.telefono.value,tipo:'propietario',negocio:f.negocio.value,zona:f.zona.value.trim(),
+    tipo_inmueble:f.tipo_inmueble.value||null,m2:num(f.m2.value),habitaciones:num(f.habitaciones.value),precio_esperado:num(f.precio_esperado.value),
+    tiempo_publicado:f.tiempo_publicado.value||null,fecha_venta:f.fecha_venta.value||null,inmobiliaria_actual:f.inmobiliaria_actual.value.trim()||null,
+    mensaje:'Pidió el Diagnóstico LO MÁS'+(f.tipo_inmueble.value?' · '+f.tipo_inmueble.value:'')+' en '+f.zona.value.trim(),canal:'diagnostico',consent:true};
+  try{
+    await lhCrearContacto(db,d);
+    document.getElementById('formBox').style.display='none';
+    const ok=document.getElementById('okBox'); ok.style.display='block';
+    document.getElementById('okNombre').textContent=d.nombre.split(' ')[0];
+    document.getElementById('okWa').href='https://wa.me/'+LH_WHATSAPP_ASESOR+'?text='+encodeURIComponent('Hola, soy '+d.nombre+'. Acabo de pedir el Diagnóstico LO MÁS para mi '+(d.tipo_inmueble||'inmueble').toLowerCase()+' en '+d.zona+'.');
+    ok.scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(ex){ console.warn(ex); err.textContent='No se pudo enviar. Escríbenos por WhatsApp al 300 330 0343.'; }
+  b.disabled=false; b.textContent='Quiero mi Diagnóstico LO MÁS';
+  return false;
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Service","name":"Diagnóstico LO MÁS de venta","provider":{"@type":"RealEstateAgent","name":"LoMaz Home","url":"https://www.lomazhome.com/"},"areaServed":"Bogotá, Colombia","description":"Diagnóstico comercial sin costo para propietarios: precio, competencia, demanda y estrategia de comercialización.","offers":{"@type":"Offer","price":"0","priceCurrency":"COP"}}
+</script>
+<script src="lomaz-nav.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Autorización de datos · LoMaz Home</title>
+<meta name="robots" content="noindex"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="lomaz-contacto.js"></script>
+<style>
+:root{--ink:#1c1917;--cream:#faf9f6;--gold:#c9a96e;--gold-d:#a07840;--s200:#e7e2d8;--s500:#6b665e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;line-height:1.55}
+.card{background:#fff;border:1px solid var(--s200);max-width:560px;width:100%;padding:30px 26px;box-shadow:0 30px 60px -30px rgba(28,25,23,.25)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:18px}.logo span{color:var(--gold-d);font-style:italic}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.9rem;line-height:1.1;margin-bottom:10px}
+p{color:var(--s500);font-size:.92rem;margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:15px;background:var(--ink);color:var(--cream);border:none;font:600 .74rem Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:50px;margin-top:14px}
+.btn:disabled{opacity:.5}
+.ok{text-align:center;padding:10px 0}.ok .big{font-size:3rem;line-height:1;margin-bottom:8px}
+small{display:block;color:var(--s500);font-size:.72rem;margin-top:14px}
+a{color:var(--gold-d)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Lo<span>Maz</span> Home</div>
+  <div id="form">
+    <h1>Hola<span id="nom"></span>, necesitamos tu autorización.</h1>
+    <p>Para poder atender tu solicitud y guardar tus datos de contacto, la ley nos pide tu autorización expresa. Léela y, si estás de acuerdo, marca la casilla y confirma.</p>
+    <div id="box"></div>
+    <button class="btn" id="btn" onclick="aceptar()">Confirmo mi autorización</button>
+    <small>Versión <span id="ver"></span>. Puedes revocarla cuando quieras escribiendo a lomazhome@gmail.com. <a href="https://captacionlomaz.netlify.app/politica-datos" target="_blank" rel="noopener">Ver la política completa</a>.</small>
+  </div>
+  <div id="ok" class="ok" style="display:none"><div class="big">✓</div><h1>¡Gracias!</h1><p>Tu autorización quedó registrada. Seguimos en contacto por WhatsApp.</p></div>
+  <div id="bad" class="ok" style="display:none"><div class="big">⚠</div><h1>Este enlace no es válido</h1><p>Pídele a tu asesor de LoMaz Home que te lo envíe de nuevo.</p></div>
+</div>
+<script>
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const token=new URLSearchParams(location.search).get('c')||'';
+document.getElementById('ver').textContent=LH_CONSENT_VERSION;
+lhCasillaConsent('box');
+(async()=>{
+  if(token.length<12){ document.getElementById('form').style.display='none'; document.getElementById('bad').style.display='block'; return; }
+  try{ const {data}=await db.rpc('nombre_para_autorizacion',{p_token:token}); if(data) document.getElementById('nom').textContent=', '+data; else { document.getElementById('form').style.display='none'; document.getElementById('bad').style.display='block'; } }catch(e){}
+})();
+async function aceptar(){
+  if(!lhConsentOk(document.getElementById('form'))){ alert('Marca la casilla para autorizar.'); return; }
+  const b=document.getElementById('btn'); b.disabled=true; b.textContent='Registrando…';
+  try{
+    const {data,error}=await db.rpc('registrar_autorizacion',{p_token:token,p_version:LH_CONSENT_VERSION,p_pagina:location.pathname});
+    if(error||!data||!data.length) throw (error||new Error('sin registro'));
+    document.getElementById('form').style.display='none'; document.getElementById('ok').style.display='block';
+  }catch(e){ b.disabled=false; b.textContent='Confirmo mi autorización'; alert('No se pudo registrar. Intenta de nuevo o escríbenos por WhatsApp.'); }
+}
+</script>
+</body>
+</html>

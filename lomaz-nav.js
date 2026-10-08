@@ -269,6 +269,12 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 `;
 
 const NAV = [
+  {l:'Vende',h:'vender.html',d:[
+    {i:'🔎',l:'Diagnóstico LO MÁS',s:'20 min · sin costo',h:'vender.html#diagnostico'},
+    {i:'🧭',l:'Cómo trabajamos',s:'Método LO MÁS',h:'vender.html#metodo'},
+    {i:'🔑',l:'Arrienda tu inmueble',s:'Administración y arriendo',h:'vender.html'},
+    {i:'✅',l:'Negocios cerrados',s:'Hechos, no promesas',h:'index.html#cerrados'},
+  ]},
   {l:'Propiedades',h:'propiedades.html',d:[
     {i:'🏠',l:'Apartamentos',s:'Unidades residenciales',h:'propiedades.html?tipo=apartamento'},
     {i:'🏡',l:'Casas',s:'Propiedades independientes',h:'propiedades.html?tipo=casa'},
@@ -276,12 +282,12 @@ const NAV = [
     {i:'🏪',l:'Locales Comerciales',s:'Comercio y retail',h:'propiedades.html?tipo=local'},
     {i:'🔍',l:'Ver todo el portafolio',s:'Todas las propiedades',h:'propiedades.html'},
   ]},
-  {l:'Zonas',h:'propiedades.html',d:[
-    {i:'⭐',l:'Usaquén',s:'Norte exclusivo',h:'propiedades.html?zona=usaquen'},
-    {i:'🌿',l:'Chapinero',s:'Arte y gastronomía',h:'propiedades.html?zona=chapinero'},
-    {i:'💎',l:'La Cabrera',s:'Lujo y exclusividad',h:'propiedades.html?zona=la-cabrera'},
-    {i:'🌳',l:'Rosales',s:'Tradición y elegancia',h:'propiedades.html?zona=rosales'},
-    {i:'🏙️',l:'Santa Bárbara',s:'Modernidad y confort',h:'propiedades.html?zona=santa-barbara'},
+  {l:'Zonas',h:'index.html#zonas',d:[
+    {i:'🏡',l:'Colina Campestre',s:'Donde más hemos cerrado',h:'propiedades.html?barrio=Colina'},
+    {i:'🌿',l:'Suba',s:'Pinar, Salitre, El Redil',h:'propiedades.html?barrio=Suba'},
+    {i:'⭐',l:'Usaquén y Bella Suiza',s:'Norte',h:'propiedades.html?barrio=Usaquén'},
+    {i:'🏙️',l:'Chicó y Chapinero',s:'Centro-norte',h:'propiedades.html?barrio=Chicó'},
+    {i:'🗺️',l:'Todas las zonas',s:'Dónde trabajamos',h:'index.html#zonas'},
   ]},
   {l:'Blog',h:'blog.html',d:[
     {i:'📊',l:'Mercado Inmobiliario',s:'Tendencias y análisis',h:'blog.html?cat=mercado'},

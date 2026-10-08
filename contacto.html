@@ -209,6 +209,7 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
         </div>
       </div>
       <div class="cf-field"><label class="cf-label">Mensaje</label><textarea class="cf-textarea" name="mensaje" placeholder="Cuéntanos más sobre lo que buscas…"></textarea></div>
+      <div id="cfConsent" style="margin:14px 0 18px"></div>
       <button type="submit" class="cf-submit">Enviar mensaje &rarr;</button>
       <div class="cf-success" id="cf-success">&#10003; Mensaje enviado. Te contactaremos pronto.</div>
     </form>
@@ -239,6 +240,7 @@ const _sKey=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2
 const sb=supabase.createClient(_sUrl,_sKey);
 async function handleForm(e){
   e.preventDefault();
+  if(!lhConsentOk(e.target)){alert("Para enviar el mensaje debes aceptar la autorización de tratamiento de datos.");return;}
   const fd=new FormData(e.target);
   const data={
     nombre:fd.get("nombre"),
@@ -259,7 +261,7 @@ async function handleForm(e){
   try{
     // Entra al CRM (tabla contactos) recordando de dónde vino
     await lhCrearContacto(sb,{nombre:data.nombre,telefono:data.telefono,email:data.email,tipo:quien.tipo,negocio:quien.negocio,
-      mensaje:[interesTxt,data.mensaje].filter(Boolean).join('. '),canal:'formulario_contacto',
+      mensaje:[interesTxt,data.mensaje].filter(Boolean).join('. '),canal:'formulario_contacto',consent:true,
       zona:quien.tipo==='propietario'?data.zona:null,zonas_interes:quien.tipo!=='propietario'?data.zona:null,
       presupuesto_max:(quien.tipo!=='propietario'&&data.presupuesto&&!isNaN(Number(String(data.presupuesto).replace(/[^0-9]/g,''))))?Number(String(data.presupuesto).replace(/[^0-9]/g,'')):null,
       precio_esperado:(quien.tipo==='propietario'&&data.presupuesto&&!isNaN(Number(String(data.presupuesto).replace(/[^0-9]/g,''))))?Number(String(data.presupuesto).replace(/[^0-9]/g,'')):null});
@@ -311,6 +313,7 @@ window.addEventListener('load', function() {
   }, 50);
 });
 </script>
+<script>document.addEventListener('DOMContentLoaded',function(){lhCasillaConsent('cfConsent');});</script>
 <script src="lomaz-nav.js" defer></script>
 <script>(function(){
   function initNav(){

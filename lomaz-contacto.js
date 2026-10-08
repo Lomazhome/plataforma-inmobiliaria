@@ -52,6 +52,23 @@
     return 'web';
   }
 
+  // Autorización de tratamiento de datos (Ley 1581 de 2012) — misma versión que el formulario de captación
+  window.LH_CONSENT_VERSION = 'v1-2026-10-03';
+  window.LH_POLITICA_URL = 'https://captacionlomaz.netlify.app/politica-datos';
+  window.LH_CONSENT_TEXTO = 'Autorizo de manera previa, expresa e informada a LoMaz Home para recolectar, almacenar y usar mis datos personales con el fin de atender esta solicitud y contactarme por teléfono, correo o WhatsApp, incluido su almacenamiento en servidores de proveedores tecnológicos ubicados fuera de Colombia, conforme a la Ley 1581 de 2012 y a la Política de Tratamiento de Datos Personales. Sé que puedo conocer, actualizar, rectificar y suprimir mis datos, o revocar esta autorización, escribiendo a lomazhome@gmail.com.';
+  // Casilla lista para pegar en cualquier formulario: <div id="x"></div> + lhCasillaConsent('x')
+  window.lhCasillaConsent = function (idContenedor, oscuro) {
+    var c = document.getElementById(idContenedor); if (!c) return;
+    var col = oscuro ? '#d9d2c5' : '#4a4a4a';
+    c.innerHTML = '<label style="display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.5;color:' + col + ';cursor:pointer;text-align:left">' +
+      '<input type="checkbox" name="consent" required style="width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:#c9a96e">' +
+      '<span>' + window.LH_CONSENT_TEXTO.replace('Política de Tratamiento de Datos Personales', '<a href="' + window.LH_POLITICA_URL + '" target="_blank" rel="noopener" style="color:#c9a96e;text-decoration:underline">Política de Tratamiento de Datos Personales</a>') + '</span></label>';
+  };
+  window.lhConsentOk = function (form) {
+    var cb = form && form.querySelector('input[name="consent"]');
+    return !!(cb && cb.checked);
+  };
+
   // 2) Crear el contacto
   window.lhCrearContacto = async function (db, datos) {
     var o = origen();
@@ -82,7 +99,12 @@
       inmobiliaria_actual: datos.inmobiliaria_actual || null,
       fecha_venta: datos.fecha_venta || null,
       presupuesto_max: datos.presupuesto_max || null,
-      etapa: 'nuevo'
+      etapa: 'nuevo',
+      // Prueba de la autorización (art. 7 y 8, Decreto 1377 de 2013)
+      consent_at: datos.consent ? new Date().toISOString() : null,
+      consent_version: datos.consent ? window.LH_CONSENT_VERSION : null,
+      consent_canal: datos.consent ? (datos.canal || 'formulario_web') : null,
+      consent_pagina: datos.consent ? window.location.pathname : null
     };
     var r = await db.from('contactos').insert([fila]);
     if (r.error) throw r.error;

@@ -146,6 +146,9 @@ textarea{resize:vertical;min-height:70px}
 .ctc a,.ctc button{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border-radius:9px;border:1px solid var(--line);font-size:.8rem;color:var(--txt);background:rgba(255,255,255,.04);cursor:pointer;min-height:40px}
 .ctc .w{background:var(--wa);color:#062b14;border:none;font-weight:600}
 .hint{font-size:.76rem;color:var(--txt-mute);line-height:1.5}
+.consent{margin-top:.7rem;font-size:.76rem;line-height:1.5;padding:.55rem .75rem;border-radius:8px}
+.consent.ok{background:rgba(46,204,113,.08);color:#9fe0b4;border:1px solid rgba(46,204,113,.25)}
+.consent.warn{background:rgba(255,159,67,.08);color:#ffd2a8;border:1px solid rgba(255,159,67,.3)}
 .alert{padding:.9rem 1.1rem;border-radius:10px;font-size:.86rem;margin-bottom:1rem;line-height:1.55}
 .alert.err{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff9b9b}
 .alert.ok{background:rgba(46,204,113,.10);border:1px solid rgba(46,204,113,.35);color:#7dd87d}
@@ -382,6 +385,7 @@ const ETAPAS=[
 ];
 const ETAPA_IDX=Object.fromEntries(ETAPAS.map((e,i)=>[e.k,i]));
 const FUENTES={web:'Página web',whatsapp:'WhatsApp',llamada:'Llamada',referido:'Referido',instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',portal:'Portal',google:'Google',valla:'Valla / aviso',manual:'Manual',homepage:'Página web',otro:'Otro'};
+const CONSENT_VERSION='v1-2026-10-03', POLITICA_URL='https://captacionlomaz.netlify.app/politica-datos';
 const CANALES={formulario_portada:'formulario de la portada',formulario_contacto:'página de contacto',ficha_propiedad:'ficha de un inmueble',diagnostico:'Diagnóstico LO MÁS',formulario_web:'formulario web',manual:'registro manual'};
 
 /* ---------- Estado ---------- */
@@ -488,7 +492,8 @@ function tareasHoy(){
   const acciones=C.filter(c=>activo(c)&&c.proxima_fecha&&c.proxima_fecha<=hoy);
   const citas=Z.filter(z=>z.fecha_hora.slice(0,10)===hoy);
   const sinPlan=C.filter(c=>activo(c)&&c.etapa!=='nuevo'&&!c.proxima_fecha&&!segPendientes(c.id).length);
-  return {nuevos,segs,acciones,citas,sinPlan};
+  const sinConsent=C.filter(c=>activo(c)&&!c.consent_at);
+  return {nuevos,segs,acciones,citas,sinPlan,sinConsent};
 }
 function pintarHoy(){
   const t=tareasHoy();
@@ -538,6 +543,13 @@ function pintarHoy(){
   if(t.sinPlan.length){
     h+='<div class="hoy-sec"><h3>🧭 Sin próximo paso <span class="n">'+t.sinPlan.length+'</span></h3><p class="sub">Estos contactos están activos pero nadie les programó nada. Ábrelos y define qué sigue.</p><div class="list">';
     t.sinPlan.slice(0,12).forEach(c=>{h+=tarjeta(c);});h+='</div></div>';
+  }
+  if(t.sinConsent.length){
+    h+='<div class="hoy-sec"><h3>🔒 Sin autorización de datos <span class="n">'+t.sinConsent.length+'</span></h3><p class="sub">La ley pide prueba de la autorización (Ley 1581 de 2012). Envíales el enlace o registra si ya firmaron la captación.</p>';
+    t.sinConsent.slice(0,10).forEach(c=>{const tp=tipoDe(c);
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div><div class="why">'+(c.consent_enviado_at?'Enlace enviado '+hace(c.consent_enviado_at)+' · aún no responde':'Llegó por '+esc(CANALES[c.canal]||FUENTES[c.fuente]||c.fuente||'')+' sin casilla de autorización')+'</div></div></div>'+
+        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,msgAutorizacion(c))+'" target="_blank" onclick="enlaceEnviado(\''+c.id+'\')">💬 Enviar enlace</a>':'')+'<button class="btn sm" onclick="registrarConsent(\''+c.id+'\',\'captacion\')">Ya firmó la captación</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
+    });h+='</div>';
   }
   $('hoyCont').innerHTML=h;
 }
@@ -630,7 +642,8 @@ function pintarFicha(){
   let h='<div class="fh"><div class="r1"><button class="back" onclick="cerrarFicha()" aria-label="Cerrar">←</button><div class="nm" id="fNombre">'+esc(c.nombre)+'</div><button class="btn xs" onclick="editarBasico()">✏️</button></div>'+
     '<div class="r2">'+Object.keys(TIPOS).filter(k=>k!=='otro'||c.tipo==='otro').map(k=>'<button class="chip'+(c.tipo===k?' active':'')+'" style="--chip:'+TIPOS[k].c+'" onclick="cambiarCampo(\'tipo\',\''+k+'\')">'+TIPOS[k].e+' '+TIPOS[k].n+'</button>').join('')+
     '<select class="inp" style="width:auto;min-height:38px;padding:.35rem .6rem;font-size:.8rem" onchange="cambiarCampo(\'asesor_id\',this.value||null)"><option value="">Sin responsable</option>'+Object.keys(USERS).map(u=>'<option value="'+u+'"'+(c.asesor_id===u?' selected':'')+'>'+esc(USERS[u]||'Usuario')+'</option>').join('')+'</select></div>'+
-    '<div class="ctc">'+(c.telefono?'<a class="w" href="'+waLink(c.telefono,'')+'" target="_blank">💬 WhatsApp</a><a href="tel:'+tel10(c.telefono)+'">📞 '+esc(c.telefono)+'</a>':'<span class="hint">Sin teléfono</span>')+(c.email?'<a href="mailto:'+esc(c.email)+'">✉️ Correo</a>':'')+'</div></div>';
+    '<div class="ctc">'+(c.telefono?'<a class="w" href="'+waLink(c.telefono,'')+'" target="_blank">💬 WhatsApp</a><a href="tel:'+tel10(c.telefono)+'">📞 '+esc(c.telefono)+'</a>':'<span class="hint">Sin teléfono</span>')+(c.email?'<a href="mailto:'+esc(c.email)+'">✉️ Correo</a>':'')+'</div>'+
+    consentHTML(c)+'</div>';
   h+='<div class="fb">';
   // Etapa
   h+='<div class="sec"><h4>Etapa <span>toca para cambiar</span></h4><div class="steps">'+ETAPAS.map((e,i)=>'<div class="step'+(i<idx&&c.etapa!=='perdido'?' done':'')+(c.etapa===e.k?' cur':'')+'" style="--ec:'+e.c+'" onclick="cambiarEtapa(\''+e.k+'\')"><span class="e">'+e.e+'</span><span class="l">'+e.n+'</span></div>').join('')+'</div><div class="step-hint">'+et.e+' '+esc(hintEt)+(c.etapa==='perdido'&&c.motivo_perdida?' <b>Motivo: '+esc(c.motivo_perdida)+'</b>':'')+(c.etapa==='cerrado'&&c.precio_final?' <b>'+money(c.precio_final)+'</b>':'')+'</div></div>';
@@ -685,6 +698,19 @@ function pintarFicha(){
   h+='</div>';
   $('ficha').innerHTML=h;$('ficha').scrollTop=0;
   if(curActs.length)pintarHistorial();
+}
+function consentHTML(c){
+  if(c.consent_at) return '<div class="consent ok">🔒 Autorización de datos ✓ '+fechaHora(c.consent_at)+' · '+esc(c.consent_version||'')+(c.consent_canal?' · '+esc(c.consent_canal.replace(/_/g,' ')):'')+'</div>';
+  return '<div class="consent warn">⚠ <b>Sin autorización de datos</b> (Ley 1581). '+(c.consent_enviado_at?'Enlace enviado '+hace(c.consent_enviado_at)+'. ':'')+
+    '<div class="quick" style="margin:.5rem 0 0">'+(c.telefono?'<a class="btn wa xs" href="'+waLink(c.telefono,msgAutorizacion(c))+'" target="_blank" onclick="enlaceEnviado(\''+c.id+'\')">💬 Enviar enlace</a>':'')+
+    '<button class="btn xs" onclick="registrarConsent(\''+c.id+'\',\'captacion\')">Ya firmó la captación</button><button class="btn xs" onclick="registrarConsent(\''+c.id+'\',\'verbal\')">Autorizó de palabra</button></div></div>';
+}
+function msgAutorizacion(c){return 'Hola, '+primerNombre(c.nombre)+'. Soy '+(primerNombre(yo.nombre)||'el equipo')+' de LoMaz Home. Para poder atender tu solicitud y guardar tus datos de contacto, la ley nos pide tu autorización. Es un clic, aquí: https://www.lomazhome.com/autorizacion.html?c='+c.consent_token+'\n\nGracias.';}
+async function enlaceEnviado(id){await sb.from('contactos').update({consent_enviado_at:new Date().toISOString()}).eq('id',id);await sb.from('contacto_actividades').insert([{contacto_id:id,usuario_id:uid,tipo:'whatsapp',texto:'Envió el enlace de autorización de datos'}]);setTimeout(()=>refrescar(id),800);}
+async function registrarConsent(id,canal){
+  if(!confirm(canal==='captacion'?'¿Confirmas que esta persona ya aceptó la autorización en el formulario de captación?':'¿Confirmas que esta persona te autorizó de palabra el tratamiento de sus datos? Se registra con tu usuario y la fecha de hoy.'))return;
+  const {error}=await sb.from('contactos').update({consent_at:new Date().toISOString(),consent_version:CONSENT_VERSION,consent_canal:canal,consent_pagina:'contactos.html'}).eq('id',id);
+  if(error){toast(error.message);return;} toast('Autorización registrada'); refrescar(id);
 }
 const ICONOS={nota:'📝',etapa:'➡️',whatsapp:'💬',llamada:'📞',cita:'📅',seguimiento:'🔔',sistema:'⚙️',cierre:'✅',perdida:'✖'};
 function pintarHistorial(){
@@ -859,7 +885,8 @@ function pintarNumeros(){
     kpi(cerradosMes.length,'Cerrados este mes',money(cerradosMes.reduce((a,c)=>a+(Number(c.precio_final)||0),0)))+
     kpi(sinContactar24,'Sin contactar +24 h',sinContactar24?'¡escríbeles!':'bien')+
     kpi(promDias!=null?promDias:'—','Días hasta cierre','promedio')+
-    kpi(C.filter(c=>c.etapa==='perdido').length,'Perdidos','histórico')+'</div>';
+    kpi(C.filter(c=>c.etapa==='perdido').length,'Perdidos','histórico')+
+    kpi(C.filter(c=>activo(c)&&!c.consent_at).length,'Sin autorización','de datos (activos)')+'</div>';
   // Embudo (histórico): cuántos llegaron al menos a cada etapa
   const llegaron=k=>C.filter(c=>c.etapa!=='perdido'?ETAPA_IDX[c.etapa]>=ETAPA_IDX[k]:false).length+(k==='nuevo'?C.filter(c=>c.etapa==='perdido').length:0);
   const tot=C.length||1;
