@@ -162,6 +162,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   <a class="sb-item" href="#" onclick="showMod('cartera',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
   <a class="sb-item" href="#" onclick="showMod('prorrateo',this);return false"><span class="sb-num">09</span><span class="sb-text"><strong>Prorrateo Predial</strong><small>Vendedor y comprador</small></span></a>
   <a class="sb-item" href="#" onclick="showMod('acm',this);return false"><span class="sb-num">10</span><span class="sb-text"><strong>ACM · Valor Comercial</strong><small>Análisis comparativo de mercado</small></span></a>
+  <a class="sb-item" href="#" onclick="showMod('neto',this);return false"><span class="sb-num">11</span><span class="sb-text"><strong>¿Cuánto te queda?</strong><small>Dinero neto al vender</small></span></a>
 </nav>
 <main class="main-content">
 
@@ -470,6 +471,50 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
 </div>
 </div>
 
+<div class="module" id="neto">
+<div class="mod-header"><h1>&#128176; ¿Cuánto dinero te queda al vender?</h1><p>El precio de venta no es lo que recibes. Resta comisión, notaría, retención, impuestos, hipoteca y cuentas pendientes y mira el dinero neto estimado. Pensado para propietarios personas naturales en Bogotá.</p></div>
+<div class="card">
+  <div class="card-title">1 · La venta</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Precio de venta esperado (COP)</label><input type="text" id="m11_pv" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Comisión de la inmobiliaria (%)</label><input type="number" id="m11_com" value="3" min="0" max="10" step="0.5" inputmode="decimal"/></div>
+    <div class="form-group full"><label style="display:flex;gap:.5rem;align-items:center;text-transform:none;letter-spacing:0;font-weight:500"><input type="checkbox" id="m11_iva" style="width:18px;height:18px"> La comisión lleva IVA del 19 % (depende de si la inmobiliaria es responsable de IVA)</label></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">2 · Impuestos (opcional, pero cambia mucho el resultado)</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Precio al que lo compraste (escritura anterior, COP)</label><input type="text" id="m11_pc" placeholder="$280.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Mejoras con soporte (COP)</label><input type="text" id="m11_mj" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Años que lo has tenido</label><input type="number" id="m11_an" value="5" min="0" max="60" inputmode="numeric"/></div>
+    <div class="form-group"><label>UVT vigente (COP) <small style="text-transform:none;letter-spacing:0">· 2026: $52.374</small></label><input type="text" id="m11_uvt" value="$52.374" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label style="display:flex;gap:.5rem;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:500"><input type="checkbox" id="m11_hab" style="width:18px;height:18px;flex-shrink:0;margin-top:2px"> Es la vivienda donde vivo y el dinero irá a una cuenta AFC, a comprar otra vivienda o a pagar la hipoteca de esta (exención del art. 311-1 del Estatuto Tributario)</label></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">3 · Lo que debes dejar a paz y salvo</div>
+  <div class="form-grid">
+    <div class="form-group"><label>Saldo de la hipoteca (COP)</label><input type="text" id="m11_hip" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Predial pendiente o a tu cargo (COP)</label><input type="text" id="m11_pre" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Administración y otros pendientes (COP)</label><input type="text" id="m11_adm" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Otros gastos (certificados, arreglos, mudanza)</label><input type="text" id="m11_otr" placeholder="$0" oninput="fmtF(this)"/></div>
+  </div>
+  <br/><button class="btn-calc" onclick="calcM11()">&#9654; Calcular cuánto me queda</button>
+</div>
+<div id="m11_r" style="display:none">
+  <div class="rc hi" style="text-align:center;padding:1.6rem"><div class="rl">Dinero neto estimado (después de todo)</div><div class="rv g" id="m11_net" style="font-size:2.2rem">—</div><div class="rs" id="m11_nets"></div></div>
+  <div class="rg c3" style="margin-top:1rem">
+    <div class="rc"><div class="rl">Recibes en la notaría</div><div class="rv" id="m11_not">—</div><div class="rs">Tras comisión, notaría, retención, hipoteca y paz y salvos</div></div>
+    <div class="rc"><div class="rl">Impuesto final estimado</div><div class="rv rd" id="m11_imp">—</div><div class="rs" id="m11_imps"></div></div>
+    <div class="rc"><div class="rl">Del precio te queda</div><div class="rv" id="m11_pct">—</div><div class="rs">Porcentaje neto sobre el precio de venta</div></div>
+  </div>
+  <div class="card" style="margin-top:1.5rem"><div class="card-title">Desglose</div><div id="m11_tb"></div></div>
+  <div id="m11_w" class="al warn" style="display:none"></div>
+  <div class="al info" style="margin-top:1rem">&#128161; <strong>Es una estimación</strong>, no una liquidación. Gastos notariales con la tarifa de la Resolución 964 de 2026 (50 % a cargo del vendedor); retención en la fuente del 1 % sobre el precio cuando el vendedor es persona natural (art. 398 del Estatuto Tributario), que el notario descuenta y luego se cruza con el impuesto; ganancia ocasional del 15 % sobre la utilidad cuando el inmueble se tuvo dos años o más (arts. 300 y 313 del E.T.); exención de las primeras 5.000 UVT para la vivienda de habitación si se cumplen los requisitos del art. 311-1 del E.T. (Ley 2277 de 2022); UVT 2026 de $52.374 (Resolución DIAN 000238 de 2025). Confirma con tu contador antes de firmar.</div>
+  <div class="card" style="margin-top:1.5rem;border-color:var(--gold)"><div class="card-title">¿Y si el precio no es el correcto?</div><p style="font-size:.9rem;line-height:1.6;margin-bottom:1rem">Este número depende del precio que esperas. Antes de publicar, revisamos competencia, demanda y presentación en 20 minutos, sin costo.</p><a class="btn-calc" style="display:inline-block;text-decoration:none;text-align:center" href="vender.html#diagnostico">Quiero mi Diagnóstico LO MÁS</a></div>
+</div>
+</div>
+
 </main>
 </div><script>
 // UTILIDADES
@@ -639,6 +684,65 @@ function calcM4(){
   document.getElementById('m4_imp').textContent=imp!==null?fmt(imp):'Ver renta ordinaria';
   document.getElementById('m4_net').textContent=neto!==null?fmt(neto):'Consulte contador';
   document.getElementById('m4_r').style.display='block';
+}
+
+
+// M11 ¿CUÁNTO TE QUEDA? — dinero neto estimado al vender (persona natural)
+function calcM11(){
+  var pv=pCOP(document.getElementById('m11_pv').value);
+  if(!pv){alert('Ingresa el precio de venta');return;}
+  var comPct=parseFloat(document.getElementById('m11_com').value)||0;
+  var conIva=document.getElementById('m11_iva').checked;
+  var pc=pCOP(document.getElementById('m11_pc').value), mj=pCOP(document.getElementById('m11_mj').value);
+  var an=parseInt(document.getElementById('m11_an').value)||0;
+  var uvt=pCOP(document.getElementById('m11_uvt').value)||52374;
+  var hab=document.getElementById('m11_hab').checked;
+  var hip=pCOP(document.getElementById('m11_hip').value), pre=pCOP(document.getElementById('m11_pre').value), adm=pCOP(document.getElementById('m11_adm').value), otr=pCOP(document.getElementById('m11_otr').value);
+
+  // Comisión
+  var comision=Math.round(pv*comPct/100), ivaCom=conIva?Math.round(comision*0.19):0;
+  // Notaría (misma tarifa del módulo 01): 50 % a cargo del vendedor
+  var notariales=pv*0.003+30122, escrituracion=259900;
+  var mitadNotaria=Math.round((notariales+escrituracion+notariales*0.19*0.2254+notariales*0.1013*2)/2);
+  // Retención en la fuente 1 % (art. 398 E.T.) — la descuenta el notario
+  var retefuente=Math.round(pv*0.01);
+  // Ganancia ocasional (solo si se dio el precio de compra)
+  var imp=0, utilG=0, exenta=0, avisos=[];
+  if(pc){
+    utilG=Math.max(0,pv-(pc+mj));
+    if(an>=2){
+      if(hab){exenta=Math.min(utilG,5000*uvt);}
+      imp=Math.round(Math.max(0,utilG-exenta)*0.15);
+    }else{
+      avisos.push('Lo has tenido menos de 2 años: la utilidad no tributa como ganancia ocasional sino como renta ordinaria (tarifa progresiva). Aquí no se calcula; consúltalo con tu contador.');
+    }
+  }else{
+    avisos.push('No pusiste el precio de compra: el impuesto de ganancia ocasional no se calculó. Si hubo utilidad, puede ser una cifra importante.');
+  }
+  // La retención del 1 % es un anticipo: se cruza con el impuesto en la declaración
+  var impAdicional=Math.max(0,imp-retefuente);
+  var devolucion=pc&&an>=2?Math.max(0,retefuente-imp):0;
+
+  var enNotaria=pv-comision-ivaCom-mitadNotaria-retefuente-hip-pre-adm-otr;
+  var neto=enNotaria-impAdicional+devolucion;
+
+  function fila(l,v,neg){return '<div class="gnr"><span>'+l+'</span><span style="'+(neg?'color:#b23b3b':'color:#2e7d32;font-weight:600')+'">'+(neg?'− ':'')+fmt(Math.abs(v))+'</span></div>';}
+  var h=fila('Precio de venta',pv,false)+fila('Comisión inmobiliaria ('+comPct+' %)',comision,true)+(ivaCom?fila('IVA sobre la comisión (19 %)',ivaCom,true):'')+
+    fila('Gastos notariales (tu 50 %)',mitadNotaria,true)+fila('Retención en la fuente 1 % (anticipo del impuesto)',retefuente,true)+
+    (hip?fila('Saldo de hipoteca',hip,true):'')+(pre?fila('Predial pendiente',pre,true):'')+(adm?fila('Administración y pendientes',adm,true):'')+(otr?fila('Otros gastos',otr,true):'')+
+    '<div class="gnr" style="font-weight:700;background:#faf7f0"><span>Recibes en la notaría</span><span>'+fmt(enNotaria)+'</span></div>'+
+    (pc&&an>=2?fila('Ganancia ocasional 15 % sobre utilidad de '+fmt(utilG)+(exenta?' (exentas '+fmt(exenta)+')':''),imp,true)+fila('Retención ya descontada que se cruza',retefuente,false)+(devolucion?fila('Saldo a favor en la declaración',devolucion,false):''):'')+
+    '<div class="gnr" style="font-weight:700;background:#faf7f0"><span>Dinero neto estimado</span><span>'+fmt(neto)+'</span></div>';
+  document.getElementById('m11_tb').innerHTML=h;
+  document.getElementById('m11_net').textContent=fmt(neto);
+  document.getElementById('m11_nets').textContent='De un precio de '+fmt(pv)+' se van '+fmt(pv-neto)+' en costos, impuestos y deudas';
+  document.getElementById('m11_not').textContent=fmt(enNotaria);
+  document.getElementById('m11_imp').textContent=pc&&an>=2?fmt(imp):'—';
+  document.getElementById('m11_imps').textContent=pc&&an>=2?(imp>retefuente?'Pagas '+fmt(impAdicional)+' más en la declaración del año siguiente':'Queda cubierto con la retención'+(devolucion?'; saldo a favor '+fmt(devolucion):'')):'Sin datos de compra';
+  document.getElementById('m11_pct').textContent=(neto/pv*100).toFixed(1).replace('.',',')+' %';
+  var w=document.getElementById('m11_w');w.style.display=avisos.length?'block':'none';w.innerHTML='&#9888; '+avisos.join('<br>&#9888; ');
+  document.getElementById('m11_r').style.display='block';
+  if(typeof irA==='function'&&typeof esCelular==='function'&&esCelular())irA(document.getElementById('m11_r'),true);
 }
 
 // M5 CAPACIDAD
@@ -1047,10 +1151,10 @@ window.addEventListener('DOMContentLoaded',function(){
   // Celular: teclado numérico en todos los campos de dinero
   document.querySelectorAll('input[oninput*="fmtF"]').forEach(function(i){i.setAttribute('inputmode','numeric');});
   var h=location.hash;
-  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#prorrateo':'prorrateo','#predial':'prorrateo','#acm':'acm','#semaforo':'acm','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera','#mod9':'prorrateo','#mod10':'acm'};
+  var map={'#notariales':'notariales','#credito':'credito','#rentabilidad':'rentabilidad','#ganancia':'ganancia','#endeudamiento':'endeudamiento','#airbnb':'airbnb','#vacancia':'vacancia','#cartera':'cartera','#prorrateo':'prorrateo','#predial':'prorrateo','#acm':'acm','#semaforo':'acm','#neto':'neto','#cuanto-me-queda':'neto','#mod11':'neto','#tab-hipotecaria':'credito','#tab-notarial':'notariales','#mod1':'notariales','#mod2':'credito','#mod3':'rentabilidad','#mod4':'ganancia','#mod5':'endeudamiento','#mod6':'airbnb','#mod7':'vacancia','#mod8':'cartera','#mod9':'prorrateo','#mod10':'acm'};
   if(map[h]){
     var t=map[h];
-    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera','prorrateo','acm'].indexOf(t);
+    var idx=['notariales','credito','rentabilidad','ganancia','endeudamiento','airbnb','vacancia','cartera','prorrateo','acm','neto'].indexOf(t);
     showMod(t,document.querySelectorAll('.sb-item')[idx]||null,true);
     // El navegador puede volver a saltar al #ancla al terminar de cargar: en celular se recoloca el formulario
     window.addEventListener('load',function(){if(esCelular())setTimeout(function(){irA(document.getElementById(t),true);},50);});
