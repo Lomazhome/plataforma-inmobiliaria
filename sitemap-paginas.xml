@@ -43,4 +43,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://www.lomazhome.com/vender.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lomazhome.com/politica-de-datos.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

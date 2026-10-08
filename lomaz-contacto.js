@@ -53,8 +53,8 @@
   }
 
   // Autorización de tratamiento de datos (Ley 1581 de 2012) — misma versión que el formulario de captación
-  window.LH_CONSENT_VERSION = 'v1-2026-10-03';
-  window.LH_POLITICA_URL = 'https://captacionlomaz.netlify.app/politica-datos';
+  window.LH_CONSENT_VERSION = 'v2-2026-10-08';
+  window.LH_POLITICA_URL = 'https://www.lomazhome.com/politica-de-datos.html';
   window.LH_CONSENT_TEXTO = 'Autorizo de manera previa, expresa e informada a LoMaz Home para recolectar, almacenar y usar mis datos personales con el fin de atender esta solicitud y contactarme por teléfono, correo o WhatsApp, incluido su almacenamiento en servidores de proveedores tecnológicos ubicados fuera de Colombia, conforme a la Ley 1581 de 2012 y a la Política de Tratamiento de Datos Personales. Sé que puedo conocer, actualizar, rectificar y suprimir mis datos, o revocar esta autorización, escribiendo a lomazhome@gmail.com.';
   // Casilla lista para pegar en cualquier formulario: <div id="x"></div> + lhCasillaConsent('x')
   window.lhCasillaConsent = function (idContenedor, oscuro) {
