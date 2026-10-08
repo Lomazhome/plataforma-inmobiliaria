@@ -102,9 +102,7 @@ body{background:#f0f2f5;color:#1a1a2e}
 <div class="sb-sec">Menu Principal</div>
 <a class="sb-link" href="dashboard.html"><span class="ico">🏡</span>Dashboard</a>
 <a class="sb-link" href="propiedades.html"><span class="ico">🏠</span>Propiedades</a>
-<a class="sb-link" href="clientes.html"><span class="ico">🤝</span>Clientes</a>
-<a class="sb-link" href="leads.html"><span class="ico">📩</span>Leads</a>
-<a class="sb-link" href="pipeline.html"><span class="ico">📋</span>Pipeline</a>
+<a class="sb-link" href="contactos.html"><span class="ico">👥</span>Contactos (CRM)</a>
 <div class="sb-sec">Herramientas</div>
 <a class="sb-link active" href="notificaciones.html"><span class="ico">🔔</span>Notificaciones<span class="cnt" id="sb-unread">0</span></a>
 <a class="sb-link" href="favoritos.html"><span class="ico">❤️</span>Favoritos</a>
@@ -186,10 +184,11 @@ async function checkAuth(){
 async function loadNotifs(){
   var notifs=[];
   // Load recent leads as notifications
-  var res1=await sb.from("leads").select("id,nombre,email,telefono,mensaje,created_at,propiedad_id").order("created_at",{ascending:false}).limit(30);
+  var res1=await sb.from("contactos").select("id,nombre,tipo,telefono,mensaje,created_at,canal,fuente").order("created_at",{ascending:false}).limit(30);
   if(res1.data){
+    var TIP={propietario:"Propietario",comprador:"Comprador",inquilino:"Inquilino",otro:"Contacto"};
     res1.data.forEach(function(l){
-      notifs.push({id:"lead_"+l.id,tipo:"lead",icon:"📩",titulo:"Nuevo lead: "+(l.nombre||"Anonimo"),desc:(l.email||"Sin email")+" - "+(l.mensaje?l.mensaje.substring(0,60)+"...":"Sin mensaje"),fecha:l.created_at,link:"leads.html"});
+      notifs.push({id:"lead_"+l.id,tipo:"lead",icon:"📩",titulo:"Nuevo "+(TIP[l.tipo]||"contacto").toLowerCase()+": "+(l.nombre||"Anonimo"),desc:(l.telefono||"Sin teléfono")+(l.mensaje?" - "+l.mensaje.substring(0,60):"")+(l.canal?" · "+l.canal.replace(/_/g," "):""),fecha:l.created_at,link:"contactos.html?id="+l.id});
     });
   }
   // Load recent propiedades as notifications
@@ -201,10 +200,10 @@ async function loadNotifs(){
     });
   }
   // Load recent clientes
-  var res3=await sb.from("clientes").select("id,nombre_completo,tipo_cliente,created_at").order("created_at",{ascending:false}).limit(10);
+  var res3=await sb.from("contactos").select("id,nombre,etapa,cerrado_at,precio_final").eq("etapa","cerrado").order("cerrado_at",{ascending:false}).limit(10);
   if(res3.data){
     res3.data.forEach(function(c){
-      notifs.push({id:"cli_"+c.id,tipo:"cliente",icon:"🤝",titulo:"Cliente registrado: "+(c.nombre_completo||"Sin nombre"),desc:"Tipo: "+(c.tipo_cliente||"--"),fecha:c.created_at,link:"clientes.html"});
+      notifs.push({id:"cli_"+c.id,tipo:"cliente",icon:"🏁",titulo:"Negocio cerrado: "+(c.nombre||"Sin nombre"),desc:c.precio_final?("$"+Number(c.precio_final).toLocaleString("es-CO")):"Sin valor registrado",fecha:c.cerrado_at||new Date().toISOString(),link:"contactos.html?id="+c.id});
     });
   }
   // System notifications (static milestones)

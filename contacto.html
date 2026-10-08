@@ -120,7 +120,9 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
 @media(max-width:600px){.footer-grid{grid-template-columns:1fr;}.aria-panel{width:100%;right:-100%;}.aria-panel.open{right:0;}}
 #lm-nav{transform:translateY(-105%)!important;transition:transform .28s ease;will-change:transform;} body.nav-show #lm-nav{transform:translateY(0)!important;}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script><link rel="stylesheet" href="lomaz-mobile.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="lomaz-contacto.js"></script><link rel="stylesheet" href="lomaz-mobile.css">
 </head>
 <body>
 <nav>
@@ -173,9 +175,10 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
       <div class="cf-field"><label class="cf-label">Tipo de consulta</label>
         <select class="cf-select" name="tipo_consulta" required>
           <option value="">Selecciona una opción...</option>
-          <option value="arriendo">Quiero arrendar una propiedad</option>
-          <option value="compra">Quiero comprar una propiedad</option>
-          <option value="venta">Quiero vender mi propiedad</option>
+          <option value="venta">Quiero vender mi inmueble</option>
+          <option value="arrendar_mi">Quiero poner mi inmueble en arriendo</option>
+          <option value="compra">Quiero comprar</option>
+          <option value="arriendo">Quiero tomar un inmueble en arriendo</option>
           <option value="inversion">Asesoría de inversión</option>
           <option value="otro">Otra consulta</option>
         </select>
@@ -249,14 +252,19 @@ async function handleForm(e){
   };
   const btn=e.target.querySelector(".cf-submit");
   btn.textContent="Enviando...";btn.disabled=true;
+  const sel=e.target.querySelector('[name="tipo_consulta"]');
+  const interesTxt=sel&&sel.selectedIndex>0?sel.options[sel.selectedIndex].text:'';
+  const quien=lhTipoDesdeInteres(interesTxt);
+  let okCRM=true;
   try{
-    await sb.from("clientes").insert([{
-      nombre_completo:data.nombre,
-      telefono:data.telefono,
-      email:data.email,
-      notas:(data.tipo_consulta||"")+" | "+(data.presupuesto||"")+" | zona:"+(data.zona||"")+" | "+(data.mensaje||""),
-      origen:"contacto_web"
-    }]);
+    // Entra al CRM (tabla contactos) recordando de dónde vino
+    await lhCrearContacto(sb,{nombre:data.nombre,telefono:data.telefono,email:data.email,tipo:quien.tipo,negocio:quien.negocio,
+      mensaje:[interesTxt,data.mensaje].filter(Boolean).join('. '),canal:'formulario_contacto',
+      zona:quien.tipo==='propietario'?data.zona:null,zonas_interes:quien.tipo!=='propietario'?data.zona:null,
+      presupuesto_max:(quien.tipo!=='propietario'&&data.presupuesto&&!isNaN(Number(String(data.presupuesto).replace(/[^0-9]/g,''))))?Number(String(data.presupuesto).replace(/[^0-9]/g,'')):null,
+      precio_esperado:(quien.tipo==='propietario'&&data.presupuesto&&!isNaN(Number(String(data.presupuesto).replace(/[^0-9]/g,''))))?Number(String(data.presupuesto).replace(/[^0-9]/g,'')):null});
+  }catch(crmErr){ okCRM=false; console.warn('CRM:',crmErr); }
+  try{
   try {
     if (window.emailjs) {
       if (!window.__emailjsInit) { emailjs.init({ publicKey: 'hBVvEpA8xiEWqTQ5_' }); window.__emailjsInit = true; }
@@ -271,8 +279,9 @@ async function handleForm(e){
     }
   }catch(me){ console.warn('EmailJS (contacto):', me); }
   }catch(err){}
-  e.target.reset();
   btn.textContent="Enviar mensaje →";btn.disabled=false;
+  if(!okCRM){alert("No pudimos registrar tu mensaje. Escríbenos por WhatsApp al 300 330 0343.");return;}
+  e.target.reset();
   document.getElementById("cf-success").style.display="block";
   setTimeout(()=>{document.getElementById("cf-success").style.display="none";},5000);
 }
@@ -292,7 +301,7 @@ const revObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.i
 document.querySelectorAll(".reveal").forEach(el=>revObs.observe(el));
 const sc=document.createElement("script");sc.type="application/ld+json";sc.text=JSON.stringify({"@context":"https://schema.org","@type":"ContactPage","name":"Contacto LoMaz Home","url":"https://www.lomazhome.com/contacto.html","description":"Página de contacto de LoMaz Home, inmobiliaria boutique en Bogotá","mainEntity":{"@type":"RealEstateAgent","name":"LoMaz Home","telephone":"+573003300343","email":"lomazhome@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}}});document.head.appendChild(sc);
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<script>
 // FALLBACK: Asegurar que elementos reveal sean visibles al cargar
 window.addEventListener('load', function() {
   setTimeout(function() {

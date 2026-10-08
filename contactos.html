@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Contactos · CRM - Lomaz Home</title>
+<meta name="robots" content="noindex">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1B2E;--navy-2:#162540;--gold:#c9a96e;--gold-d:#a07840;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px;--r-lg:16px;
+ --c-prop:#c9a96e;--c-comp:#5b9cff;--c-inq:#2ec4b6;--c-otro:#9aa3b2;--wa:#25D366;--ok:#2ecc71;--bad:#ff6b6b}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:90px}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--sans)}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.9rem 1.75rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:.85rem}
+.brand-svg{width:42px;height:42px;flex-shrink:0}
+.brand-text{font-family:var(--serif);font-size:1.55rem;font-weight:500;letter-spacing:.5px;line-height:1}
+.brand-text .lo{color:var(--gold)}
+.brand-text .ho{color:#fff;font-family:var(--sans);font-size:.78rem;letter-spacing:6px;font-weight:400;display:block;margin-top:2px;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.btn-back{background:transparent;border:1px solid var(--line);color:var(--txt-soft);padding:.5rem 1rem;border-radius:var(--r-sm);cursor:pointer;font-size:.8rem;font-weight:500;letter-spacing:.5px;font-family:var(--sans)}
+.btn-back:hover{border-color:var(--gold);color:var(--gold)}
+.container{max-width:1200px;margin:1.5rem auto;padding:0 1.25rem}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.page-title{font-family:var(--serif);font-size:2.1rem;font-weight:500;color:#fff;line-height:1.05}
+.page-title em{font-style:italic;color:var(--gold)}
+.page-sub{color:var(--txt-soft);font-size:.9rem;margin-top:.35rem;font-weight:300}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.75rem 1.2rem;border-radius:10px;font-size:.86rem;font-weight:600;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--txt);transition:all .18s;min-height:44px;white-space:nowrap}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy);border:none}
+.btn.gold:hover{color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.35)}
+.btn.wa{background:var(--wa);color:#062b14;border:none}
+.btn.wa:hover{color:#062b14;filter:brightness(1.05)}
+.btn.ok{background:rgba(46,204,113,.14);color:#7dd87d;border-color:rgba(46,204,113,.35)}
+.btn.danger{background:rgba(255,107,107,.12);color:#ff9b9b;border-color:rgba(255,107,107,.35)}
+.btn.sm{padding:.5rem .8rem;font-size:.78rem;min-height:38px;border-radius:8px}
+.btn.xs{padding:.35rem .6rem;font-size:.72rem;min-height:32px;border-radius:7px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-fab{position:fixed;right:16px;bottom:16px;z-index:60;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy);font-size:30px;font-weight:700;border:none;box-shadow:0 10px 28px rgba(0,0,0,.45);cursor:pointer;display:none;align-items:center;justify-content:center}
+
+/* Pestañas grandes */
+.tabs{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.3rem;margin-bottom:1.2rem}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;display:flex;align-items:center;gap:.45rem;padding:.7rem 1.1rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--txt-soft);font-size:.86rem;font-weight:600;cursor:pointer;min-height:44px;transition:all .18s}
+.tab .n{background:rgba(255,255,255,.1);border-radius:999px;padding:.1rem .5rem;font-size:.72rem;color:#fff}
+.tab.active{background:rgba(201,169,110,.16);border-color:var(--gold);color:#fff}
+.tab.active .n{background:var(--gold);color:var(--navy)}
+.view{display:none}.view.active{display:block}
+
+/* Filtros */
+.search{display:flex;gap:.6rem;align-items:center;margin-bottom:.8rem}
+.search input{flex:1;background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;color:var(--txt);font-size:16px;outline:none;min-height:46px}
+.search input:focus{border-color:var(--gold)}
+.chips{display:flex;gap:.45rem;overflow-x:auto;scrollbar-width:none;padding:.15rem 0 .5rem;margin-bottom:.3rem}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:.35rem;padding:.5rem .85rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--txt-soft);font-size:.8rem;font-weight:600;cursor:pointer;min-height:38px;white-space:nowrap}
+.chip .n{opacity:.7;font-weight:500}
+.chip.active{border-color:var(--chip,var(--gold));color:#fff;background:color-mix(in srgb,var(--chip,var(--gold)) 22%,transparent)}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--chip,var(--gold))}
+
+/* Lista de contactos */
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.7rem}
+.card{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1rem .9rem;position:relative;cursor:pointer;transition:border-color .18s,transform .18s;border-left:4px solid var(--tc,var(--c-otro))}
+.card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem}
+.card .name{font-weight:600;color:#fff;font-size:1rem;line-height:1.25}
+.card .meta{font-size:.78rem;color:var(--txt-soft);margin-top:.25rem;line-height:1.5}
+.card .meta b{color:#e8d5b0;font-weight:500}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.7rem;flex-wrap:wrap}
+.card .next{font-size:.78rem;color:var(--txt-soft);display:flex;align-items:center;gap:.35rem;min-width:0}
+.card .next.late{color:#ffb3b3}
+.card .next.today{color:#ffd791}
+.pill{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .6rem;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border:1px solid transparent;white-space:nowrap}
+.pill.tipo{background:color-mix(in srgb,var(--tc) 18%,transparent);color:var(--tc);border-color:color-mix(in srgb,var(--tc) 45%,transparent)}
+.pill.etapa{background:color-mix(in srgb,var(--ec) 18%,transparent);color:var(--ec);border-color:color-mix(in srgb,var(--ec) 45%,transparent)}
+.av{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;flex-shrink:0;border:1px solid var(--line)}
+.btn-wa-sm{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--wa);color:#062b14;border:none;cursor:pointer;flex-shrink:0;font-size:1.05rem}
+.btn-wa-sm:hover{filter:brightness(1.08)}
+.empty{text-align:center;padding:2.2rem 1rem;color:var(--txt-mute);font-size:.95rem;line-height:1.6}
+.empty b{display:block;font-family:var(--serif);font-size:1.5rem;color:var(--txt-soft);font-weight:500;margin-bottom:.3rem}
+
+/* HOY */
+.hoy-sec{margin-bottom:1.6rem}
+.hoy-sec h3{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:#fff;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.hoy-sec h3 .n{font-family:var(--sans);font-size:.72rem;background:var(--gold);color:var(--navy);border-radius:999px;padding:.15rem .55rem;font-weight:700}
+.hoy-sec .sub{font-size:.82rem;color:var(--txt-soft);margin:-.4rem 0 .8rem}
+.todo{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:.95rem 1rem;margin-bottom:.6rem;border-left:4px solid var(--tc,var(--gold))}
+.todo .t{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem}
+.todo .name{font-weight:600;color:#fff}
+.todo .why{font-size:.8rem;color:var(--txt-soft);margin-top:.2rem;line-height:1.5}
+.todo .why.late{color:#ffb3b3}
+.todo .msg{background:rgba(13,27,46,.55);border:1px dashed var(--line);border-radius:8px;padding:.65rem .8rem;font-size:.82rem;color:#d9d2c5;margin-top:.6rem;white-space:pre-wrap;line-height:1.5;max-height:5.6em;overflow:hidden;position:relative}
+.todo .msg.open{max-height:none}
+.todo .acts{display:flex;gap:.45rem;margin-top:.7rem;flex-wrap:wrap}
+.okday{background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.3);border-radius:var(--r);padding:1.6rem;text-align:center;color:#7dd87d;font-size:1rem}
+.okday b{display:block;font-family:var(--serif);font-size:1.8rem;font-weight:500;margin-bottom:.2rem}
+
+/* Ficha (panel lateral) */
+.ov{position:fixed;inset:0;background:rgba(5,10,20,.6);backdrop-filter:blur(3px);z-index:100;display:none}
+.ov.on{display:block}
+.ficha{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:#0F1E36;border-left:1px solid var(--line-strong);z-index:101;transform:translateX(105%);transition:transform .25s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+.ficha.on{transform:translateX(0)}
+.fh{position:sticky;top:0;background:#0F1E36;border-bottom:1px solid var(--line);padding:.9rem 1.1rem;z-index:2}
+.fh .r1{display:flex;align-items:center;gap:.6rem}
+.fh .back{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:none;color:#fff;font-size:1.2rem;cursor:pointer;flex-shrink:0}
+.fh .nm{font-family:var(--serif);font-size:1.5rem;color:#fff;font-weight:500;line-height:1.1;flex:1;min-width:0;overflow-wrap:anywhere}
+.fh .r2{display:flex;gap:.45rem;margin-top:.7rem;flex-wrap:wrap;align-items:center}
+.fb{padding:1rem 1.1rem}
+.sec{margin-bottom:1.3rem}
+.sec h4{font-size:.72rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.6rem;display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+body.ficha-abierta #lmz-adm-btn,body.ficha-abierta .btn-fab{display:none!important}
+.sec h4 span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--txt-mute);font-size:.74rem}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem}
+.step{border:1px solid var(--line);border-radius:10px;padding:.55rem .3rem;text-align:center;cursor:pointer;background:rgba(255,255,255,.03);transition:all .15s;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem}
+.step .e{font-size:1.1rem;line-height:1}
+.step .l{font-size:.66rem;font-weight:600;color:var(--txt-soft);line-height:1.15}
+.step.done{border-color:color-mix(in srgb,var(--ec) 50%,transparent);background:color-mix(in srgb,var(--ec) 10%,transparent)}
+.step.cur{border-color:var(--ec);background:color-mix(in srgb,var(--ec) 24%,transparent);box-shadow:0 0 0 2px color-mix(in srgb,var(--ec) 40%,transparent)}
+.step.cur .l{color:#fff}
+.step-hint{font-size:.78rem;color:var(--txt-soft);margin-top:.5rem;line-height:1.5;min-height:1.2em}
+.field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.7rem}
+.field label{font-size:.7rem;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.field input,.field select,.field textarea,.inp{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:8px;padding:.7rem .85rem;color:var(--txt);font-family:var(--sans);font-size:16px;outline:none;width:100%;min-height:44px}
+.field input:focus,.field select:focus,.field textarea:focus,.inp:focus{border-color:var(--gold)}
+select option{background:#162540;color:var(--txt)}
+textarea{resize:vertical;min-height:70px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.quick{display:flex;gap:.4rem;flex-wrap:wrap;margin:.3rem 0 .6rem}
+.hist{list-style:none}
+.hist li{display:flex;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.84rem;line-height:1.45}
+.hist .ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem}
+.hist .tx{flex:1;color:#e6e0d4;overflow-wrap:anywhere}
+.hist .dt{font-size:.7rem;color:var(--txt-mute);margin-top:.15rem}
+.seg{display:flex;align-items:center;gap:.6rem;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.82rem}
+.seg .d{width:52px;flex-shrink:0;font-weight:700;color:var(--gold);font-size:.74rem}
+.seg .f{flex:1;color:var(--txt-soft)}
+.seg.done .f{color:#7dd87d}.seg.skip .f{color:var(--txt-mute);text-decoration:line-through}
+.seg.late .f{color:#ffb3b3}
+.ctc{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+.ctc a,.ctc button{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border-radius:9px;border:1px solid var(--line);font-size:.8rem;color:var(--txt);background:rgba(255,255,255,.04);cursor:pointer;min-height:40px}
+.ctc .w{background:var(--wa);color:#062b14;border:none;font-weight:600}
+.hint{font-size:.76rem;color:var(--txt-mute);line-height:1.5}
+.alert{padding:.9rem 1.1rem;border-radius:10px;font-size:.86rem;margin-bottom:1rem;line-height:1.55}
+.alert.err{background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);color:#ff9b9b}
+.alert.ok{background:rgba(46,204,113,.10);border:1px solid rgba(46,204,113,.35);color:#7dd87d}
+.alert code{background:rgba(255,255,255,.08);padding:.1rem .35rem;border-radius:4px}
+
+/* Modales */
+.modal-ov{position:fixed;inset:0;background:rgba(5,10,20,.7);backdrop-filter:blur(4px);z-index:120;display:none;align-items:flex-end;justify-content:center;padding:0}
+.modal-ov.on{display:flex}
+.modal{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line-strong);border-radius:18px 18px 0 0;padding:1.3rem 1.2rem 1.6rem;width:100%;max-width:560px;max-height:92vh;overflow-y:auto}
+.modal h3{font-family:var(--serif);font-size:1.5rem;color:#fff;font-weight:500;margin-bottom:.9rem}
+.modal .btns{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem;flex-wrap:wrap}
+.bigpick{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.8rem}
+.bigpick button{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:12px;padding:.8rem .4rem;color:var(--txt-soft);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.25rem;font-size:.78rem;font-weight:600;min-height:72px}
+.bigpick button .e{font-size:1.4rem}
+.bigpick button.on{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 20%,transparent);color:#fff}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1d2f4d;border:1px solid var(--line-strong);color:#fff;padding:.7rem 1.1rem;border-radius:10px;font-size:.86rem;z-index:200;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+
+/* Números */
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem;margin-bottom:1.3rem}
+.kpi{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1rem;text-align:center}
+.kpi .n{font-family:var(--serif);font-size:2rem;color:#fff;line-height:1}
+.kpi .l{font-size:.66rem;color:var(--gold);letter-spacing:1.3px;text-transform:uppercase;margin-top:.4rem;font-weight:600}
+.kpi .s{font-size:.72rem;color:var(--txt-mute);margin-top:.2rem}
+.panel{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;margin-bottom:1rem}
+.panel h3{font-family:var(--serif);font-size:1.3rem;color:#fff;font-weight:500;margin-bottom:.8rem}
+.panel h3 em{font-style:italic;color:var(--gold)}
+.bar{display:flex;align-items:center;gap:.6rem;font-size:.82rem;padding:.35rem 0}
+.bar .l{width:130px;flex-shrink:0;color:var(--txt-soft)}
+.bar .b{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.bar .b i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-d));border-radius:999px}
+.bar .v{width:70px;text-align:right;color:#fff;font-weight:600}
+.funnel .bar .b i{background:linear-gradient(90deg,#5b9cff,#2ec4b6)}
+.g-panels{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* Agente */
+.agent-card{background:rgba(13,27,46,.5);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:.9rem 1rem;margin-bottom:.7rem}
+.agent-card .h{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-bottom:.3rem}
+.agent-card .b{font-size:.84rem;color:var(--txt-soft);line-height:1.5}
+.score{padding:.2rem .6rem;border-radius:999px;font-size:.66rem;font-weight:700;letter-spacing:.4px}
+.score.hot{background:rgba(220,53,69,.15);color:#ff8a93;border:1px solid rgba(220,53,69,.4)}
+.score.warm{background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.4)}
+.score.cold{background:rgba(120,140,170,.12);color:#9fb0c8;border:1px solid rgba(120,140,170,.3)}
+.msgbox{background:rgba(13,27,46,.55);border:1px solid var(--line);border-radius:10px;padding:1rem;font-size:.9rem;line-height:1.55;white-space:pre-wrap;color:var(--txt);min-height:90px}
+
+/* Agenda */
+.cita{background:linear-gradient(180deg,#162540 0%,#0F1E36 100%);border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:.6rem;display:flex;gap:.9rem;align-items:flex-start}
+.cita .when{font-family:var(--serif);font-size:1.15rem;color:var(--gold);min-width:84px;line-height:1.1}
+.cita .when small{display:block;font-family:var(--sans);font-size:.7rem;color:var(--txt-soft);margin-top:.2rem;letter-spacing:.4px}
+.cita .body{flex:1;min-width:0}
+.cita .ct{font-weight:600;color:#fff}
+.cita .cs{font-size:.8rem;color:var(--txt-soft);margin-top:.2rem;line-height:1.5}
+.cita.hoy{border-color:var(--gold)}
+
+@media(max-width:900px){.topbar{padding:.75rem 1rem}.container{margin:1rem auto;padding:0 .9rem}.page-title{font-size:1.7rem}.g-panels{grid-template-columns:1fr}.topbar .btn-back{display:none}.btn-fab{display:flex}#btnNuevoTop{display:none}}
+@media(max-width:600px){.list{grid-template-columns:1fr}.steps{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr}.bigpick{grid-template-columns:repeat(3,1fr)}.cita{flex-direction:column;gap:.4rem}.cita .when{min-width:0}}
+@media(min-width:601px){.modal-ov{align-items:center;padding:1.5rem}.modal{border-radius:16px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+<a href="dashboard.html" class="brand">
+<svg class="brand-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M30 55 L30 85 L70 85 L70 55" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M22 58 L50 30 L78 58" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M45 35 L45 22" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M44 85 L44 70 L52 70 L52 85" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><path d="M82 55 Q83 65 84 75 Q85 82 86 88" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/><path d="M84 60 L80 62 M84 65 L88 67 M85 70 L81 72 M85 75 L89 77 M86 80 L82 82" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/></svg>
+<div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
+</a>
+<div class="topbar-right"><button class="btn-back" onclick="window.location.href='dashboard.html'">← Dashboard</button><div style="position:relative"><div id="topAvatarMini" title="Perfil" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07840);color:#0D1B2E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(201,169,110,.3)">?</div><div id="topAvatarMenu" style="display:none;position:absolute;right:0;top:52px;background:#122036;border:1px solid rgba(201,169,110,.25);border-radius:12px;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;z-index:9999"><div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.25)"><div id="topName" style="font-size:.9rem;color:#f5f1ea;font-weight:600;white-space:nowrap">&nbsp;</div><div id="topRole" style="font-size:.7rem;color:#c9a96e;letter-spacing:1px;text-transform:uppercase;margin-top:2px">&nbsp;</div></div><a href="perfil-asesor.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem">Mi Perfil</a><a href="mis-propiedades.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Mis Propiedades</a><a href="#" id="topLogoutBtn" style="display:block;padding:.75rem 1.1rem;color:#e57373;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Cerrar Sesion</a></div></div></div>
+</div>
+
+<div class="container">
+  <div class="page-head">
+    <div><div class="page-title">Contactos <em>· CRM</em></div><div class="page-sub">Propietarios, compradores e inquilinos en un solo lugar. Compartido con todo el equipo.</div></div>
+    <button class="btn gold" id="btnNuevoTop" onclick="abrirNuevo()">+ Nuevo contacto</button>
+  </div>
+  <div id="aviso"></div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-v="hoy" onclick="verTab('hoy')">☀️ Hoy <span class="n" id="nHoy">0</span></button>
+    <button class="tab" data-v="todos" onclick="verTab('todos')">👥 Todos <span class="n" id="nTodos">0</span></button>
+    <button class="tab" data-v="agenda" onclick="verTab('agenda')">📅 Agenda</button>
+    <button class="tab" data-v="numeros" onclick="verTab('numeros')">📈 Números</button>
+    <button class="tab" data-v="agente" onclick="verTab('agente')">🤖 Agente</button>
+  </div>
+
+  <!-- HOY -->
+  <div class="view active" id="vHoy"><div id="hoyCont"><div class="empty">Cargando...</div></div></div>
+
+  <!-- TODOS -->
+  <div class="view" id="vTodos">
+    <div class="search"><input type="search" id="q" placeholder="🔍 Buscar por nombre, teléfono, zona o inmueble…" oninput="pintarLista()"></div>
+    <div class="chips" id="chipsTipo"></div>
+    <div class="chips" id="chipsEtapa"></div>
+    <div class="list" id="lista"></div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="view" id="vAgenda">
+    <div class="panel">
+      <h3>📅 Nueva <em>cita</em></h3>
+      <div class="g2">
+        <div class="field"><label>Qué es *</label><input type="text" id="czTitulo" placeholder="Ej: Diagnóstico con Ana · Visita apto Colina"></div>
+        <div class="field"><label>Tipo</label><select id="czTipo"><option>Diagnóstico</option><option>Visita</option><option>Llamada</option><option>Reunión</option><option>Firma</option><option>Avalúo</option><option>Seguimiento</option></select></div>
+        <div class="field"><label>Fecha y hora *</label><input type="datetime-local" id="czFecha"></div>
+        <div class="field"><label>Duración (min)</label><input type="number" id="czDur" value="60" min="15" step="15"></div>
+        <div class="field"><label>Contacto</label><select id="czContacto"><option value="">-- Elegir --</option></select></div>
+        <div class="field"><label>Inmueble</label><select id="czProp"><option value="">-- Ninguno --</option></select></div>
+        <div class="field"><label>Lugar</label><input type="text" id="czUbic" placeholder="Dirección o enlace de videollamada"></div>
+        <div class="field"><label>Notas</label><input type="text" id="czNotas" placeholder="Opcional"></div>
+      </div>
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap"><button class="btn gold" onclick="guardarCita()">Guardar cita</button><span id="czMsg" class="hint"></span></div>
+    </div>
+    <div class="panel"><h3>🕒 Próximas <em>citas</em></h3><div id="agendaList"><div class="empty">Cargando...</div></div></div>
+  </div>
+
+  <!-- NÚMEROS -->
+  <div class="view" id="vNumeros"><div id="numCont"></div></div>
+
+  <!-- AGENTE -->
+  <div class="view" id="vAgente">
+    <div class="panel">
+      <h3>🤖 Agente <em>de seguimiento</em></h3>
+      <p class="hint" style="margin-bottom:.8rem">Ordena tus contactos por urgencia y te dice qué hacer con cada uno. Toca «Redactar» para tener el mensaje listo para WhatsApp.</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <select class="inp" id="agFocus" style="width:auto;min-width:220px"><option value="prioridad">Los más urgentes primero</option><option value="nuevos">Nuevos sin contactar</option><option value="seguimiento">Pendientes de seguimiento</option><option value="propietarios">Solo propietarios</option></select>
+        <button class="btn gold" onclick="agenteAnalizar()">Analizar</button>
+      </div>
+    </div>
+    <div id="agResults"></div>
+    <div class="panel" id="agMsgPanel" style="display:none">
+      <h3>✍️ Mensaje <em>sugerido</em> <span id="agMsgFor" class="hint"></span></h3>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem">
+        <select class="inp" id="agMsgCanal" style="width:auto" onchange="agenteRedactar()"><option value="whatsapp">WhatsApp</option><option value="email">Correo</option><option value="llamada">Guion de llamada</option></select>
+        <select class="inp" id="agMsgTono" style="width:auto" onchange="agenteRedactar()"><option value="cercano">Tono cercano</option><option value="formal">Tono formal</option><option value="directo">Tono directo</option></select>
+      </div>
+      <div class="msgbox" id="agMsgOut" contenteditable="true"></div>
+      <div style="display:flex;gap:.6rem;margin-top:.8rem;flex-wrap:wrap"><button class="btn wa" onclick="agenteWhats()">Abrir WhatsApp</button><button class="btn" onclick="copiar(document.getElementById('agMsgOut').innerText)">Copiar</button><button class="btn" onclick="abrirFicha(agSel&&agSel.id)">Abrir ficha</button></div>
+    </div>
+  </div>
+</div>
+
+<button class="btn-fab" onclick="abrirNuevo()" aria-label="Nuevo contacto">+</button>
+
+<!-- FICHA -->
+<div class="ov" id="fOv" onclick="cerrarFicha()"></div>
+<aside class="ficha" id="ficha" aria-label="Ficha del contacto"></aside>
+
+<!-- MODAL NUEVO / EDITAR BÁSICO -->
+<div class="modal-ov" id="mNuevo">
+  <div class="modal">
+    <h3 id="mNuevoTit">Nuevo contacto</h3>
+    <div id="mNuevoAlert"></div>
+    <label class="hint" style="display:block;margin-bottom:.4rem;color:var(--gold);font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase">¿Quién es?</label>
+    <div class="bigpick" id="pickTipo">
+      <button type="button" data-t="propietario" style="--pc:var(--c-prop)"><span class="e">🔑</span>Propietario</button>
+      <button type="button" data-t="comprador" style="--pc:var(--c-comp)"><span class="e">🏠</span>Comprador</button>
+      <button type="button" data-t="inquilino" style="--pc:var(--c-inq)"><span class="e">🛋️</span>Inquilino</button>
+    </div>
+    <div class="g2">
+      <div class="field"><label>Nombre *</label><input type="text" id="nNombre" placeholder="Nombre y apellido"></div>
+      <div class="field"><label>WhatsApp *</label><input type="tel" id="nTel" placeholder="3001234567" inputmode="tel"></div>
+      <div class="field"><label>Correo</label><input type="email" id="nEmail" placeholder="Opcional"></div>
+      <div class="field"><label>Qué quiere</label><select id="nNegocio"><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="ambos">Ambos</option></select></div>
+      <div class="field"><label>Cómo llegó</label><select id="nFuente"><option value="whatsapp">Me escribió por WhatsApp</option><option value="llamada">Me llamó</option><option value="referido">Referido</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="portal">Portal (Finca Raíz, Metrocuadrado…)</option><option value="google">Google</option><option value="valla">Valla / aviso</option><option value="otro">Otro</option></select></div>
+      <div class="field"><label>Zona</label><input type="text" id="nZona" placeholder="Barrio o sector"></div>
+    </div>
+    <div class="field"><label>Nota inicial</label><textarea id="nNota" placeholder="Qué busca, qué dijo, cualquier detalle…"></textarea></div>
+    <div class="btns"><button class="btn" onclick="cerrarModal('mNuevo')">Cancelar</button><button class="btn gold" id="nGuardar" onclick="guardarNuevo()">Guardar contacto</button></div>
+  </div>
+</div>
+
+<!-- MODAL PERDIDO -->
+<div class="modal-ov" id="mPerdido">
+  <div class="modal">
+    <h3>✖ Marcar como perdido</h3>
+    <p class="hint" style="margin-bottom:.8rem">¿Por qué se perdió? Esto después te dice en qué estás fallando más.</p>
+    <div class="bigpick" id="pickMotivo" style="grid-template-columns:1fr 1fr">
+      <button type="button" data-m="precio" style="--pc:#ff9f43"><span class="e">💰</span>Precio</button>
+      <button type="button" data-m="otra inmobiliaria" style="--pc:#ff9f43"><span class="e">🏢</span>Otra inmobiliaria</button>
+      <button type="button" data-m="sin respuesta" style="--pc:#ff9f43"><span class="e">🙈</span>No respondió</button>
+      <button type="button" data-m="desistió" style="--pc:#ff9f43"><span class="e">🤷</span>Ya no quiere</button>
+      <button type="button" data-m="no calificaba" style="--pc:#ff9f43"><span class="e">🚫</span>No calificaba</button>
+      <button type="button" data-m="otro" style="--pc:#ff9f43"><span class="e">✏️</span>Otro</button>
+    </div>
+    <div class="field"><label>Detalle (opcional)</label><input type="text" id="pNota" placeholder="Ej: pedía 50M por encima del mercado"></div>
+    <div class="btns"><button class="btn" onclick="cerrarModal('mPerdido')">Cancelar</button><button class="btn danger" onclick="confirmarPerdido()">Marcar perdido</button></div>
+  </div>
+</div>
+
+<!-- MODAL CERRADO -->
+<div class="modal-ov" id="mCerrado">
+  <div class="modal">
+    <h3>✅ ¡Negocio cerrado!</h3>
+    <p class="hint" style="margin-bottom:.8rem">Estos datos alimentan tu base de conocimiento (precios, tiempos, demanda). Pon lo que sepas; lo demás déjalo vacío.</p>
+    <div class="g2">
+      <div class="field"><label>Precio final (COP)</label><input type="number" id="cPrecio" placeholder="Ej: 420000000" inputmode="numeric"></div>
+      <div class="field"><label>Inmueble</label><select id="cProp"><option value="">-- Elegir --</option></select></div>
+      <div class="field"><label>Visitas realizadas</label><input type="number" id="cVisitas" placeholder="0" inputmode="numeric"></div>
+      <div class="field"><label>Ofertas recibidas</label><input type="number" id="cOfertas" placeholder="0" inputmode="numeric"></div>
+      <div class="field"><label>Interesados que llegaron</label><input type="number" id="cLeads" placeholder="0" inputmode="numeric"></div>
+    </div>
+    <div class="field"><label>Comentario</label><input type="text" id="cNota" placeholder="Qué funcionó, qué aprendiste"></div>
+    <div class="btns"><button class="btn" onclick="cerrarModal('mCerrado')">Cancelar</button><button class="btn ok" onclick="confirmarCerrado()">Guardar cierre</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONTACTOS · CRM unificado de LoMaz Home
+   Una sola lista de personas (propietarios, compradores, inquilinos),
+   una etapa, una próxima acción y un botón de WhatsApp. Todo lo demás
+   (historial, recordatorios, números) se arma solo.
+   ============================================================ */
+const K=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
+const U="https://lniouebpuuuqctrgxoiw.supabase.co";
+const sb=supabase.createClient(U,K);
+
+/* ---------- Catálogos ---------- */
+const TIPOS={
+  propietario:{n:'Propietario',e:'🔑',c:'var(--c-prop)'},
+  comprador:{n:'Comprador',e:'🏠',c:'var(--c-comp)'},
+  inquilino:{n:'Inquilino',e:'🛋️',c:'var(--c-inq)'},
+  otro:{n:'Otro',e:'👤',c:'var(--c-otro)'}
+};
+const ETAPAS=[
+  {k:'nuevo',n:'Nuevo',e:'🆕',c:'#5b9cff',h:'Acaba de llegar. Nadie le ha escrito todavía.'},
+  {k:'contactado',n:'Contactado',e:'💬',c:'#2ec4b6',h:'Ya hablamos con esta persona.'},
+  {k:'cita',n:'Cita',e:'📅',c:'#c9a96e',h:'Tenemos cita: diagnóstico, visita o reunión.'},
+  {k:'propuesta',n:'Propuesta',e:'📄',c:'#e0a458',h:'Le enviamos propuesta / opciones y esperamos respuesta.'},
+  {k:'activo',n:'En proceso',e:'🏠',c:'#9b7bff',h:{propietario:'Inmueble captado y en comercialización.',comprador:'Está viendo inmuebles con nosotros.',inquilino:'Está viendo inmuebles con nosotros.',otro:'En proceso.'}},
+  {k:'oferta',n:'Oferta',e:'🤝',c:'#ff9f43',h:'Hay una oferta sobre la mesa. Negociando.'},
+  {k:'cerrado',n:'Cerrado',e:'✅',c:'#2ecc71',h:'Negocio hecho. ¡Felicitaciones!'},
+  {k:'perdido',n:'Perdido',e:'✖',c:'#8a8f98',h:'No se dio. Queda el motivo para aprender.'}
+];
+const ETAPA_IDX=Object.fromEntries(ETAPAS.map((e,i)=>[e.k,i]));
+const FUENTES={web:'Página web',whatsapp:'WhatsApp',llamada:'Llamada',referido:'Referido',instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',portal:'Portal',google:'Google',valla:'Valla / aviso',manual:'Manual',homepage:'Página web',otro:'Otro'};
+const CANALES={formulario_portada:'formulario de la portada',formulario_contacto:'página de contacto',ficha_propiedad:'ficha de un inmueble',diagnostico:'Diagnóstico LO MÁS',formulario_web:'formulario web',manual:'registro manual'};
+
+/* ---------- Estado ---------- */
+let uid=null, yo={nombre:'',admin:false}, C=[], S=[], Z=[], P=[], USERS={}, cur=null, curActs=[], filtroTipo='', filtroEtapa='activos', agSel=null;
+
+/* ---------- Utilidades ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const addDias=(n)=>{const d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const diasDesde=(iso)=>Math.floor((Date.now()-new Date(iso).getTime())/86400000);
+const diasHasta=(ymd)=>Math.round((new Date(ymd+'T12:00:00').getTime()-new Date(hoyISO()+'T12:00:00').getTime())/86400000);
+function hace(iso){const m=Math.floor((Date.now()-new Date(iso).getTime())/60000);if(m<1)return 'ahora';if(m<60)return 'hace '+m+' min';const h=Math.floor(m/60);if(h<24)return 'hace '+h+' h';const d=Math.floor(h/24);if(d<30)return 'hace '+d+' día'+(d!==1?'s':'');const mo=Math.floor(d/30);return 'hace '+mo+' mes'+(mo!==1?'es':'');}
+function fechaCorta(ymd){if(!ymd)return '';const d=new Date(ymd+'T12:00:00');return d.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});}
+function fechaHora(iso){const d=new Date(iso);return d.toLocaleDateString('es-CO',{day:'numeric',month:'short'})+' · '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});}
+function money(n){n=Number(n)||0;if(!n)return '';if(n>=1e9)return '$'+(n/1e9).toFixed(n%1e9?1:0).replace('.0','')+' mil M';if(n>=1e6)return '$'+(n>=1e7?Math.round(n/1e6).toLocaleString('es-CO'):(n/1e6).toFixed(n%1e6?1:0).replace('.',','))+' M';return '$'+n.toLocaleString('es-CO');}
+function tel10(t){t=(t||'').replace(/[^0-9]/g,'');if(t.length===12&&t.startsWith('57'))t=t.slice(2);return t;}
+function waLink(tel,msg){tel=tel10(tel);if(!tel)return '#';return 'https://wa.me/57'+tel+(msg?'?text='+encodeURIComponent(msg):'');}
+function nombreUsuario(id){return (USERS[id]||'').trim()||'Sin asignar';}
+function iniciales(s){return (s||'?').split(' ').filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();}
+function primerNombre(s){return (s||'').trim().split(' ')[0]||'';}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('on'),2200);}
+function copiar(t){navigator.clipboard.writeText(t).then(()=>toast('Copiado'));}
+function tipoDe(c){return TIPOS[c.tipo]||TIPOS.otro;}
+function etapaDe(c){return ETAPAS[ETAPA_IDX[c.etapa]]||ETAPAS[0];}
+function propTitulo(id){if(!id)return '';const p=P.find(x=>String(x.id)===String(id));return p?(p.titulo||'Inmueble')+(p.barrio?' · '+p.barrio:''):'';}
+function activo(c){return c.etapa!=='cerrado'&&c.etapa!=='perdido';}
+function segsDe(id){return S.filter(s=>s.contacto_id===id);}
+function segPendientes(id){return segsDe(id).filter(s=>!s.hecho&&!s.omitido);}
+
+/* ---------- Mensajes de la secuencia de seguimiento (días 0…90) ---------- */
+function msgSeguimiento(c,dia){
+  const n=primerNombre(c.nombre)||'';const a=primerNombre(yo.nombre)||'el equipo';const z=c.zona||c.zonas_interes||'tu zona';
+  if(c.tipo==='propietario'){
+    const inm=c.tipo_inmueble?c.tipo_inmueble.toLowerCase():'inmueble';
+    const M={
+      0:`Hola, ${n}. Soy ${a} de LoMaz Home. Vi que quieres evaluar la ${c.negocio==='arriendo'?'renta':'venta'} de tu ${inm} en ${z}.\n\nAntes de hablar de precio, quiero entender tres cosas:\n1. ¿Cuándo te gustaría ${c.negocio==='arriendo'?'arrendarlo':'venderlo'}?\n2. ¿Qué valor esperas recibir?\n3. ¿Ya lo estás comercializando con alguien?\n\nCon esas tres respuestas puedo decirte si tiene sentido hacer el Diagnóstico LO MÁS.`,
+      1:`Hola, ${n}. Revisé lo que me comentaste. Antes de recomendarte bajar o mantener el precio, prefiero revisar competencia, presentación y demanda. Es justamente lo que hacemos en el Diagnóstico LO MÁS.\n\n¿Te parece si lo revisamos esta semana?`,
+      3:`${n}, una cosa importante: que un inmueble reciba contactos no significa necesariamente que esté generando demanda de calidad.\n\nLo que queremos encontrar es dónde se está rompiendo el proceso: precio, presentación, segmentación o seguimiento.`,
+      7:`Hola, ${n}. ¿El inmueble sigue en ${c.negocio==='arriendo'?'arriendo':'venta'}?\n\nSi sí, podemos hacer una revisión rápida de la estrategia actual antes de que tomes la decisión de bajar el precio.`,
+      14:`${n}, cierro por ahora el seguimiento para no molestarte.\n\nSi el inmueble continúa disponible y quieres una segunda lectura del precio y la estrategia, escríbeme «LO MÁS» y retomamos.`,
+      30:`Hola, ${n}. Estoy revisando nuevamente el comportamiento del mercado de ${z}. Si tu inmueble sigue disponible, puedo actualizarte el diagnóstico.`,
+      60:`${n}, ¿sigue vigente la intención de ${c.negocio==='arriendo'?'arrendar':'vender'}? Si cambió el escenario, también me sirve saberlo.`,
+      90:`Último mensaje por mi parte, ${n}. Si vuelves a poner el inmueble en ${c.negocio==='arriendo'?'arriendo':'venta'} o quieres revisar la estrategia antes de hacerlo, aquí quedamos disponibles.`
+    };return M[dia]||M[0];
+  }
+  const verbo=c.tipo==='inquilino'?'tomar en arriendo':'comprar';
+  const M={
+    0:`Hola, ${n}. Soy ${a} de LoMaz Home. Vi que estás buscando ${verbo} ${c.tipo_inmueble_interes?('un '+c.tipo_inmueble_interes.toLowerCase()):'un inmueble'} en ${z}.\n\nPara ayudarte bien, cuéntame:\n1. ¿Para cuándo lo necesitas?\n2. ¿Qué presupuesto manejas?\n3. ¿Cuántas habitaciones necesitas?\n\nCon eso te paso solo opciones que de verdad te sirvan.`,
+    1:`Hola, ${n}. Estuve revisando opciones en ${z} con lo que me contaste. Te paso hoy mismo las que mejor encajan, ¿te parece? ¿Hay algo que descarte de entrada (piso, sin ascensor, sin parqueadero)?`,
+    3:`${n}, dato útil: en ${z} los inmuebles bien ubicados y con buen precio se mueven rápido. Si alguna de las opciones te llamó la atención, agendemos visita esta semana para no perderla.`,
+    7:`Hola, ${n}. ¿Sigues en la búsqueda? Si cambió algo (presupuesto, zona, fecha), cuéntame y ajusto las opciones.`,
+    14:`${n}, cierro por ahora el seguimiento para no molestarte. Cuando quieras retomar la búsqueda, escríbeme y seguimos donde quedamos.`,
+    30:`Hola, ${n}. Entraron inmuebles nuevos en ${z} este mes. Si sigues buscando, te envío los que encajan con lo que querías.`
+  };return M[dia]||M[0];
+}
+
+/* ---------- Arranque ---------- */
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){location.href='login.html';return;}
+  uid=session.user.id;
+  try{const{data:pf}=await sb.from('perfiles_usuarios').select('nombre_completo,rol_id').eq('id',uid).single();if(pf){yo.nombre=pf.nombre_completo||session.user.email;yo.admin=[1,4,6].includes(pf.rol_id);}}catch(e){}
+  await cargarTodo();
+  verTab(location.hash==='#todos'?'todos':'hoy');
+  const abrir=new URLSearchParams(location.search).get('id'); if(abrir) abrirFicha(abrir);
+})();
+
+async function cargarTodo(){
+  const [rc,rs,rp,ru,rz]=await Promise.all([
+    sb.from('contactos').select('*').order('updated_at',{ascending:false}),
+    sb.from('contacto_seguimientos').select('*').eq('hecho',false).eq('omitido',false).order('fecha'),
+    sb.from('propiedades').select('id,titulo,barrio,ciudad,estado,precio,tipo_negocio').order('created_at',{ascending:false}).limit(300),
+    sb.from('perfiles_usuarios').select('id,nombre_completo'),
+    sb.from('citas').select('*').gte('fecha_hora',new Date(Date.now()-86400000).toISOString()).order('fecha_hora')
+  ]);
+  if(rc.error){ mostrarErrorTabla(rc.error); return; }
+  C=rc.data||[]; S=rs.data||[]; P=rp.data||[]; Z=rz.data||[];
+  (ru.data||[]).forEach(u=>USERS[u.id]=u.nombre_completo||'');
+  if(!USERS[uid]) USERS[uid]=yo.nombre;
+  pintarTodo();
+}
+function mostrarErrorTabla(err){
+  const falta=/contactos|does not exist|schema cache/i.test(err.message||'');
+  $('aviso').innerHTML='<div class="alert err"><b>'+(falta?'Falta un paso en Supabase.':'No se pudieron cargar los contactos.')+'</b><br>'+
+    (falta?'Hay que ejecutar una sola vez el archivo <code>supabase/migrations/20261008_contactos.sql</code> en Supabase → SQL Editor. Después recarga esta página.':esc(err.message))+'</div>';
+  $('hoyCont').innerHTML='';
+}
+function pintarTodo(){ pintarChips(); pintarLista(); pintarHoy(); pintarAgenda(); pintarNumeros(); llenarSelects(); $('nTodos').textContent=C.filter(activo).length; }
+
+/* ---------- Pestañas ---------- */
+function verTab(v){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.v===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  $('v'+v.charAt(0).toUpperCase()+v.slice(1)).classList.add('active');
+  if(v==='numeros')pintarNumeros();
+}
+
+/* ---------- HOY ---------- */
+function tareasHoy(){
+  const hoy=hoyISO();
+  const nuevos=C.filter(c=>c.etapa==='nuevo').sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+  const segs=S.filter(s=>s.fecha<=hoy).map(s=>({s,c:C.find(c=>c.id===s.contacto_id)})).filter(x=>x.c&&activo(x.c)&&!(x.c.etapa==='nuevo'&&x.s.dia===0));
+  const acciones=C.filter(c=>activo(c)&&c.proxima_fecha&&c.proxima_fecha<=hoy);
+  const citas=Z.filter(z=>z.fecha_hora.slice(0,10)===hoy);
+  const sinPlan=C.filter(c=>activo(c)&&c.etapa!=='nuevo'&&!c.proxima_fecha&&!segPendientes(c.id).length);
+  return {nuevos,segs,acciones,citas,sinPlan};
+}
+function pintarHoy(){
+  const t=tareasHoy();
+  const total=t.nuevos.length+t.segs.length+t.acciones.length+t.citas.length;
+  $('nHoy').textContent=total;
+  let h='';
+  if(!total) h+='<div class="okday"><b>Todo al día 🎉</b>No tienes nada pendiente para hoy.</div>';
+  if(t.nuevos.length){
+    h+='<div class="hoy-sec"><h3>🆕 Nuevos sin contactar <span class="n">'+t.nuevos.length+'</span></h3><p class="sub">Escríbeles ya: el primer mensaje rápido es lo que más convierte.</p>';
+    t.nuevos.forEach(c=>{const m=msgSeguimiento(c,0);const tp=tipoDe(c);
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div>'+
+        '<div class="why">Llegó '+hace(c.created_at)+(c.canal||c.fuente?' por '+esc(CANALES[c.canal]||FUENTES[c.fuente]||c.fuente):'')+(c.propiedad_id&&propTitulo(c.propiedad_id)?' · <b>'+esc(propTitulo(c.propiedad_id))+'</b>':'')+(c.mensaje?'<br>«'+esc(c.mensaje)+'»':'')+'</div></div>'+
+        (c.telefono?'<a class="btn-wa-sm" title="WhatsApp" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarEscrito(\''+c.id+'\',0)">💬</a>':'')+'</div>'+
+        '<div class="msg" onclick="this.classList.toggle(\'open\')">'+esc(m)+'</div>'+
+        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarEscrito(\''+c.id+'\',0)">💬 Escribirle</a>':'<span class="hint">Sin teléfono</span>')+
+        '<button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button><button class="btn sm" onclick="copiar(msgSeguimiento(C.find(x=>x.id===\''+c.id+'\'),0))">Copiar mensaje</button></div></div>';
+    });h+='</div>';
+  }
+  if(t.citas.length){
+    h+='<div class="hoy-sec"><h3>📅 Citas de hoy <span class="n">'+t.citas.length+'</span></h3>';
+    t.citas.forEach(z=>{const c=C.find(x=>x.id===z.contacto_id);const tel=z.contacto_telefono||(c&&c.telefono);
+      h+='<div class="todo" style="--tc:var(--gold)"><div class="t"><div><div class="name">'+esc(z.titulo)+'</div><div class="why">'+fechaHora(z.fecha_hora)+(z.tipo?' · '+esc(z.tipo):'')+(c?' · '+esc(c.nombre):'')+(z.ubicacion?'<br>📍 '+esc(z.ubicacion):'')+'</div></div>'+
+        (tel?'<a class="btn-wa-sm" href="'+waLink(tel,'Hola'+(c?' '+primerNombre(c.nombre):'')+', te confirmo nuestra cita de hoy: '+z.titulo+' a las '+new Date(z.fecha_hora).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+'.')+'" target="_blank">💬</a>':'')+'</div>'+
+        (c?'<div class="acts"><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div>':'')+'</div>';
+    });h+='</div>';
+  }
+  if(t.segs.length){
+    h+='<div class="hoy-sec"><h3>🔔 Seguimientos <span class="n">'+t.segs.length+'</span></h3><p class="sub">Cada mensaje aporta algo. Nunca «¿alguna novedad?».</p>';
+    t.segs.forEach(({s,c})=>{const m=msgSeguimiento(c,s.dia);const tp=tipoDe(c);const atr=-diasHasta(s.fecha);
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div>'+
+        '<div class="why'+(atr>0?' late':'')+'">Mensaje del día '+s.dia+(atr>0?' · atrasado '+atr+' día'+(atr!==1?'s':''):' · hoy')+' · '+etapaDe(c).e+' '+etapaDe(c).n+'</div></div>'+
+        (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)">💬</a>':'')+'</div>'+
+        '<div class="msg" onclick="this.classList.toggle(\'open\')">'+esc(m)+'</div>'+
+        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)">💬 Enviar</a>':'')+
+        '<button class="btn sm" onclick="marcarSeg(\''+s.id+'\',false)">Omitir</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
+    });h+='</div>';
+  }
+  if(t.acciones.length){
+    h+='<div class="hoy-sec"><h3>📌 Acciones programadas <span class="n">'+t.acciones.length+'</span></h3>';
+    t.acciones.forEach(c=>{const tp=tipoDe(c);const atr=-diasHasta(c.proxima_fecha);
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div>'+
+        '<div class="why'+(atr>0?' late':'')+'"><b style="color:#fff">'+esc(c.proxima_accion||'Hacer seguimiento')+'</b>'+(atr>0?' · atrasado '+atr+' día'+(atr!==1?'s':''):' · para hoy')+'</div></div>'+
+        (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,'')+'" target="_blank">💬</a>':'')+'</div>'+
+        '<div class="acts"><button class="btn ok sm" onclick="accionHecha(\''+c.id+'\')">✓ Hecho</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
+    });h+='</div>';
+  }
+  if(t.sinPlan.length){
+    h+='<div class="hoy-sec"><h3>🧭 Sin próximo paso <span class="n">'+t.sinPlan.length+'</span></h3><p class="sub">Estos contactos están activos pero nadie les programó nada. Ábrelos y define qué sigue.</p><div class="list">';
+    t.sinPlan.slice(0,12).forEach(c=>{h+=tarjeta(c);});h+='</div></div>';
+  }
+  $('hoyCont').innerHTML=h;
+}
+async function marcarEscrito(id,dia){
+  const c=C.find(x=>x.id===id);if(!c)return;
+  const seg=S.find(s=>s.contacto_id===id&&s.dia===dia);
+  if(seg) await sb.from('contacto_seguimientos').update({hecho:true,hecho_at:new Date().toISOString(),hecho_por:uid}).eq('id',seg.id);
+  await sb.from('contacto_actividades').insert([{contacto_id:id,usuario_id:uid,tipo:'whatsapp',texto:'Envió mensaje de WhatsApp (día '+dia+')'}]);
+  if(c.etapa==='nuevo') await sb.from('contactos').update({etapa:'contactado',asesor_id:c.asesor_id||uid}).eq('id',id);
+  setTimeout(cargarTodo,800);
+}
+async function marcarSeg(sid,enviado){
+  const s=S.find(x=>x.id===sid);if(!s)return;
+  await sb.from('contacto_seguimientos').update(enviado?{hecho:true,hecho_at:new Date().toISOString(),hecho_por:uid}:{omitido:true}).eq('id',sid);
+  if(enviado) await sb.from('contacto_actividades').insert([{contacto_id:s.contacto_id,usuario_id:uid,tipo:'whatsapp',texto:'Envió mensaje de seguimiento (día '+s.dia+')'}]);
+  toast(enviado?'Marcado como enviado':'Omitido');
+  await cargarTodo(); if(cur&&cur.id===s.contacto_id) abrirFicha(cur.id);
+}
+async function accionHecha(id){
+  const c=C.find(x=>x.id===id);if(!c)return;
+  await sb.from('contacto_actividades').insert([{contacto_id:id,usuario_id:uid,tipo:'nota',texto:'✓ Hecho: '+(c.proxima_accion||'seguimiento')}]);
+  await sb.from('contactos').update({proxima_accion:null,proxima_fecha:null}).eq('id',id);
+  toast('¡Listo! Ahora define el siguiente paso');
+  await cargarTodo(); abrirFicha(id);
+}
+
+/* ---------- TODOS ---------- */
+function pintarChips(){
+  const act=C.filter(activo);
+  const ct=[['','Todos',act.length,'var(--gold)']].concat(Object.keys(TIPOS).filter(k=>k!=='otro'||act.some(c=>c.tipo==='otro')).map(k=>[k,TIPOS[k].e+' '+TIPOS[k].n,act.filter(c=>c.tipo===k).length,TIPOS[k].c]));
+  $('chipsTipo').innerHTML=ct.map(([k,n,c,col])=>'<button class="chip'+(filtroTipo===k?' active':'')+'" style="--chip:'+col+'" onclick="filtroTipo=\''+k+'\';pintarChips();pintarLista()">'+n+' <span class="n">'+c+'</span></button>').join('');
+  const base=filtroTipo?C.filter(c=>c.tipo===filtroTipo):C;
+  const ce=[['activos','Activos',base.filter(activo).length,'var(--gold)']].concat(ETAPAS.map(e=>[e.k,e.e+' '+e.n,base.filter(c=>c.etapa===e.k).length,e.c]));
+  $('chipsEtapa').innerHTML=ce.map(([k,n,c,col])=>'<button class="chip'+(filtroEtapa===k?' active':'')+'" style="--chip:'+col+'" onclick="filtroEtapa=\''+k+'\';pintarChips();pintarLista()"><span class="dot"></span>'+n+' <span class="n">'+c+'</span></button>').join('');
+}
+function filtrados(){
+  const q=($('q').value||'').toLowerCase().trim();
+  return C.filter(c=>{
+    if(filtroTipo&&c.tipo!==filtroTipo)return false;
+    if(filtroEtapa==='activos'?!activo(c):c.etapa!==filtroEtapa)return false;
+    if(q){const blob=[c.nombre,c.telefono,c.email,c.zona,c.zonas_interes,c.tipo_inmueble,c.direccion,propTitulo(c.propiedad_id),c.notas,c.mensaje].join(' ').toLowerCase();if(!blob.includes(q))return false;}
+    return true;
+  });
+}
+function tarjeta(c){
+  const tp=tipoDe(c),et=etapaDe(c);
+  let next='',cls='';
+  const pend=segPendientes(c.id).sort((a,b)=>a.fecha<b.fecha?-1:1)[0];
+  if(c.proxima_fecha){const d=diasHasta(c.proxima_fecha);next='📌 '+(c.proxima_accion||'Seguimiento')+' · '+(d<0?'atrasado':d===0?'hoy':fechaCorta(c.proxima_fecha));cls=d<0?'late':d===0?'today':'';}
+  else if(pend){const d=diasHasta(pend.fecha);next='🔔 Mensaje día '+pend.dia+' · '+(d<0?'atrasado':d===0?'hoy':fechaCorta(pend.fecha));cls=d<0?'late':d===0?'today':'';}
+  else if(activo(c)&&c.etapa!=='nuevo')next='🧭 Sin próximo paso';
+  else if(c.etapa==='nuevo'){next='🆕 Escribirle hoy';cls='today';}
+  const linea=[c.tipo==='propietario'?[c.tipo_inmueble,c.zona,c.precio_esperado?money(c.precio_esperado):''].filter(Boolean).join(' · '):[c.tipo_inmueble_interes,c.zonas_interes||c.zona,c.presupuesto_max?'hasta '+money(c.presupuesto_max):''].filter(Boolean).join(' · '),propTitulo(c.propiedad_id)].filter(Boolean).join(' · ');
+  return '<div class="card" style="--tc:'+tp.c+'" onclick="abrirFicha(\''+c.id+'\')">'+
+    '<div class="top"><div style="min-width:0"><div class="name">'+esc(c.nombre)+'</div><div class="meta">'+(linea?'<b>'+esc(linea)+'</b><br>':'')+'<span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span> <span class="pill etapa" style="--ec:'+et.c+'">'+et.e+' '+et.n+'</span></div></div>'+
+    (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,'')+'" target="_blank" onclick="event.stopPropagation()">💬</a>':'')+'</div>'+
+    '<div class="row"><div class="next '+cls+'">'+esc(next)+'</div><div style="display:flex;align-items:center;gap:.4rem"><span class="hint">'+hace(c.updated_at||c.created_at)+'</span><span class="av" title="'+esc(nombreUsuario(c.asesor_id))+'">'+esc(c.asesor_id?iniciales(nombreUsuario(c.asesor_id)):'·')+'</span></div></div></div>';
+}
+function pintarLista(){
+  const arr=filtrados();
+  if(!arr.length){$('lista').innerHTML='<div class="empty" style="grid-column:1/-1"><b>Nada por aquí</b>'+(C.length?'Prueba otro filtro o búsqueda.':'Toca «+ Nuevo contacto» para empezar.')+'</div>';return;}
+  // Orden: lo más urgente primero
+  arr.sort((a,b)=>urgencia(b)-urgencia(a));
+  $('lista').innerHTML=arr.map(tarjeta).join('');
+}
+function urgencia(c){
+  if(!activo(c))return -1000+(new Date(c.updated_at).getTime()/1e12);
+  let u=0;const hoy=hoyISO();
+  if(c.etapa==='nuevo')u+=100;
+  if(c.proxima_fecha&&c.proxima_fecha<=hoy)u+=80+Math.min(20,-diasHasta(c.proxima_fecha));
+  const p=segPendientes(c.id).filter(s=>s.fecha<=hoy);if(p.length)u+=60;
+  if(c.prioridad==='alta')u+=15;
+  if(['oferta','propuesta','cita'].includes(c.etapa))u+=10;
+  return u+(new Date(c.updated_at).getTime()/1e13);
+}
+
+/* ---------- FICHA ---------- */
+async function abrirFicha(id){
+  cur=C.find(c=>c.id===id);if(!cur)return;
+  $('fOv').classList.add('on');$('ficha').classList.add('on');document.body.style.overflow='hidden';document.body.classList.add('ficha-abierta');
+  pintarFicha();
+  const {data}=await sb.from('contacto_actividades').select('*').eq('contacto_id',id).order('created_at',{ascending:false}).limit(200);
+  curActs=data||[];pintarHistorial();
+}
+function cerrarFicha(){$('fOv').classList.remove('on');$('ficha').classList.remove('on');document.body.style.overflow='';document.body.classList.remove('ficha-abierta');cur=null;}
+function pintarFicha(){
+  const c=cur,tp=tipoDe(c),et=etapaDe(c),idx=ETAPA_IDX[c.etapa];
+  const hintEt=typeof et.h==='string'?et.h:(et.h[c.tipo]||et.h.otro);
+  const segs=segsDe(c.id);
+  let h='<div class="fh"><div class="r1"><button class="back" onclick="cerrarFicha()" aria-label="Cerrar">←</button><div class="nm" id="fNombre">'+esc(c.nombre)+'</div><button class="btn xs" onclick="editarBasico()">✏️</button></div>'+
+    '<div class="r2">'+Object.keys(TIPOS).filter(k=>k!=='otro'||c.tipo==='otro').map(k=>'<button class="chip'+(c.tipo===k?' active':'')+'" style="--chip:'+TIPOS[k].c+'" onclick="cambiarCampo(\'tipo\',\''+k+'\')">'+TIPOS[k].e+' '+TIPOS[k].n+'</button>').join('')+
+    '<select class="inp" style="width:auto;min-height:38px;padding:.35rem .6rem;font-size:.8rem" onchange="cambiarCampo(\'asesor_id\',this.value||null)"><option value="">Sin responsable</option>'+Object.keys(USERS).map(u=>'<option value="'+u+'"'+(c.asesor_id===u?' selected':'')+'>'+esc(USERS[u]||'Usuario')+'</option>').join('')+'</select></div>'+
+    '<div class="ctc">'+(c.telefono?'<a class="w" href="'+waLink(c.telefono,'')+'" target="_blank">💬 WhatsApp</a><a href="tel:'+tel10(c.telefono)+'">📞 '+esc(c.telefono)+'</a>':'<span class="hint">Sin teléfono</span>')+(c.email?'<a href="mailto:'+esc(c.email)+'">✉️ Correo</a>':'')+'</div></div>';
+  h+='<div class="fb">';
+  // Etapa
+  h+='<div class="sec"><h4>Etapa <span>toca para cambiar</span></h4><div class="steps">'+ETAPAS.map((e,i)=>'<div class="step'+(i<idx&&c.etapa!=='perdido'?' done':'')+(c.etapa===e.k?' cur':'')+'" style="--ec:'+e.c+'" onclick="cambiarEtapa(\''+e.k+'\')"><span class="e">'+e.e+'</span><span class="l">'+e.n+'</span></div>').join('')+'</div><div class="step-hint">'+et.e+' '+esc(hintEt)+(c.etapa==='perdido'&&c.motivo_perdida?' <b>Motivo: '+esc(c.motivo_perdida)+'</b>':'')+(c.etapa==='cerrado'&&c.precio_final?' <b>'+money(c.precio_final)+'</b>':'')+'</div></div>';
+  // Próxima acción
+  if(activo(c)){
+    h+='<div class="sec"><h4>¿Qué sigue? <span>'+(c.proxima_fecha?'programado':'sin programar')+'</span></h4>'+
+      '<input class="inp" id="fAccion" placeholder="Ej: Enviarle las 3 opciones · Llamar para confirmar visita" value="'+esc(c.proxima_accion||'')+'">'+
+      '<div class="quick"><button class="btn xs" onclick="setFecha(0)">Hoy</button><button class="btn xs" onclick="setFecha(1)">Mañana</button><button class="btn xs" onclick="setFecha(3)">En 3 días</button><button class="btn xs" onclick="setFecha(7)">En 1 semana</button><button class="btn xs" onclick="setFecha(14)">En 2 semanas</button></div>'+
+      '<div class="g2"><input class="inp" type="date" id="fFecha" value="'+esc(c.proxima_fecha||'')+'"><button class="btn gold" onclick="guardarAccion()">Guardar</button></div></div>';
+  }
+  // Datos
+  h+='<div class="sec"><h4>Datos <span>'+esc(FUENTES[c.fuente]||c.fuente||'')+(c.canal?' · '+esc(CANALES[c.canal]||c.canal):'')+(c.campana?' · campaña '+esc(c.campana):'')+'</span></h4>';
+  if(c.mensaje)h+='<p class="hint" style="margin-bottom:.6rem">Escribió: «'+esc(c.mensaje)+'»</p>';
+  const sel=(id,val,ops)=>'<select id="'+id+'"><option value="">—</option>'+ops.map(o=>'<option'+(val===o?' selected':'')+'>'+o+'</option>').join('')+'</select>';
+  const propSel=(id,val)=>'<select id="'+id+'"><option value="">— Ninguno —</option>'+P.map(p=>'<option value="'+p.id+'"'+(String(val)===String(p.id)?' selected':'')+'>'+esc((p.titulo||'Inmueble').slice(0,60))+(p.barrio?' · '+esc(p.barrio):'')+'</option>').join('')+'</select>';
+  const TIPOS_INM=['Apartamento','Apartaestudio','Casa','Local','Oficina','Bodega','Lote','Finca','Parqueadero','Consultorio'];
+  if(c.tipo==='propietario'){
+    h+='<div class="g2"><div class="field"><label>Quiere</label>'+sel('dNegocio',c.negocio,['venta','arriendo','ambos'])+'</div><div class="field"><label>Tipo de inmueble</label>'+sel('dTipoInm',c.tipo_inmueble,TIPOS_INM)+'</div>'+
+      '<div class="field"><label>Zona / barrio</label><input id="dZona" value="'+esc(c.zona||'')+'"></div><div class="field"><label>Dirección</label><input id="dDir" value="'+esc(c.direccion||'')+'"></div>'+
+      '<div class="field"><label>m²</label><input id="dM2" type="number" inputmode="decimal" value="'+esc(c.m2||'')+'"></div><div class="field"><label>Habitaciones</label><input id="dHab" type="number" inputmode="numeric" value="'+esc(c.habitaciones||'')+'"></div>'+
+      '<div class="field"><label>Precio que espera</label><input id="dPrecio" type="number" inputmode="numeric" value="'+esc(c.precio_esperado||'')+'"></div><div class="field"><label>Tiempo publicado</label>'+sel('dTiempo',c.tiempo_publicado,['No publicado','Menos de 1 mes','1-3 meses','3-6 meses','Más de 6 meses'])+'</div>'+
+      '<div class="field"><label>Inmobiliaria actual</label><input id="dInmob" value="'+esc(c.inmobiliaria_actual||'')+'" placeholder="Ninguna"></div><div class="field"><label>Para cuándo</label>'+sel('dCuando',c.fecha_venta,['Ya','1-3 meses','3-6 meses','Sin afán'])+'</div></div>'+
+      '<div class="field"><label>Inmueble captado (en la plataforma)</label>'+propSel('dProp',c.propiedad_id)+'</div>';
+  }else{
+    h+='<div class="g2"><div class="field"><label>Busca</label>'+sel('dNegocio',c.negocio,['venta','arriendo','ambos'])+'</div><div class="field"><label>Tipo de inmueble</label>'+sel('dTipoInmI',c.tipo_inmueble_interes,TIPOS_INM)+'</div>'+
+      '<div class="field"><label>Zonas de interés</label><input id="dZonas" value="'+esc(c.zonas_interes||c.zona||'')+'"></div><div class="field"><label>Habitaciones mín.</label><input id="dHabMin" type="number" inputmode="numeric" value="'+esc(c.habitaciones_min||'')+'"></div>'+
+      '<div class="field"><label>Presupuesto desde</label><input id="dPMin" type="number" inputmode="numeric" value="'+esc(c.presupuesto_min||'')+'"></div><div class="field"><label>Presupuesto hasta</label><input id="dPMax" type="number" inputmode="numeric" value="'+esc(c.presupuesto_max||'')+'"></div>'+
+      '<div class="field"><label>Para cuándo</label>'+sel('dCuando',c.fecha_venta,['Ya','1-3 meses','3-6 meses','Sin afán'])+'</div><div class="field"><label>Prioridad</label>'+sel('dPrio',c.prioridad,['alta','media','baja'])+'</div></div>'+
+      '<div class="field"><label>Inmueble que le interesa</label>'+propSel('dProp',c.propiedad_id)+'</div>';
+  }
+  h+='<div class="g2"><div class="field"><label>Correo</label><input id="dEmail" type="email" value="'+esc(c.email||'')+'"></div><div class="field"><label>Cómo llegó</label>'+sel('dFuente',c.fuente,Object.keys(FUENTES).filter(k=>k!=='homepage'))+'</div>'+
+    '<div class="field"><label>Cédula</label><input id="dCedula" value="'+esc(c.cedula||'')+'"></div><div class="field"><label>Cumpleaños</label><input id="dNac" type="date" value="'+esc(c.fecha_nacimiento||'')+'"></div></div>'+
+    '<div class="field"><label>Notas fijas</label><textarea id="dNotas">'+esc(c.notas||'')+'</textarea></div>'+
+    '<button class="btn gold" onclick="guardarDatos()">Guardar datos</button></div>';
+  // Seguimiento automático
+  if(segs.length){
+    h+='<div class="sec"><h4>Seguimiento automático <span>'+segs.filter(s=>s.hecho).length+' de '+segs.length+' enviados</span></h4>';
+    segs.sort((a,b)=>a.dia-b.dia).forEach(s=>{const d=diasHasta(s.fecha);const cls=s.hecho?'done':s.omitido?'skip':d<0?'late':'';
+      h+='<div class="seg '+cls+'"><span class="d">Día '+s.dia+'</span><span class="f">'+(s.hecho?'✓ Enviado':s.omitido?'Omitido':(d<0?'Atrasado · ':d===0?'Hoy · ':'')+fechaCorta(s.fecha))+'</span>'+
+        (!s.hecho&&!s.omitido?'<a class="btn wa xs" href="'+waLink(c.telefono,msgSeguimiento(c,s.dia))+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)">💬 Enviar</a><button class="btn xs" onclick="marcarSeg(\''+s.id+'\',false)">Omitir</button>':'')+'</div>';
+    });h+='</div>';
+  }else if(activo(c)){
+    h+='<div class="sec"><h4>Seguimiento automático</h4><p class="hint">Este contacto ya avanzó o fue migrado, así que no tiene secuencia automática. Usa «¿Qué sigue?» para programar cada paso.</p></div>';
+  }
+  // Historial
+  h+='<div class="sec"><h4>Historial <span>nunca se borra</span></h4>'+
+    '<div style="display:flex;gap:.5rem"><input class="inp" id="fNota" placeholder="Escribe una nota…" onkeydown="if(event.key===\'Enter\')agregarNota()"><button class="btn gold" onclick="agregarNota()">＋</button></div>'+
+    '<div class="quick"><button class="btn xs" onclick="agregarNota(\'📞 Llamé\',\'llamada\')">📞 Llamé</button><button class="btn xs" onclick="agregarNota(\'💬 Le escribí por WhatsApp\',\'whatsapp\')">💬 Le escribí</button><button class="btn xs" onclick="agregarNota(\'🙈 No respondió\',\'nota\')">🙈 No respondió</button><button class="btn xs" onclick="agregarNota(\'🏠 Hicimos visita\',\'cita\')">🏠 Visita hecha</button></div>'+
+    '<ul class="hist" id="fHist"><li><span class="hint">Cargando…</span></li></ul></div>';
+  // Pie
+  h+='<div class="sec" style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn" onclick="citaDesde()">📅 Agendar cita</button>'+(yo.admin?'<button class="btn danger" onclick="eliminarContacto()">🗑 Eliminar</button>':'')+'</div>';
+  h+='</div>';
+  $('ficha').innerHTML=h;$('ficha').scrollTop=0;
+  if(curActs.length)pintarHistorial();
+}
+const ICONOS={nota:'📝',etapa:'➡️',whatsapp:'💬',llamada:'📞',cita:'📅',seguimiento:'🔔',sistema:'⚙️',cierre:'✅',perdida:'✖'};
+function pintarHistorial(){
+  const ul=$('fHist');if(!ul)return;
+  if(!curActs.length){ul.innerHTML='<li><span class="hint">Sin movimientos todavía.</span></li>';return;}
+  ul.innerHTML=curActs.map(a=>'<li><span class="ic">'+(ICONOS[a.tipo]||'•')+'</span><div class="tx">'+esc(a.texto||'')+'<div class="dt">'+fechaHora(a.created_at)+(a.usuario_id?' · '+esc(primerNombre(nombreUsuario(a.usuario_id))):'')+'</div></div></li>').join('');
+}
+async function agregarNota(txt,tipo){
+  const inp=$('fNota');const t=(txt||(inp&&inp.value)||'').trim();if(!t||!cur)return;
+  const {data,error}=await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:tipo||'nota',texto:t}]).select();
+  if(error){toast('No se pudo guardar: '+error.message);return;}
+  if(inp&&!txt)inp.value='';
+  curActs.unshift(data[0]);pintarHistorial();
+  const upd={};
+  if((tipo==='whatsapp'||tipo==='llamada')&&cur.etapa==='nuevo')upd.etapa='contactado';
+  if(!cur.asesor_id)upd.asesor_id=uid;
+  upd.updated_at=new Date().toISOString();
+  await sb.from('contactos').update(upd).eq('id',cur.id);
+  await refrescar(cur.id);
+}
+function setFecha(n){$('fFecha').value=addDias(n);}
+async function guardarAccion(){
+  if(!cur)return;const a=$('fAccion').value.trim(),f=$('fFecha').value||null;
+  if(a&&!f){toast('Ponle fecha: ¿cuándo?');return;}
+  const {error}=await sb.from('contactos').update({proxima_accion:a||null,proxima_fecha:a?f:null,asesor_id:cur.asesor_id||uid}).eq('id',cur.id);
+  if(error){toast(error.message);return;}
+  if(a)await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'nota',texto:'📌 Programó: '+a+' · '+fechaCorta(f)}]);
+  toast('Guardado');await refrescar(cur.id);
+}
+function val(id){const e=$(id);if(!e)return undefined;const v=e.value.trim();return v===''?null:(e.type==='number'?Number(v):v);}
+async function guardarDatos(){
+  if(!cur)return;
+  const u={email:val('dEmail'),fuente:val('dFuente'),cedula:val('dCedula'),fecha_nacimiento:val('dNac'),notas:val('dNotas'),negocio:val('dNegocio'),fecha_venta:val('dCuando'),propiedad_id:val('dProp')};
+  if(cur.tipo==='propietario'){Object.assign(u,{tipo_inmueble:val('dTipoInm'),zona:val('dZona'),direccion:val('dDir'),m2:val('dM2'),habitaciones:val('dHab'),precio_esperado:val('dPrecio'),tiempo_publicado:val('dTiempo'),inmobiliaria_actual:val('dInmob')});}
+  else{Object.assign(u,{tipo_inmueble_interes:val('dTipoInmI'),zonas_interes:val('dZonas'),habitaciones_min:val('dHabMin'),presupuesto_min:val('dPMin'),presupuesto_max:val('dPMax'),prioridad:val('dPrio')||'media'});}
+  const {error}=await sb.from('contactos').update(u).eq('id',cur.id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('Datos guardados');await refrescar(cur.id);
+}
+async function cambiarCampo(campo,valor){
+  if(!cur)return;const u={};u[campo]=valor;
+  const {error}=await sb.from('contactos').update(u).eq('id',cur.id);
+  if(error){toast(error.message);return;}
+  if(campo==='tipo')await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'sistema',texto:'Ahora es '+TIPOS[valor].n.toLowerCase()}]);
+  await refrescar(cur.id);
+}
+let pendEtapa=null;
+function cambiarEtapa(k){
+  if(!cur||cur.etapa===k)return;
+  if(k==='perdido'){pendEtapa=k;document.querySelectorAll('#pickMotivo button').forEach(b=>b.classList.remove('on'));$('pNota').value='';abrirModal('mPerdido');return;}
+  if(k==='cerrado'){pendEtapa=k;$('cPrecio').value=cur.precio_esperado||'';$('cVisitas').value='';$('cOfertas').value='';$('cLeads').value='';$('cNota').value='';llenarPropSelect('cProp',cur.propiedad_id);abrirModal('mCerrado');return;}
+  aplicarEtapa({etapa:k});
+}
+async function aplicarEtapa(u){
+  u.asesor_id=cur.asesor_id||uid;
+  const {error}=await sb.from('contactos').update(u).eq('id',cur.id);
+  if(error){toast('Error: '+error.message);return;}
+  toast(ETAPAS[ETAPA_IDX[u.etapa]].e+' '+ETAPAS[ETAPA_IDX[u.etapa]].n);
+  await refrescar(cur.id);
+}
+document.querySelectorAll('#pickMotivo button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#pickMotivo button').forEach(x=>x.classList.remove('on'));b.classList.add('on');});
+async function confirmarPerdido(){
+  const b=document.querySelector('#pickMotivo button.on');if(!b){toast('Elige un motivo');return;}
+  const nota=$('pNota').value.trim();cerrarModal('mPerdido');
+  await aplicarEtapa({etapa:'perdido',motivo_perdida:b.dataset.m+(nota?' · '+nota:''),proxima_accion:null,proxima_fecha:null});
+}
+async function confirmarCerrado(){
+  const u={etapa:'cerrado',precio_final:val('cPrecio'),visitas:val('cVisitas'),ofertas:val('cOfertas'),leads_recibidos:val('cLeads'),proxima_accion:null,proxima_fecha:null};
+  const p=val('cProp');if(p)u.propiedad_id=p;
+  const nota=$('cNota').value.trim();cerrarModal('mCerrado');
+  await aplicarEtapa(u);
+  if(nota)await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'cierre',texto:'🏁 '+nota}]);
+  await refrescar(cur.id);
+}
+async function eliminarContacto(){
+  if(!cur||!confirm('¿Eliminar a '+cur.nombre+' y todo su historial? Esto no se puede deshacer.'))return;
+  const {error}=await sb.from('contactos').delete().eq('id',cur.id);
+  if(error){toast(error.message);return;}
+  cerrarFicha();toast('Eliminado');await cargarTodo();
+}
+async function refrescar(id){
+  await cargarTodo();
+  if(cur){cur=C.find(c=>c.id===id);if(cur){pintarFicha();const {data}=await sb.from('contacto_actividades').select('*').eq('contacto_id',id).order('created_at',{ascending:false}).limit(200);curActs=data||[];pintarHistorial();}}
+}
+
+/* ---------- NUEVO / EDITAR BÁSICO ---------- */
+let editId=null,tipoNuevo='propietario';
+document.querySelectorAll('#pickTipo button').forEach(b=>b.onclick=()=>{tipoNuevo=b.dataset.t;document.querySelectorAll('#pickTipo button').forEach(x=>x.classList.toggle('on',x===b));$('nNegocio').value=tipoNuevo==='inquilino'?'arriendo':'venta';});
+function abrirModal(id){$(id).classList.add('on');}
+function cerrarModal(id){$(id).classList.remove('on');}
+function abrirNuevo(){
+  editId=null;$('mNuevoTit').textContent='Nuevo contacto';$('mNuevoAlert').innerHTML='';
+  ['nNombre','nTel','nEmail','nZona','nNota'].forEach(i=>$(i).value='');$('nFuente').value='whatsapp';
+  tipoNuevo='propietario';document.querySelectorAll('#pickTipo button').forEach(x=>x.classList.toggle('on',x.dataset.t==='propietario'));$('nNegocio').value='venta';
+  $('nGuardar').textContent='Guardar contacto';abrirModal('mNuevo');setTimeout(()=>$('nNombre').focus(),100);
+}
+function editarBasico(){
+  if(!cur)return;editId=cur.id;$('mNuevoTit').textContent='Editar datos básicos';$('mNuevoAlert').innerHTML='';
+  $('nNombre').value=cur.nombre||'';$('nTel').value=cur.telefono||'';$('nEmail').value=cur.email||'';$('nZona').value=cur.zona||cur.zonas_interes||'';$('nNota').value='';$('nFuente').value=cur.fuente||'otro';$('nNegocio').value=cur.negocio||'venta';
+  tipoNuevo=cur.tipo;document.querySelectorAll('#pickTipo button').forEach(x=>x.classList.toggle('on',x.dataset.t===cur.tipo));
+  $('nGuardar').textContent='Guardar cambios';abrirModal('mNuevo');
+}
+async function guardarNuevo(){
+  const nombre=$('nNombre').value.trim(),tel=tel10($('nTel').value);
+  if(!nombre){$('mNuevoAlert').innerHTML='<div class="alert err">Escribe el nombre.</div>';return;}
+  if(!tel&&!editId){$('mNuevoAlert').innerHTML='<div class="alert err">Escribe el WhatsApp (10 dígitos).</div>';return;}
+  const dup=tel?C.find(c=>c.telefono===tel&&c.id!==editId):null;
+  if(dup&&!editId){$('mNuevoAlert').innerHTML='<div class="alert err">Ese número ya es de <b>'+esc(dup.nombre)+'</b> ('+esc(etapaDe(dup).n)+'). <button class="btn xs" style="margin-left:.4rem" onclick="cerrarModal(\'mNuevo\');abrirFicha(\''+dup.id+'\')">Abrir su ficha</button></div>';return;}
+  const b=$('nGuardar');b.disabled=true;
+  const base={nombre,telefono:tel||null,email:$('nEmail').value.trim()||null,tipo:tipoNuevo,negocio:$('nNegocio').value,fuente:$('nFuente').value};
+  if(tipoNuevo==='propietario')base.zona=$('nZona').value.trim()||null;else base.zonas_interes=$('nZona').value.trim()||null;
+  let error,nuevoId=null;
+  if(editId){({error}=await sb.from('contactos').update(base).eq('id',editId));nuevoId=editId;}
+  else{base.canal='manual';base.asesor_id=uid;base.mensaje=$('nNota').value.trim()||null;const r=await sb.from('contactos').insert([base]).select();error=r.error;if(r.data&&r.data[0])nuevoId=r.data[0].id;}
+  b.disabled=false;
+  if(error){$('mNuevoAlert').innerHTML='<div class="alert err">'+esc(error.message)+'</div>';return;}
+  cerrarModal('mNuevo');toast(editId?'Guardado':'Contacto creado');
+  await cargarTodo();
+  if(nuevoId)abrirFicha(nuevoId);
+}
+
+/* ---------- AGENDA ---------- */
+function llenarPropSelect(id,val){const s=$(id);if(!s)return;s.innerHTML='<option value="">-- Elegir --</option>'+P.map(p=>'<option value="'+p.id+'"'+(String(val)===String(p.id)?' selected':'')+'>'+esc((p.titulo||'Inmueble').slice(0,60))+(p.barrio?' · '+esc(p.barrio):'')+'</option>').join('');}
+function llenarSelects(){
+  const cs=$('czContacto');if(cs){const v=cs.value;cs.innerHTML='<option value="">-- Elegir --</option>'+C.filter(activo).sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>'<option value="'+c.id+'">'+esc(c.nombre)+(c.telefono?' · '+esc(c.telefono):'')+'</option>').join('');cs.value=v;}
+  llenarPropSelect('czProp');const ps=$('czProp');if(ps)ps.options[0].text='-- Ninguno --';
+}
+function citaDesde(){if(!cur)return;const c=cur;cerrarFicha();verTab('agenda');$('czContacto').value=c.id;$('czTitulo').value=(c.tipo==='propietario'?'Diagnóstico con ':'Visita con ')+primerNombre(c.nombre);$('czTipo').value=c.tipo==='propietario'?'Diagnóstico':'Visita';if(c.propiedad_id)$('czProp').value=c.propiedad_id;$('czFecha').focus();window.scrollTo({top:0,behavior:'smooth'});}
+async function guardarCita(){
+  const titulo=$('czTitulo').value.trim(),fecha=$('czFecha').value,msg=$('czMsg');
+  if(!titulo||!fecha){msg.textContent='Falta el título o la fecha.';return;}
+  const cid=$('czContacto').value||null;const c=C.find(x=>x.id===cid);
+  const payload={asesor_id:uid,titulo,tipo:$('czTipo').value,fecha_hora:new Date(fecha).toISOString(),duracion_min:Number($('czDur').value)||60,contacto_id:cid,
+    propiedad_id:$('czProp').value||null,ubicacion:$('czUbic').value.trim()||null,contacto_nombre:c?c.nombre:null,contacto_telefono:c?c.telefono:null,notas:$('czNotas').value.trim()||null,estado:'Programada'};
+  msg.textContent='Guardando…';
+  const {data,error}=await sb.from('citas').insert([payload]).select();
+  if(error){msg.textContent='Error: '+error.message;return;}
+  msg.textContent='✓ Cita guardada';
+  if(c){await sb.from('contacto_actividades').insert([{contacto_id:c.id,usuario_id:uid,tipo:'cita',texto:'📅 Cita: '+titulo+' · '+fechaHora(payload.fecha_hora)}]);
+    const u={};if(ETAPA_IDX[c.etapa]<ETAPA_IDX.cita)u.etapa='cita';if(!c.asesor_id)u.asesor_id=uid;if(Object.keys(u).length)await sb.from('contactos').update(u).eq('id',c.id);}
+  ['czTitulo','czFecha','czUbic','czNotas'].forEach(i=>$(i).value='');
+  await cargarTodo();
+}
+function gcalLink(z){const s=new Date(z.fecha_hora),e=new Date(s.getTime()+(z.duracion_min||60)*60000);const f=d=>d.toISOString().replace(/[-:]|\.\d{3}/g,'');return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(z.titulo)+'&dates='+f(s)+'/'+f(e)+(z.ubicacion?'&location='+encodeURIComponent(z.ubicacion):'')+'&details='+encodeURIComponent((z.contacto_nombre?'Con: '+z.contacto_nombre+(z.contacto_telefono?' ('+z.contacto_telefono+')':'')+'\n':'')+(z.notas||'')+'\nAgendado desde LoMaz Home');}
+function pintarAgenda(){
+  const cont=$('agendaList');if(!cont)return;
+  if(!Z.length){cont.innerHTML='<div class="empty"><b>Sin citas próximas</b>Crea una arriba.</div>';return;}
+  const hoy=hoyISO();
+  cont.innerHTML=Z.map(z=>{const d=new Date(z.fecha_hora);const c=C.find(x=>x.id===z.contacto_id);const tel=z.contacto_telefono||(c&&c.telefono);
+    return '<div class="cita'+(z.fecha_hora.slice(0,10)===hoy?' hoy':'')+'"><div class="when">'+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+'<small>'+d.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'})+'</small></div>'+
+      '<div class="body"><div class="ct">'+esc(z.titulo)+' <span class="pill etapa" style="--ec:var(--gold)">'+esc(z.tipo||'Cita')+'</span></div><div class="cs">'+(c?'👤 <a style="color:var(--gold)" onclick="abrirFicha(\''+c.id+'\')">'+esc(c.nombre)+'</a> · ':z.contacto_nombre?'👤 '+esc(z.contacto_nombre)+' · ':'')+(z.ubicacion?'📍 '+esc(z.ubicacion)+' · ':'')+(z.propiedad_id&&propTitulo(z.propiedad_id)?'🏠 '+esc(propTitulo(z.propiedad_id)):'')+(z.notas?'<br><i>'+esc(z.notas)+'</i>':'')+'</div>'+
+      '<div class="quick" style="margin-top:.5rem">'+(tel?'<a class="btn wa xs" target="_blank" href="'+waLink(tel,'Hola'+(c?' '+primerNombre(c.nombre):'')+', te confirmo nuestra cita: '+z.titulo+', '+d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})+' a las '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+(z.ubicacion?'. Lugar: '+z.ubicacion:'')+'.')+'">💬 Confirmar</a>':'')+'<a class="btn xs" target="_blank" href="'+gcalLink(z)+'">📅 Google Calendar</a></div></div></div>';}).join('');
+}
+
+/* ---------- NÚMEROS ---------- */
+function pintarNumeros(){
+  const cont=$('numCont');if(!cont)return;
+  const hoy=new Date(),mes=hoy.getFullYear()+'-'+String(hoy.getMonth()+1).padStart(2,'0');
+  const d30=new Date(Date.now()-30*86400000).toISOString();
+  const esteMes=C.filter(c=>c.created_at.slice(0,7)===mes);
+  const act=C.filter(activo);
+  const cerradosMes=C.filter(c=>c.etapa==='cerrado'&&(c.cerrado_at||'').slice(0,7)===mes);
+  const sinContactar24=C.filter(c=>c.etapa==='nuevo'&&diasDesde(c.created_at)>=1).length;
+  const cierres=C.filter(c=>c.etapa==='cerrado'&&c.dias_hasta_cierre!=null);
+  const promDias=cierres.length?Math.round(cierres.reduce((a,c)=>a+c.dias_hasta_cierre,0)/cierres.length):null;
+  const semana=new Date(Date.now()+7*86400000);const citasSem=Z.filter(z=>new Date(z.fecha_hora)<=semana).length;
+  let h='<div class="kpis">'+
+    kpi(esteMes.length,'Nuevos este mes',esteMes.filter(c=>c.tipo==='propietario').length+' propietarios')+
+    kpi(act.filter(c=>c.tipo==='propietario').length,'Propietarios activos','')+
+    kpi(act.filter(c=>c.tipo!=='propietario').length,'Compradores / inquilinos','activos')+
+    kpi(citasSem,'Citas esta semana','')+
+    kpi(cerradosMes.length,'Cerrados este mes',money(cerradosMes.reduce((a,c)=>a+(Number(c.precio_final)||0),0)))+
+    kpi(sinContactar24,'Sin contactar +24 h',sinContactar24?'¡escríbeles!':'bien')+
+    kpi(promDias!=null?promDias:'—','Días hasta cierre','promedio')+
+    kpi(C.filter(c=>c.etapa==='perdido').length,'Perdidos','histórico')+'</div>';
+  // Embudo (histórico): cuántos llegaron al menos a cada etapa
+  const llegaron=k=>C.filter(c=>c.etapa!=='perdido'?ETAPA_IDX[c.etapa]>=ETAPA_IDX[k]:false).length+(k==='nuevo'?C.filter(c=>c.etapa==='perdido').length:0);
+  const tot=C.length||1;
+  h+='<div class="g-panels"><div class="panel funnel"><h3>Embudo <em>histórico</em></h3>'+ETAPAS.filter(e=>e.k!=='perdido').map(e=>{const n=llegaron(e.k);return barra(e.e+' '+e.n,n,tot,n+' · '+Math.round(n/tot*100)+'%');}).join('')+'<p class="hint" style="margin-top:.6rem">Cuántos contactos llegaron al menos hasta cada etapa.</p></div>';
+  // Por fuente (30 días)
+  const rec=C.filter(c=>c.created_at>=d30);const porF={};rec.forEach(c=>{const f=FUENTES[c.fuente]||c.fuente||'Otro';porF[f]=(porF[f]||0)+1;});
+  const fuentes=Object.entries(porF).sort((a,b)=>b[1]-a[1]);
+  h+='<div class="panel"><h3>De dónde llegan <em>(30 días)</em></h3>'+(fuentes.length?fuentes.map(([f,n])=>barra(f,n,rec.length,n)).join(''):'<p class="hint">Aún no hay contactos en los últimos 30 días.</p>')+'</div>';
+  // Motivos de pérdida
+  const porM={};C.filter(c=>c.etapa==='perdido').forEach(c=>{const m=(c.motivo_perdida||'sin motivo').split(' · ')[0];porM[m]=(porM[m]||0)+1;});
+  const motivos=Object.entries(porM).sort((a,b)=>b[1]-a[1]);const totM=motivos.reduce((a,x)=>a+x[1],0)||1;
+  h+='<div class="panel"><h3>Por qué se <em>pierden</em></h3>'+(motivos.length?motivos.map(([m,n])=>barra(m,n,totM,n)).join(''):'<p class="hint">Ninguno perdido todavía.</p>')+'</div>';
+  // Campañas
+  const porC={};C.filter(c=>c.campana||c.utm_campaign).forEach(c=>{const k=c.campana||c.utm_campaign;porC[k]=(porC[k]||0)+1;});
+  const camps=Object.entries(porC).sort((a,b)=>b[1]-a[1]);
+  h+='<div class="panel"><h3>Por <em>campaña</em></h3>'+(camps.length?camps.map(([m,n])=>barra(m,n,camps[0][1],n)).join(''):'<p class="hint">Cuando pautes con enlaces <code>?utm_campaign=…</code>, aquí verás cuántos contactos trae cada anuncio.</p>')+'</div></div>';
+  cont.innerHTML=h;
+}
+function kpi(n,l,s){return '<div class="kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div>'+(s?'<div class="s">'+esc(String(s))+'</div>':'')+'</div>';}
+function barra(l,n,tot,v){return '<div class="bar"><span class="l">'+esc(l)+'</span><span class="b"><i style="width:'+Math.max(2,Math.round(n/(tot||1)*100))+'%"></i></span><span class="v">'+esc(String(v))+'</span></div>';}
+
+/* ---------- AGENTE ---------- */
+function puntaje(c){
+  let s=0;const r=[];const hoy=hoyISO();
+  if(c.etapa==='nuevo'){s+=40;r.push('Nuevo sin contactar');}
+  else if(c.etapa==='contactado'){s+=25;r.push('Contactado, necesita siguiente paso');}
+  else if(c.etapa==='cita'){s+=35;r.push('Cita: confirmar y preparar');}
+  else if(c.etapa==='propuesta'){s+=38;r.push('Propuesta enviada: cerrar la decisión');}
+  else if(c.etapa==='oferta'){s+=45;r.push('Oferta en negociación');}
+  else if(c.etapa==='activo'){s+=20;r.push('En proceso: mantener ritmo');}
+  if(c.proxima_fecha&&c.proxima_fecha<=hoy){s+=25;r.push('Acción vencida');}
+  if(segPendientes(c.id).some(x=>x.fecha<=hoy)){s+=20;r.push('Seguimiento pendiente');}
+  const d=diasDesde(c.updated_at||c.created_at);if(d>14){s+=10;r.push('Lleva '+d+' días sin movimiento');}
+  if(c.tipo==='propietario')s+=10;if(c.prioridad==='alta')s+=10;if(c.telefono)s+=5;
+  return {s,nivel:s>=60?'hot':s>=35?'warm':'cold',r};
+}
+function siguiente(c){
+  const m={nuevo:'Escríbele hoy el mensaje del día 0 y califica: cuándo, cuánto, con quién.',contactado:c.tipo==='propietario'?'Proponle el Diagnóstico LO MÁS esta semana.':'Envíale 2-3 opciones y propón visita.',cita:'Confirma la cita un día antes y prepara comparables.',propuesta:'Llama para resolver dudas y pedir la decisión.',activo:c.tipo==='propietario'?'Envíale el reporte semanal: leads, visitas, ofertas.':'Agenda la siguiente visita.',oferta:'Haz seguimiento a la oferta y resuelve objeciones.'};
+  return m[c.etapa]||'Reactivar con una novedad del mercado.';
+}
+function agenteAnalizar(){
+  const f=$('agFocus').value;let arr=C.filter(activo);
+  if(f==='nuevos')arr=arr.filter(c=>c.etapa==='nuevo');else if(f==='seguimiento')arr=arr.filter(c=>c.etapa!=='nuevo');else if(f==='propietarios')arr=arr.filter(c=>c.tipo==='propietario');
+  arr.forEach(c=>c.__p=puntaje(c));arr.sort((a,b)=>b.__p.s-a.__p.s);
+  const cont=$('agResults');
+  if(!arr.length){cont.innerHTML='<div class="empty"><b>Nada que analizar</b>No hay contactos activos en este filtro.</div>';return;}
+  cont.innerHTML=arr.slice(0,15).map(c=>{const p=c.__p;const tp=tipoDe(c);
+    return '<div class="agent-card"><div class="h"><span style="font-weight:600;color:#fff">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></span><span class="score '+p.nivel+'">'+(p.nivel==='hot'?'URGENTE':p.nivel==='warm'?'PRONTO':'PUEDE ESPERAR')+'</span></div>'+
+      '<div class="b">'+etapaDe(c).e+' '+etapaDe(c).n+' · '+esc(p.r[0]||'')+'<br>➡️ <b style="color:#e8d5b0">'+esc(siguiente(c))+'</b></div>'+
+      '<div class="quick" style="margin-top:.6rem"><button class="btn gold xs" onclick="agenteMsg(\''+c.id+'\')">Redactar mensaje</button><button class="btn xs" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';}).join('');
+}
+function agenteMsg(id){agSel=C.find(c=>c.id===id);if(!agSel)return;$('agMsgPanel').style.display='block';$('agMsgFor').textContent='para '+agSel.nombre;agenteRedactar();$('agMsgPanel').scrollIntoView({behavior:'smooth',block:'center'});}
+function agenteRedactar(){
+  if(!agSel)return;const c=agSel,canal=$('agMsgCanal').value,tono=$('agMsgTono').value;
+  const n=primerNombre(c.nombre),a=primerNombre(yo.nombre)||'LoMaz Home';
+  const saludo=tono==='formal'?'Estimado/a '+c.nombre:tono==='directo'?'Hola '+n:'Hola '+n+', un gusto saludarte';
+  let cuerpo;
+  if(c.tipo==='propietario'){
+    cuerpo={nuevo:'Soy '+a+' de LoMaz Home. Antes de hablar de precio quiero entender tres cosas: cuándo quieres '+(c.negocio==='arriendo'?'arrendar':'vender')+', qué valor esperas y si ya lo estás comercializando con alguien.',
+      contactado:'Como te comenté, en LoMaz no publicamos y esperamos: medimos precio, competencia y demanda. Te propongo hacer el Diagnóstico LO MÁS esta semana; en 20 minutos sabemos si el tema es precio, presentación o estrategia.',
+      cita:'Te confirmo nuestra cita. Voy a llevar los comparables de '+(c.zona||'tu zona')+' para que veamos con datos dónde está parado tu inmueble.',
+      propuesta:'Te envié la propuesta de comercialización. ¿Hay algo que quieras ajustar o alguna duda que te frene para arrancar?',
+      activo:'Te paso el reporte de la semana de tu inmueble: interesados, visitas y comentarios de los compradores. Con eso decidimos el siguiente movimiento.',
+      oferta:'Tenemos una oferta sobre la mesa. Te propongo revisarla juntos hoy y definir la contrapropuesta con criterio.'}[c.etapa]||'Quería retomar el tema de tu inmueble en '+(c.zona||'tu zona')+'. Si sigue disponible, puedo actualizarte el diagnóstico.';
+  }else{
+    const z=c.zonas_interes||c.zona||'la zona que buscas';
+    cuerpo={nuevo:'Soy '+a+' de LoMaz Home. Vi tu interés'+(c.propiedad_id&&propTitulo(c.propiedad_id)?' en '+propTitulo(c.propiedad_id):' en '+z)+'. Para pasarte solo lo que de verdad te sirve: ¿para cuándo lo necesitas y qué presupuesto manejas?',
+      contactado:'Te tengo 2-3 opciones en '+z+' que encajan con lo que me contaste. ¿Te las envío y coordinamos visita esta semana?',
+      cita:'Te confirmo la visita. Si quieres, llevo también una segunda opción cerca para que compares el mismo día.',
+      propuesta:'¿Qué te parecieron las opciones? Dime cuál te llamó más la atención y la separamos para visita antes de que se mueva.',
+      activo:'Entraron inmuebles nuevos en '+z+'. Te envío los que encajan con tu búsqueda.',
+      oferta:'Ya presentamos tu oferta. Te cuento la respuesta apenas la tenga y definimos el siguiente paso.'}[c.etapa]||'¿Sigues buscando en '+z+'? Si cambió algo, cuéntame y ajusto las opciones.';
+  }
+  const cierre=tono==='formal'?'Quedo atento a su respuesta. Cordialmente.':'¿Te parece si hablamos hoy? Quedo pendiente.';
+  let out;
+  if(canal==='email')out='Asunto: '+(c.tipo==='propietario'?'Tu inmueble en '+(c.zona||'Bogotá')+' · LoMaz Home':'Tu búsqueda de inmueble · LoMaz Home')+'\n\n'+saludo+',\n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+a+', LoMaz Home';
+  else if(canal==='llamada')out='GUION DE LLAMADA\n1) Saludo: '+saludo+'.\n2) Motivo: '+cuerpo+'\n3) Calificar: tiempos, valor, con quién más está hablando.\n4) Cierre: '+cierre;
+  else out=saludo+' 👋\n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+a+', LoMaz Home';
+  $('agMsgOut').innerText=out;
+}
+async function agenteWhats(){if(!agSel||!agSel.telefono){toast('Sin teléfono');return;}window.open(waLink(agSel.telefono,$('agMsgOut').innerText),'_blank');await sb.from('contacto_actividades').insert([{contacto_id:agSel.id,usuario_id:uid,tipo:'whatsapp',texto:'Envió mensaje desde el Agente'}]);if(agSel.etapa==='nuevo')await sb.from('contactos').update({etapa:'contactado',asesor_id:agSel.asesor_id||uid}).eq('id',agSel.id);setTimeout(cargarTodo,800);}
+
+/* ---------- Topbar (avatar, rol, salir) ---------- */
+(function(){function fmtRol(r){if(!r)return"Usuario";var map={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};var k=String(r).toLowerCase();return map[k]||(r.charAt(0).toUpperCase()+r.slice(1));}async function fillTop(){try{var s=(await sb.auth.getSession()).data.session;if(!s)return;var email=s.user.email||"";var av=$("topAvatarMini");if(av&&email)av.textContent=email.charAt(0).toUpperCase();var r=await sb.from("perfiles_usuarios").select("nombre_completo,rol_id,roles(nombre)").eq("id",s.user.id).single();var p=r.data;if(p){var nombre=(p.nombre_completo||"").trim();if(nombre){$("topName").textContent=nombre;if(av)av.textContent=nombre.charAt(0).toUpperCase();}var rn=p.roles&&p.roles.nombre?p.roles.nombre:null;$("topRole").textContent=fmtRol(rn);}}catch(e){}}fillTop();var av=$("topAvatarMini"),mn=$("topAvatarMenu");if(av){av.addEventListener("click",function(e){e.stopPropagation();mn.style.display=(mn.style.display==="none")?"block":"none";});document.addEventListener("click",function(){mn.style.display="none";});}var lo=$("topLogoutBtn");if(lo){lo.addEventListener("click",function(e){e.preventDefault();try{Object.keys(localStorage).filter(function(x){return /sb-.*-auth-token/.test(x)}).forEach(function(x){localStorage.removeItem(x);});}catch(_){}location.href="login.html";});}})();
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrarFicha();document.querySelectorAll('.modal-ov.on').forEach(m=>m.classList.remove('on'));}});
+document.querySelectorAll('.modal-ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
+</script>
+<script src="lomaz-admin-nav.js" defer></script>
+</body>
+</html>

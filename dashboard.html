@@ -124,9 +124,7 @@ a{color:inherit;text-decoration:none}
 <div class="sidebar-section">Mis Herramientas</div>
 <a href="agregar-propiedad.html"><span class="icon">➕</span>Agregar Propiedad</a>
 <a href="mis-propiedades.html"><span class="icon">📋</span>Mis Propiedades</a>
-<a href="leads.html"><span class="icon">🎯</span>Leads</a>
-<a href="clientes.html"><span class="icon">👥</span>Clientes</a>
-<a href="pipeline.html"><span class="icon">📊</span>Pipeline de Ventas</a>
+<a href="contactos.html"><span class="icon">👥</span>Contactos (CRM)</a>
 <div class="sidebar-section">Publicacion</div><a href="portales.html"><span class="icon">🌐</span>Portales</a>
 <a href="marketing.html"><span class="icon">📱</span>Marketing / Contenido</a>
 <a href="crear-articulo.html"><span class="icon">✍️</span>Crear Artículo</a>
@@ -149,18 +147,16 @@ a{color:inherit;text-decoration:none}
 <div class="section-divider"></div>
 <div class="stats">
 <div class="stat" onclick="location.href='mis-propiedades.html'" style="cursor:pointer"><div class="ico">🏢</div><div class="num" id="totalProps">0</div><div class="lbl">Propiedades Activas</div><div class="sub">Total publicadas activas</div></div>
-<div class="stat" onclick="location.href='leads.html'" style="cursor:pointer"><div class="ico">🎯</div><div class="num" id="totalLeads">0</div><div class="lbl">Leads Nuevos (30d)</div><div class="sub up">↑ Ultimos 30 dias</div></div>
-<div class="stat" onclick="location.href='clientes.html'" style="cursor:pointer"><div class="ico">👥</div><div class="num" id="totalClientes">0</div><div class="lbl">Clientes Activos</div><div class="sub">Clientes estado activo</div></div>
-<div class="stat" onclick="location.href='pipeline.html'" style="cursor:pointer"><div class="ico">💰</div><div class="num" id="valorPipeline">$0</div><div class="lbl">Valor en Pipeline</div><div class="sub">Valor inventario activo</div></div>
+<div class="stat" onclick="location.href='contactos.html'" style="cursor:pointer"><div class="ico">☀️</div><div class="num" id="totalHoy">0</div><div class="lbl">Para hoy</div><div class="sub">Contactos que esperan algo hoy</div></div>
+<div class="stat" onclick="location.href='contactos.html#todos'" style="cursor:pointer"><div class="ico">🎯</div><div class="num" id="totalLeads">0</div><div class="lbl">Contactos nuevos (30d)</div><div class="sub up">↑ Ultimos 30 dias</div></div>
+<div class="stat" onclick="location.href='contactos.html#todos'" style="cursor:pointer"><div class="ico">👥</div><div class="num" id="totalClientes">0</div><div class="lbl">Contactos activos</div><div class="sub">Del equipo, sin cerrar ni perder</div></div>
 </div>
 <h2 class="section-title">Accesos <em>rapidos</em></h2>
 <div class="section-divider"></div>
 <div class="cards">
 <a href="agregar-propiedad.html" class="card"><div class="ico">➕</div><h3>Agregar Propiedad</h3><p>Publicar nueva propiedad</p></a>
 <a href="mis-propiedades.html" class="card"><div class="ico">📋</div><h3>Mis Propiedades</h3><p>Gestionar inventario</p></a>
-<a href="leads.html" class="card"><div class="ico">🎯</div><h3>Leads</h3><p>Gestionar prospectos</p></a>
-<a href="clientes.html" class="card"><div class="ico">👥</div><h3>Clientes CRM</h3><p>Base de clientes</p></a>
-<a href="pipeline.html" class="card"><div class="ico">📊</div><h3>Pipeline</h3><p>Tablero Kanban</p></a>
+<a href="contactos.html" class="card"><div class="ico">👥</div><h3>Contactos (CRM)</h3><p>Propietarios, compradores e inquilinos</p></a>
 <a href="calculadora.html" class="card"><div class="ico">📝</div><h3>Calculadora</h3><p>ROI, credito, arriendo</p></a>
 <a href="marketing.html" class="card"><div class="ico">📱</div><h3>Marketing / Contenido</h3><p>Calendario de redes sociales</p></a>
 <a href="crear-articulo.html" class="card"><div class="ico">✍️</div><h3>Crear Artículo</h3><p>Publicar en el blog</p></a><a href="portales.html" class="card"><div class="ico">🌐</div><h3>Portales</h3><p>Integracion y publicacion</p></a>
@@ -230,15 +226,16 @@ const {count:cProp}=await sb.from("propiedades").select("*",{count:"exact",head:
 document.getElementById("totalProps").textContent=cProp||0;
 
 const d30=new Date();d30.setDate(d30.getDate()-30);
-const {count:cLeads}=await sb.from("leads").select("*",{count:"exact",head:true}).eq("asesor_id",uid).gte("created_at",d30.toISOString());
+const {count:cLeads}=await sb.from("contactos").select("*",{count:"exact",head:true}).gte("created_at",d30.toISOString());
 document.getElementById("totalLeads").textContent=cLeads||0;
 
-const {count:cCli}=await sb.from("clientes").select("*",{count:"exact",head:true}).eq("asesor_id",uid).eq("estado","activo");
-document.getElementById("totalClientes").textContent=cCli||0;
-
-const {data:pipeProp}=await sb.from("propiedades").select("precio").eq("asesor_id",uid).eq("estado","activa").limit(100);
-const total=(pipeProp||[]).reduce((s,p)=>s+(p.precio||0),0);
-document.getElementById("valorPipeline").textContent=fmtCOP(total);
+const {data:act}=await sb.from("contactos").select("id,etapa,proxima_fecha").not("etapa","in","(cerrado,perdido)");
+document.getElementById("totalClientes").textContent=(act||[]).length;
+const hoyStr=new Date().toLocaleDateString("sv-SE");
+const {data:segHoy}=await sb.from("contacto_seguimientos").select("contacto_id").eq("hecho",false).eq("omitido",false).lte("fecha",hoyStr);
+const ids=new Set((segHoy||[]).map(s=>s.contacto_id));
+(act||[]).forEach(c=>{if(c.etapa==="nuevo"||(c.proxima_fecha&&c.proxima_fecha<=hoyStr))ids.add(c.id);});
+document.getElementById("totalHoy").textContent=ids.size;
 }catch(e){console.error("stats",e);}
 }
 

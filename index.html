@@ -19,6 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script src="lomaz-contacto.js"></script>
 <script src="config.js"></script>
 <style>
 :root{
@@ -657,9 +658,10 @@ button{font-family:var(--sans)}
         <label class="form-lbl" for="cfInteres">Me interesa</label>
         <select class="form-sel" id="cfInteres" name="interes">
           <option value="">Selecciona una opción</option>
-          <option value="comprar">Comprar propiedad</option>
-          <option value="arrendar">Arrendar propiedad</option>
-          <option value="vender">Vender propiedad</option>
+          <option value="vender">Quiero vender mi inmueble</option>
+          <option value="arrendar_mi">Quiero poner mi inmueble en arriendo</option>
+          <option value="comprar">Quiero comprar</option>
+          <option value="tomar_arriendo">Quiero tomar un inmueble en arriendo</option>
           <option value="invertir">Inversión inmobiliaria</option>
         </select>
       </div>
@@ -962,18 +964,19 @@ async function submitForm(e) {
   const originalText = btn.textContent;
   btn.textContent = 'Enviando...';
   const form = document.getElementById('consultForm');
+  const interesSel = document.getElementById('cfInteres');
+  const interesTxt = interesSel.value ? interesSel.options[interesSel.selectedIndex].text : '';
+  const quien = lhTipoDesdeInteres(interesTxt);
   const data = {
     nombre: document.getElementById('cfNombre').value,
     telefono: document.getElementById('cfTel').value,
     email: document.getElementById('cfEmail').value || null,
-    mensaje: (document.getElementById('cfInteres').value ? document.getElementById('cfInteres').options[document.getElementById('cfInteres').selectedIndex].text + ': ' : '') + (document.getElementById('cfMensaje').value || ''),
-    estado: 'nuevo',
-    fuente: 'homepage',
-    created_at: new Date().toISOString()
+    interes: interesTxt,
+    mensaje: (interesTxt ? interesTxt + '. ' : '') + (document.getElementById('cfMensaje').value || '')
   };
   try {
-    const { error } = await db.from('leads').insert([data]);
-    if (error) throw error;
+    // Entra al CRM (tabla contactos) recordando de dónde vino
+    await lhCrearContacto(db, { nombre: data.nombre, telefono: data.telefono, email: data.email, tipo: quien.tipo, negocio: quien.negocio, mensaje: data.mensaje, canal: 'formulario_portada' });
     try {
       if (window.emailjs) {
         if (!window.__emailjsInit) { emailjs.init({ publicKey: 'hBVvEpA8xiEWqTQ5_' }); window.__emailjsInit = true; }
