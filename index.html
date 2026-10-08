@@ -4,14 +4,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>LoMaz Home — Inmobiliaria Boutique en Bogotá</title>
-<meta name="description" content="Propiedades exclusivas en Usaquén, Chapinero Alto, La Cabrera y Rosales. Asesoría personalizada, tecnología de punta y discreción total."/>
-<meta name="keywords" content="inmobiliaria boutique Bogotá, apartamentos lujo Bogotá, casas venta Bogotá, arriendo Usaquén, propiedades La Cabrera"/>
+<meta name="description" content="Inmobiliaria en Bogotá: venta y arriendo de apartamentos, casas y locales, con foco en el norte de la ciudad. 11 ventas y 6 arriendos cerrados y publicados."/>
+<meta name="keywords" content="inmobiliaria Bogotá, vender apartamento Bogotá, arrendar inmueble Bogotá, apartamentos Colina Campestre, apartamentos Suba, inmobiliaria norte de Bogotá"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://www.lomazhome.com/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.lomazhome.com/"/>
 <meta property="og:title" content="LoMaz Home — Inmobiliaria Boutique Bogotá"/>
-<meta property="og:description" content="Propiedades exclusivas. Asesoría discreta. Tecnología de punta."/>
+<meta property="og:description" content="Venta y arriendo de inmuebles en Bogotá, con foco en el norte. Un asesor de principio a fin."/>
 <meta property="og:image" content="https://www.lomazhome.com/og-home.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -217,6 +217,21 @@ button{font-family:var(--sans)}
 .zone-card__name{font-family:var(--serif);font-size:1.25rem;font-weight:400;color:var(--cream);margin-bottom:3px}
 .zone-card__count{font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-l)}
 
+/* ZONES NOTE + DEALS */
+.zones-note{padding:22px var(--gut) 0;max-width:820px;font-size:.84rem;line-height:1.75;color:var(--s500)}
+.zone-card__count + .zone-card__count{margin-top:3px;color:var(--cream);opacity:.8}
+.zone-card--plain{background:linear-gradient(160deg,var(--s800),#1b2a4a)}
+.deals-sub{font-size:.86rem;color:var(--s500);line-height:1.7;margin-top:14px;max-width:520px}
+.deals-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:40px;border-top:1px solid var(--s300);border-left:1px solid var(--s300)}
+.deal{background:var(--cream-dark);padding:20px 18px;display:flex;flex-direction:column;gap:8px;transition:background 180ms;border-right:1px solid var(--s300);border-bottom:1px solid var(--s300)}
+.deal:hover{background:var(--cream)}
+.deal__tag{align-self:flex-start;font-size:.56rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;background:var(--ink);color:var(--gold-l)}
+.deal__tag--r{background:var(--gold);color:var(--ink)}
+.deal__type{font-family:var(--serif);font-size:1.08rem;color:var(--ink);line-height:1.25}
+.deal__zone{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--s400)}
+@media(max-width:920px){.deals-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.deal{padding:16px 14px}.deal__type{font-size:.98rem}}
+
 /* TESTIMONIALS */
 .test-sec{padding:var(--pad) var(--gut);background:var(--cream-dark)}
 .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--s300);margin-top:44px}
@@ -319,17 +334,20 @@ button{font-family:var(--sans)}
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   "name": "LoMaz Home",
-  "description": "Inmobiliaria boutique en Bogotá especializada en propiedades exclusivas en Usaquén, Chapinero Alto, La Cabrera y Rosales.",
+  "description": "Inmobiliaria en Bogotá: venta, arriendo y gestión de apartamentos, casas y locales, con foco en el norte de la ciudad.",
   "url": "https://www.lomazhome.com/",
   "image": "https://www.lomazhome.com/og-home.jpg",
   "logo": "https://www.lomazhome.com/og-home.jpg",
   "email": "lomazhome@gmail.com",
   "priceRange": "$$",
   "areaServed": [
+    { "@type": "Place", "name": "Colina Campestre, Bogot\u00e1" },
+    { "@type": "Place", "name": "Suba, Bogot\u00e1" },
     { "@type": "Place", "name": "Usaqu\u00e9n, Bogot\u00e1" },
-    { "@type": "Place", "name": "Chapinero Alto, Bogot\u00e1" },
-    { "@type": "Place", "name": "La Cabrera, Bogot\u00e1" },
-    { "@type": "Place", "name": "Rosales, Bogot\u00e1" }
+    { "@type": "Place", "name": "Chapinero, Bogot\u00e1" },
+    { "@type": "Place", "name": "Cedritos, Bogot\u00e1" },
+    { "@type": "Place", "name": "Santa B\u00e1rbara, Bogot\u00e1" },
+    { "@type": "Place", "name": "Bogot\u00e1" }
   ],
   "address": {
     "@type": "PostalAddress",
@@ -348,7 +366,7 @@ button{font-family:var(--sans)}
   <a href="index.html" class="nav__logo">Lo<em>Maz</em> Home</a>
   <ul class="nav__menu">
     <li><a href="propiedades-publica.html">Propiedades</a></li>
-    <li><a href="propiedades-publica.html?zona=usaquen">Zonas</a></li>
+    <li><a href="#zonas">Zonas</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="calculadora.html">Calculadora</a></li>
     <li><a href="index.html#nosotros">Nosotros</a></li>
@@ -363,7 +381,7 @@ button{font-family:var(--sans)}
 <!-- MOBILE MENU -->
 <div class="nav__overlay" id="lhOverlay">
   <a href="propiedades-publica.html" onclick="closeMenu()">Propiedades</a>
-  <a href="propiedades-publica.html?zona=usaquen" onclick="closeMenu()">Zonas</a>
+  <a href="#zonas" onclick="closeMenu()">Zonas</a>
   <a href="blog.html" onclick="closeMenu()">Blog</a>
   <a href="calculadora.html" onclick="closeMenu()">Calculadora</a>
   <a href="index.html#nosotros" onclick="closeMenu()">Nosotros</a>
@@ -379,7 +397,7 @@ button{font-family:var(--sans)}
       <span class="hero__eyebrow-text">Inmobiliaria Boutique &bull; Bogotá &bull; Desde 2024</span>
     </div>
     <h1 class="hero__title">Encuentra tu<br><em>lugar</em><br>en Bogotá</h1>
-    <p class="hero__sub">Apartamentos y casas en los mejores barrios de la ciudad. Asesoría personalizada, tecnología de punta y la confianza que mereces.</p>
+    <p class="hero__sub">Vendemos y arrendamos apartamentos, casas y locales en Bogotá, con foco en el norte de la ciudad. Un asesor lleva tu proceso de principio a fin.</p>
     <div class="hero__actions">
       <a href="propiedades-publica.html" class="btn-primary">
         <span>Explorar Propiedades</span>
@@ -392,16 +410,16 @@ button{font-family:var(--sans)}
     </div>
     <div class="hero__trust">
       <div>
-        <div class="hero__trust-val" id="heroProps">0<span>+</span></div>
-        <div class="hero__trust-lbl">Propiedades Activas</div>
+        <div class="hero__trust-val">11</div>
+        <div class="hero__trust-lbl">Ventas cerradas</div>
       </div>
       <div>
-        <div class="hero__trust-val">98<span>%</span></div>
-        <div class="hero__trust-lbl">Clientes Satisfechos</div>
+        <div class="hero__trust-val">6</div>
+        <div class="hero__trust-lbl">Arriendos cerrados</div>
       </div>
       <div>
-        <div class="hero__trust-val">24<span>h</span></div>
-        <div class="hero__trust-lbl">Tiempo Respuesta</div>
+        <div class="hero__trust-val" id="heroProps">&mdash;</div>
+        <div class="hero__trust-lbl">Inmuebles disponibles hoy</div>
       </div>
     </div>
   </div>
@@ -410,10 +428,11 @@ button{font-family:var(--sans)}
       src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80&auto=format&fit=crop"
       alt="Propiedad exclusiva en Bogotá"
       loading="eager"/>
-    <div class="hero__badge">
-      <div class="hero__badge-quote">“Encontramos el apartamento ideal en Usaquén. Proceso impecable.”</div>
-      <div class="hero__badge-author">Familia Martínez — Cliente 2025</div>
-    </div>
+    <a class="hero__badge" href="#cerrados" style="text-decoration:none">
+      <div class="hero__badge-author" style="margin:0 0 6px">Último cierre</div>
+      <div class="hero__badge-quote">Bodega en Venecia — <strong style="font-style:normal;color:var(--ink)">Vendida</strong></div>
+      <div class="hero__badge-author">Ver negocios cerrados &rarr;</div>
+    </a>
   </div>
 </section>
 
@@ -442,12 +461,14 @@ button{font-family:var(--sans)}
     </select>
     <select class="search-bar__field" id="sbZona">
       <option value="">Barrio / Zona</option>
-      <option value="usaquen">Usaquén</option>
-      <option value="chapinero">Chapinero Alto</option>
-      <option value="cabrera">La Cabrera</option>
-      <option value="rosales">Rosales</option>
-      <option value="santa-barbara">Santa Bárbara</option>
-      <option value="country">Country Club</option>
+      <option value="Colina">Colina Campestre</option>
+      <option value="Suba">Suba</option>
+      <option value="Usaquén">Usaquén</option>
+      <option value="Chicó">Chicó</option>
+      <option value="Chapinero">Chapinero</option>
+      <option value="Santa Bárbara">Santa Bárbara</option>
+      <option value="Cedritos">Cedritos</option>
+      <option value="Alhambra">La Alhambra</option>
     </select>
     <button class="search-bar__btn" onclick="doSearch()">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 10l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -466,10 +487,6 @@ button{font-family:var(--sans)}
     <span class="portals-bar__logo">Finca Raíz</span>
     <div class="portals-bar__divider"></div>
     <span class="portals-bar__logo">Proppit</span>
-    <div class="portals-bar__divider"></div>
-    <span class="portals-bar__logo">Mitula</span>
-    <div class="portals-bar__divider"></div>
-    <span class="portals-bar__logo">Lamudi</span>
   </div>
 </div>
 
@@ -477,7 +494,7 @@ button{font-family:var(--sans)}
 <section class="props-section" id="propiedades">
   <div class="sec-header reveal">
     <div>
-      <p class="sec-tag">Portafolio Selecto</p>
+      <p class="sec-tag">Disponibles hoy</p>
       <h2 class="sec-title">Propiedades <em>destacadas</em></h2>
     </div>
     <a href="propiedades-publica.html" class="sec-link">
@@ -504,7 +521,7 @@ button{font-family:var(--sans)}
   <div class="reveal">
     <p class="sec-tag">Por qué LoMaz Home</p>
     <h2 class="sec-title">Una experiencia<br><em>diferente.</em></h2>
-    <p class="value-sec__desc">No somos una inmobiliaria tradicional. Somos un equipo boutique que combina asesoría personalizada con tecnología de punta para que tu proceso sea claro, ágil y sin sorpresas.</p>
+    <p class="value-sec__desc">Somos un equipo pequeño que vende, arrienda y gestiona inmuebles en Bogotá. Un asesor lleva tu caso de principio a fin, y nuestra propia plataforma publica tu inmueble en los portales y organiza a cada interesado.</p>
     <div class="exp-divider"></div>
     <div class="exp-stats">
       <div class="exp-aura" aria-hidden="true">
@@ -515,10 +532,10 @@ button{font-family:var(--sans)}
         <line x1="4" y1="100" x2="196" y2="100"/><line x1="100" y1="4" x2="100" y2="196"/>
       </svg>
     </div>
-      <div class="exp-stat"><div class="exp-stat__num">3</div><div class="exp-stat__lbl">Portales en una publicación</div></div>
+      <div class="exp-stat"><div class="exp-stat__num">3</div><div class="exp-stat__lbl">Portales: Finca Raíz, Metrocuadrado y Proppit</div></div>
       <div class="exp-stat"><div class="exp-stat__num">1</div><div class="exp-stat__lbl">Asesor de principio a fin</div></div>
       <div class="exp-stat"><div class="exp-stat__num">24<em>/7</em></div><div class="exp-stat__lbl">Chatbot ARIA siempre activo</div></div>
-      <div class="exp-stat"><div class="exp-stat__num">0</div><div class="exp-stat__lbl">Sorpresas en el proceso</div></div>
+      <div class="exp-stat"><div class="exp-stat__num">17</div><div class="exp-stat__lbl">Negocios cerrados y publicados</div></div>
     </div>
     <div class="exp-seal">
       <div class="exp-seal__badge">L</div>
@@ -533,8 +550,8 @@ button{font-family:var(--sans)}
     <div class="pillar">
       <span class="pillar__num">01</span>
       <div>
-        <div class="pillar__title">Portafolio Curado</div>
-        <div class="pillar__desc">Solo propiedades verificadas en los mejores barrios de Bogotá. Calidad sobre cantidad, siempre.</div>
+        <div class="pillar__title">Experiencia en el norte</div>
+        <div class="pillar__desc">Hemos vendido y arrendado en Colina Campestre, Suba, Usaquén, Chicó y Chapinero. Conocemos cómo se mueve el precio en esas zonas.</div>
       </div>
     </div>
     <div class="pillar">
@@ -548,117 +565,43 @@ button{font-family:var(--sans)}
       <span class="pillar__num">03</span>
       <div>
         <div class="pillar__title">Asesoría Sin Fricciones</div>
-        <div class="pillar__desc">Un solo asesor acompaña todo tu proceso. Sin transferencias, sin repétir información, sin sorpresas.</div>
+        <div class="pillar__desc">Un solo asesor acompaña todo tu proceso. Sin transferencias, sin repetir información, sin sorpresas.</div>
       </div>
     </div>
     <div class="pillar">
       <span class="pillar__num">04</span>
       <div>
-        <div class="pillar__title">Multi-Portal Instantáneo</div>
-        <div class="pillar__desc">Publicamos tu propiedad en Metrocuadrado, Finca Raíz y Proppit simultáneamente con un solo clic.</div>
+        <div class="pillar__title">Publicación en portales</div>
+        <div class="pillar__desc">Publicamos tu inmueble en Finca Raíz, Metrocuadrado y Proppit desde nuestra plataforma, con una sola ficha.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ZONAS PREMIUM -->
-<section class="zones-sec" id="valores">
+<!-- ZONAS -->
+<section class="zones-sec" id="zonas">
   <div class="zones-hdr reveal">
-    <p class="sec-tag">Barrios de Élite</p>
-    <h2 class="sec-title">Las mejores <em>zonas</em></h2>
+    <p class="sec-tag">Dónde trabajamos</p>
+    <h2 class="sec-title">Experiencia real en el <em>norte de Bogotá</em></h2>
   </div>
-  <div class="zones-track" id="zonesTrack">
-    <div class="zone-card" onclick="window.location='propiedades-publica.html?zona=usaquen'">
-      <img class="zone-card__img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75&auto=format&fit=crop" alt="Usaquén" loading="lazy"/>
-      <div class="zone-card__cnt">
-        <div class="zone-card__name">Usaquén</div>
-        <div class="zone-card__count" id="zc-usaquen">Cargando...</div>
-      </div>
-    </div>
-    <div class="zone-card" onclick="window.location='propiedades-publica.html?zona=chapinero'">
-      <img class="zone-card__img" src="https://images.unsplash.com/photo-1574958269340-fa927503f3dd?w=400&q=75&auto=format&fit=crop" alt="Chapinero" loading="lazy"/>
-      <div class="zone-card__cnt">
-        <div class="zone-card__name">Chapinero</div>
-        <div class="zone-card__count" id="zc-chapinero">Cargando...</div>
-      </div>
-    </div>
-    <div class="zone-card" onclick="window.location='propiedades-publica.html?zona=cabrera'">
-      <img class="zone-card__img" src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=400&q=75&auto=format&fit=crop" alt="La Cabrera" loading="lazy"/>
-      <div class="zone-card__cnt">
-        <div class="zone-card__name">La Cabrera</div>
-        <div class="zone-card__count" id="zc-cabrera">Cargando...</div>
-      </div>
-    </div>
-    <div class="zone-card" onclick="window.location='propiedades-publica.html?zona=rosales'">
-      <img class="zone-card__img" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=400&q=75&auto=format&fit=crop" alt="Rosales" loading="lazy"/>
-      <div class="zone-card__cnt">
-        <div class="zone-card__name">Rosales</div>
-        <div class="zone-card__count" id="zc-rosales">Cargando...</div>
-      </div>
-    </div>
-    <div class="zone-card" onclick="window.location='propiedades-publica.html?zona=santa-barbara'">
-      <img class="zone-card__img" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&q=75&auto=format&fit=crop" alt="Santa Bárbara" loading="lazy"/>
-      <div class="zone-card__cnt">
-        <div class="zone-card__name">Santa Bárbara</div>
-        <div class="zone-card__count" id="zc-santabarbara">Cargando...</div>
-      </div>
-    </div>
-    <div class="zone-card" onclick="window.location='propiedades-publica.html?zona=country'">
-      <img class="zone-card__img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=75&auto=format&fit=crop" alt="Country Club" loading="lazy"/>
-      <div class="zone-card__cnt">
-        <div class="zone-card__name">Country Club</div>
-        <div class="zone-card__count" id="zc-country">Cargando...</div>
-      </div>
-    </div>
-  </div>
+  <div class="zones-track" id="zonesTrack"></div>
+  <p class="zones-note reveal">Fuera del norte también hemos cerrado negocios en Venecia, Kennedy, Villa Luz, Paloquemao, Nicolás de Federmán y Ciudadela La Salle, y hoy comercializamos inmuebles en Santa Lucía y Villa Mayor.</p>
 </section>
 
-<!-- TESTIMONIOS -->
-<section class="test-sec">
+<!-- NEGOCIOS CERRADOS -->
+<section class="test-sec" id="cerrados">
   <div class="sec-header reveal">
     <div>
-      <p class="sec-tag">Clientes Satisfechos</p>
-      <h2 class="sec-title">Lo que dicen <em>nuestros clientes</em></h2>
+      <p class="sec-tag">Negocios cerrados</p>
+      <h2 class="sec-title">Hechos, <em>no promesas</em></h2>
+      <p class="deals-sub">Cada uno de estos negocios está publicado en nuestro Instagram. Puedes verificarlos en los destacados «Ventas Exitosas» y «Arriendos».</p>
     </div>
+    <a href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener" class="sec-link">
+      Ver en Instagram
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </div>
-  <div class="test-grid">
-    <div class="test-card reveal">
-      <div class="test-stars">★★★★★</div>
-      <p class="test-quote">“Encontramos el apartamento de nuestros sueños en Usaquén en menos de 3 semanas. La atención fue impecable de principio a fin.”</p>
-      <div class="test-div"></div>
-      <div class="test-author">
-        <div class="test-avatar">AM</div>
-        <div>
-          <div class="test-name">Alejandra M.</div>
-          <div class="test-detail">Compró en Usaquén — 2025</div>
-        </div>
-      </div>
-    </div>
-    <div class="test-card reveal reveal-delay-1">
-      <div class="test-stars">★★★★★</div>
-      <p class="test-quote">“Vendí mi casa en Rosales al precio justo en tiempo récord. Proceso transparente y sin complicaciones. Totalmente recomendados.”</p>
-      <div class="test-div"></div>
-      <div class="test-author">
-        <div class="test-avatar">CR</div>
-        <div>
-          <div class="test-name">Carlos R.</div>
-          <div class="test-detail">Vendió en Rosales — 2025</div>
-        </div>
-      </div>
-    </div>
-    <div class="test-card reveal reveal-delay-2">
-      <div class="test-stars">★★★★★</div>
-      <p class="test-quote">“Como inversionista, valoro la precisión. LoMaz me dio datos reales de rentabilidad y encontré el activo correcto en La Cabrera.”</p>
-      <div class="test-div"></div>
-      <div class="test-author">
-        <div class="test-avatar">DV</div>
-        <div>
-          <div class="test-name">Diego V.</div>
-          <div class="test-detail">Invirtió en La Cabrera — 2025</div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="deals-grid" id="dealsGrid"></div>
 </section>
 
 <!-- CONSULTA PRIVADA -->
@@ -666,7 +609,7 @@ button{font-family:var(--sans)}
   <div class="reveal">
     <p class="sec-tag">Contacto Directo</p>
     <h2 class="sec-title">Solicita tu<br><em>consulta privada.</em></h2>
-    <p style="font-size:.88rem;color:var(--s500);line-height:1.8;margin-top:18px;max-width:400px">Nuestros asesores responden en menos de 24 horas. Sin compromisos. Sin presiones. Solo claridad.</p>
+    <p style="font-size:.88rem;color:var(--s500);line-height:1.8;margin-top:18px;max-width:400px">Te respondemos por WhatsApp o por correo. Sin compromisos. Sin presiones. Solo claridad.</p>
     <div style="margin-top:36px;display:flex;flex-direction:column;gap:16px">
       <div style="display:flex;align-items:center;gap:12px">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="var(--gold)" stroke-width="1.5"/><path d="M2 5l6 4 6-4" stroke="var(--gold)" stroke-width="1.5"/></svg>
@@ -736,7 +679,7 @@ button{font-family:var(--sans)}
     <div class="form-success" id="formSuccess">
       <div class="form-success__icon">✓</div>
       <h3 class="form-success__title">Consulta Recibida</h3>
-      <p class="form-success__sub">Gracias por contactarnos. Un asesor se comunicará contigo en menos de 24 horas.</p>
+      <p class="form-success__sub">Gracias por contactarnos. Un asesor te escribirá muy pronto por WhatsApp.</p>
     </div>
   </div>
 </section>
@@ -746,7 +689,7 @@ button{font-family:var(--sans)}
   <div class="footer__grid">
     <div>
       <div class="footer__logo">Lo<em>Maz</em> Home</div>
-      <p class="footer__desc">Inmobiliaria boutique en Bogotá. Asesoría personalizada, tecnología de punta y portafolio selecto desde 2024.</p>
+      <p class="footer__desc">Inmobiliaria en Bogotá desde 2024. Venta, arriendo y gestión de inmuebles, con un asesor de principio a fin.</p>
     </div>
     <div>
       <div class="footer__col-title">Portafolio</div>
@@ -779,7 +722,7 @@ button{font-family:var(--sans)}
     </div>
   </div>
   <div class="footer__bottom">
-    <span class="footer__copy">&copy; 2025 LoMaz Home. Todos los derechos reservados.</span>
+    <span class="footer__copy">&copy; 2026 LoMaz Home. Todos los derechos reservados.</span>
     <div class="footer__legal">
       <a href="#">Política de Privacidad</a>
       <a href="#">Términos de Uso</a>
@@ -868,7 +811,7 @@ function doSearch() {
   const params = [];
   if (negocio) params.push('negocio=' + negocio);
   if (tipo) params.push('tipo=' + tipo);
-  if (zona) params.push('zona=' + zona);
+  if (zona) params.push('barrio=' + encodeURIComponent(zona));
   window.location.href = url + params.join('&');
 }
 
@@ -933,8 +876,12 @@ async function loadProps() {
     allProps = data || [];
     renderProps(allProps);
     // Update hero metric
+    // Conteo real de inmuebles activos (sin el tope de 12 de la grilla)
     const heroEl = document.getElementById('heroProps');
-    if (heroEl) heroEl.innerHTML = allProps.length + '<span>+</span>';
+    if (heroEl) {
+      const { count } = await db.from('propiedades').select('id', { count: 'exact', head: true }).eq('estado', 'activa');
+      heroEl.textContent = (typeof count === 'number' ? count : allProps.length);
+    }
   } catch(e) {
     console.warn('Props load error:', e.message);
     // Fallback visual
@@ -942,29 +889,70 @@ async function loadProps() {
   }
 }
 
-// ---- LOAD ZONES COUNTS ----
+// ---- NEGOCIOS CERRADOS (publicados en Instagram @lomazhome) ----
+// Para agregar un cierre nuevo: añade una línea al inicio de esta lista.
+const CIERRES = [
+  {op:'venta',   tipo:'Bodega',        zona:'Venecia'},
+  {op:'venta',   tipo:'Apartamento',   zona:'Colina Campestre'},
+  {op:'venta',   tipo:'Apartamento',   zona:'Suba · 21 Ángeles'},
+  {op:'venta',   tipo:'Casa',          zona:'Pinar de Suba'},
+  {op:'venta',   tipo:'Apartamento',   zona:'Colina Campestre'},
+  {op:'venta',   tipo:'Apartamento',   zona:'Bella Suiza'},
+  {op:'venta',   tipo:'Apartamento',   zona:'Chicó Navarra'},
+  {op:'venta',   tipo:'Casa',          zona:'Kennedy'},
+  {op:'venta',   tipo:'Apartamento',   zona:'Bella Suiza'},
+  {op:'venta',   tipo:'Casa',          zona:'Villa Luz'},
+  {op:'venta',   tipo:'Apartaestudio', zona:'El Redil'},
+  {op:'arriendo',tipo:'Apartaestudio', zona:'Paloquemao'},
+  {op:'arriendo',tipo:'Apartamento',   zona:'Suba Salitre'},
+  {op:'arriendo',tipo:'Apartamento',   zona:'Ciudadela La Salle'},
+  {op:'arriendo',tipo:'Casa',          zona:'Nicolás de Federmán'},
+  {op:'arriendo',tipo:'Casa',          zona:'La Alhambra'},
+  {op:'arriendo',tipo:'Local',         zona:'Chapinero'}
+];
+function renderCierres() {
+  const g = document.getElementById('dealsGrid');
+  if (!g) return;
+  g.innerHTML = CIERRES.map(c =>
+    '<div class="deal">' +
+      '<span class="deal__tag' + (c.op === 'arriendo' ? ' deal__tag--r' : '') + '">' + (c.op === 'arriendo' ? 'Arrendado' : 'Vendido') + '</span>' +
+      '<div class="deal__type">' + c.tipo + '</div>' +
+      '<div class="deal__zone">' + c.zona + '</div>' +
+    '</div>').join('');
+}
+
+// ---- ZONAS DONDE TRABAJAMOS ----
+// cerrados: cuántos negocios de CIERRES caen en la zona; terms: cómo se busca en el inventario activo
+const ZONAS = [
+  {name:'Colina Campestre', q:'Colina',       terms:['colina'],                                   cerr:['colina campestre']},
+  {name:'Suba',             q:'Suba',         terms:['suba','pinar','salitre','redil','ángeles','angeles'], cerr:['suba','pinar de suba','el redil']},
+  {name:'Usaquén',          q:'Usaquén',      terms:['usaquén','usaquen','bella suiza'],          cerr:['bella suiza']},
+  {name:'Chicó',            q:'Chicó',        terms:['chicó','chico'],                            cerr:['chicó']},
+  {name:'Chapinero',        q:'Chapinero',    terms:['chapinero'],                                cerr:['chapinero']},
+  {name:'La Alhambra',      q:'Alhambra',     terms:['alhambra'],                                 cerr:['alhambra']},
+  {name:'Santa Bárbara',    q:'Santa Bárbara',terms:['santa bárbara','santa barbara'],            cerr:[]},
+  {name:'Cedritos',         q:'Cedritos',     terms:['cedritos'],                                 cerr:[]}
+];
 async function loadZones() {
-  const zonas = [
-    {id:'usaquen',terms:['usaquén','usaquen']},
-    {id:'chapinero',terms:['chapinero']},
-    {id:'cabrera',terms:['cabrera']},
-    {id:'rosales',terms:['rosales']},
-    {id:'santabarbara',terms:['santa bárbara','santa barbara']},
-    {id:'country',terms:['country']}
-  ];
+  const track = document.getElementById('zonesTrack');
+  if (!track) return;
+  const pintar = (activos) => { track.innerHTML = ZONAS.map(z => {
+    const cerrados = CIERRES.filter(c => z.cerr.some(t => c.zona.toLowerCase().includes(t))).length;
+    const disp = activos ? activos.filter(p => z.terms.some(t => (p.barrio||'').toLowerCase().includes(t))).length : null;
+    const l1 = cerrados > 0 ? cerrados + (cerrados === 1 ? ' negocio cerrado' : ' negocios cerrados') : 'Zona de trabajo';
+    const l2 = disp ? disp + (disp === 1 ? ' disponible hoy' : ' disponibles hoy') : '';
+    return '<a class="zone-card zone-card--plain" href="propiedades-publica.html?barrio=' + encodeURIComponent(z.q) + '" style="text-decoration:none">' +
+      '<div class="zone-card__cnt">' +
+        '<div class="zone-card__name">' + z.name + '</div>' +
+        '<div class="zone-card__count">' + l1 + '</div>' +
+        (l2 ? '<div class="zone-card__count">' + l2 + '</div>' : '') +
+      '</div></a>';
+  }).join(''); };
+  pintar(null); // se muestra de inmediato con los cierres
   try {
     const { data } = await db.from('propiedades').select('barrio,ciudad').eq('estado','activa');
-    zonas.forEach(z => {
-      const count = (data||[]).filter(p => z.terms.some(t => (p.barrio||p.ciudad||'').toLowerCase().includes(t))).length;
-      const el = document.getElementById('zc-' + z.id);
-      if (el) el.textContent = count + ' propiedad' + (count !== 1 ? 'es' : '');
-    });
-  } catch(e) {
-    zonas.forEach(z => {
-      const el = document.getElementById('zc-' + z.id);
-      if (el) el.textContent = 'Ver propiedades';
-    });
-  }
+    if (data) pintar(data); // luego se suman los disponibles de hoy
+  } catch(e) {}
 }
 
 // ---- FORM SUBMIT ----
@@ -1035,6 +1023,7 @@ if (track) {
 document.addEventListener('DOMContentLoaded', () => {
   loadProps();
   loadZones();
+  renderCierres();
 });
 </script>
 <script src="lomaz-nav.js" defer></script>
