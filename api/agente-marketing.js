@@ -139,7 +139,7 @@ function comoEsCadaRed(redes, formato, tipoFuente){
 
 const S = { type: "string" };
 function objeto(props){ return { type: "object", properties: props, required: Object.keys(props), additionalProperties: false }; }
-function lista(item){ return { type: "array", items: item }; }
+function lista(item, max){ const l = { type: "array", items: item }; if(max) l.maxItems = max; return l; }
 
 function camposDeRedes(redes){
   const p = {};
@@ -333,13 +333,13 @@ const ESTUDIO_MAPA = [
 
 const N5 = { type: "integer", minimum: 0, maximum: 5 };
 const ESQUEMA_ESTUDIO = objeto({
-  dolores: lista(objeto({ problema: S, cuello_de_botella: { type: "boolean" }, dudas: lista(S) })),
-  palabras_clave: lista(objeto({ frase: S, intencion: { type: "string", enum: ["informativa", "comercial", "transaccional"] }, quien_posiciona: S, dolor: N5, masividad: N5, hueco: N5, ganable: N5, viralidad: N5, total: { type: "integer", minimum: 0, maximum: 25 }, ruta: { type: "string", enum: ["Océano azul", "Competir", "Descartar"] }, pieza: { type: "string", enum: ["Artículo madre", "Reel", "Carrusel", "Aviso de inmueble", "Ninguna"] }, uso: S })),
+  dolores: lista(objeto({ problema: S, cuello_de_botella: { type: "boolean" }, dudas: lista(S, 4) }), 6),
+  palabras_clave: lista(objeto({ frase: S, intencion: { type: "string", enum: ["informativa", "comercial", "transaccional"] }, quien_posiciona: S, dolor: N5, masividad: N5, hueco: N5, ganable: N5, viralidad: N5, total: { type: "integer", minimum: 0, maximum: 25 }, ruta: { type: "string", enum: ["Océano azul", "Competir", "Descartar"] }, pieza: { type: "string", enum: ["Artículo madre", "Reel", "Carrusel", "Aviso de inmueble", "Ninguna"] }, uso: S }), 15),
   principal: objeto({ frase: S, por_que: S }),
-  video: lista(S),
+  video: lista(S, 5),
   angulos: objeto({ autoridad: S, conocimiento: S, viralidad: S }),
   decision: objeto({ veredicto: { type: "string", enum: ["Artículo madre", "Reel o carrusel suelto", "Descartar"] }, resumen: S }),
-  fuentes: lista(S)
+  fuentes: lista(S, 12)
 });
 
 function encargoEstudio(plantilla, cuerpo, hallazgos){
@@ -566,6 +566,7 @@ async function escribir(clave, sistema, encargo, esquema, preferidos){
   const modelos = (preferidos || [process.env.ANTHROPIC_MODEL, MODELO_BASE, MODELO_RESPALDO]).filter(function(m, i, a){ return m && a.indexOf(m) === i; });
   const limite = Date.now() + TIEMPO_MAX_MS;   // todo el intento cabe en lo que dura la funcion
   let ultimo = null;
+  const cortes = [];
   for(let i = 0; i < modelos.length; i++){
     const modelo = modelos[i], variantes = variantesDe(modelo);
     for(let n = 0; n < variantes.length; n++){
@@ -575,7 +576,13 @@ async function escribir(clave, sistema, encargo, esquema, preferidos){
       const err = (r.datos && r.datos.error) || {};
       const msj = String(err.message || "");
       if(r.estado === 200){
-        if(r.datos && r.datos.stop_reason === "max_tokens") return fallo(502, "incompleta", "La respuesta quedó cortada. Vuelve a intentarlo.", { reintentar: true });
+        if(r.datos && r.datos.stop_reason === "max_tokens"){
+          // Se cortó: se anota qué pasó y se prueba la siguiente forma o el siguiente modelo antes de rendirse.
+          const u0 = r.datos.usage || {}, bloques = Array.isArray(r.datos.content) ? r.datos.content : [];
+          const tipos = bloques.map(function(b){ return b && b.type; }).join(",");
+          cortes.push(modelo + " (" + Object.keys(variantes[n]).join("+") + "): salida " + (u0.output_tokens || "?") + " tokens, bloques " + (tipos || "ninguno"));
+          continue;
+        }
         if(r.datos && r.datos.stop_reason === "refusal") return fallo(502, "rechazada", "Claude no escribió esta pieza. Revisa el tema o las indicaciones e inténtalo de nuevo.");
         const json = sacarJson(r.datos);
         if(!json) return fallo(502, "respuesta_invalida", "La respuesta no llegó en el formato esperado. Vuelve a intentarlo.", { reintentar: true });
@@ -596,6 +603,7 @@ async function escribir(clave, sistema, encargo, esquema, preferidos){
     }
   }
   const e = (ultimo && ultimo.datos && ultimo.datos.error) || {};
+  if(cortes.length) return fallo(502, "incompleta", "La respuesta quedó cortada en todos los intentos: " + cortes.join(" | ").slice(0, 400), { reintentar: true });
   return fallo(502, "error_ia", "No se pudo usar el modelo de Claude configurado (" + (ultimo ? ultimo.estado : "sin respuesta") + "): " + String(e.message || "revisa la variable ANTHROPIC_MODEL en Vercel").slice(0, 300));
 }
 
