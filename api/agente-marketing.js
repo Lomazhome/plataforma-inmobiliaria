@@ -15,6 +15,7 @@ const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const API_CLAUDE = "https://api.anthropic.com/v1/messages";
 const MODELO_BASE = "claude-sonnet-5-5";   // se puede cambiar en Vercel con la variable ANTHROPIC_MODEL
 const MODELO_RESPALDO = "claude-haiku-4-5"; // solo se usa si el modelo principal no existe en la cuenta
+const MODELO_RAPIDO = "claude-haiku-5-5";    // para los pasos que deben caber en 60 s (puntuar palabras clave); si no existe, se pasa al siguiente
 const TIEMPO_MAX_MS = 52000;                // la funcion puede durar 60 s; se corta un poco antes para responder bien
 const MAX_FUENTE = 60000;                   // caracteres de la fuente que se envian a Claude
 
@@ -518,7 +519,7 @@ function variantesDe(modelo){
 }
 
 async function pedirAClaude(clave, modelo, sistema, encargo, esquema, variante, msRestantes){
-  const cuerpo = { model: modelo, max_tokens: 8000, system: sistema, messages: [{ role: "user", content: encargo }] };
+  const cuerpo = { model: modelo, max_tokens: 12000, system: sistema, messages: [{ role: "user", content: encargo }] };
   if(variante.thinking) cuerpo.thinking = variante.thinking;
   const salida = {};
   if(!variante.sinEsquema) salida.format = { type: "json_schema", schema: esquema };
@@ -560,8 +561,9 @@ function fallo(http, codigo, mensaje, extra){
   return Object.assign({ http: http, cuerpo: Object.assign({ ok: false, codigo: codigo, mensaje: mensaje }, extra || {}) });
 }
 
-async function escribir(clave, sistema, encargo, esquema){
-  const modelos = [process.env.ANTHROPIC_MODEL, MODELO_BASE, MODELO_RESPALDO].filter(function(m, i, a){ return m && a.indexOf(m) === i; });
+async function escribir(clave, sistema, encargo, esquema, preferidos){
+  // preferidos: orden de modelos para esta tarea (p. ej. el modelo rápido primero cuando el tiempo manda)
+  const modelos = (preferidos || [process.env.ANTHROPIC_MODEL, MODELO_BASE, MODELO_RESPALDO]).filter(function(m, i, a){ return m && a.indexOf(m) === i; });
   const limite = Date.now() + TIEMPO_MAX_MS;   // todo el intento cabe en lo que dura la funcion
   let ultimo = null;
   for(let i = 0; i < modelos.length; i++){
@@ -656,7 +658,8 @@ async function atender(req, res){
       return responder(res, 200, { ok: true, notas: b.notas, fuentes: b.fuentes, busquedas: b.busquedas, modelo: b.modelo, uso: b.uso });
     }
     if(limpio(cuerpo.hallazgos, 40000).length < 100) return responder(res, 400, { ok: false, codigo: "solicitud", mensaje: "Faltan las notas de la búsqueda." });
-    const m = await escribir(clave, ESTUDIO_VOZ, encargoEstudio(ESTUDIO_MAPA, cuerpo, cuerpo.hallazgos), ESQUEMA_ESTUDIO);
+    // La puntuación la hace primero el modelo rápido: con Sonnet 5.5 la respuesta no cabía en los 60 s de la función.
+    const m = await escribir(clave, ESTUDIO_VOZ, encargoEstudio(ESTUDIO_MAPA, cuerpo, cuerpo.hallazgos), ESQUEMA_ESTUDIO, [MODELO_RAPIDO, process.env.ANTHROPIC_MODEL, MODELO_BASE, MODELO_RESPALDO]);
     if(!m.ok) return responder(res, m.http, m.cuerpo);
     return responder(res, 200, { ok: true, estudio: m.json, modelo: m.modelo, uso: m.uso });
   }
