@@ -371,7 +371,7 @@ async function buscarEnLaWeb(clave, encargo){
     const cuerpo = {
       model: modelo, max_tokens: 6000, system: ESTUDIO_VOZ,
       messages: [{ role: "user", content: encargo }],
-      tools: [{ type: intento.herramienta, name: "web_search", max_uses: 6, user_location: { type: "approximate", country: "CO", city: "Bogotá", region: "Bogotá", timezone: "America/Bogota" } }]
+      tools: [{ type: intento.herramienta, name: "web_search", max_uses: 6 }]   // sin user_location: la API no acepta el código de país CO; el encargo ya pide fuentes de Colombia
     };
     if(intento.thinking) cuerpo.thinking = intento.thinking;
     const corte = new AbortController();
