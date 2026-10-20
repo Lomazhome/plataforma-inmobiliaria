@@ -286,6 +286,120 @@ function encargoDeRutinas(cuerpo){
   ].filter(Boolean).join("\n\n");
 }
 
+/* ============================== 2b. Estudiar un tema (palabras clave, dolor masivo y océano azul) ============================== */
+// El estudio se hace en dos pasos para caber en el tiempo de Vercel:
+//   estudio_buscar: Claude busca en la web (hasta 6 busquedas) y devuelve sus notas con fuentes.
+//   estudio_mapa:   con esas notas, puntua las palabras clave y arma el mapa (sin buscar).
+
+const ESTUDIO_VOZ = [
+  "Eres el estratega de contenido y SEO de LoMaz Home, una inmobiliaria independiente de Bogotá (vivienda y locales comerciales, venta, arriendo y administración de inmuebles) atendida por sus dueños, Salomón Mazabell y Angélica. LoMaz Home quiere dos cosas: posicionar su marca como autoridad en redes y que su blog y su plataforma (lomazhome.com, incluidos los inmuebles publicados) aparezcan de forma orgánica y preferente en Google.",
+  "Trabajas en español de Colombia: arriendo, canon, administración, fiador, codeudor, predial, escritura, promesa; nunca alquiler ni fianza. Zonas con experiencia real: norte de Bogotá (Colina Campestre, Suba, Colinas de Suba, Chapinero, Alhambra, Santa Bárbara, Cedritos).",
+  "No inventes cifras ni volúmenes de búsqueda: si no los encontraste, dilo con palabras (alta, media, baja) y explica en qué te basas. Cita la fuente de cada hallazgo."
+].join("\n");
+
+const ESTUDIO_BUSCAR = [
+  "TEMA A ESTUDIAR: {{TEMA}}",
+  "{{NOTAS}}",
+  "Haz estas seis búsquedas (una por punto, en este orden, todas en una sola ronda si puedes) y toma notas concretas de cada una:",
+  "1. El tema tal cual + «Bogotá» o «Colombia»: quién ocupa los primeros resultados y con qué títulos.",
+  "2. El tema + «qué pasa si» / «es legal» / «requisitos»: las preguntas que la gente hace (bloques de «otras personas también buscan», foros, comentarios).",
+  "3. El tema en Metrocuadrado, Finca Raíz o Ciencuadras: qué artículos tienen, de qué fecha y qué les falta (profundidad, dato local, norma citada, lenguaje claro).",
+  "4. El tema + «2026» o «noticias»: cambios recientes de norma, tasas, subsidios o mercado que haya que tener en cuenta.",
+  "5. Contenido inmobiliario en video que esté funcionando hoy sobre este tema o parecidos (Colombia y mundo: «real estate tiktok hook», «realtor reel viral», «inmobiliaria reel»): ganchos, formatos, duraciones, estructuras que se repiten.",
+  "6. Zona + tipo de inmueble + operación relacionados con el tema (por ejemplo «apartamento en arriendo Colina Campestre»): las frases que llevan tráfico a los portales y sirven para los avisos de la plataforma.",
+  "",
+  "ENTREGA tus notas en texto plano, con un apartado por búsqueda (1 a 6). En cada apartado: lo que encontraste en frases cortas y concretas, las preguntas y frases de búsqueda textuales que viste (entre comillas angulares «»), quién posiciona y qué le falta, y la fuente de cada dato (dominio o título). Al final, una lista de hasta 15 frases de búsqueda candidatas, tal como alguien las escribiría en Google desde Bogotá. Sin Markdown."
+].join("\n");
+
+const ESTUDIO_MAPA = [
+  "TEMA ESTUDIADO: {{TEMA}}",
+  "{{NOTAS}}",
+  "NOTAS DE LA BÚSQUEDA (son tu única fuente; no agregues datos que no estén aquí):",
+  '"""',
+  "{{HALLAZGOS}}",
+  '"""',
+  "",
+  "CON ESAS NOTAS, ARMA EL ESTUDIO:",
+  "1. dolores: de 3 a 6 problemas reales que vive la audiencia (propietarios, inquilinos o compradores) alrededor del tema. En cada uno: «problema» (una frase), «cuello_de_botella» (true si frena el negocio, cuesta plata o tiempo, o se repite en casi todos los casos) y «dudas» (de 2 a 4 preguntas textuales que la gente se hace sobre ese problema).",
+  "2. palabras_clave: de 8 a 15 frases de búsqueda sacadas de las notas, en español de Colombia, tal como se escriben en Google. Para cada una: «frase», «intencion» (informativa, comercial o transaccional), «quien_posiciona» (quién aparece hoy y qué le falta, en una frase), y puntajes de 0 a 5: «dolor» (le duele a mucha gente, cuesta plata o tiempo), «masividad» (se repite en varias fuentes), «hueco» (los que posicionan responden mal, viejo, en lenguaje de abogado o sin dato local), «ganable» (LoMaz puede hacer la mejor respuesta de Colombia con norma citada y caso real) y «viralidad» (se presta para un gancho fuerte y conversación). «total» es la suma. «ruta»: «Océano azul» cuando hueco ≥ 4 o es una pregunta concreta o de zona + situación que los portales no cubren; «Competir» solo cuando ganable = 5 y LoMaz puede ser claramente mejor; «Descartar» si total < 14. «pieza»: dónde usarla: «Artículo madre» si total ≥ 20, «Reel» o «Carrusel» si está entre 14 y 19, «Aviso de inmueble» si es zona + inmueble + operación, «Ninguna» si se descarta. «uso»: en una frase, cómo se usa (en el H1 y el slug, en el gancho del Reel, en el título del aviso…).",
+  "3. principal: la frase que debe ser la palabra clave principal del artículo madre (la de mayor total con ruta distinta de Descartar) y «por_que» en una frase.",
+  "4. video: de 3 a 5 patrones concretos de video que están funcionando hoy sobre el tema (gancho, formato, duración, estructura), cada uno en una frase, sin nombrar cuentas ajenas.",
+  "5. angulos: una idea de pieza por cada ángulo ACV, en una frase cada una: «autoridad» (un caso real que LoMaz pueda contar, sin datos personales; si las notas no dan uno, propón el tipo de caso), «conocimiento» (la historia o el criterio de LoMaz Home y sus fundadores sobre el tema) y «viralidad» (gancho fuerte sobre plata, errores caros, mitos o lo que nadie cuenta, sin perder la verdad).",
+  "6. decision: «Artículo madre», «Reel o carrusel suelto» o «Descartar», y «resumen»: en 2 o 3 frases, por qué, y si se compite de frente o se crea océano azul.",
+  "7. fuentes: lista de los dominios o títulos citados en las notas (máximo 12).",
+  "Todo en texto plano dentro del JSON: sin Markdown ni asteriscos. Entrega solo el objeto JSON con esos campos, todos llenos y en español."
+].join("\n");
+
+const N5 = { type: "integer", minimum: 0, maximum: 5 };
+const ESQUEMA_ESTUDIO = objeto({
+  dolores: lista(objeto({ problema: S, cuello_de_botella: { type: "boolean" }, dudas: lista(S) })),
+  palabras_clave: lista(objeto({ frase: S, intencion: { type: "string", enum: ["informativa", "comercial", "transaccional"] }, quien_posiciona: S, dolor: N5, masividad: N5, hueco: N5, ganable: N5, viralidad: N5, total: { type: "integer", minimum: 0, maximum: 25 }, ruta: { type: "string", enum: ["Océano azul", "Competir", "Descartar"] }, pieza: { type: "string", enum: ["Artículo madre", "Reel", "Carrusel", "Aviso de inmueble", "Ninguna"] }, uso: S })),
+  principal: objeto({ frase: S, por_que: S }),
+  video: lista(S),
+  angulos: objeto({ autoridad: S, conocimiento: S, viralidad: S }),
+  decision: objeto({ veredicto: { type: "string", enum: ["Artículo madre", "Reel o carrusel suelto", "Descartar"] }, resumen: S }),
+  fuentes: lista(S)
+});
+
+function encargoEstudio(plantilla, cuerpo, hallazgos){
+  const notas = limpio(cuerpo.notas, 2000);
+  return plantilla
+    .replace("{{TEMA}}", limpio(cuerpo.tema, 300))
+    .replace("{{NOTAS}}", notas ? "INDICACIONES DEL EQUIPO: " + notas : "")
+    .replace("{{HALLAZGOS}}", limpio(hallazgos, 40000));
+}
+
+// Pide a Claude que busque en la web y devuelva sus notas en texto. Devuelve { ok, notas, fuentes, busquedas } o un fallo.
+async function buscarEnLaWeb(clave, encargo){
+  const modelos = [process.env.ANTHROPIC_MODEL, MODELO_BASE, MODELO_RESPALDO].filter(function(m, i, a){ return m && a.indexOf(m) === i; });
+  const limite = Date.now() + TIEMPO_MAX_MS;
+  let ultimo = null;
+  for(let i = 0; i < modelos.length; i++){
+    const modelo = modelos[i];
+    if(limite - Date.now() < 3000) return fallo(504, "tiempo", "La búsqueda tardó más de lo esperado. Vuelve a intentarlo con un tema más concreto.", { reintentar: true });
+    const cuerpo = {
+      model: modelo, max_tokens: 6000, system: ESTUDIO_VOZ,
+      messages: [{ role: "user", content: encargo }],
+      tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 6, user_location: { type: "approximate", country: "CO", city: "Bogotá", region: "Bogotá", timezone: "America/Bogota" } }]
+    };
+    if(/sonnet-5-5/.test(modelo)) cuerpo.thinking = { type: "between_tools" };
+    const corte = new AbortController();
+    const reloj = setTimeout(function(){ corte.abort(); }, Math.max(1000, limite - Date.now()));
+    let r;
+    try{
+      const resp = await fetch(API_CLAUDE, { method: "POST", headers: { "content-type": "application/json", "x-api-key": clave, "anthropic-version": "2023-06-01" }, body: JSON.stringify(cuerpo), signal: corte.signal });
+      let datos = null; try{ datos = await resp.json(); }catch(e){ datos = null; }
+      r = { estado: resp.status, datos: datos };
+    }catch(e){
+      r = { estado: 0, datos: null, tiempo: e && e.name === "AbortError" };
+    }finally{ clearTimeout(reloj); }
+    ultimo = r;
+    const err = (r.datos && r.datos.error) || {}, msj = String(err.message || "");
+    if(r.estado === 200){
+      const bloques = Array.isArray(r.datos.content) ? r.datos.content : [];
+      const notas = bloques.filter(function(b){ return b && b.type === "text" && typeof b.text === "string"; }).map(function(b){ return b.text; }).join("\n").trim();
+      const fuentes = [], busquedas = [];
+      bloques.forEach(function(b){
+        if(b && b.type === "server_tool_use" && b.input && b.input.query) busquedas.push(String(b.input.query));
+        if(b && b.type === "web_search_tool_result" && Array.isArray(b.content)) b.content.forEach(function(x){ if(x && x.url && fuentes.indexOf(x.url) < 0) fuentes.push(String(x.url)); });
+      });
+      if(!notas) return fallo(502, "respuesta_invalida", "La búsqueda no devolvió notas. Vuelve a intentarlo.", { reintentar: true });
+      const u = r.datos.usage || {};
+      return { ok: true, notas: notas, fuentes: fuentes.slice(0, 40), busquedas: busquedas, modelo: r.datos.model || modelo, uso: { entrada: u.input_tokens || 0, salida: u.output_tokens || 0, busquedas: ((u.server_tool_use || {}).web_search_requests) || busquedas.length } };
+    }
+    if(r.estado === 0) return fallo(504, "tiempo", r.tiempo ? "La búsqueda tardó más de lo esperado. Vuelve a intentarlo con un tema más concreto." : "No se pudo conectar con Claude. Vuelve a intentarlo.", { reintentar: true });
+    if(r.estado === 401 || r.estado === 403) return fallo(502, "clave_invalida", "La clave de Claude guardada en Vercel no es válida o fue desactivada.");
+    if(r.estado === 402 || /credit balance|billing|purchase credits/i.test(msj)) return fallo(502, "sin_saldo", "La cuenta de la API de Claude no tiene saldo. Recarga créditos en platform.claude.com (Settings > Billing).");
+    if(r.estado === 429) return fallo(429, "limite", "Claude está recibiendo muchas solicitudes. Se reintenta en unos segundos.", { reintentar: true, esperar: 8 });
+    if(r.estado === 404) continue;                 // ese modelo no existe: se prueba el siguiente
+    if(r.estado >= 500) return fallo(503, "saturado", "Claude está saturado en este momento. Se reintenta en unos segundos.", { reintentar: true, esperar: 6 });
+    if(r.estado === 400 && /web_search|tool/i.test(msj)) return fallo(502, "sin_busqueda", "La búsqueda web no está habilitada para esta clave de Claude. Actívala en platform.claude.com (Settings > Privacy > Web search) y vuelve a intentarlo.");
+    return fallo(502, "error_ia", "Claude respondió con un error (" + r.estado + (err.type ? ", " + err.type : "") + "): " + (msj || "sin detalle").slice(0, 300));
+  }
+  const e = (ultimo && ultimo.datos && ultimo.datos.error) || {};
+  return fallo(502, "error_ia", "No se pudo usar el modelo de Claude configurado: " + String(e.message || "revisa la variable ANTHROPIC_MODEL en Vercel").slice(0, 300));
+}
+
 /* ============================== 3. De la respuesta a los bloques ============================== */
 
 function texto(v){ return String(v === null || v === undefined ? "" : v).replace(/\r\n/g, "\n").replace(/^\s+|\s+$/g, ""); }
@@ -516,6 +630,20 @@ async function atender(req, res){
   if(cuerpo.modo === "estado") return responder(res, 200, { ok: true, listo: !!clave });
   if(!clave) return responder(res, 503, { ok: false, codigo: "sin_clave", mensaje: "Falta conectar la clave de Claude en Vercel (variable ANTHROPIC_API_KEY)." });
 
+  // Estudio de un tema: paso 1 busca en la web, paso 2 arma el mapa de palabras clave
+  if(cuerpo.modo === "estudio_buscar" || cuerpo.modo === "estudio_mapa"){
+    if(limpio(cuerpo.tema, 300).length < 4) return responder(res, 400, { ok: false, codigo: "solicitud", mensaje: "Escribe el tema que quieres estudiar." });
+    if(cuerpo.modo === "estudio_buscar"){
+      const b = await buscarEnLaWeb(clave, encargoEstudio(ESTUDIO_BUSCAR, cuerpo));
+      if(!b.ok) return responder(res, b.http, b.cuerpo);
+      return responder(res, 200, { ok: true, notas: b.notas, fuentes: b.fuentes, busquedas: b.busquedas, modelo: b.modelo, uso: b.uso });
+    }
+    if(limpio(cuerpo.hallazgos, 40000).length < 100) return responder(res, 400, { ok: false, codigo: "solicitud", mensaje: "Faltan las notas de la búsqueda." });
+    const m = await escribir(clave, ESTUDIO_VOZ, encargoEstudio(ESTUDIO_MAPA, cuerpo, cuerpo.hallazgos), ESQUEMA_ESTUDIO);
+    if(!m.ok) return responder(res, m.http, m.cuerpo);
+    return responder(res, 200, { ok: true, estudio: m.json, modelo: m.modelo, uso: m.uso });
+  }
+
   const fuente = cuerpo.fuente || {};
   if(["articulo", "propiedad", "tema"].indexOf(fuente.tipo) < 0) return responder(res, 400, { ok: false, codigo: "solicitud", mensaje: "Falta la fuente del contenido." });
   if(fuente.tipo === "articulo" && limpio(fuente.texto, MAX_FUENTE).length < 300) return responder(res, 400, { ok: false, codigo: "sin_fuente", mensaje: "Falta el texto aprobado del artículo. Pégalo en el agente y guarda." });
@@ -551,4 +679,4 @@ module.exports = async function handler(req, res){
 };
 
 // Se exportan para las pruebas y para reutilizar el mismo armado fuera de Vercel
-module.exports.interno = { encargoDePieza: encargoDePieza, encargoDeRutinas: encargoDeRutinas, esquemaDePieza: esquemaDePieza, ESQUEMA_RUTINAS: ESQUEMA_RUTINAS, aSecciones: aSecciones, rutinasASecciones: rutinasASecciones, VOZ: VOZ, REGLAS: REGLAS, NOMBRE_EN_RED: NOMBRE_EN_RED };
+module.exports.interno = { encargoDePieza: encargoDePieza, encargoDeRutinas: encargoDeRutinas, esquemaDePieza: esquemaDePieza, ESQUEMA_RUTINAS: ESQUEMA_RUTINAS, ESQUEMA_ESTUDIO: ESQUEMA_ESTUDIO, encargoEstudio: encargoEstudio, ESTUDIO_BUSCAR: ESTUDIO_BUSCAR, ESTUDIO_MAPA: ESTUDIO_MAPA, aSecciones: aSecciones, rutinasASecciones: rutinasASecciones, VOZ: VOZ, REGLAS: REGLAS, NOMBRE_EN_RED: NOMBRE_EN_RED };

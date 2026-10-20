@@ -314,6 +314,43 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 .pz-nota{font-size:.74rem;color:var(--txt-mute);margin:-.3rem 0 .8rem;line-height:1.5}
 .pz-vacia{font-size:.84rem;color:var(--txt-mute);font-style:italic;padding:.6rem 0 .2rem}
 .pz-err{font-size:.8rem;color:#ff8a93;background:rgba(220,53,69,.10);border:1px solid rgba(220,53,69,.35);border-radius:var(--r-sm);padding:.55rem .75rem;margin:.3rem 0 .6rem;line-height:1.45}
+/* Estudiar tema: palabras clave, dolor masivo y oceano azul */
+.et-card{margin-bottom:1.2rem}
+.et-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.8rem;align-items:end}
+.et-row .fg{margin:0}
+.et-prog{display:flex;align-items:center;gap:.8rem;margin:.9rem 0 0;font-size:.8rem;color:var(--gold-l)}
+.et-prog .bar{flex:1;margin:0}
+.et-prog .bar>i{background:var(--gold);transition:width .5s ease}
+.et-ver{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin:.9rem 0 .2rem}
+.et-ver .pz-fmt{font-size:.7rem;padding:.25rem .7rem}
+.et-ver .v-art{color:#7fd1c7;border-color:rgba(127,209,199,.5);background:rgba(127,209,199,.1)}
+.et-ver .v-reel{color:#9fc0f5;border-color:rgba(159,192,245,.5);background:rgba(96,140,220,.12)}
+.et-ver .v-no{color:#ff8a93;border-color:rgba(220,53,69,.45);background:rgba(220,53,69,.1)}
+.et-ver b{color:#fff;font-size:.95rem}
+.et-tabla{overflow:auto;border:1px solid var(--line);border-radius:var(--r-sm);margin:.3rem 0 .8rem}
+.et-tabla table{min-width:760px;font-size:.78rem}
+.et-tabla th{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);white-space:nowrap;background:rgba(13,27,46,.6)}
+.et-tabla td{padding:.5rem .6rem;border-bottom:1px solid var(--line);vertical-align:top;color:var(--txt);line-height:1.4}
+.et-tabla tr:last-child td{border-bottom:0}
+.et-tabla td.n{text-align:center;color:var(--txt-soft);white-space:nowrap}
+.et-tabla td.t{text-align:center;font-weight:700;color:#fff}
+.et-tabla .r-azul{color:#7fd1c7}.et-tabla .r-comp{color:var(--gold-l)}.et-tabla .r-no{color:var(--txt-mute)}
+.et-tabla td.f{font-weight:600;color:#fff;min-width:170px}
+.et-tabla td.f.p::before{content:"\2605  ";color:var(--gold)}
+.et-dolor{background:rgba(13,27,46,.55);border:1px solid var(--line);border-radius:var(--r-sm);padding:.75rem .9rem;margin-bottom:.55rem;font-size:.82rem;line-height:1.5}
+.et-dolor b{color:#fff}
+.et-dolor .cb{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#f0b27a;border:1px solid rgba(240,178,122,.45);border-radius:4px;padding:.1rem .4rem;margin-left:.4rem;vertical-align:middle}
+.et-dolor ul{margin:.35rem 0 0 1.1rem;color:var(--txt-soft)}
+.et-lista{margin:0 0 .6rem 1.1rem;font-size:.82rem;line-height:1.55;color:var(--txt)}
+.et-lista li{margin:.2rem 0}
+.et-lista b{color:var(--gold-l)}
+.et-fuentes{font-size:.72rem;color:var(--txt-mute);line-height:1.5;word-break:break-all}
+.et-fuentes a{color:var(--txt-soft)}
+.et-banco{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.7rem}
+.et-banco .chip{cursor:pointer}
+.et-banco .chip:hover{border-color:var(--gold);color:#fff}
+.et-btns{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-end;margin-top:.9rem}
+@media(max-width:760px){.et-row{grid-template-columns:1fr}.et-row .btn{width:100%}}
 .pz-suelta{display:flex;flex-wrap:wrap;gap:.5rem .7rem;align-items:center;margin-bottom:.2rem}
 .gen-block .gb-acts{display:flex;gap:.4rem;flex:0 0 auto}
 .gen-block .gb-head{gap:.6rem;align-items:flex-start}
@@ -511,12 +548,26 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div id="qnOut"></div>
 </div>
 
+<div class="agent-card et-card" id="etCard">
+<div class="qn-kicker">Antes de escribir &middot; SEO y dolor masivo</div>
+<h3>Estudiar <em>tema</em></h3>
+<div class="hint">Claude busca en la web (seis b&uacute;squedas), encuentra los problemas que m&aacute;s le duelen a la gente, punt&uacute;a las palabras clave (dolor, masividad, hueco, ganable y viralidad) y decide si el tema es art&iacute;culo madre, Reel suelto o se descarta, y si se compite o se crea oc&eacute;ano azul. Cada estudio queda en el banco de palabras clave del equipo.</div>
+<div class="et-row">
+<div class="fg"><label>Tema que quieres estudiar</label><input type="text" id="etTema" autocomplete="off" placeholder="Ej: arrendar sin codeudor en Bogot&aacute;"></div>
+<div class="fg"><label>Indicaciones (opcional)</label><input type="text" id="etNotas" autocomplete="off" placeholder="Ej: enfocado en propietarios"></div>
+<button type="button" class="btn btn-primary" id="etBtn" onclick="etEstudiar()">&#128269; Estudiar tema</button>
+</div>
+<div id="etProg"></div>
+<div id="etOut"></div>
+<div id="etBanco"></div>
+</div>
+
 <div class="agent-wrap">
 <div class="agent-card">
 <h3>Pieza <em>suelta</em></h3>
 <div class="hint" id="agHint">Una pieza a la vez, con el copy de cada red donde sale ese formato.</div>
 <div class="fg"><label>Formato</label><select id="agFormato"><option value="reel">Reel (video vertical)</option><option value="carrusel">Carrusel</option><option value="lista">Lista de chequeo</option><option value="imagen">Imagen</option><option value="historia">Historia</option></select></div>
-<div class="fg" id="agTemaWrap"><label id="agTemaLabel">Tema de la pieza</label><input type="text" id="agTema" autocomplete="off" placeholder="Ej: Vendido en 21 d&iacute;as: qu&eacute; hicimos"></div>
+<div class="fg" id="agTemaWrap"><label id="agTemaLabel">Tema de la pieza</label><input type="text" id="agTema" autocomplete="off" placeholder="Ej: Vendido en 21 d&iacute;as: qu&eacute; hicimos"><div id="agClave" class="fab-hint" style="display:none;margin:.35rem 0 0"></div></div>
 <div class="fg" id="agNotasWrap"><label>Datos o indicaciones (opcional)</label><textarea id="agNotas" placeholder="Los datos reales de la pieza: barrio, d&iacute;as, cifras, nombres. El agente no inventa cifras."></textarea></div>
 <div class="fg"><label>Enfoque de marca</label><select id="agEnfoque"><option value="LOMAZ HOME">LoMaz Home</option><option value="Marca personal">Marca personal</option><option value="Fusion">Fusión</option></select></div>
 <div class="fg"><label>Pilar / Objetivo</label><select id="agPilar" onchange="_agTocoPilar=true"><option value="Portafolio Inmobiliario">Portafolio Inmobiliario</option><option value="Educacion y Autoridad">Educación y Autoridad</option><option value="Detras de Escena">Detrás de Escena</option><option value="Tendencias y Estilo de vida">Tendencias y Estilo de vida</option></select></div>
@@ -1296,6 +1347,142 @@ function agPintarAviso(){
  el.innerHTML=h;
 }
 
+/* ====== ESTUDIAR TEMA: palabras clave, dolor masivo y oceano azul ======
+   Dos llamadas al servidor: estudio_buscar (Claude busca en la web y devuelve notas) y
+   estudio_mapa (con esas notas puntua las palabras clave). El resultado se guarda en
+   marketing_palabras_clave, el banco del equipo, para no repetir estudios. */
+let _etActual=null, _etTrabajando=false, _etBanco=[], _etBancoTabla=true, _agPalabraClave="", _agAngulo="";
+function etProg(pct,txt){
+ const el=document.getElementById("etProg");if(!el)return;
+ el.innerHTML=txt?'<div class="et-prog"><span>'+esc(txt)+'</span><div class="bar"><i style="width:'+pct+'%"></i></div></div>':"";
+}
+async function etEstudiar(){
+ if(_etTrabajando)return;
+ const tema=document.getElementById("etTema").value.trim(),notas=document.getElementById("etNotas").value.trim();
+ if(tema.length<4){agToast("Escribe el tema que quieres estudiar.","error");document.getElementById("etTema").focus();return;}
+ const previo=_etBanco.find(function(b){return (b.tema||"").trim().toLowerCase()===tema.toLowerCase();});
+ if(previo&&!confirm("Este tema ya está en el banco (del "+agDiaLocal(previo.created_at)+"). ¿Quieres estudiarlo otra vez? Si dices «Cancelar», te muestro el estudio guardado.")){etMostrarGuardado(previo.id);return;}
+ if(!(await agHayIA()))return;
+ _etTrabajando=true;
+ const btn=document.getElementById("etBtn");btn.disabled=true;btn.textContent="Estudiando…";
+ document.getElementById("etOut").innerHTML="";
+ etProg(15,"Buscando en la web: quién posiciona, qué pregunta la gente, qué hay en los portales…");
+ const b=await agEscribir({modo:"estudio_buscar",tema:tema,notas:notas});
+ if(!b.ok){etFin(btn);etProg(0,"");document.getElementById("etOut").innerHTML='<div class="pz-err">'+esc(b.mensaje||"No se pudo buscar.")+'</div>';agToast(b.mensaje||"No se pudo buscar.","error");return;}
+ etProg(65,"Listo lo de la web ("+(b.busquedas||[]).length+" búsquedas). Puntuando las palabras clave…");
+ const m=await agEscribir({modo:"estudio_mapa",tema:tema,notas:notas,hallazgos:b.notas});
+ etFin(btn);
+ if(!m.ok||!m.estudio){etProg(0,"");document.getElementById("etOut").innerHTML='<div class="pz-err">'+esc((m&&m.mensaje)||"No se pudo armar el mapa.")+'</div>';agToast((m&&m.mensaje)||"No se pudo armar el mapa.","error");return;}
+ etProg(100,"Estudio listo.");setTimeout(function(){etProg(0,"");},1800);
+ _etActual={id:null,tema:tema,notas:b.notas,fuentes:b.fuentes||[],estudio:m.estudio,created_at:new Date().toISOString()};
+ etPintar();
+ const g=await etGuardar(_etActual);
+ if(g)agToast("Estudio guardado en el banco de palabras clave.","ok");
+}
+function etFin(btn){_etTrabajando=false;btn.disabled=false;btn.innerHTML="&#128269; Estudiar tema";}
+function etClaseVer(v){return v==="Artículo madre"?"v-art":v==="Descartar"?"v-no":"v-reel";}
+function etClaseRuta(r){return r==="Océano azul"?"r-azul":r==="Competir"?"r-comp":"r-no";}
+function etPintar(){
+ const out=document.getElementById("etOut"),d=_etActual;if(!d){out.innerHTML="";return;}
+ const e=d.estudio||{},pc=Array.isArray(e.palabras_clave)?e.palabras_clave.slice():[],dec=e.decision||{},pr=e.principal||{};
+ pc.sort(function(a,b){return (b.total||0)-(a.total||0);});
+ let h='<div class="et-ver"><span class="pz-fmt '+etClaseVer(dec.veredicto)+'">'+esc(dec.veredicto||"Sin decisión")+'</span><b>'+esc(d.tema)+'</b>'+(d.created_at?'<span class="pz-who">'+esc(agDiaLocal(d.created_at))+'</span>':'')+'</div>';
+ if(dec.resumen)h+='<div class="pz-nota" style="margin:.2rem 0 .8rem">'+esc(dec.resumen)+'</div>';
+ if(pr.frase)h+='<div class="gen-block"><div class="gb-head"><span class="gb-label">Palabra clave principal</span><span class="gb-acts"><span class="gb-copy" role="button" tabindex="0" onclick="agCopiarYAvisar('+JSON.stringify(pr.frase)+',this,\'Copiar\')">Copiar</span></span></div><div class="gb-body">'+esc(pr.frase)+(pr.por_que?'\n'+esc(pr.por_que):'')+'</div></div>';
+ h+='<div class="pz-sec">Mapa de palabras clave</div>';
+ h+='<div class="et-tabla"><table><thead><tr><th>Frase de búsqueda</th><th>Intención</th><th>Quién posiciona y qué le falta</th><th title="Dolor">Dol</th><th title="Masividad">Mas</th><th title="Hueco">Hue</th><th title="Ganable">Gan</th><th title="Viralidad">Vir</th><th>Total</th><th>Ruta</th><th>Pieza</th><th>Cómo se usa</th></tr></thead><tbody>';
+ pc.forEach(function(k){
+  h+='<tr><td class="f'+(k.frase===pr.frase?' p':'')+'">'+esc(k.frase||"")+'</td><td class="n">'+esc(k.intencion||"")+'</td><td>'+esc(k.quien_posiciona||"")+'</td><td class="n">'+(+k.dolor||0)+'</td><td class="n">'+(+k.masividad||0)+'</td><td class="n">'+(+k.hueco||0)+'</td><td class="n">'+(+k.ganable||0)+'</td><td class="n">'+(+k.viralidad||0)+'</td><td class="t">'+(+k.total||0)+'</td><td class="n '+etClaseRuta(k.ruta)+'">'+esc(k.ruta||"")+'</td><td class="n">'+esc(k.pieza||"")+'</td><td>'+esc(k.uso||"")+'</td></tr>';
+ });
+ h+='</tbody></table></div>';
+ const dol=Array.isArray(e.dolores)?e.dolores:[];
+ if(dol.length){
+  h+='<div class="pz-sec">Dolores de la gente y sus dudas</div>';
+  dol.forEach(function(x){h+='<div class="et-dolor"><b>'+esc(x.problema||"")+'</b>'+(x.cuello_de_botella?'<span class="cb">Cuello de botella</span>':'')+(Array.isArray(x.dudas)&&x.dudas.length?'<ul>'+x.dudas.map(function(q){return '<li>'+esc(q)+'</li>';}).join('')+'</ul>':'')+'</div>';});
+ }
+ const vid=Array.isArray(e.video)?e.video:[];
+ if(vid.length)h+='<div class="pz-sec">Lo que está funcionando en video</div><ul class="et-lista">'+vid.map(function(v){return '<li>'+esc(v)+'</li>';}).join('')+'</ul>';
+ const an=e.angulos||{};
+ if(an.autoridad||an.conocimiento||an.viralidad)h+='<div class="pz-sec">Una idea por ángulo (ACV)</div><ul class="et-lista">'+(an.autoridad?'<li><b>Autoridad:</b> '+esc(an.autoridad)+'</li>':'')+(an.conocimiento?'<li><b>Conocimiento:</b> '+esc(an.conocimiento)+'</li>':'')+(an.viralidad?'<li><b>Viralidad:</b> '+esc(an.viralidad)+'</li>':'')+'</ul>';
+ const fu=(Array.isArray(e.fuentes)?e.fuentes:[]).concat(Array.isArray(d.fuentes)?d.fuentes:[]).filter(function(x,i,a){return x&&a.indexOf(x)===i;}).slice(0,20);
+ if(fu.length)h+='<details><summary class="pz-sec" style="cursor:pointer;display:block">Fuentes consultadas ('+fu.length+')</summary><div class="et-fuentes">'+fu.map(function(f){return /^https?:\/\//.test(f)?'<a href="'+escAttr(f)+'" target="_blank" rel="noopener">'+esc(f)+'</a>':esc(f);}).join('<br>')+'</div></details>';
+ if(d.notas)h+='<details style="margin-top:.5rem"><summary class="pz-sec" style="cursor:pointer;display:block">Notas de la búsqueda</summary><div class="gb-body" style="font-size:.78rem;white-space:pre-wrap;color:var(--txt-soft)">'+esc(d.notas)+'</div></details>';
+ h+='<div class="et-btns"><button type="button" class="btn btn-secondary" onclick="etCopiar(this)">Copiar estudio</button><button type="button" class="btn btn-primary" onclick="etUsarEnPieza()">&#10003; Usar en una pieza suelta</button></div>';
+ out.innerHTML=h;
+}
+function etTexto(d){
+ const e=d.estudio||{},pc=Array.isArray(e.palabras_clave)?e.palabras_clave:[],dec=e.decision||{},pr=e.principal||{};
+ let t="ESTUDIO DE TEMA: "+d.tema+"\n";
+ t+="Decisión: "+(dec.veredicto||"")+"\n"+(dec.resumen||"")+"\n\n";
+ if(pr.frase)t+="PALABRA CLAVE PRINCIPAL: "+pr.frase+"\n"+(pr.por_que||"")+"\n\n";
+ t+="MAPA DE PALABRAS CLAVE (frase | intención | quién posiciona | dolor/masividad/hueco/ganable/viralidad = total | ruta | pieza | uso)\n";
+ pc.forEach(function(k){t+="- "+k.frase+" | "+k.intencion+" | "+k.quien_posiciona+" | "+[k.dolor,k.masividad,k.hueco,k.ganable,k.viralidad].join("/")+" = "+k.total+" | "+k.ruta+" | "+k.pieza+" | "+k.uso+"\n";});
+ const dol=Array.isArray(e.dolores)?e.dolores:[];
+ if(dol.length){t+="\nDOLORES Y DUDAS\n";dol.forEach(function(x){t+="- "+x.problema+(x.cuello_de_botella?" [cuello de botella]":"")+"\n";(x.dudas||[]).forEach(function(q){t+="   · "+q+"\n";});});}
+ if(Array.isArray(e.video)&&e.video.length)t+="\nLO QUE FUNCIONA EN VIDEO\n"+e.video.map(function(v){return "- "+v;}).join("\n")+"\n";
+ const an=e.angulos||{};
+ if(an.autoridad||an.conocimiento||an.viralidad)t+="\nÁNGULOS ACV\n- Autoridad: "+(an.autoridad||"")+"\n- Conocimiento: "+(an.conocimiento||"")+"\n- Viralidad: "+(an.viralidad||"")+"\n";
+ if(Array.isArray(e.fuentes)&&e.fuentes.length)t+="\nFUENTES\n"+e.fuentes.map(function(f){return "- "+f;}).join("\n")+"\n";
+ return t.trim();
+}
+function etCopiar(btn){if(_etActual)agCopiarYAvisar(etTexto(_etActual),btn,"Copiar estudio");}
+/* Lleva la palabra clave principal (y el veredicto) a la pieza suelta */
+function etUsarEnPieza(){
+ const d=_etActual;if(!d)return;
+ const e=d.estudio||{},pr=e.principal||{};
+ _agPalabraClave=pr.frase||"";
+ const sel=document.getElementById("agSrcType");
+ if(sel.value==="propiedad"){sel.value="libre";onAgSrcType();}
+ document.getElementById("agTema").value=pr.frase||d.tema;
+ const notas=document.getElementById("agNotas");
+ if(!notas.value.trim()){
+  const dudas=[];(Array.isArray(e.dolores)?e.dolores:[]).forEach(function(x){(x.dudas||[]).slice(0,2).forEach(function(q){dudas.push(q);});});
+  notas.value=["Palabra clave: "+(pr.frase||d.tema),dudas.length?"Dudas que responde: "+dudas.slice(0,4).join(" / "):"",(e.angulos&&e.angulos.viralidad)?"Gancho sugerido (viralidad): "+e.angulos.viralidad:""].filter(Boolean).join("\n");
+ }
+ if(!_agTocoPilar)document.getElementById("agPilar").value="Educacion y Autoridad";
+ agPintarClave();
+ document.getElementById("agTema").scrollIntoView({behavior:"smooth",block:"center"});
+ agToast("Palabra clave lista en la pieza suelta. Elige el formato y genera.","ok");
+}
+function agPintarClave(){
+ const el=document.getElementById("agClave");if(!el)return;
+ if(!_agPalabraClave){el.style.display="none";el.innerHTML="";return;}
+ el.style.display="";el.innerHTML='Palabra clave: <b style="color:var(--gold-l)">'+esc(_agPalabraClave)+'</b> <span class="gb-copy" role="button" tabindex="0" style="margin-left:.4rem" onclick="_agPalabraClave=\'\';agPintarClave()">Quitar</span>';
+}
+/* --- banco de palabras clave (tabla marketing_palabras_clave) --- */
+async function etCargarBanco(){
+ const r=await sb.from("marketing_palabras_clave").select("id,tema,principal,veredicto,estudio,notas,fuentes,created_at").order("created_at",{ascending:false}).limit(60);
+ if(r.error){_etBancoTabla=false;_etBanco=[];console.warn("Banco de palabras clave: "+r.error.message);}
+ else{_etBancoTabla=true;_etBanco=r.data||[];}
+ etPintarBanco();
+}
+function etPintarBanco(){
+ const el=document.getElementById("etBanco");if(!el)return;
+ if(!_etBancoTabla){el.innerHTML='<div class="ag-aviso" style="margin-top:.9rem"><b>Falta crear el banco de palabras clave.</b> Ejecuta en Supabase el archivo <code>supabase/marketing_palabras_clave.sql</code> y recarga esta página. Mientras tanto, cada estudio se puede copiar pero no se guarda.</div>';return;}
+ if(!_etBanco.length){el.innerHTML='<div class="fab-hint" style="margin-top:.8rem">El banco de palabras clave está vacío: el primer estudio que hagas queda guardado aquí para todo el equipo.</div>';return;}
+ el.innerHTML='<div class="pz-sec" style="margin-top:1.2rem">Banco de palabras clave · '+_etBanco.length+' tema'+(_etBanco.length===1?"":"s")+'</div><div class="et-banco">'+_etBanco.map(function(b){
+  return '<span class="chip" onclick="etMostrarGuardado(\''+escAttr(String(b.id))+'\')" title="'+escAttr((b.veredicto||"")+(b.principal?" · "+b.principal:""))+'">'+esc(b.tema||"")+(b.veredicto==="Artículo madre"?' &#9733;':'')+'</span>';
+ }).join('')+'</div>';
+}
+function etMostrarGuardado(id){
+ const b=_etBanco.find(function(x){return String(x.id)===String(id);});if(!b)return;
+ _etActual={id:b.id,tema:b.tema,notas:b.notas||"",fuentes:b.fuentes||[],estudio:b.estudio||{},created_at:b.created_at};
+ document.getElementById("etTema").value=b.tema||"";
+ etPintar();
+ document.getElementById("etOut").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function etGuardar(d){
+ if(!_etBancoTabla)return false;
+ const e=d.estudio||{};
+ const fila={tema:d.tema,principal:(e.principal&&e.principal.frase)||null,veredicto:(e.decision&&e.decision.veredicto)||null,estudio:e,notas:d.notas||null,fuentes:d.fuentes||[]};
+ const r=await sb.from("marketing_palabras_clave").insert(fila).select("id,created_at").single();
+ if(r.error){agToast("El estudio se hizo pero no se pudo guardar en el banco: "+r.error.message,"error");return false;}
+ d.id=r.data.id;d.created_at=r.data.created_at||d.created_at;
+ _etBanco.unshift(Object.assign({id:d.id,created_at:d.created_at},fila));
+ etPintarBanco();
+ return true;
+}
+
 /* ====== AGENTE: una pieza en pantalla (bloques con Copiar y Editar) ====== */
 // ctx "q" = pieza de la quincena abierta; ctx "s" = pieza suelta. k = clave de la pieza.
 function agDatos(ctx,k){
@@ -1663,7 +1850,7 @@ function agIrAPieza(id){
 /* ====== AGENTE: fuente elegida (articulo madre, inmueble, pieza del plan o tema libre) ====== */
 function agAbrirPestana(){
  if(_agIniciado)return;_agIniciado=true;
- agEstadoIA();qnCargarBlog();
+ agEstadoIA();qnCargarBlog();etCargarBanco();
 }
 function agRefrescar(){if(document.getElementById("agSrcType"))onAgSrcType(true);}
 function agArticulos(){
@@ -1807,6 +1994,7 @@ async function generarContenido(){
   cuerpo={modo:"pieza",fuente:{tipo:"tema",titulo:tema,texto:notas},pieza:{formato:formato,titulo:titulo,redes:redesL},marca:marca};
   local=function(){return agPiezaLocal("tema",tema,formato,redesL,titulo,"");};
  }
+ if(_agPalabraClave&&cuerpo.pieza)cuerpo.pieza.palabra_clave=_agPalabraClave;
  btn.disabled=true;btn.textContent="Escribiendo…";
  out.innerHTML='<div class="agent-empty">Claude está escribiendo la pieza…</div>';
  let r=null;
