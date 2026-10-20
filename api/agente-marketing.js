@@ -510,7 +510,7 @@ function rutinasASecciones(d){
 function variantesDe(modelo){
   const v = [];
   // Sonnet 5.5 piensa antes de responder si no se le dice lo contrario; para estos textos no hace falta.
-  if(/sonnet-5-5/.test(modelo)) v.push({ thinking: { type: "between_tools" } }, { effort: "low" });
+  if(/sonnet-5-5/.test(modelo)) v.push({ thinking: { type: "between_tools" }, effort: "low" }, { effort: "low" });   // pensamiento mínimo y esfuerzo bajo juntos: es lo que cabe en los 60 s de la función
   else if(!/haiku/.test(modelo)) v.push({ effort: "low" });
   v.push({});                     // solo con el esquema de la respuesta
   v.push({ sinEsquema: true });   // sin esquema: el JSON se pide por escrito
