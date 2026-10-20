@@ -354,15 +354,26 @@ async function buscarEnLaWeb(clave, encargo){
   const modelos = [process.env.ANTHROPIC_MODEL, MODELO_BASE, MODELO_RESPALDO].filter(function(m, i, a){ return m && a.indexOf(m) === i; });
   const limite = Date.now() + TIEMPO_MAX_MS;
   let ultimo = null;
-  for(let i = 0; i < modelos.length; i++){
-    const modelo = modelos[i];
+  // Por cada modelo se intentan hasta tres solicitudes: con el pensamiento mínimo de Sonnet 5.5,
+  // sin el campo thinking (pensamiento adaptativo) y con la versión más reciente de la herramienta de búsqueda.
+  const intentos = [];
+  modelos.forEach(function(modelo){
+    const conThinking = /sonnet-5-5/.test(modelo);
+    if(conThinking) intentos.push({ modelo: modelo, thinking: { type: "between_tools" }, herramienta: "web_search_20250305" });
+    intentos.push({ modelo: modelo, thinking: null, herramienta: "web_search_20250305" });
+    intentos.push({ modelo: modelo, thinking: null, herramienta: "web_search_20260209" });
+  });
+  let saltarModelo = null;
+  for(let i = 0; i < intentos.length; i++){
+    const intento = intentos[i], modelo = intento.modelo;
+    if(saltarModelo === modelo) continue;         // ese modelo no existe: se salta
     if(limite - Date.now() < 3000) return fallo(504, "tiempo", "La búsqueda tardó más de lo esperado. Vuelve a intentarlo con un tema más concreto.", { reintentar: true });
     const cuerpo = {
       model: modelo, max_tokens: 6000, system: ESTUDIO_VOZ,
       messages: [{ role: "user", content: encargo }],
-      tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 6, user_location: { type: "approximate", country: "CO", city: "Bogotá", region: "Bogotá", timezone: "America/Bogota" } }]
+      tools: [{ type: intento.herramienta, name: "web_search", max_uses: 6, user_location: { type: "approximate", country: "CO", city: "Bogotá", region: "Bogotá", timezone: "America/Bogota" } }]
     };
-    if(/sonnet-5-5/.test(modelo)) cuerpo.thinking = { type: "between_tools" };
+    if(intento.thinking) cuerpo.thinking = intento.thinking;
     const corte = new AbortController();
     const reloj = setTimeout(function(){ corte.abort(); }, Math.max(1000, limite - Date.now()));
     let r;
@@ -391,10 +402,16 @@ async function buscarEnLaWeb(clave, encargo){
     if(r.estado === 401 || r.estado === 403) return fallo(502, "clave_invalida", "La clave de Claude guardada en Vercel no es válida o fue desactivada.");
     if(r.estado === 402 || /credit balance|billing|purchase credits/i.test(msj)) return fallo(502, "sin_saldo", "La cuenta de la API de Claude no tiene saldo. Recarga créditos en platform.claude.com (Settings > Billing).");
     if(r.estado === 429) return fallo(429, "limite", "Claude está recibiendo muchas solicitudes. Se reintenta en unos segundos.", { reintentar: true, esperar: 8 });
-    if(r.estado === 404) continue;                 // ese modelo no existe: se prueba el siguiente
+    if(r.estado === 404){ saltarModelo = modelo; continue; }   // ese modelo no existe: se prueba el siguiente
     if(r.estado >= 500) return fallo(503, "saturado", "Claude está saturado en este momento. Se reintenta en unos segundos.", { reintentar: true, esperar: 6 });
-    if(r.estado === 400 && /web_search|tool/i.test(msj)) return fallo(502, "sin_busqueda", "La búsqueda web no está habilitada para esta clave de Claude. Actívala en platform.claude.com (Settings > Privacy > Web search) y vuelve a intentarlo.");
-    return fallo(502, "error_ia", "Claude respondió con un error (" + r.estado + (err.type ? ", " + err.type : "") + "): " + (msj || "sin detalle").slice(0, 300));
+    if(r.estado === 400){
+      // Solo se avisa de "búsqueda no habilitada" cuando la API lo dice de verdad; cualquier otro 400 se muestra con su mensaje real.
+      if(/web.?search/i.test(msj) && /not enabled|disabled|not available|no está habilitad|not permitted|not allowed/i.test(msj)){
+        return fallo(502, "sin_busqueda", "La búsqueda web no está habilitada para esta clave de Claude. Actívala en platform.claude.com (Configuración de la organización > Capacidades > Permitir búsqueda web) y vuelve a intentarlo. Mensaje de la API: " + msj.slice(0, 300));
+      }
+      if(i + 1 < intentos.length) continue;        // se repite con una solicitud más simple (o con el siguiente modelo) antes de rendirse
+    }
+    return fallo(502, "error_ia", "Claude respondió con un error (" + r.estado + (err.type ? ", " + err.type : "") + ", modelo " + modelo + ", herramienta " + intento.herramienta + (intento.thinking ? ", thinking " + intento.thinking.type : "") + "): " + (msj || "sin detalle").slice(0, 300));
   }
   const e = (ultimo && ultimo.datos && ultimo.datos.error) || {};
   return fallo(502, "error_ia", "No se pudo usar el modelo de Claude configurado: " + String(e.message || "revisa la variable ANTHROPIC_MODEL en Vercel").slice(0, 300));
