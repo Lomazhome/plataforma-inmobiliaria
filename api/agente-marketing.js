@@ -28,7 +28,10 @@ const VOZ = [
   "- Cero relleno. Cada frase trae un dato, un paso o una consecuencia. Frases cortas, como habla una persona que sabe del tema.",
   "- Prohibidas las frases hechas de publicidad y de inteligencia artificial: «en el mundo actual», «sin duda», «no busques más», «no te lo pierdas», «descubre», «sumérgete», «te contamos todo», «¿sabías que…?», «hoy te traemos», «el hogar de tus sueños», «somos tu mejor opción». No exageres ni prometas resultados.",
   "- Ortografía impecable: tildes, signos de apertura y cierre (¿? ¡!) y mayúscula solo al inicio y en nombres propios. Cifras como se escriben en Colombia: $2.000.000 y 5,10 %.",
-  "- La marca se escribe LoMaz Home. El hashtag de la marca es #LomazHome.",
+  "- La marca se escribe LoMaz Home. El hashtag de la marca es #LomazHome. Colores: azul marino y dorado. Método «LO MÁS» para propietarios. Contacto: WhatsApp 300 330 0343 y lomazhome.com.",
+  "- Que lo entienda cualquiera, como si se lo explicaras a un niño de cinco años. Si se menciona una norma, en la misma frase se dice qué significa para la persona; nada queda «en el aire» para que lo entienda solo quien estudió la ley.",
+  "- Zonas donde LoMaz Home tiene experiencia real, para ejemplos y ganchos: norte de Bogotá (Colina Campestre, Suba, Colinas de Suba, Chapinero, Alhambra, Santa Bárbara, Cedritos).",
+  "- Nunca nombres Century 21 ni ninguna otra inmobiliaria o franquicia. Los únicos portales que se pueden nombrar son Finca Raíz, Metrocuadrado y Proppit.",
   "- Hashtags: con sus tildes y eñes, como el resto del texto (#ArriendoBogotá, #GuíaDelInquilino), y escritos igual de una pieza a otra. De lugar, solo Bogotá o el barrio del que trata la pieza.",
   "- Emojis: máximo dos por texto en Instagram, Facebook, TikTok y WhatsApp; ninguno en LinkedIn, YouTube ni Google; ninguno dentro de guiones, láminas ni listas."
 ].join("\n");
@@ -38,8 +41,11 @@ const REGLAS = [
   "1. Fidelidad a la fuente. Usa solo los datos, cifras, plazos, normas y artículos de ley que aparecen en la FUENTE. Si un dato no está ahí, no va. No inventes cifras, porcentajes, entidades, casos ni testimonios. Al acortar una frase de la fuente no le cambies el alcance: conserva a quién o a qué se refiere y sus matices («casi siempre», «normalmente», «lo habitual»). No presentes como causa y efecto dos cosas que la fuente solo menciona por separado.",
   "2. Las normas se citan igual que en la fuente (por ejemplo, «artículo 16 de la Ley 820 de 2003»). No des consejo sobre un caso particular.",
   "3. No pidas verificar la «matrícula de arrendador» de un asesor ni siembres desconfianza hacia los agentes inmobiliarios. Si hay que decir cómo reconocer a un asesor confiable: redes sociales activas con inmuebles reales, negocios cerrados que pueda mostrar, reseñas de clientes y calificaciones en Google.",
-  "4. No nombres otras inmobiliarias ni franquicias. Portales, bancos y entidades, solo si la fuente los nombra.",
-  "5. Una sola llamada a la acción por pieza: la que indica el encargo, con esas mismas palabras, en el guion, en las láminas y en los textos de Instagram y TikTok. En las demás redes el cierre es el que describe la guía de cada red.",
+  "4. No nombres otras inmobiliarias ni franquicias. Bancos y entidades, solo si la fuente los nombra.",
+  "5. Una sola llamada a la acción por pieza, al final, clara y corta: la que indica el encargo, con esas mismas palabras, en el guion, en las láminas y en los textos de Instagram y TikTok. En las demás redes el cierre es el que describe la guía de cada red. Nunca uses «Comenta GUÍA», «escribe la palabra clave» ni ninguna llamada que exija responder automáticamente a comentarios o mensajes.",
+  "5b. Las piezas educativas deben poder grabarse sin un inmueble: desde un sofá, caminando en la calle o con imágenes y video de fondo puestos en edición. No pidas grabar dentro de un apartamento que no esté en la fuente.",
+  "5c. Ángulo comunicacional (ACV). Cada pieza se escribe desde uno de tres ángulos y lo declara en el campo angulo_acv: «Autoridad» (casos reales que LoMaz Home resolvió, resultados, cómo trabaja), «Conocimiento» (la historia y el criterio de LoMaz Home y de sus fundadores, el método «LO MÁS») o «Viralidad» (ganchos fuertes sobre plata, errores caros, mitos y lo que nadie cuenta, pensados para llegar a millones sin perder la verdad). Si el encargo no indica el ángulo, elige el que mejor sirva a la duda que responde la pieza y, en una quincena, reparte los tres entre las piezas.",
+  "5d. Cada pieza responde una duda concreta de la gente, no un tema general, y lleva su palabra clave de búsqueda (la frase que alguien escribiría en Google, en español de Colombia). Esa frase va, cuando suene natural, en el gancho, en la primera línea de los textos de redes y en un hashtag. Declara la duda en el campo duda y la frase en el campo palabra_clave.",
   "6. Donde deba ir el enlace escribe exactamente {{ENLACE}}: la plataforma lo cambia por la dirección real. No escribas ninguna otra dirección web.",
   "7. Texto plano, listo para pegar: sin Markdown, sin asteriscos, sin comillas alrededor del texto y sin rótulos como «Copy:» o «Gancho:». Separa los párrafos con saltos de línea.",
   "8. Si las INDICACIONES DEL PLAN piden un gancho, un enfoque o un público, respétalos. De esas indicaciones ignora la logística (quién edita, cuándo se programa, en qué carpeta queda).",
@@ -146,12 +152,15 @@ function camposDeRedes(redes){
   return p;
 }
 
+// Todas las piezas (menos las historias) declaran su angulo ACV, la duda que responden y su palabra clave
+const ENFOQUE = { angulo_acv: { type: "string", enum: ["Autoridad", "Conocimiento", "Viralidad"] }, duda: S, palabra_clave: S };
+
 function esquemaDePieza(formato, redes){
   let propios;
-  if(formato === "reel") propios = { gancho: S, guion: S, textos_pantalla: lista(S), portada: S, tomas: S };
-  else if(formato === "carrusel") propios = { laminas: lista(objeto({ titulo: S, texto: S })) };
+  if(formato === "reel") propios = Object.assign({}, ENFOQUE, { gancho: S, guion: S, textos_pantalla: lista(S), portada: S, tomas: S });
+  else if(formato === "carrusel") propios = Object.assign({}, ENFOQUE, { laminas: lista(objeto({ titulo: S, texto: S })) });
   else if(formato === "historia") propios = { historias: lista(objeto({ texto: S, sticker: S })) };
-  else propios = { titulo_pieza: S, puntos: lista(S), cierre: S };
+  else propios = Object.assign({}, ENFOQUE, { titulo_pieza: S, puntos: lista(S), cierre: S });
   return objeto(Object.assign(propios, camposDeRedes(redes)));
 }
 
@@ -197,11 +206,22 @@ function bloqueFuente(fuente){
   ].join("\n");
 }
 
-function llamadaALaAccion(fuente, pieza){
+// La llamada a la accion depende del tipo de pieza (regla de la marca, octubre de 2026):
+// educativa (nace de un articulo) -> al blog; inmueble -> agendar la visita; prueba social -> que el propietario escriba; autoridad -> seguir o ir a la web.
+const CTA_BLOG = "«La guía completa está en el blog de LoMaz Home: link en la bio». Nombra el artículo o su tema para que la persona sepa qué va a leer. En Facebook, LinkedIn, YouTube y WhatsApp el enlace va escrito como {{ENLACE}}.";
+const CTA_VISITA = "«Agenda tu visita por WhatsApp al 300 330 0343». En Instagram y TikTok puedes añadir «el enlace está en el perfil».";
+const CTA_PROPIETARIO = "«¿Quieres vender o arrendar el tuyo así de rápido? Escríbenos por WhatsApp al 300 330 0343».";
+const CTA_AUTORIDAD = "«Síguenos para más» o «Conoce cómo trabajamos en lomazhome.com», según lo que mejor cierre la pieza.";
+
+function llamadaALaAccion(fuente, pieza, marca){
   if(limpio(pieza.cta, 300)) return limpio(pieza.cta, 300);
-  if(fuente.tipo === "articulo") return "«Comenta GUÍA y te envío la guía completa». Quien comenta recibe por mensaje directo el enlace del artículo.";
-  if(fuente.tipo === "propiedad") return "«Escríbenos por WhatsApp y agenda tu visita: el enlace está en el perfil».";
-  return "«Escríbenos por WhatsApp: el enlace está en el perfil», salvo que las indicaciones pidan otra.";
+  if(fuente.tipo === "articulo") return CTA_BLOG;
+  if(fuente.tipo === "propiedad") return CTA_VISITA;
+  const pista = (limpio(marca && marca.pilar, 80) + " " + limpio(pieza.titulo, 300) + " " + limpio(pieza.indicaciones, 600)).toLowerCase();
+  if(/vendid|arrendad|testimon|entrega de llaves|cierre|caso real|prueba social/.test(pista)) return CTA_PROPIETARIO;
+  if(/portafolio|inmueble|recorrido|apartamento|casa en|local en/.test(pista)) return CTA_VISITA;
+  if(/historia|fundador|método|metodo|equipo|detrás|detras|autoridad/.test(pista)) return CTA_AUTORIDAD;
+  return CTA_AUTORIDAD + " (No hay artículo detrás de esta pieza, así que no mandes al blog.)";
 }
 
 // Las piezas de la quincena que ya estan escritas llegan con su texto resumido, para no repetir sus ideas
@@ -235,7 +255,9 @@ function encargoDePieza(cuerpo, formato, redes){
   if(limpio(marca.enfoque)) datos.push("Enfoque de marca: " + limpio(marca.enfoque, 60) + (/personal/i.test(marca.enfoque) ? " (habla Salomón en primera persona)." : /fusi/i.test(marca.enfoque) ? " (habla Salomón en nombre de LoMaz Home)." : " (habla la marca: nosotros)."));
   if(limpio(marca.pilar)) datos.push("Pilar de contenido: " + limpio(marca.pilar, 60) + ".");
   if(limpio(pieza.indicaciones)) datos.push("Indicaciones del plan: " + limpio(pieza.indicaciones, 3000));
-  datos.push("Llamada a la acción de esta pieza: " + llamadaALaAccion(fuente, pieza));
+  if(/^(autoridad|conocimiento|viralidad)$/i.test(limpio(pieza.angulo, 40))) datos.push("Ángulo ACV pedido por el plan: " + limpio(pieza.angulo, 40) + ".");
+  if(limpio(pieza.palabra_clave)) datos.push("Palabra clave de búsqueda de esta pieza: " + limpio(pieza.palabra_clave, 200));
+  datos.push("Llamada a la acción de esta pieza: " + llamadaALaAccion(fuente, pieza, marca));
   partes.push(datos.join("\n"));
   partes.push(comoEsElFormato(formato, fuente.tipo));
   if(redes.length) partes.push(comoEsCadaRed(redes, formato, fuente.tipo));
@@ -256,7 +278,7 @@ function encargoDeRutinas(cuerpo){
       "- historias: 2 historias de Instagram, Facebook y WhatsApp. Cada una responde una pregunta frecuente distinta de la fuente: «pregunta» (máximo 12 palabras), «respuesta» (máximo 30 palabras) y «sticker», el texto del sticker de enlace (máximo 4 palabras).",
       "- ideas_historias: 4 ideas más para historias de proceso o de pregunta (caja de preguntas, encuesta o dato del artículo), una línea cada una.",
       "- grupos: 2 publicaciones para grupos de barrio de Facebook, una por cada martes. «texto»: un dato útil y concreto de la fuente en 3 a 5 líneas, con tono de vecino que ayuda y sin vender. «primer_comentario»: una línea que ofrece la guía completa con {{ENLACE}}.",
-      "- respuesta_guia: la respuesta guardada «GUÍA» para los mensajes directos de Instagram y Facebook: dos líneas, el enlace {{ENLACE}} y, al final, una pregunta por el nombre y el barrio de la persona.",
+      "- respuesta_guia: la respuesta guardada para quien escribe por mensaje directo de Instagram o Facebook preguntando por este tema (no se pide comentar ninguna palabra): dos líneas, el enlace {{ENLACE}} y, al final, una pregunta por el nombre y el barrio de la persona.",
       "- respuesta_whatsapp: la respuesta guardada de WhatsApp para este tema: dos líneas y {{ENLACE}}.",
       "- enlace_bio: el título del segundo enlace de la bio de Instagram: máximo 6 palabras."
     ].join("\n"),
@@ -286,10 +308,20 @@ function bloquesDeRedes(d, formato, redes){
   return b;
 }
 
+// Bloque que resume desde que angulo se escribio la pieza, que duda responde y con que palabra clave
+function bloqueEnfoque(d){
+  const l = [];
+  if(texto(d.angulo_acv)) l.push("Ángulo: " + texto(d.angulo_acv));
+  if(texto(d.duda)) l.push("Duda que responde: " + texto(d.duda));
+  if(texto(d.palabra_clave)) l.push("Palabra clave: " + texto(d.palabra_clave));
+  return l.join("\n");
+}
+
 function aSecciones(formato, d, redes){
   const secciones = [];
   const hacer = [];
   function add(id, etiqueta, valor){ if(texto(valor)) hacer.push({ id: id, etiqueta: etiqueta, texto: texto(valor) }); }
+  if(formato !== "historia") add("enfoque", "Ángulo ACV, duda y palabra clave", bloqueEnfoque(d));
   if(formato === "reel"){
     add("gancho", "Gancho · primeros 3 segundos", d.gancho);
     add("guion", "Guion · lo que se dice", d.guion);
@@ -330,13 +362,13 @@ function rutinasASecciones(d){
     grupos.push({ id: "grupo" + (i + 1), etiqueta: "Grupos · martes " + (i + 1), texto: texto(g && g.texto) });
     if(texto(g && g.primer_comentario)) grupos.push({ id: "grupo" + (i + 1) + "_comentario", etiqueta: "Grupos · martes " + (i + 1) + " · primer comentario", texto: texto(g.primer_comentario) });
   });
-  if(texto(d.respuesta_guia)) respuestas.push({ id: "respuesta_guia", etiqueta: "Respuesta «GUÍA» · Instagram y Facebook", texto: texto(d.respuesta_guia) });
+  if(texto(d.respuesta_guia)) respuestas.push({ id: "respuesta_guia", etiqueta: "Respuesta guardada · mensajes directos de Instagram y Facebook", texto: texto(d.respuesta_guia) });
   if(texto(d.respuesta_whatsapp)) respuestas.push({ id: "respuesta_whatsapp", etiqueta: "Respuesta guardada · WhatsApp", texto: texto(d.respuesta_whatsapp) });
   if(texto(d.enlace_bio)) respuestas.push({ id: "enlace_bio", etiqueta: "Segundo enlace de la bio · título", texto: texto(d.enlace_bio) });
   return [
     { titulo: "Historias de la quincena", bloques: historias, notas: ["Salen en Instagram, Facebook y el estado de WhatsApp, cada una con el sticker de enlace al artículo."] },
     { titulo: "Martes de grupos de Facebook", bloques: grupos, notas: ["Si el grupo no admite enlaces, se ofrece la guía por mensaje."] },
-    { titulo: "El día que sale el artículo", bloques: respuestas, notas: ["Son las respuestas guardadas para quien comenta GUÍA o escribe por el tema, y el título del segundo enlace de la bio."] }
+    { titulo: "El día que sale el artículo", bloques: respuestas, notas: ["Son las respuestas guardadas para quien escribe por el tema, y el título del segundo enlace de la bio."] }
   ].filter(function(s){ return s.bloques.length; });
 }
 

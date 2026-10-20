@@ -1075,16 +1075,38 @@ function autollenarDesdeFuente(){
 
 /* ====== MOTOR LOCAL DE PLANTILLAS (respaldo sin IA y autollenado del editor) ====== */
 const HASH_BASE='#LomazHome #Inmobiliaria #BienesRaíces #Bogotá #Colombia';
-const CTA_RED={
- Instagram:'Escribe la palabra clave por mensaje directo para recibir la ficha completa y agendar tu visita.',
- Facebook:'Comenta o envíanos un mensaje y un asesor de LoMaz Home te contactará hoy mismo.',
- TikTok:'Sigue a LoMaz Home y guarda este video. Escríbenos para más detalles.',
- LinkedIn:'Conecta conmigo o escríbeme por mensaje para una asesoría profesional.',
- YouTube:'Mira el recorrido completo y suscríbete al canal de LoMaz Home.',
- Threads:'Responde este hilo o escríbenos para conocer más oportunidades.',
- WhatsApp:'Responde QUIERO DETALLES y te envío la ficha técnica al instante.',
- X:'Da RT y escríbeme por mensaje directo para los detalles.'
+/* Llamada a la accion por tipo de pieza (regla de la marca): inmueble -> agendar la visita; articulo -> al blog; tema -> seguir o ir a la web */
+const CTA_VISITA_RED={
+ Instagram:'Agenda tu visita por WhatsApp al 300 330 0343: el enlace está en el perfil.',
+ Facebook:'Agenda tu visita por WhatsApp al 300 330 0343.',
+ TikTok:'Agenda tu visita por WhatsApp al 300 330 0343: el enlace está en el perfil.',
+ LinkedIn:'Agenda tu visita por WhatsApp al 300 330 0343.',
+ YouTube:'Agenda tu visita por WhatsApp al 300 330 0343.',
+ Threads:'Agenda tu visita por WhatsApp al 300 330 0343.',
+ WhatsApp:'Responde este estado y agendamos tu visita.',
+ X:'Agenda tu visita por WhatsApp al 300 330 0343.'
 };
+const CTA_BLOG_RED={
+ Instagram:'La guía completa está en el blog de LoMaz Home: link en la bio.',
+ Facebook:'La guía completa está en el blog de LoMaz Home (enlace en la publicación).',
+ TikTok:'La guía completa está en el blog de LoMaz Home: link en la bio.',
+ LinkedIn:'La guía completa está en el blog de LoMaz Home: el enlace va en el primer comentario.',
+ YouTube:'La guía completa está en el blog de LoMaz Home: enlace en la descripción.',
+ Threads:'La guía completa está en el blog de LoMaz Home.',
+ WhatsApp:'La guía completa está en el blog de LoMaz Home.',
+ X:'La guía completa está en el blog de LoMaz Home.'
+};
+const CTA_TEMA_RED={
+ Instagram:'Síguenos para más y conoce cómo trabajamos en lomazhome.com.',
+ Facebook:'Síguenos para más y conoce cómo trabajamos en lomazhome.com.',
+ TikTok:'Síguenos para más y conoce cómo trabajamos en lomazhome.com.',
+ LinkedIn:'Conoce cómo trabajamos en lomazhome.com.',
+ YouTube:'Suscríbete al canal y conoce cómo trabajamos en lomazhome.com.',
+ Threads:'Síguenos para más.',
+ WhatsApp:'Conoce cómo trabajamos en lomazhome.com.',
+ X:'Síguenos para más.'
+};
+const CTA_RED=CTA_VISITA_RED;
 function emojiRed(r){return ({Instagram:'\u{1F4F8}',Facebook:'\u{1F465}',TikTok:'\u{1F3B5}',LinkedIn:'\u{1F4BC}',YouTube:'\u{1F3AC}',Threads:'\u{1F9F5}',WhatsApp:'\u{1F4AC}',X:'\u{2716}'})[r]||'';}
 
 function hashtagsPropiedad(p){
@@ -1129,19 +1151,21 @@ function generarParaArticulo(a,red){
  var em=emojiRed(red);
  var titulo=a.t;
  var hook=em+' '+a.t+' \u2014 lo que muchos ignoran y a ti te puede ahorrar dinero.';
- var copy=[a.e,'En este contenido de LoMaz Home te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',(CTA_RED[red]||CTA_RED.Instagram)+' Lee la guía completa en nuestro blog.'].filter(Boolean).join('\n\n');
- if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Gancho a cámara] '+a.t+'\n[Desarrollo] '+(a.e||a.t)+'\n[Cierre] '+(CTA_RED[red]||'');}
+ var cta=CTA_BLOG_RED[red]||CTA_BLOG_RED.Instagram;
+ var copy=[a.e,'En este contenido de LoMaz Home te explicamos lo esencial sobre '+a.c.toLowerCase()+' para que decidas con seguridad y criterio experto.',cta].filter(Boolean).join('\n\n');
+ if(red==='TikTok'||red==='YouTube'){copy='Guion sugerido:\n[Gancho a cámara] '+a.t+'\n[Desarrollo] '+(a.e||a.t)+'\n[Cierre] '+cta;}
  var tags='#LomazHome #'+a.c.replace(/\s+/g,'')+' #Inmobiliaria #Bogotá #Colombia #Inversión #ConsejosInmobiliarios';
- return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
+ return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:cta};
 }
 
 function generarParaTema(tema,red,pilar){
  var em=emojiRed(red);
  var titulo=tema||'Contenido de marca';
  var hook=em+' '+(tema||'Hablemos de bienes raíces')+': la perspectiva que tu competencia no te da.';
- var copy=['Desde LoMaz Home compartimos nuestra visión sobre '+(tema||'el mercado inmobiliario')+'.','Nuestra experiencia asesorando compradores, vendedores e inversionistas nos permite darte criterio real, no fórmulas genéricas.',(CTA_RED[red]||CTA_RED.Instagram)].join('\n\n');
+ var cta=CTA_TEMA_RED[red]||CTA_TEMA_RED.Instagram;
+ var copy=['Desde LoMaz Home compartimos nuestra visión sobre '+(tema||'el mercado inmobiliario')+'.','Nuestra experiencia asesorando compradores, vendedores e inversionistas nos permite darte criterio real, no fórmulas genéricas.',cta].join('\n\n');
  var tags=HASH_BASE+' #Inversión #ConsejosInmobiliarios';
- return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:(CTA_RED[red]||'')};
+ return {titulo:titulo,hook:hook,copy:copy,hashtags:tags,cta:cta};
 }
 
 /* ====== AGENTE: formatos, redes y utilidades ====== */
@@ -1359,7 +1383,7 @@ function qnPiezasPlan(art){
  });
  return lista.sort(function(a,b){return (a.fecha||"9999").localeCompare(b.fecha||"9999");});
 }
-function qnRutinasPz(){return {k:"rutinas",titulo:"Historias, grupos de Facebook y respuesta «GUÍA»",fecha:"",formato:"rutinas",responsable:""};}
+function qnRutinasPz(){return {k:"rutinas",titulo:"Historias, grupos de Facebook y respuestas guardadas",fecha:"",formato:"rutinas",responsable:""};}
 function qnUrl(){const el=document.getElementById("qnUrl");return el?el.value.trim():"";}
 
 function qnAbrir(art){
