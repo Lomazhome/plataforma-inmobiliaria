@@ -72,7 +72,8 @@ function comoEsElFormato(formato, tipoFuente){
     "- guion: el texto completo que se dice, en orden (gancho, tres datos que se ven en el recorrido, para quién es, llamada a la acción), en párrafos cortos y sin acotaciones entre paréntesis.",
     "- textos_pantalla: de 4 a 6 rótulos de máximo 6 palabras; el primero es el gancho y alguno lleva el precio o el canon.",
     "- portada: máximo 6 palabras: barrio y precio o canon.",
-    "- tomas: 2 o 3 frases con el orden del recorrido y lo que debe verse."
+    "- planos: el guion técnico plano a plano, de 4 a 7 planos en el orden del recorrido. Cada plano trae tres cosas: ve (qué se ve: tipo de plano y qué parte del inmueble), dice (TODO lo que se dice mientras dura ese plano, palabra por palabra, sin resumir ni recortar) y pantalla (el rótulo que aparece en ese plano, o vacío si no lleva). La suma de los «dice» de todos los planos es exactamente el guion completo, en el mismo orden: ni una frase del guion queda fuera ni se parafrasea, porque el plano es lo que se lee al grabar.",
+    "- edicion: 1 o 2 frases con lo que necesita la edición (ritmo, música, qué se resalta)."
   ].join("\n");
   if(formato === "reel") return [
     "CÓMO ES UN REEL DE LOMAZ HOME",
@@ -82,7 +83,8 @@ function comoEsElFormato(formato, tipoFuente){
     "- guion: el texto completo que se dice, en el orden en que se dice, en párrafos cortos: gancho, respuesta, idea 1, idea 2, idea 3 y cierre. Sin acotaciones entre paréntesis ni marcas de tiempo.",
     "- textos_pantalla: de 4 a 6 rótulos de máximo 6 palabras cada uno; el primero es el gancho. Si se cita una norma, un rótulo la lleva escrita.",
     "- portada: máximo 6 palabras.",
-    "- tomas: 2 o 3 frases con lo que necesitan la grabación y la edición (plano, apoyo visual, qué se resalta). Las palabras que se citan van entre comillas angulares («»)."
+    "- planos: el guion técnico plano a plano, de 5 a 8 planos. Cada plano trae tres cosas: ve (qué se ve: tipo de plano, dónde se graba —sofá, calle, caminando— o qué imagen o video de apoyo va en edición), dice (TODO lo que se dice mientras dura ese plano, palabra por palabra, sin resumir ni recortar) y pantalla (el rótulo que aparece en ese plano, tomado de textos_pantalla, o vacío si no lleva). La suma de los «dice» de todos los planos es exactamente el guion completo, en el mismo orden: ni una frase del guion queda fuera ni se parafrasea ni se cambia, porque el plano es lo que se lee en voz alta al grabar en la calle. Un plano de 3 a 8 segundos lleva entre 8 y 25 palabras.",
+    "- edicion: 1 o 2 frases con lo que necesita la edición (ritmo, música, subtítulos, qué se resalta)."
   ].join("\n");
   if(formato === "carrusel" && tipoFuente === "propiedad") return [
     "CÓMO ES EL CARRUSEL DE UN INMUEBLE",
@@ -158,7 +160,7 @@ const ENFOQUE = { angulo_acv: { type: "string", enum: ["Autoridad", "Conocimient
 
 function esquemaDePieza(formato, redes){
   let propios;
-  if(formato === "reel") propios = Object.assign({}, ENFOQUE, { gancho: S, guion: S, textos_pantalla: lista(S), portada: S, tomas: S });
+  if(formato === "reel") propios = Object.assign({}, ENFOQUE, { gancho: S, guion: S, textos_pantalla: lista(S), portada: S, planos: lista(objeto({ ve: S, dice: S, pantalla: S })), edicion: S });
   else if(formato === "carrusel") propios = Object.assign({}, ENFOQUE, { laminas: lista(objeto({ titulo: S, texto: S })) });
   else if(formato === "historia") propios = { historias: lista(objeto({ texto: S, sticker: S })) };
   else propios = Object.assign({}, ENFOQUE, { titulo_pieza: S, puntos: lista(S), cierre: S });
@@ -423,6 +425,17 @@ async function buscarEnLaWeb(clave, encargo){
 function texto(v){ return String(v === null || v === undefined ? "" : v).replace(/\r\n/g, "\n").replace(/^\s+|\s+$/g, ""); }
 function numerada(arr){ return (Array.isArray(arr) ? arr : []).map(function(t, i){ return (i + 1) + ". " + texto(t); }).join("\n"); }
 
+// Comprueba que lo que se dice plano a plano sea el guion completo. Devuelve un aviso si falta texto, o "" si está bien.
+function palabras(s){ return texto(s).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(Boolean); }
+function planosCubrenGuion(guion, planos){
+  const g = palabras(guion);
+  if(!g.length || !planos.length) return "";
+  const dicho = palabras(planos.map(function(p){ return p && p.dice; }).join(" "));
+  if(dicho.length >= g.length * 0.9) return "";
+  const faltan = g.length - dicho.length;
+  return "AVISO: el guion técnico recoge " + dicho.length + " de las " + g.length + " palabras del guion (faltan unas " + faltan + "). Vuelve a generar la pieza o completa los planos con el guion antes de grabar.";
+}
+
 function bloquesDeRedes(d, formato, redes){
   const nombre = NOMBRE_EN_RED[formato] || {};
   const b = [];
@@ -459,8 +472,20 @@ function aSecciones(formato, d, redes){
     add("guion", "Guion · lo que se dice", d.guion);
     add("pantalla", "Textos en pantalla", numerada(d.textos_pantalla));
     add("portada", "Portada", d.portada);
-    add("tomas", "Tomas y edición", d.tomas);
-    secciones.push({ titulo: "Para grabar y editar", bloques: hacer, notas: ["El gancho se dice en voz alta y se escribe en pantalla en los tres primeros segundos."] });
+    const planos = Array.isArray(d.planos) ? d.planos : [];
+    add("planos", "Guion técnico plano a plano · " + planos.length + " planos", planos.map(function(p, i){
+      const l = ["PLANO " + (i + 1)];
+      if(texto(p && p.ve)) l.push("Se ve: " + texto(p.ve));
+      if(texto(p && p.dice)) l.push("Se dice: «" + texto(p.dice) + "»");
+      if(texto(p && p.pantalla)) l.push("En pantalla: " + texto(p.pantalla));
+      return l.join("\n");
+    }).join("\n\n"));
+    add("edicion", "Notas de edición", d.edicion);
+    add("tomas", "Tomas y edición", d.tomas); // piezas generadas antes de octubre de 2026
+    const notas = ["El gancho se dice en voz alta y se escribe en pantalla en los tres primeros segundos.", "Lo que va entre «» en cada plano es todo lo que se dice en ese plano: al grabar se lee tal cual."];
+    const aviso = planosCubrenGuion(d.guion, planos);
+    if(aviso) notas.push(aviso);
+    secciones.push({ titulo: "Para grabar y editar", bloques: hacer, notas: notas });
   }else if(formato === "carrusel"){
     const laminas = Array.isArray(d.laminas) ? d.laminas : [];
     add("laminas", "Láminas · " + laminas.length + " en total", laminas.map(function(l, i){
