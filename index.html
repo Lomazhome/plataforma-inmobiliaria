@@ -926,15 +926,17 @@ function renderCierres() {
 
 // ---- ZONAS DONDE TRABAJAMOS ----
 // cerrados: cuántos negocios de CIERRES caen en la zona; terms: cómo se busca en el inventario activo
+// img: foto de ambiente de la zona (Supabase, bucket fotos-propiedades/blog). Son imágenes de ambiente, no de un inmueble en particular.
+const ZONAS_IMG = 'https://lniouebpuuuqctrgxoiw.supabase.co/storage/v1/object/public/fotos-propiedades/blog/zonas/';
 const ZONAS = [
-  {name:'Colina Campestre', q:'Colina',       terms:['colina'],                                   cerr:['colina campestre']},
-  {name:'Suba',             q:'Suba',         terms:['suba','pinar','salitre','redil','ángeles','angeles'], cerr:['suba','pinar de suba','el redil']},
-  {name:'Usaquén',          q:'Usaquén',      terms:['usaquén','usaquen','bella suiza'],          cerr:['bella suiza']},
-  {name:'Chicó',            q:'Chicó',        terms:['chicó','chico'],                            cerr:['chicó']},
-  {name:'Chapinero',        q:'Chapinero',    terms:['chapinero'],                                cerr:['chapinero']},
-  {name:'La Alhambra',      q:'Alhambra',     terms:['alhambra'],                                 cerr:['alhambra']},
-  {name:'Santa Bárbara',    q:'Santa Bárbara',terms:['santa bárbara','santa barbara'],            cerr:[]},
-  {name:'Cedritos',         q:'Cedritos',     terms:['cedritos'],                                 cerr:[]}
+  {name:'Colina Campestre', q:'Colina',       terms:['colina'],                                   cerr:['colina campestre'], img:'1.jpg'},
+  {name:'Suba',             q:'Suba',         terms:['suba','pinar','salitre','redil','ángeles','angeles'], cerr:['suba','pinar de suba','el redil'], img:'zona-suba.jpg'},
+  {name:'Usaquén',          q:'Usaquén',      terms:['usaquén','usaquen','bella suiza'],          cerr:['bella suiza'], img:'zona-usaquen.jpg'},
+  {name:'Chicó',            q:'Chicó',        terms:['chicó','chico'],                            cerr:['chicó'], img:'zona-chico.jpg'},
+  {name:'Chapinero',        q:'Chapinero',    terms:['chapinero'],                                cerr:['chapinero'], img:'zona-chapinero.jpg'},
+  {name:'La Alhambra',      q:'Alhambra',     terms:['alhambra'],                                 cerr:['alhambra'], img:'zona-la-alhambra.jpg'},
+  {name:'Santa Bárbara',    q:'Santa Bárbara',terms:['santa bárbara','santa barbara'],            cerr:[], img:'zona-santa-barbara.jpg'},
+  {name:'Cedritos',         q:'Cedritos',     terms:['cedritos'],                                 cerr:[], img:'zona-cedritos.jpg'}
 ];
 async function loadZones() {
   const track = document.getElementById('zonesTrack');
@@ -944,7 +946,8 @@ async function loadZones() {
     const disp = activos ? activos.filter(p => z.terms.some(t => (p.barrio||'').toLowerCase().includes(t))).length : null;
     const l1 = cerrados > 0 ? cerrados + (cerrados === 1 ? ' negocio cerrado' : ' negocios cerrados') : 'Zona de trabajo';
     const l2 = disp ? disp + (disp === 1 ? ' disponible hoy' : ' disponibles hoy') : '';
-    return '<a class="zone-card zone-card--plain" href="propiedades-publica.html?barrio=' + encodeURIComponent(z.q) + '" style="text-decoration:none">' +
+    return '<a class="zone-card' + (z.img ? '' : ' zone-card--plain') + '" href="propiedades-publica.html?barrio=' + encodeURIComponent(z.q) + '" style="text-decoration:none">' +
+      (z.img ? '<img class="zone-card__img" src="' + ZONAS_IMG + z.img + '" alt="Ambiente de ' + z.name + ', Bogotá" width="900" height="1200" loading="lazy" onerror="this.remove();this.closest(\'.zone-card\')&&this.closest(\'.zone-card\').classList.add(\'zone-card--plain\')">' : '') +
       '<div class="zone-card__cnt">' +
         '<div class="zone-card__name">' + z.name + '</div>' +
         '<div class="zone-card__count">' + l1 + '</div>' +
