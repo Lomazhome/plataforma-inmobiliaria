@@ -20,7 +20,8 @@
     { t: 'Mis Herramientas', l: [
       { h: 'agregar-propiedad.html', i: '➕', n: 'Agregar Propiedad' },
       { h: 'mis-propiedades.html',   i: '📋', n: 'Mis Propiedades' },
-      { h: 'contactos.html',         i: '👥', n: 'Contactos (CRM)' } ] },
+      { h: 'contactos.html',         i: '👥', n: 'Contactos (CRM)' },
+      { h: 'mensajeria.html',        i: '💬', n: 'Mensajes (Lomi)' } ] },
     { t: 'Publicación', l: [
       { h: 'portales.html',       i: '🌐', n: 'Portales' },
       { h: 'marketing.html',      i: '📣', n: 'Marketing / Contenido' },

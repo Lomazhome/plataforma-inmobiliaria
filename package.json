@@ -1,0 +1,11 @@
+{
+  "name": "plataforma-inmobiliaria",
+  "private": true,
+  "description": "LoMaz Home. Sitio estático + funciones de Vercel en api/. El único paquete es @vercel/functions, para que el webhook de Lomi responda a Meta de inmediato y procese el mensaje después (waitUntil).",
+  "scripts": {
+    "test": "node --no-warnings --test \"tests/*.test.mjs\""
+  },
+  "dependencies": {
+    "@vercel/functions": "^3.0.0"
+  }
+}

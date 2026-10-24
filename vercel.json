@@ -3,6 +3,12 @@
   "functions": {
     "api/agente-marketing.js": {
       "maxDuration": 60
+    },
+    "api/meta-webhook.js": {
+      "maxDuration": 60
+    },
+    "api/mensajeria-simulador.js": {
+      "maxDuration": 60
     }
   },
   "redirects": [

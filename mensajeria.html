@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mensajes · Lomi - Lomaz Home</title>
+<meta name="robots" content="noindex">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Mensajes · Lomi: mismo estilo del panel (azul marino y dorado). Primero el celular. */
+:root{--navy:#0D1B2E;--navy-2:#162540;--navy-3:#122036;--gold:#c9a96e;--gold-d:#a07840;--line:rgba(255,255,255,.10);--line-strong:rgba(201,169,110,.35);--txt:#f5f1ea;--txt-soft:#a8a29e;--txt-mute:#6b6660;--ok:#2ecc71;--bad:#ff6b6b;--wa:#25D366;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,-apple-system,sans-serif;--r-sm:8px;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--navy);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:90px}
+a{color:var(--gold)}
+button,textarea,input{font-family:var(--sans)}
+.topbar{background:linear-gradient(180deg,#0A1626 0%,#0D1B2E 100%);border-bottom:1px solid var(--line);padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;position:sticky;top:0;z-index:50}
+.brand{font-family:var(--serif);font-size:1.4rem;font-weight:500;letter-spacing:.5px}
+.brand .lo{color:var(--gold)}
+.btn{background:transparent;border:1px solid var(--line);color:var(--txt-soft);padding:.55rem 1rem;border-radius:var(--r-sm);cursor:pointer;font-size:.85rem;font-weight:500;min-height:40px}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));border:0;color:var(--navy);font-weight:600}
+.btn-gold:hover{color:var(--navy);filter:brightness(1.05)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.container{max-width:980px;margin:1rem auto;padding:0 1rem}
+.page-title{font-family:var(--serif);font-size:1.9rem;font-weight:500;line-height:1.1}
+.page-title em{font-style:italic;color:var(--gold)}
+.sub{color:var(--txt-soft);font-size:.9rem;margin:.35rem 0 1rem;max-width:62ch}
+.tabs{display:flex;gap:.4rem;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:1rem;-webkit-overflow-scrolling:touch}
+.tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--txt-soft);padding:.7rem .9rem;cursor:pointer;font-size:.9rem;white-space:nowrap}
+.tab.activa{color:var(--gold);border-bottom-color:var(--gold)}
+.tab[disabled]{opacity:.45;cursor:default}
+.aviso{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.35);color:#ffc9c9;border-radius:var(--r);padding:.75rem 1rem;font-size:.88rem;margin-bottom:1rem}
+.aviso.info{background:rgba(201,169,110,.08);border-color:var(--line-strong);color:var(--txt)}
+/* Simulador */
+.sim{display:flex;flex-direction:column;background:var(--navy-3);border:1px solid var(--line);border-radius:var(--r);height:calc(100vh - 260px);min-height:440px}
+.sim-barra{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;padding:.6rem .75rem;border-bottom:1px solid var(--line);font-size:.8rem;color:var(--txt-soft)}
+.chip{display:inline-block;border:1px solid var(--line-strong);border-radius:999px;padding:.15rem .6rem;margin-right:.3rem;color:var(--txt)}
+.chip.humano{border-color:var(--bad);color:#ffc9c9}
+.chat{flex:1;overflow-y:auto;padding:1rem .75rem;display:flex;flex-direction:column;gap:.5rem;-webkit-overflow-scrolling:touch}
+.burbuja{max-width:86%;padding:.6rem .8rem;border-radius:14px;font-size:.93rem;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.cliente{align-self:flex-end;background:#1f5c47;border-bottom-right-radius:4px}
+.lomi{align-self:flex-start;background:var(--navy-2);border:1px solid var(--line);border-bottom-left-radius:4px}
+.lomi img{display:block;max-width:220px;width:100%;border-radius:8px}
+.opciones{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap}
+.opciones button{background:transparent;border:1px solid var(--wa);color:var(--wa);border-radius:999px;padding:.35rem .9rem;cursor:pointer;font-size:.85rem}
+.turno-pie{align-self:flex-start;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.72rem;color:var(--txt-mute);margin:-.1rem 0 .4rem}
+.turno-pie button{background:none;border:1px solid var(--line);color:var(--txt-soft);border-radius:6px;padding:.2rem .55rem;cursor:pointer;font-size:.75rem}
+.turno-pie button.hecho{border-color:var(--ok);color:var(--ok)}
+.corregir{align-self:stretch;background:var(--navy-2);border:1px solid var(--line-strong);border-radius:var(--r);padding:.7rem;display:flex;flex-direction:column;gap:.5rem}
+.corregir textarea{min-height:90px}
+.escribir{display:flex;gap:.5rem;padding:.6rem;border-top:1px solid var(--line)}
+textarea,input[type=text],input[type=number]{width:100%;background:#0A1626;border:1px solid var(--line);color:var(--txt);border-radius:var(--r-sm);padding:.6rem .7rem;font-size:.95rem}
+textarea:focus,input:focus{outline:none;border-color:var(--gold)}
+.escribir textarea{resize:none;height:44px;min-height:44px}
+.pensando{align-self:flex-start;color:var(--txt-mute);font-size:.85rem;font-style:italic}
+/* Configuración */
+.campo{margin-bottom:1rem}
+.campo label{display:block;font-size:.8rem;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;margin-bottom:.35rem}
+.campo .ayuda{font-size:.78rem;color:var(--txt-mute);margin-top:.25rem}
+.campo textarea.ficha{min-height:340px;font-size:.88rem;line-height:1.5}
+.fila{display:grid;grid-template-columns:1fr;gap:1rem}
+.interruptor{display:flex;align-items:center;gap:.6rem;font-size:.92rem;padding:.4rem 0}
+.interruptor input{width:20px;height:20px;accent-color:var(--gold)}
+.guardar{position:sticky;bottom:0;background:var(--navy);padding:.8rem 0;border-top:1px solid var(--line);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.estado-guardar{font-size:.85rem;color:var(--txt-soft)}
+@media(min-width:760px){.fila{grid-template-columns:1fr 1fr}.sim{height:calc(100vh - 230px)}.page-title{font-size:2.2rem}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="lo">LoMaz</span> Home · Mensajes</div>
+  <button class="btn" type="button" onclick="location.href='dashboard.html'">← Dashboard</button>
+</header>
+
+<main class="container">
+  <h1 class="page-title">Lomi, <em>el asistente</em> de mensajería</h1>
+  <p class="sub">Aquí entrenan a Lomi antes de conectarlo a WhatsApp: hablen con él como si fueran clientes, con el inventario real. Nada de lo que pase aquí sale por WhatsApp ni se guarda en Contactos.</p>
+  <div id="avisoGeneral"></div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab activa" type="button" data-tab="simulador" role="tab">Simulador</button>
+    <button class="tab" type="button" data-tab="config" role="tab">Configuración</button>
+    <button class="tab" type="button" disabled title="Fase 2">Bandeja (Fase 2)</button>
+    <button class="tab" type="button" disabled title="Fase 2">Anuncios (Fase 2)</button>
+  </nav>
+
+  <!-- ============ SIMULADOR ============ -->
+  <section id="tab-simulador">
+    <div class="sim">
+      <div class="sim-barra">
+        <div id="simEstado"><span class="chip">nuevo</span></div>
+        <div style="display:flex;gap:.4rem">
+          <button class="btn" type="button" id="btnDevolver" style="display:none">Devolver al agente</button>
+          <button class="btn" type="button" id="btnNueva">Nueva conversación</button>
+        </div>
+      </div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <form class="escribir" id="formEscribir">
+        <textarea id="txtMensaje" placeholder="Escribe como si fueras un cliente…" aria-label="Mensaje del cliente"></textarea>
+        <button class="btn btn-gold" type="submit" id="btnEnviar">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ CONFIGURACIÓN ============ -->
+  <section id="tab-config" hidden>
+    <div class="aviso info">Solo un administrador puede guardar cambios. Lo que cambies aquí lo usa Lomi desde la siguiente respuesta, sin tocar código. Los textos de privacidad y autorización fueron revisados por legal: si los cambias, vuelve a pasarlos por revisión.</div>
+    <div class="fila">
+      <div class="campo"><label for="cNombre">Nombre del agente</label><input type="text" id="cNombre" maxlength="40"></div>
+      <div class="campo"><label for="cPolitica">Versión de la política de datos</label><input type="text" id="cPolitica" maxlength="40"><div class="ayuda">Se guarda junto con cada autorización como prueba.</div></div>
+    </div>
+    <div class="campo"><label for="cFicha">Ficha de Lomi (lo que sabe y cómo habla)</label><textarea class="ficha" id="cFicha"></textarea></div>
+    <div id="cMensajes"></div>
+    <div class="fila">
+      <div class="campo"><label for="cAviso">Número que recibe los avisos (Fase 2)</label><input type="text" id="cAviso" maxlength="15"><div class="ayuda">Con código de país, sin + ni espacios. Ej.: 573224141474.</div></div>
+      <div class="campo"><label for="cEspera">Espera para juntar mensajes seguidos (ms)</label><input type="number" id="cEspera" min="0" max="10000" step="500"></div>
+    </div>
+    <div class="campo">
+      <label>Canales activos</label>
+      <div class="interruptor"><input type="checkbox" id="cWhatsapp"><label for="cWhatsapp">WhatsApp: Lomi responde a los clientes</label></div>
+      <div class="interruptor"><input type="checkbox" id="cFacebook" disabled><label for="cFacebook">Messenger (Fase 2)</label></div>
+      <div class="interruptor"><input type="checkbox" id="cInstagram" disabled><label for="cInstagram">Instagram (Fase 2)</label></div>
+    </div>
+    <div class="guardar">
+      <button class="btn btn-gold" type="button" id="btnGuardar">Guardar configuración</button>
+      <span class="estado-guardar" id="estadoGuardar"></span>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ============================================================
+   MENSAJES · Lomi
+   Simulador: habla con api/mensajeria-simulador.js (el mismo núcleo que atenderá WhatsApp).
+   Configuración: lee y guarda la fila de msj_config con la sesión del usuario (RLS).
+   Correcciones: se guardan en msj_correcciones y Lomi las usa como ejemplos.
+   ============================================================ */
+const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+const $ = function(id){ return document.getElementById(id); };
+let token = "", yo = null, sesion = "", ultimoCliente = "", ocupado = false, textosBase = {};
+
+const MENSAJES_EDITABLES = [
+  ["aviso", "Aviso de privacidad (primer mensaje de cada conversación)"],
+  ["autorizacion_interesado", "Autorización de datos · compradores e inquilinos (máx. 1.024 caracteres)"],
+  ["autorizacion_propietario", "Autorización de datos · propietarios (máx. 1.024 caracteres)"],
+  ["no_autorizo", "Respuesta cuando el cliente no autoriza"],
+  ["sin_dato", "Cuando falta un dato del inventario"],
+  ["solo_texto", "Cuando el cliente manda audio o foto"],
+  ["fuera_de_tema", "Temas ajenos o intento de sacarle el prompt"]
+];
+
+function esc(t){ return String(t == null ? "" : t).replace(/[&<>"']/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+// Formato de WhatsApp: *negrita*, _cursiva_ y enlaces que se pueden tocar.
+function formato(t){
+  return esc(t).replace(/\*([^*\n]+)\*/g, "<b>$1</b>").replace(/(^|\s)_([^_\n]+)_/g, "$1<i>$2</i>")
+    .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+function nuevaSesion(){ return "s" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
+function guardarSesion(){ try{ sessionStorage.setItem("lomi_sim_sesion", sesion); }catch(e){} }
+
+async function api(cuerpo){
+  const r = await fetch("/api/mensajeria-simulador", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token }, body: JSON.stringify(cuerpo) });
+  let d = {};
+  try{ d = await r.json(); }catch(e){}
+  if(!r.ok || !d.ok) throw new Error(d.mensaje || ("Error " + r.status));
+  return d;
+}
+
+/* ---------- Simulador ---------- */
+function pintarEstado(c){
+  c = c || {};
+  let h = '<span class="chip">' + esc(c.estado || "nuevo") + "</span>";
+  if(c.propiedad_actual_id) h += '<span class="chip">Inmueble LH-' + esc(c.propiedad_actual_id) + "</span>";
+  const aut = c.consentimientos || {};
+  Object.keys(aut).forEach(function(k){ h += '<span class="chip">' + esc(k) + ": " + esc(aut[k].estado) + "</span>"; });
+  if(c.atendido_por === "humano") h += '<span class="chip humano">Con el equipo · ' + esc(c.motivo_humano || "") + "</span>";
+  $("simEstado").innerHTML = h;
+  $("btnDevolver").style.display = c.atendido_por === "humano" ? "" : "none";
+}
+
+function burbuja(clase, html){
+  const d = document.createElement("div");
+  d.className = "burbuja " + clase;
+  d.innerHTML = html;
+  $("chat").appendChild(d);
+  $("chat").scrollTop = $("chat").scrollHeight;
+  return d;
+}
+
+function pintarSalidas(r, mensajeCliente){
+  const textos = [];
+  (r.salidas || []).forEach(function(s){
+    if(s.tipo === "imagen"){ burbuja("lomi", '<img src="' + esc(s.url) + '" alt="Foto del inmueble" loading="lazy">'); return; }
+    const b = burbuja("lomi", formato(s.texto));
+    textos.push(s.texto);
+    if(s.tipo === "botones"){
+      const op = document.createElement("div");
+      op.className = "opciones";
+      (s.botones || []).forEach(function(bt){
+        const x = document.createElement("button");
+        x.type = "button"; x.textContent = bt.titulo;
+        x.addEventListener("click", function(){ op.querySelectorAll("button").forEach(function(y){ y.disabled = true; }); enviar({ modo: "boton", botonId: bt.id, titulo: bt.titulo }, bt.titulo); });
+        op.appendChild(x);
+      });
+      b.appendChild(op);
+    }
+  });
+  if(r.humano){ burbuja("lomi", "<i>(Lomi no responde: la conversación está con el equipo. Usa «Devolver al agente» para seguir probando.)</i>"); return; }
+  if(!textos.length) return;
+  const pie = document.createElement("div");
+  pie.className = "turno-pie";
+  const detalle = (r.herramientas || []).length ? "Usó: " + r.herramientas.join(", ") : "";
+  const alertas = (r.alertas || []).length ? " · Bloqueó: " + r.alertas.join(", ") : "";
+  pie.innerHTML = '<button type="button" data-a="bien">Bien</button><button type="button" data-a="corregir">Corregir</button><span>' + esc(detalle + alertas) + "</span>";
+  $("chat").appendChild(pie);
+  pie.querySelector('[data-a="bien"]').addEventListener("click", function(){ this.classList.add("hecho"); this.textContent = "Bien ✓"; });
+  pie.querySelector('[data-a="corregir"]').addEventListener("click", function(){ abrirCorreccion(pie, mensajeCliente, textos.join("\n\n")); });
+  $("chat").scrollTop = $("chat").scrollHeight;
+}
+
+function abrirCorreccion(pie, mensajeCliente, respuestaLomi){
+  if(pie.nextSibling && pie.nextSibling.classList && pie.nextSibling.classList.contains("corregir")) return;
+  const caja = document.createElement("div");
+  caja.className = "corregir";
+  caja.innerHTML = '<label style="font-size:.8rem;color:var(--gold)">¿Cómo debía responder Lomi?</label><textarea></textarea><div style="display:flex;gap:.5rem"><button class="btn btn-gold" type="button">Guardar corrección</button><button class="btn" type="button">Cancelar</button></div>';
+  const ta = caja.querySelector("textarea");
+  ta.value = respuestaLomi;
+  const [bGuardar, bCancelar] = caja.querySelectorAll("button");
+  bCancelar.addEventListener("click", function(){ caja.remove(); });
+  bGuardar.addEventListener("click", async function(){
+    const correcta = ta.value.trim();
+    if(correcta.length < 2) return;
+    bGuardar.disabled = true; bGuardar.textContent = "Guardando…";
+    const { error } = await sb.from("msj_correcciones").insert([{ mensaje_cliente: mensajeCliente || "(sin mensaje)", respuesta_lomi: respuestaLomi, respuesta_correcta: correcta }]);
+    if(error){ bGuardar.disabled = false; bGuardar.textContent = "Guardar corrección"; alert("No se pudo guardar: " + error.message); return; }
+    caja.innerHTML = '<span style="color:var(--ok);font-size:.88rem">Corrección guardada. Lomi la usará como ejemplo desde su próxima respuesta.</span>';
+    const c = pie.querySelector('[data-a="corregir"]'); c.classList.add("hecho"); c.textContent = "Corregida ✓";
+  });
+  pie.after(caja);
+  ta.focus();
+}
+
+async function enviar(cuerpo, textoVisible){
+  if(ocupado) return;
+  ocupado = true; $("btnEnviar").disabled = true;
+  burbuja("cliente", formato(textoVisible));
+  if(cuerpo.modo === "mensaje") ultimoCliente = textoVisible;
+  const p = document.createElement("div"); p.className = "pensando"; p.textContent = "Lomi está escribiendo…"; $("chat").appendChild(p);
+  try{
+    const r = await api(Object.assign({ sesion: sesion }, cuerpo));
+    p.remove();
+    pintarSalidas(r, ultimoCliente);
+    pintarEstado(r.conversacion);
+  }catch(e){
+    p.remove();
+    burbuja("lomi", '<span style="color:#ffc9c9">' + esc(e.message) + "</span>");
+  }finally{
+    ocupado = false; $("btnEnviar").disabled = false; $("txtMensaje").focus();
+  }
+}
+
+$("formEscribir").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  const t = $("txtMensaje").value.trim();
+  if(!t) return;
+  $("txtMensaje").value = "";
+  enviar({ modo: "mensaje", texto: t }, t);
+});
+$("txtMensaje").addEventListener("keydown", function(ev){ if(ev.key === "Enter" && !ev.shiftKey){ ev.preventDefault(); $("formEscribir").requestSubmit(); } });
+$("btnNueva").addEventListener("click", async function(){
+  try{ await api({ modo: "reiniciar", sesion: sesion }); }catch(e){}
+  sesion = nuevaSesion(); guardarSesion();
+  $("chat").innerHTML = ""; pintarEstado({});
+  burbuja("lomi", "<i>Conversación nueva. Escribe como lo haría un cliente: por ejemplo «Hola, me interesa el inmueble REF LH-23».</i>");
+});
+$("btnDevolver").addEventListener("click", async function(){
+  try{ const r = await api({ modo: "devolver", sesion: sesion }); pintarEstado(r.conversacion); burbuja("lomi", "<i>La conversación volvió a Lomi.</i>"); }catch(e){ alert(e.message); }
+});
+
+/* ---------- Configuración ---------- */
+async function cargarConfig(){
+  const { data, error } = await sb.from("msj_config").select("*").eq("id", 1).maybeSingle();
+  if(error || !data){ $("cMensajes").innerHTML = '<div class="aviso">No se pudo leer la configuración. ¿Ya se ejecutó el SQL de mensajería en Supabase?</div>'; return; }
+  $("cNombre").value = data.nombre_agente || "Lomi";
+  $("cPolitica").value = data.politica_version || "";
+  $("cFicha").value = data.ficha || "";
+  $("cAviso").value = data.numero_aviso || "";
+  $("cEspera").value = data.espera_agrupar_ms != null ? data.espera_agrupar_ms : 3500;
+  $("cWhatsapp").checked = !!data.activo_whatsapp;
+  const mensajes = data.mensajes || {};
+  $("cMensajes").innerHTML = MENSAJES_EDITABLES.map(function(m){
+    return '<div class="campo"><label for="m_' + m[0] + '">' + esc(m[1]) + '</label><textarea id="m_' + m[0] + '" rows="4" placeholder="' + esc(textosBase[m[0]] || "") + '">' + esc(mensajes[m[0]] || "") + '</textarea><div class="ayuda" id="n_' + m[0] + '">Vacío = se usa el texto aprobado (el que se ve en gris).</div></div>';
+  }).join("");
+  MENSAJES_EDITABLES.forEach(function(m){
+    const ta = $("m_" + m[0]);
+    const contar = function(){ const n = (ta.value || ta.placeholder).length; $("n_" + m[0]).textContent = (ta.value ? "Texto propio" : "Texto aprobado") + " · " + n + " caracteres" + (n > 1024 && /^autorizacion/.test(m[0]) ? " · supera el límite de WhatsApp" : ""); };
+    ta.addEventListener("input", contar); contar();
+  });
+}
+
+$("btnGuardar").addEventListener("click", async function(){
+  const mensajes = {};
+  MENSAJES_EDITABLES.forEach(function(m){ const v = $("m_" + m[0]).value.trim(); if(v) mensajes[m[0]] = v; });
+  for(const k of ["autorizacion_interesado", "autorizacion_propietario"]){
+    if((mensajes[k] || "").length > 1024){ $("estadoGuardar").textContent = "La autorización no puede pasar de 1.024 caracteres (límite de WhatsApp)."; return; }
+  }
+  this.disabled = true; $("estadoGuardar").textContent = "Guardando…";
+  const cambios = {
+    nombre_agente: $("cNombre").value.trim() || "Lomi", politica_version: $("cPolitica").value.trim(), ficha: $("cFicha").value,
+    mensajes: mensajes, numero_aviso: $("cAviso").value.replace(/\D/g, "") || null,
+    espera_agrupar_ms: Math.max(0, Math.min(10000, parseInt($("cEspera").value, 10) || 0)),
+    activo_whatsapp: $("cWhatsapp").checked, updated_at: new Date().toISOString(), updated_by: yo
+  };
+  const { data, error } = await sb.from("msj_config").update(cambios).eq("id", 1).select("id");
+  this.disabled = false;
+  if(error) $("estadoGuardar").textContent = "No se pudo guardar: " + error.message;
+  else if(!data || !data.length) $("estadoGuardar").textContent = "No se guardó: solo un administrador puede cambiar la configuración.";
+  else $("estadoGuardar").textContent = "Guardado. Lomi ya usa estos cambios.";
+});
+
+/* ---------- Pestañas e inicio ---------- */
+document.querySelectorAll(".tab[data-tab]").forEach(function(t){
+  t.addEventListener("click", function(){
+    document.querySelectorAll(".tab").forEach(function(x){ x.classList.toggle("activa", x === t); });
+    $("tab-simulador").hidden = t.dataset.tab !== "simulador";
+    $("tab-config").hidden = t.dataset.tab !== "config";
+  });
+});
+
+(async function iniciar(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ location.href = "login.html"; return; }
+  token = session.access_token; yo = session.user.id;
+  sb.auth.onAuthStateChange(function(_e, s){ if(s) token = s.access_token; });
+  try{ sesion = sessionStorage.getItem("lomi_sim_sesion") || ""; }catch(e){}
+  if(!sesion){ sesion = nuevaSesion(); guardarSesion(); }
+  burbuja("lomi", "<i>Escribe como lo haría un cliente: por ejemplo «Hola, vi un apartamento en Cedritos de 2 habitaciones en arriendo».</i>");
+  try{
+    const est = await api({ modo: "estado" });
+    if(est.faltan && est.faltan.length) $("avisoGeneral").innerHTML = '<div class="aviso">Falta configurar en Vercel: <b>' + esc(est.faltan.join(", ")) + "</b>. Hasta entonces el simulador no puede responder.</div>";
+    const tx = await api({ modo: "textos" });
+    textosBase = tx.mensajes || {};
+  }catch(e){
+    $("avisoGeneral").innerHTML = '<div class="aviso">El servidor de Lomi todavía no responde (' + esc(e.message) + "). Si acabas de publicar, espera un minuto.</div>";
+  }
+  cargarConfig();
+})();
+</script>
+<script src="lomaz-admin-nav.js" defer></script>
+</body>
+</html>
