@@ -1302,6 +1302,8 @@ try {
     var cityId=Number(r.metro_city_id), zoneId=Number(r.metro_zone_id), sectorId=Number(r.metro_sector_id);
     // Region: primero la que coincide con el departamento de la propiedad (Bogota -> "Bogotá D.C."), luego el resto.
     var dep = normTxt(r.departamento), ciu = normTxt(r.ciudad);
+    // En el catalogo de Metrocuadrado no existe la region "Bogota": la ciudad Bogota D.C. (id 1) cuelga de Cundinamarca.
+    if(/bogota/.test(dep) || /bogota/.test(ciu) || cityId===1) dep = 'cundinamarca';
     var orden = regiones.slice().sort(function(a,b){
       function sc(x){ var n=normTxt(x.name); if(dep && (n.indexOf(dep)!==-1 || dep.indexOf(n)!==-1)) return 0; if(ciu && (n.indexOf(ciu)!==-1 || ciu.indexOf(n)!==-1)) return 1; return 2; }
       return sc(a)-sc(b);
