@@ -779,6 +779,7 @@ async function sincronizarPortalesDePropiedad(propId){
         property_id: mP ? mP[1] : (mM ? mM[1] : ""),
         task_id: mT ? mT[1] : "",
         url: esUrl ? up : "",
+        mensaje: String(msg).substring(0, 240),
         fecha: r.fecha || new Date().toISOString()
       };
     });
@@ -1258,7 +1259,65 @@ try {
       if(h1){ h1.innerHTML = h1.innerHTML.replace(/Agregar/i,'Editar'); }
       document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); } try{ (async function(){ try{ var _sbq = window.__editClient || (typeof getClient==='function' ? await getClient() : null); if(!_sbq) return; var _pp = await _sbq.from('publicaciones_portales').select('estado,url_publicacion').eq('propiedad_id', r.id).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); var _row = _pp && _pp.data; if(!_row) return; var _bt = document.getElementById('btn-activar-fr'); if(!_bt) return; _bt.dataset.propId = String(r.id); if(_row.url_publicacion) _bt.dataset.listingId = _row.url_publicacion; _bt.style.display = 'inline-block'; if(_row.estado === 'activo'){ _bt.disabled = true; _bt.textContent = 'Activada en Finca Raiz'; _bt.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; _bt.style.color = '#fff'; } else { _bt.disabled = false; _bt.textContent = 'Activar en Finca Raiz (pasar de Pendiente a Activa)'; } }catch(_be){ console.error('init boton activar FR', _be); } })(); }catch(_bx){}
       try{ if(typeof __syncParqDesdeChecks==="function") __syncParqDesdeChecks(); }catch(_e){}
+      try{ precargarMetro(r); }catch(_pm){ console.error('precarga Metrocuadrado', _pm); }
     }catch(e){ console.error('prefill err', e); }
+  }
+  // ---------- Metrocuadrado al editar: mapeo de ubicacion ----------
+  function normTxt(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim(); }
+  // Lee Region/Ciudad/Zona/Sector elegidos en el formulario (null si falta alguno).
+  window.lmzMetroMapeoDesdeFormulario = function(){
+    var ci=parseInt(gv('metro_city_id')), zo=parseInt(gv('metro_zone_id')), se=parseInt(gv('metro_sector_id'));
+    if(ci>0 && zo>0 && se>0) return {city:ci, zone:zo, sector:se};
+    return null;
+  };
+  // Guarda en la propiedad el mapeo elegido en el formulario (si lo hay). Devuelve true si la propiedad queda con mapeo.
+  window.lmzGuardarMapeoMetro = async function(){
+    var row = window.__EDIT_ROW || {};
+    var m = window.lmzMetroMapeoDesdeFormulario();
+    if(m){
+      try{
+        var c = await getClient();
+        var u = await c.from('propiedades').update({metro_city_id:m.city, metro_zone_id:m.zone, metro_sector_id:m.sector}).eq('id', EDIT_ID).select().single();
+        if(!u.error && u.data){ window.__EDIT_ROW = u.data; return true; }
+      }catch(_e){}
+    }
+    return !!(row.metro_city_id && row.metro_zone_id && row.metro_sector_id);
+  };
+  // Muestra la fila de Metrocuadrado y deja preseleccionado el mapeo guardado (Region > Ciudad > Zona > Sector).
+  async function precargarMetro(r){
+    var tieneMapeo = !!(r && r.metro_city_id && r.metro_zone_id && r.metro_sector_id);
+    var reg = false;
+    try{ (r.publicado_portales||[]).forEach(function(x){ if(x && String(x.portal).toLowerCase()==='metrocuadrado' && !/^(retirado|retirada|eliminado)$/i.test(String(x.estado||''))) reg=true; }); }catch(_e){}
+    if(!tieneMapeo && !reg) return;
+    var cb = document.getElementById('ch-metrocuadrado');
+    if(cb && !cb.checked){ cb.checked = true; try{ togglePortal(cb,'row-metrocuadrado'); }catch(_e){} }
+    if(typeof toggleMetroMapa==='function') await toggleMetroMapa(cb||{checked:true});
+    if(!tieneMapeo){
+      try{ showAlert('Esta propiedad esta marcada para Metrocuadrado pero le falta la ubicacion de Metrocuadrado. Elige Region, Ciudad, Zona y Sector en la seccion de Portales y guarda cambios.','info'); }catch(_e){}
+      return;
+    }
+    var selR=document.getElementById('metro_region'), selC=document.getElementById('metro_city_sel'), selZ=document.getElementById('metro_zone_sel'), selS=document.getElementById('metro_sector_sel');
+    if(!selR||!selC||!selZ||!selS||typeof mcCatalog!=='function') return;
+    var regiones = (__metroCache && __metroCache.regions) || [];
+    var cityId=Number(r.metro_city_id), zoneId=Number(r.metro_zone_id), sectorId=Number(r.metro_sector_id);
+    // Region: primero la que coincide con el departamento de la propiedad (Bogota -> "Bogotá D.C."), luego el resto.
+    var dep = normTxt(r.departamento), ciu = normTxt(r.ciudad);
+    var orden = regiones.slice().sort(function(a,b){
+      function sc(x){ var n=normTxt(x.name); if(dep && (n.indexOf(dep)!==-1 || dep.indexOf(n)!==-1)) return 0; if(ciu && (n.indexOf(ciu)!==-1 || ciu.indexOf(n)!==-1)) return 1; return 2; }
+      return sc(a)-sc(b);
+    });
+    var regionId=null, ciudades=null;
+    for(var i=0;i<orden.length;i++){
+      try{ var cs = await mcCatalog('cities',{regionId:orden[i].id}); if(cs.some(function(x){ return Number(x.id)===cityId; })){ regionId=orden[i].id; ciudades=cs; break; } }catch(_e){}
+      if(i>=5 && regionId===null) break; // no se recorren las 33 regiones: se deja un nombre generico
+    }
+    if(regionId!==null){ selR.value=String(regionId); mcFillSelect(selC, ciudades, 'id','name','Selecciona ciudad...'); selC.value=String(cityId); }
+    else { selC.innerHTML='<option value="'+cityId+'">Ciudad guardada (id '+cityId+')</option>'; selC.value=String(cityId); }
+    mcSetHidden('metro_city_id', String(cityId));
+    try{ var zs = await mcCatalog('zones',{cityId:cityId}); mcFillSelect(selZ, zs, 'id','name','Selecciona zona...'); }catch(_e){ selZ.innerHTML='<option value="'+zoneId+'">Zona guardada (id '+zoneId+')</option>'; }
+    selZ.value=String(zoneId); mcSetHidden('metro_zone_id', String(zoneId));
+    try{ var ss = await mcCatalog('sectors',{zoneId:zoneId}); mcFillSelect(selS, ss, 'id','name','Selecciona sector...'); }catch(_e){ selS.innerHTML='<option value="'+sectorId+'">Sector guardado (id '+sectorId+')</option>'; }
+    selS.value=String(sectorId); mcSetHidden('metro_sector_id', String(sectorId));
   }
   function installSaveOverride(){
     var orig = window.publicarPropiedad;
@@ -1267,6 +1326,17 @@ try {
     async function wrapped(){
       try{
         var c = await getClient();
+        // Metrocuadrado exige Region/Ciudad/Zona/Sector. Al editar, estos valores no se guardaban nunca
+        // (solo al crear), asi que Metrocuadrado rechazaba el aviso y quedaba "en proceso" para siempre.
+        var __chM = document.getElementById('ch-metrocuadrado');
+        var __mapeo = (typeof window.lmzMetroMapeoDesdeFormulario==='function') ? window.lmzMetroMapeoDesdeFormulario() : null;
+        var __row = window.__EDIT_ROW || {};
+        var __yaTiene = !!(__row.metro_city_id && __row.metro_zone_id && __row.metro_sector_id);
+        if(__chM && __chM.checked && !__mapeo && !__yaTiene){
+          showAlert('Para publicar en Metrocuadrado selecciona Region, Ciudad, Zona y Sector en la seccion de Portales (fila Metrocuadrado) y vuelve a guardar.','error');
+          try{ var __mr=document.getElementById('mapaMetroRow'); if(__mr){ __mr.style.display='flex'; __mr.scrollIntoView({behavior:'smooth',block:'center'}); } }catch(_me){}
+          return;
+        }
         var data = {
           tipo_operacion: gv('tipo_operacion'), tipo_negocio: gv('tipo_operacion'),
           tipo_propiedad: gv('tipo_propiedad'), titulo: gv('titulo').trim(),
@@ -1287,8 +1357,10 @@ try {
           video_url: gv('video_url').trim()||null, tour_virtual_url: gv('recorrido_virtual').trim()||null,
           estado: gv('status_propiedad')||'activa', fotos:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u):null), foto_principal:(gv('fotos_url').trim()?gv('fotos_url').trim().split(',').map(u=>u.trim()).filter(u=>u)[0]:null), amenidades: [].slice.call(document.querySelectorAll('input[name="char"]:checked')).map(function(c){return c.value;}), caracteristicas: [].slice.call(document.querySelectorAll('input[name="char"]:checked')).map(function(c){return c.value;}), updated_at: new Date().toISOString()
         };
+        if(__mapeo){ data.metro_city_id = __mapeo.city; data.metro_zone_id = __mapeo.zone; data.metro_sector_id = __mapeo.sector; }
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
+        if(upd.data) window.__EDIT_ROW = upd.data;
         showAlert('✅ Cambios guardados correctamente.','success'); window.scrollTo({top:0,behavior:'smooth'});
         // --- Portales: actualizacion en paralelo al editar ---
         try {
@@ -1366,7 +1438,7 @@ try {
     Object.keys(ids).forEach(function(k){
       if(last[k]) return;
       var x=ids[k]||{}; var u=String(x.url||"").trim();
-      lista.push({ portal:k, rowId:null, estado:x.estado||"", fecha:x.fecha||"", mensaje:"", url:u, listing_id:x.listing_id||"", property_id:x.property_id||"", task_id:x.task_id||"", url_publicacion:(u||x.listing_id||"") });
+      lista.push({ portal:k, rowId:null, estado:x.estado||"", fecha:x.fecha||"", mensaje:x.mensaje||"", url:u, listing_id:x.listing_id||"", property_id:x.property_id||"", task_id:x.task_id||"", url_publicacion:(u||x.listing_id||"") });
     });
     return lista;
   }
@@ -1411,8 +1483,17 @@ try {
       __frResolviendo[EDIT_ID]=1;
       resolverFincaraiz(fr).then(function(res){ if(res&&res.ok) render(); }).catch(function(){});
     }
+    // Metrocuadrado contesta al instante, asi que un aviso "en proceso" sin codigo de inmueble es en realidad un rechazo
+    // (casi siempre por falta de Region/Ciudad/Zona/Sector). Se muestra como error, con el motivo y el boton Reintentar.
+    lista.forEach(function(r){
+      if(r.portal==="metrocuadrado"&&enProceso(r.estado)&&!window.__LMZ_METRO&&!r.property_id){
+        r.estado="error";
+        if(!r.mensaje) r.mensaje="Metrocuadrado no acepto el aviso. Revisa que la propiedad tenga Region, Ciudad, Zona y Sector de Metrocuadrado (seccion Portales) y pulsa Reintentar.";
+      }
+    });
     var filas=lista.map(function(r){
       var det=[];
+      if(r.portal==="metrocuadrado"&&/^error$/i.test(String(r.estado||""))&&r.mensaje) det.push("Motivo: "+String(r.mensaje).replace(/^[^|]*\|\s*/,"").substring(0,220));
       if(r.portal==="fincaraiz"&&r.property_id) det.push("Codigo Finca Raiz "+r.property_id);
       else if(r.property_id) det.push("ID portal "+r.property_id);
       if(r.listing_id) det.push("Aviso "+r.listing_id.substring(0,8));
@@ -1600,6 +1681,8 @@ try {
     if(portal==="metrocuadrado"){
       if(accion==="reactivar"||accion==="reintentar"){
         if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"La publicacion de Metrocuadrado no esta disponible en esta pagina."};
+        // Metrocuadrado exige Region/Ciudad/Zona/Sector: se guarda lo elegido en el formulario antes de reenviar.
+        if(typeof window.lmzGuardarMapeoMetro==="function"){ var okMap=await window.lmzGuardarMapeoMetro(); if(!okMap) return {ok:false,msg:"Falta la ubicacion de Metrocuadrado: elige Region, Ciudad, Zona y Sector en la seccion de Portales (fila Metrocuadrado) y vuelve a intentar."}; }
         var m=await window.publicarEnMetrocuadrado(EDIT_ID);
         return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
       }
@@ -1676,6 +1759,7 @@ try {
     if(r.portal==="metrocuadrado"){
       if(r.estado==="nuevo" || !window.__LMZ_METRO){
         if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"Metrocuadrado no esta disponible en esta pagina."};
+        if(typeof window.lmzGuardarMapeoMetro==="function"){ var okMap=await window.lmzGuardarMapeoMetro(); if(!okMap) return {ok:false,msg:"Falta la ubicacion de Metrocuadrado: elige Region, Ciudad, Zona y Sector en la seccion de Portales (fila Metrocuadrado) y guarda de nuevo."}; }
         var m=await window.publicarEnMetrocuadrado(propId);
         return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
       }
@@ -1689,10 +1773,16 @@ try {
 
   window.lmzActualizarPortalesAlEditar=async function(propId,data){
     var lista=await leer(); window.__LMZ_LISTA=lista;
-    var cands=lista.filter(function(r){ var m=P[r.portal]; return m && m.tipo!=="manual" && activo(r.estado); });
+    var cands=lista.filter(function(r){ var m=P[r.portal]; if(!(m && m.tipo!=="manual" && activo(r.estado))) return false;
+      // Metrocuadrado "en proceso" sin codigo de inmueble = rechazado: no se "actualiza", se vuelve a publicar como nuevo (abajo).
+      if(r.portal==="metrocuadrado" && enProceso(r.estado) && !window.__LMZ_METRO) return false;
+      return true; });
     ["fincaraiz","metrocuadrado","proppit"].forEach(function(p){
       var cb=document.getElementById("ch-"+p);
-      var reg=lista.some(function(r){ return r.portal===p; });
+      // Se envia como "nuevo" si no estaba registrado, o si el intento anterior quedo en error / retirado
+      // (p. ej. Metrocuadrado rechazado por falta de ubicacion: al marcarlo y guardar se vuelve a enviar).
+      var fila=lista.filter(function(r){ return r.portal===p; })[0];
+      var reg=!!fila && activo(fila.estado) && !(p==="metrocuadrado" && enProceso(fila.estado) && !window.__LMZ_METRO);
       if(cb && cb.checked && !reg) cands.push({portal:p,estado:"nuevo",listing_id:"",property_id:"",task_id:"",url:"",url_publicacion:""});
     });
     if(!cands.length) return;
@@ -1706,7 +1796,9 @@ try {
     var out=await Promise.allSettled(tareas.map(function(r){
       return (async function(){
         var res=await actualizarUno(r,data,propId);
-        var est=res.ok?((r.portal==="proppit")?"publicado_xml_feed":"activo"):((r.estado==="nuevo")?"en_proceso":r.estado);
+        // Metrocuadrado responde al instante (acepta o rechaza): si fallo, queda "error" con el motivo y el boton Reintentar.
+        // (Antes un rechazo se guardaba como "en_proceso" y el aviso parecia estar publicandose para siempre.)
+        var est=res.ok?((r.portal==="proppit")?"publicado_xml_feed":"activo"):((r.portal==="metrocuadrado")?"error":((r.estado==="nuevo")?"en_proceso":r.estado));
         await registrar(r,est,res.msg);
         return {portal:r.portal, ok:res.ok, msg:res.msg};
       })();
