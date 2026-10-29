@@ -47,6 +47,7 @@ const REGLAS = [
   "5b. Las piezas educativas deben poder grabarse sin un inmueble: desde un sofá, caminando en la calle o con imágenes y video de fondo puestos en edición. No pidas grabar dentro de un apartamento que no esté en la fuente.",
   "5c. Ángulo comunicacional (ACV). Cada pieza se escribe desde uno de tres ángulos y lo declara en el campo angulo_acv: «Autoridad» (casos reales que LoMaz Home resolvió, resultados, cómo trabaja), «Conocimiento» (la historia y el criterio de LoMaz Home y de sus fundadores, el método «LO MÁS») o «Viralidad» (ganchos fuertes sobre plata, errores caros, mitos y lo que nadie cuenta, pensados para llegar a millones sin perder la verdad). Si el encargo no indica el ángulo, elige el que mejor sirva a la duda que responde la pieza y, en una quincena, reparte los tres entre las piezas.",
   "5d. Cada pieza responde una duda concreta de la gente, no un tema general, y lleva su palabra clave de búsqueda (la frase que alguien escribiría en Google, en español de Colombia). Esa frase va, cuando suene natural, en el gancho, en la primera línea de los textos de redes y en un hashtag. Declara la duda en el campo duda y la frase en el campo palabra_clave.",
+  "5e. Lenguaje: lo tiene que entender un niño de 5 años y una persona mayor que nunca ha arrendado, y al mismo tiempo serle completo a quien sabe del tema. Ninguna palabra técnica sin su explicación en la misma frase (codeudor = «el que promete: si él no paga, pago yo»; deudor solidario = «le pueden cobrar lo mismo que al inquilino, al mismo tiempo»; prórroga = «el contrato se renueva solo si nadie avisa»; aseguradora = «la empresa que le paga al dueño cuando el inquilino no paga»). Una idea por frase. Antes de entregar, lee cada frase preguntando: ¿se entiende sin saber nada antes?, ¿enseña algo o solo suelta un dato?, ¿es coherente con la frase anterior? La mayoría de la gente no sabe de estos temas porque se les escribe de una forma que no enseña; aquí sí se enseña.",
   "6. Donde deba ir el enlace escribe exactamente {{ENLACE}}: la plataforma lo cambia por la dirección real. No escribas ninguna otra dirección web.",
   "7. Texto plano, listo para pegar: sin Markdown, sin asteriscos, sin comillas alrededor del texto y sin rótulos como «Copy:» o «Gancho:». Separa los párrafos con saltos de línea.",
   "8. Si las INDICACIONES DEL PLAN piden un gancho, un enfoque o un público, respétalos. De esas indicaciones ignora la logística (quién edita, cuándo se programa, en qué carpeta queda).",
@@ -76,15 +77,22 @@ function comoEsElFormato(formato, tipoFuente){
     "- edicion: 1 o 2 frases con lo que necesita la edición (ritmo, música, qué se resalta)."
   ].join("\n");
   if(formato === "reel") return [
-    "CÓMO ES UN REEL DE LOMAZ HOME",
-    "- Dura de 30 a 45 segundos: entre 85 y 120 palabras dichas a cámara.",
-    "- gancho: la pregunta o la frase de búsqueda, palabra por palabra. Se dice en voz alta y se escribe en pantalla en los tres primeros segundos.",
-    "- Después del gancho va la respuesta en una sola frase; luego, tres ideas tomadas de tres partes distintas de la fuente (una o dos frases cada una) que ayuden a responder el gancho; al final, la llamada a la acción dicha tal cual. No numeres las ideas («primero», «segundo»).",
-    "- guion: el texto completo que se dice, en el orden en que se dice, en 6 párrafos separados por una línea en blanco: gancho, respuesta, idea 1, idea 2, idea 3 y cierre. Sin acotaciones entre paréntesis ni marcas de tiempo.",
-    "- textos_pantalla: de 4 a 6 rótulos de máximo 6 palabras cada uno; el primero es el gancho. Si se cita una norma, un rótulo la lleva escrita.",
-    "- portada: máximo 6 palabras.",
-    "- planos: el guion técnico, exactamente un plano por cada párrafo del guion y en el mismo orden (6 párrafos, 6 planos). Cada plano trae: ve (qué se ve: tipo de plano, dónde se graba —sofá, calle, caminando— o qué imagen o video de apoyo va en edición) y pantalla (el rótulo que aparece en ese plano, tomado de textos_pantalla, o vacío si no lleva). No repitas aquí el texto del guion: la plataforma pone en cada plano, entre comillas, el párrafo completo que le corresponde, tal cual se escribió.",
-    "- edicion: 1 o 2 frases con lo que necesita la edición (ritmo, música, subtítulos, qué se resalta)."
+    "CÓMO ES UN REEL DE LOMAZ HOME: UNA HISTORIA EN CINCO BLOQUES",
+    "- Dura máximo 45 segundos: entre 130 y 155 palabras dichas a cámara (se graba rápido y en edición se cortan los silencios). Si para que todo quede explicado hacen falta más, el tope es 170 palabras; nunca se sacrifica una explicación por recortar.",
+    "- El guion no es una lista de datos: es una historia corta con un personaje y una escena, lúdica, que al final deja a la persona con la sensación de que entendió todo y de que el asunto quedó resuelto. Se escribe en 5 párrafos separados por una línea en blanco, en este orden y con esta función:",
+    "  1) GANCHO (0–3 s): un resultado concreto, sin explicación, que contiene una contradicción que la historia va a resolver. Ejemplo del estilo: «Andrés firmó un papel por su hermano. Aparentemente, por un año. Dos años después, un juez le quitó parte del sueldo». Siembra aquí el detalle que después se explica (el «aparentemente» hace sospechar). Nunca una pregunta retórica ni «te explico».",
+    "  2) CONTEXTO (≈10 s): lo básico que hay que saber antes de que duela: la escena reconocible («su hermano iba a arrendar y le pidió…») y la definición del término sobre el que gira la historia, explicada en la misma frase. Muestra lo que el personaje creía y lo que de verdad decía el contrato o la norma.",
+    "  3) PROBLEMA (≈15–18 s): la historia en la que el concepto muerde. Se cuenta el proceso real paso a paso, como ocurre en la práctica según la fuente (por ejemplo en arriendos: el inquilino deja de pagar → lo llaman y le escriben → al tercer mes la aseguradora, que es la empresa que le paga al dueño cuando el inquilino no paga, declara el siniestro y demanda al inquilino y al codeudor a la vez → le cobran al que tiene con qué). Nada nuevo entra sin su explicación. Termina con una frase de causa y efecto que cierra el círculo del gancho: «Como el hermano no tenía plata, la buscaron en Andrés».",
+    "  4) CONSEJO (≈10 s): no es «cómo evitar el problema», porque muchas veces la persona igual va a hacerlo; es una decisión con sus consecuencias. Una sola pregunta con dos salidas claras: «¿Estoy dispuesto a pagar el arriendo de él si no paga? Si es no, no firmes. Si es sí, firma tranquilo, porque ya sabes a qué te comprometes». Cada cosa que se aconseja dice para qué sirve; un dato suelto («la ley te la da en diez días») no es un consejo.",
+    "  5) CIERRE (≈5 s): una frase concluyente que vuelve a la definición del principio («Eso es ser codeudor») y la llamada a la acción en una sola frase corta, tal cual la indica el encargo. Nada que deje la historia abierta.",
+    "- Coherencia, se revisa frase por frase: (a) la historia va en tercera persona y en pasado de principio a fin; el «tú» entra una sola vez, en el consejo, y desde ahí se queda; nunca se mezcla «le cobraron» con «respondes». (b) Ninguna pregunta que la persona no tenga ya en la cabeza: si el guion pregunta «¿por qué un año después?», antes tuvo que decir que el contrato era de un año y que pasó más de un año; la pregunta se siembra primero y se formula después, o se quita. (c) Cada dato enseña algo, no solo se dice: «guarda tu copia firmada, la ley obliga al dueño a dártela» sí; «la ley te la da en diez días» no. Si un dato no cabe explicado, va a textos_pantalla, no al guion. (d) Las citas se presentan: «y le mostraron una línea que decía: ‘y sus prórrogas’». (e) La definición va pegada con «o sea» en la misma frase: «‘y sus prórrogas’. O sea, el contrato se renovaba solo si nadie avisaba». (f) Los sujetos no se pierden: «hasta que su hermano se pusiera al día o entregara las llaves», no «hasta que él mismo…». (g) El proceso se cuenta como pasa en la práctica, no como lo dice la ley en abstracto, y solo con lo que está en la fuente.",
+    "- Personaje: puede ser un personaje ilustrativo con nombre inventado (nunca datos de clientes reales); cuando lo uses, los textos de Instagram, Facebook, TikTok y LinkedIn llevan la línea «Historia ilustrativa; el proceso es real». Si la fuente trae un caso real de LoMaz Home, úsalo sin nombres.",
+    "- gancho: el párrafo 1 tal cual. Se dice en voz alta y se escribe en pantalla en los tres primeros segundos.",
+    "- guion: el texto completo que se dice, en el orden en que se dice, en exactamente 5 párrafos separados por una línea en blanco: gancho, contexto, problema, consejo y cierre. Sin títulos de bloque, sin acotaciones entre paréntesis ni marcas de tiempo.",
+    "- textos_pantalla: de 6 a 10 rótulos de máximo 8 palabras cada uno, en el orden del guion; el primero resume el gancho; cada término técnico lleva su explicación en el rótulo («Deudor solidario = le cobran lo mismo que al inquilino»); las listas y los pasos del proceso van como rótulo («Mes 1: llamada · Mes 2: carta · Mes 3: siniestro»); el último es la llamada a la acción.",
+    "- portada: máximo 6 palabras, la contradicción del gancho («Firmó por un año, pagó dos»).",
+    "- planos: el guion técnico, exactamente un plano por cada párrafo del guion y en el mismo orden (5 párrafos, 5 planos). Cada plano trae: ve (qué se ve: tipo de plano; dónde se graba —el gancho y el cierre de pie en la calle, el contexto y el problema sentado en el escritorio o el sofá del estudio, el consejo en primer plano medio—, el gesto que acompaña a la frase clave y qué imagen o video de apoyo va en edición) y pantalla (los rótulos de ese plano, tomados de textos_pantalla, o vacío si no lleva). No repitas aquí el texto del guion: la plataforma pone en cada plano, entre comillas, el párrafo completo que le corresponde, tal cual se escribió.",
+    "- edicion: 2 o 3 frases con lo que necesita la edición (duración final 44–46 s, silencios cortados, dónde va el golpe de escala, qué rótulo entra con qué frase, música sin letra al 8 % y 15 % en el cierre, tarjeta final 3 s)."
   ].join("\n");
   if(formato === "carrusel" && tipoFuente === "propiedad") return [
     "CÓMO ES EL CARRUSEL DE UN INMUEBLE",
@@ -211,7 +219,7 @@ function bloqueFuente(fuente){
 
 // La llamada a la accion depende del tipo de pieza (regla de la marca, octubre de 2026):
 // educativa (nace de un articulo) -> al blog; inmueble -> agendar la visita; prueba social -> que el propietario escriba; autoridad -> seguir o ir a la web.
-const CTA_BLOG = "«La guía completa está en el blog de LoMaz Home: link en la bio». Nombra el artículo o su tema para que la persona sepa qué va a leer. En Facebook, LinkedIn, YouTube y WhatsApp el enlace va escrito como {{ENLACE}}.";
+const CTA_BLOG = "En el guion, una sola frase corta y tal cual: «La guía completa está en lomazhome.com, enlace en el primer comentario». Nunca «link en la bio» (alarga y distrae; la bio también lleva el enlace, pero no se nombra). En los textos de Instagram y TikTok: «Guía completa en el blog de LoMaz Home: enlace en el primer comentario». En Facebook, LinkedIn, YouTube y WhatsApp el enlace va escrito como {{ENLACE}}.";
 const CTA_VISITA = "«Agenda tu visita por WhatsApp al 300 330 0343». En Instagram y TikTok puedes añadir «el enlace está en el perfil».";
 const CTA_PROPIETARIO = "«¿Quieres vender o arrendar el tuyo así de rápido? Escríbenos por WhatsApp al 300 330 0343».";
 const CTA_AUTORIDAD = "«Síguenos para más» o «Conoce cómo trabajamos en lomazhome.com», según lo que mejor cierre la pieza.";
@@ -448,7 +456,9 @@ function guionTecnico(guion, planos){
   const bloques = [];
   for(let i = 0; i < n; i++){
     const p = lista[i] || {};
-    const l = ["PLANO " + (i + 1) + " de " + n];
+    // Los Reels educativos van en cinco bloques fijos (historia): gancho, contexto, problema, consejo y cierre.
+    const bloque = n === 5 ? [" · GANCHO (0–3 s)", " · CONTEXTO", " · PROBLEMA", " · CONSEJO", " · CIERRE"][i] : "";
+    const l = ["PLANO " + (i + 1) + " de " + n + bloque];
     l.push("Se ve: " + (texto(p.ve) || "[DATO: plano por definir]"));
     l.push("Se dice: «" + parrafos[i] + "»");
     if(texto(p.pantalla)) l.push("En pantalla: " + texto(p.pantalla));
@@ -497,7 +507,7 @@ function aSecciones(formato, d, redes){
     add("planos", "Guion técnico plano a plano · " + nPlanos + " planos", guionTecnico(d.guion, d.planos));
     add("edicion", "Notas de edición", d.edicion);
     add("tomas", "Tomas y edición", d.tomas); // piezas generadas antes de octubre de 2026
-    secciones.push({ titulo: "Para grabar y editar", bloques: hacer, notas: ["El gancho se dice en voz alta y se escribe en pantalla en los tres primeros segundos.", "Lo que va entre «» en cada plano es el párrafo completo del guion que se dice en ese plano: al grabar se lee tal cual."] });
+    secciones.push({ titulo: "Para grabar y editar", bloques: hacer, notas: ["El gancho se dice en voz alta y se escribe en pantalla en los tres primeros segundos.", "Lo que va entre «» en cada plano es el párrafo completo del guion que se dice en ese plano: al grabar se lee tal cual.", "Un Reel educativo es una historia en cinco bloques: gancho, contexto, problema, consejo y cierre. Se graba por lugares (gancho y cierre seguidos en la calle; contexto y problema en el escritorio o el sofá; consejo en primer plano medio), mínimo dos tomas buenas por plano y el gancho tres veces (seria, media sonrisa, rápida)."] });
   }else if(formato === "carrusel"){
     const laminas = Array.isArray(d.laminas) ? d.laminas : [];
     add("laminas", "Láminas · " + laminas.length + " en total", laminas.map(function(l, i){
