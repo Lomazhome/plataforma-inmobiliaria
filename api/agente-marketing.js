@@ -55,6 +55,27 @@ const REGLAS = [
   "10. Las piezas de una misma quincena no se repiten entre sí: cada una toma partes distintas de la fuente."
 ].join("\n");
 
+// Rúbrica con la que se califica cada guion de Reel antes de entregarlo (la misma de la skill «evaluar-guion»):
+// lo que repiten los creadores que más crecen en video corto. El modelo se autoevalúa, corrige y solo entrega
+// un guion que llegue a 85/100; si no llega, lo reescribe antes de responder.
+const RUBRICA_GUION = [
+  "AUTOEVALUACIÓN OBLIGATORIA DEL GUION (rúbrica de creadores exitosos)",
+  "Antes de responder, lee el guion una sola vez como espectador que lo ve en el feed sin contexto, a unas 3 palabras por segundo, y marca cada segundo en el que pasarías el dedo. Después califícalo de 0 a 10 en cada criterio y saca el puntaje sobre 100 (suma de puntaje × peso, dividida entre 1,5):",
+  "  1) Gancho (peso 3): un resultado concreto con contradicción, que se ve, se dice y se lee en 3 s; sin saludo, sin pregunta retórica, sin «te explico». Y apunta al verdadero giro de la historia: si el gancho siembra que el problema fue A y la historia revela que fue B, la gente se siente engañada; el gancho debe apuntar a B.",
+  "  2) Retención y bucles abiertos (peso 2): cada bloque termina con una pregunta que la persona ya tiene en la cabeza y el siguiente bloque la responde; hay un segundo gancho entre el segundo 3 y el 8 (la frase más fuerte del guion sube ahí, no se queda en el segundo 25).",
+  "  3) Claridad (peso 2): cada término explicado en la misma frase; lo entiende un niño de 5 años y una abuela sin que a un experto le falte algo; una sola regla y un solo perfil por historia (no mezclar los requisitos de un empleado en la historia de un independiente).",
+  "  4) Especificidad y prueba (peso 1,5): al menos una cifra con ejemplo en pesos («ganaba 3 millones; en el banco aparecían 200 mil»), pasos como ocurren en la práctica, y cada dato tomado de la fuente. Un guion sin ninguna cifra no pasa de 5 aquí.",
+  "  5) Historia y estructura (peso 1,5): personaje, escena reconocible, conflicto y resolución; el personaje es coherente (quien trabaja por prestación de servicios no cobra en efectivo); el cierre vuelve a la frase del gancho.",
+  "  6) Recompensa (peso 1,5): la persona se va con una decisión con dos salidas que puede tomar hoy, con el número o la condición correctos para su caso; nunca un «ten cuidado».",
+  "  7) Ritmo y duración (peso 1): frases cortas, ≈3 palabras por segundo, máximo 45 s. Cuenta las palabras del guion: si pasan de 155, recorta antes de entregar (las explicaciones largas van a textos_pantalla).",
+  "  8) Voz (peso 1): suena a persona hablando; cero frases genéricas de IA.",
+  "  9) Compartible (peso 1): provoca una emoción concreta (sorpresa, rabia, alivio) y da una razón para guardarlo o enviárselo a alguien.",
+  "  10) Llamada a la acción (peso 0,5): una sola, al final, de una frase, la del encargo.",
+  "Sé exigente: un gancho que empieza con «¿Sabías que…?» no pasa de 4 por bueno que sea el resto. Si el puntaje queda por debajo de 85, reescribe los bloques que fallan y vuelve a calificar; entrega solo la versión que llegue a 85 o más. Nunca subas la nota por cortesía: este puntaje decide si el equipo graba.",
+  "- evaluacion: el resultado de la autoevaluación de la versión que entregas, en texto plano: primera línea «Puntaje: NN/100»; luego una línea por criterio con el nombre, la nota y, si no es 10, qué falla citando la frase textual; después una línea «Se corrigió:» con las 2 o 3 mejoras que hiciste respecto al primer borrador (frase original → frase corregida); y una línea «Mapa de fuga:» con el segundo y la frase donde todavía hay más riesgo de que la gente pase el dedo, o «sin puntos de fuga» si no hay.",
+  "- ganchos_alternos: exactamente 2 ganchos de repuesto (B y C), cada uno de una o dos frases, distintos entre sí y del gancho principal, listos para grabar el mismo día, para que el equipo pruebe cuál retiene más."
+].join("\n");
+
 // Como se llama la pieza en cada red, segun el formato (tabla «Que formato va a que red» del calendario)
 const NOMBRE_EN_RED = {
   reel:     { instagram: "Reel", facebook: "Reel", tiktok: "Video", youtube: "Short", linkedin: "Video", whatsapp: "Estado" },
@@ -92,7 +113,9 @@ function comoEsElFormato(formato, tipoFuente){
     "- textos_pantalla: de 6 a 10 rótulos de máximo 8 palabras cada uno, en el orden del guion; el primero resume el gancho; cada término técnico lleva su explicación en el rótulo («Deudor solidario = le cobran lo mismo que al inquilino»); las listas y los pasos del proceso van como rótulo («Mes 1: llamada · Mes 2: carta · Mes 3: siniestro»); el último es la llamada a la acción.",
     "- portada: máximo 6 palabras, la contradicción del gancho («Firmó por un año, pagó dos»).",
     "- planos: el guion técnico, exactamente un plano por cada párrafo del guion y en el mismo orden (5 párrafos, 5 planos). Cada plano trae: ve (qué se ve: tipo de plano; dónde se graba —el gancho y el cierre de pie en la calle, el contexto y el problema sentado en el escritorio o el sofá del estudio, el consejo en primer plano medio—, el gesto que acompaña a la frase clave y qué imagen o video de apoyo va en edición) y pantalla (los rótulos de ese plano, tomados de textos_pantalla, o vacío si no lleva). No repitas aquí el texto del guion: la plataforma pone en cada plano, entre comillas, el párrafo completo que le corresponde, tal cual se escribió.",
-    "- edicion: 2 o 3 frases con lo que necesita la edición (duración final 44–46 s, silencios cortados, dónde va el golpe de escala, qué rótulo entra con qué frase, música sin letra al 8 % y 15 % en el cierre, tarjeta final 3 s)."
+    "- edicion: 2 o 3 frases con lo que necesita la edición (duración final 44–46 s, silencios cortados, dónde va el golpe de escala, qué rótulo entra con qué frase, música sin letra al 8 % y 15 % en el cierre, tarjeta final 3 s).",
+    "",
+    RUBRICA_GUION
   ].join("\n");
   if(formato === "carrusel" && tipoFuente === "propiedad") return [
     "CÓMO ES EL CARRUSEL DE UN INMUEBLE",
@@ -168,7 +191,7 @@ const ENFOQUE = { angulo_acv: { type: "string", enum: ["Autoridad", "Conocimient
 
 function esquemaDePieza(formato, redes){
   let propios;
-  if(formato === "reel") propios = Object.assign({}, ENFOQUE, { gancho: S, guion: S, textos_pantalla: lista(S), portada: S, planos: lista(objeto({ ve: S, pantalla: S })), edicion: S });
+  if(formato === "reel") propios = Object.assign({}, ENFOQUE, { gancho: S, guion: S, textos_pantalla: lista(S), portada: S, planos: lista(objeto({ ve: S, pantalla: S })), edicion: S, evaluacion: S, ganchos_alternos: lista(S) });
   else if(formato === "carrusel") propios = Object.assign({}, ENFOQUE, { laminas: lista(objeto({ titulo: S, texto: S })) });
   else if(formato === "historia") propios = { historias: lista(objeto({ texto: S, sticker: S })) };
   else propios = Object.assign({}, ENFOQUE, { titulo_pieza: S, puntos: lista(S), cierre: S });
@@ -507,6 +530,8 @@ function aSecciones(formato, d, redes){
     add("planos", "Guion técnico plano a plano · " + nPlanos + " planos", guionTecnico(d.guion, d.planos));
     add("edicion", "Notas de edición", d.edicion);
     add("tomas", "Tomas y edición", d.tomas); // piezas generadas antes de octubre de 2026
+    add("ganchos", "Ganchos de repuesto · B y C", (Array.isArray(d.ganchos_alternos) ? d.ganchos_alternos : []).map(function(g, i){ return "Gancho " + ["B", "C", "D"][i] + ": " + texto(g); }).filter(function(x){ return !/: $/.test(x); }).join("\n"));
+    add("evaluacion", "Evaluación del guion · rúbrica de creadores (se graba con 85 o más)", d.evaluacion);
     secciones.push({ titulo: "Para grabar y editar", bloques: hacer, notas: ["El gancho se dice en voz alta y se escribe en pantalla en los tres primeros segundos.", "Lo que va entre «» en cada plano es el párrafo completo del guion que se dice en ese plano: al grabar se lee tal cual.", "Un Reel educativo es una historia en cinco bloques: gancho, contexto, problema, consejo y cierre. Se graba por lugares (gancho y cierre seguidos en la calle; contexto y problema en el escritorio o el sofá; consejo en primer plano medio), mínimo dos tomas buenas por plano y el gancho tres veces (seria, media sonrisa, rápida)."] });
   }else if(formato === "carrusel"){
     const laminas = Array.isArray(d.laminas) ? d.laminas : [];
