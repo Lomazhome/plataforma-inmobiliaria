@@ -65,6 +65,30 @@ textarea:focus,input:focus{outline:none;border-color:var(--gold)}
 .interruptor input{width:20px;height:20px;accent-color:var(--gold)}
 .guardar{position:sticky;bottom:0;background:var(--navy);padding:.8rem 0;border-top:1px solid var(--line);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
 .estado-guardar{font-size:.85rem;color:var(--txt-soft)}
+/* Pruebas */
+.pr-barra{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:.6rem}
+.pr-progreso{font-size:.88rem;color:var(--txt-soft)}
+.pr-nota{font-size:.82rem;color:var(--txt-mute);margin-bottom:.8rem}
+.pr-resumen{font-family:var(--serif);font-size:1.5rem;margin:.4rem 0 .8rem}
+.pr-resumen em{font-style:normal;color:var(--gold)}
+.pr-item{background:var(--navy-3);border:1px solid var(--line);border-radius:var(--r);margin-bottom:.5rem}
+.pr-item>summary{list-style:none;cursor:pointer;padding:.7rem .85rem;display:flex;gap:.6rem;align-items:flex-start}
+.pr-item>summary::-webkit-details-marker{display:none}
+.pr-marca{flex:0 0 auto;width:1.5rem;height:1.5rem;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;border:1px solid var(--line)}
+.pr-item.ok .pr-marca{border-color:var(--ok);color:var(--ok)}
+.pr-item.mal .pr-marca{border-color:var(--bad);color:var(--bad)}
+.pr-item.corriendo .pr-marca{border-color:var(--gold);color:var(--gold)}
+.pr-titulo{font-size:.93rem}
+.pr-regla{display:block;font-size:.78rem;color:var(--txt-mute);margin-top:.15rem}
+.pr-detalle{padding:0 .85rem .85rem 2.95rem;font-size:.85rem}
+.pr-detalle ul{list-style:none;margin:.2rem 0 .7rem}
+.pr-detalle li{padding:.15rem 0}
+.pr-detalle li.mal{color:#ffc9c9}
+.pr-chat{border-left:2px solid var(--line);padding-left:.7rem;display:flex;flex-direction:column;gap:.35rem}
+.pr-chat div{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.4}
+.pr-chat .c{color:#9fe0c4}
+.pr-chat .l{color:var(--txt-soft)}
+.pr-otra{margin-top:.6rem}
 @media(min-width:760px){.fila{grid-template-columns:1fr 1fr}.sim{height:calc(100vh - 230px)}.page-title{font-size:2.2rem}}
 </style>
 </head>
@@ -81,6 +105,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--gold)}
 
   <nav class="tabs" role="tablist">
     <button class="tab activa" type="button" data-tab="simulador" role="tab">Simulador</button>
+    <button class="tab" type="button" data-tab="pruebas" role="tab">Pruebas</button>
     <button class="tab" type="button" data-tab="config" role="tab">Configuración</button>
     <button class="tab" type="button" disabled title="Fase 2">Bandeja (Fase 2)</button>
     <button class="tab" type="button" disabled title="Fase 2">Anuncios (Fase 2)</button>
@@ -102,6 +127,18 @@ textarea:focus,input:focus{outline:none;border-color:var(--gold)}
         <button class="btn btn-gold" type="submit" id="btnEnviar">Enviar</button>
       </form>
     </div>
+  </section>
+
+  <!-- ============ PRUEBAS ============ -->
+  <section id="tab-pruebas" hidden>
+    <div class="aviso info">Corre conversaciones de prueba contra Lomi con el inventario real y revisa que cumpla sus reglas: no dar direcciones, no pedir referencias, no negociar, no ofrecer video por iniciativa, pedir la autorización de datos, etc. Tarda unos 3 minutos. Las conversaciones de prueba se borran al terminar y nada sale por WhatsApp.</div>
+    <div class="pr-barra">
+      <button class="btn btn-gold" type="button" id="btnCorrerTodas">Correr todas las pruebas</button>
+      <button class="btn" type="button" id="btnCorrerFallidas" hidden>Repetir solo las que fallaron</button>
+      <span class="pr-progreso" id="prProgreso"></span>
+    </div>
+    <div id="prInmueble" class="pr-nota"></div>
+    <div id="prResultados"></div>
   </section>
 
   <!-- ============ CONFIGURACIÓN ============ -->
@@ -272,7 +309,7 @@ $("btnNueva").addEventListener("click", async function(){
   try{ await api({ modo: "reiniciar", sesion: sesion }); }catch(e){}
   sesion = nuevaSesion(); guardarSesion();
   $("chat").innerHTML = ""; pintarEstado({});
-  burbuja("lomi", "<i>Conversación nueva. Escribe como lo haría un cliente: por ejemplo «Hola, me interesa el inmueble REF LH-23».</i>");
+  burbuja("lomi", "<i>Conversación nueva. Escribe como lo haría un cliente: por ejemplo «Hola, me interesa la casa en arriendo de Santa Bárbara».</i>");
 });
 $("btnDevolver").addEventListener("click", async function(){
   try{ const r = await api({ modo: "devolver", sesion: sesion }); pintarEstado(r.conversacion); burbuja("lomi", "<i>La conversación volvió a Lomi.</i>"); }catch(e){ alert(e.message); }
@@ -316,11 +353,80 @@ $("btnGuardar").addEventListener("click", async function(){
   else $("estadoGuardar").textContent = "Guardado. Lomi ya usa estos cambios.";
 });
 
+/* ---------- Pruebas (lomi-pruebas.js) ---------- */
+let resultadosPrueba = {}, escenarios = [], probando = false;
+
+function pintarPrueba(caso, r, corriendo){
+  let d = document.getElementById("pr-" + caso.id);
+  const abierto = d ? d.open : false;
+  if(!d){ d = document.createElement("details"); d.id = "pr-" + caso.id; $("prResultados").appendChild(d); }
+  d.className = "pr-item " + (corriendo ? "corriendo" : (r ? (r.ok ? "ok" : "mal") : ""));
+  const marca = corriendo ? "…" : (r ? (r.ok ? "✓" : "✗") : "·");
+  let h = '<summary><span class="pr-marca">' + marca + '</span><span class="pr-titulo">' + escHtml(caso.nombre) + '<span class="pr-regla">' + escHtml(caso.regla) + "</span></span></summary>";
+  if(r){
+    h += '<div class="pr-detalle"><ul>' + r.revisiones.map(function(x){ return '<li class="' + (x.ok ? "ok" : "mal") + '">' + (x.ok ? "✓ " : "✗ ") + escHtml(x.texto) + "</li>"; }).join("") + "</ul>";
+    h += '<div class="pr-chat">' + r.transcripcion.map(function(m){ return '<div class="' + (m.quien === "cliente" ? "c" : "l") + '">' + (m.quien === "cliente" ? "Cliente: " : "Lomi: ") + escHtml(m.texto) + "</div>"; }).join("") + "</div>";
+    if(r.herramientas.length) h += '<div class="pr-nota pr-otra">Usó: ' + escHtml(r.herramientas.join(", ")) + "</div>";
+    h += '<button class="btn pr-otra" type="button" data-repetir="' + caso.id + '">Repetir esta prueba</button></div>';
+  }
+  d.innerHTML = h;
+  d.open = abierto || (r && !r.ok && !corriendo);
+  const b = d.querySelector("[data-repetir]");
+  if(b) b.addEventListener("click", function(){ correrPruebas([caso]); });
+}
+function escHtml(t){ return esc(t); }
+
+function pintarResumen(){
+  const hechos = escenarios.filter(function(e){ return resultadosPrueba[e.id]; });
+  const bien = hechos.filter(function(e){ return resultadosPrueba[e.id].ok; }).length;
+  let r = document.querySelector(".pr-resumen");
+  if(!r){ r = document.createElement("div"); r.className = "pr-resumen"; $("prResultados").before(r); }
+  r.innerHTML = hechos.length ? "<em>" + bien + " de " + hechos.length + "</em> pruebas pasaron" : "";
+  $("btnCorrerFallidas").hidden = !hechos.some(function(e){ return !resultadosPrueba[e.id].ok; });
+}
+
+async function prepararEscenarios(){
+  const { data, error } = await sb.from("propiedades").select("id,titulo,barrio,tipo_negocio,tipo_propiedad,habitaciones,precio,fotos").eq("estado", "activa");
+  if(error || !data || !data.length) throw new Error(error ? error.message : "No hay inmuebles activos en el inventario.");
+  escenarios = LomiPruebas.crearEscenarios(data);
+  const A = LomiPruebas.elegir(data);
+  $("prInmueble").textContent = "Inmueble usado en las preguntas sobre un inmueble: «" + A.titulo + "» (" + (A.barrio || "sin barrio") + ").";
+}
+
+async function correrPruebas(lista){
+  if(probando) return;
+  probando = true;
+  $("btnCorrerTodas").disabled = true; $("btnCorrerFallidas").disabled = true;
+  try{
+    if(!escenarios.length) await prepararEscenarios();
+    if(!lista) lista = escenarios;
+    if(lista === escenarios){ resultadosPrueba = {}; $("prResultados").innerHTML = ""; }
+    escenarios.forEach(function(e){ pintarPrueba(e, resultadosPrueba[e.id], false); });
+    for(let i = 0; i < lista.length; i++){
+      const e = lista[i];
+      $("prProgreso").textContent = "Probando " + (i + 1) + " de " + lista.length + ": " + e.nombre + "…";
+      pintarPrueba(e, null, true);
+      resultadosPrueba[e.id] = await LomiPruebas.correr(e, api);
+      pintarPrueba(e, resultadosPrueba[e.id], false);
+      pintarResumen();
+    }
+    $("prProgreso").textContent = "Terminado. Abre una prueba para ver la conversación y qué se revisó.";
+  }catch(e){
+    $("prProgreso").textContent = "No se pudieron correr las pruebas: " + e.message;
+  }finally{
+    probando = false;
+    $("btnCorrerTodas").disabled = false; $("btnCorrerFallidas").disabled = false;
+  }
+}
+$("btnCorrerTodas").addEventListener("click", function(){ escenarios = []; correrPruebas(null); });
+$("btnCorrerFallidas").addEventListener("click", function(){ correrPruebas(escenarios.filter(function(e){ return resultadosPrueba[e.id] && !resultadosPrueba[e.id].ok; })); });
+
 /* ---------- Pestañas e inicio ---------- */
 document.querySelectorAll(".tab[data-tab]").forEach(function(t){
   t.addEventListener("click", function(){
     document.querySelectorAll(".tab").forEach(function(x){ x.classList.toggle("activa", x === t); });
     $("tab-simulador").hidden = t.dataset.tab !== "simulador";
+    $("tab-pruebas").hidden = t.dataset.tab !== "pruebas";
     $("tab-config").hidden = t.dataset.tab !== "config";
   });
 });
@@ -344,6 +450,7 @@ document.querySelectorAll(".tab[data-tab]").forEach(function(t){
   cargarConfig();
 })();
 </script>
+<script src="lomi-pruebas.js"></script>
 <script src="lomaz-admin-nav.js" defer></script>
 </body>
 </html>
