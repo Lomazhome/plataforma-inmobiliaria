@@ -145,13 +145,13 @@ create policy "msj_corr_equipo_cambiar" on public.msj_correcciones   for update 
 -- ---------- 7. Supresión de conversaciones sin autorización (90 días) ----------
 -- Quien no autorizó el tratamiento de datos no se queda en la base: su conversación
 -- se borra 90 días después del último mensaje. Las conversaciones del simulador
--- se borran a los 30 días.
+-- se borran a los 15 días (ver 20261107_simulador_15_dias.sql).
 create or replace function public.depurar_mensajeria()
 returns int language plpgsql security definer set search_path = '' as $$
 declare n int;
 begin
   delete from public.msj_conversaciones c
-  where (c.canal = 'simulador' and c.ultimo_mensaje_at < now() - interval '30 days')
+  where (c.canal = 'simulador' and c.ultimo_mensaje_at < now() - interval '15 days')
      or (c.canal <> 'simulador' and c.contacto_id is null
          and c.ultimo_mensaje_at < now() - interval '90 days');
   get diagnostics n = row_count;
