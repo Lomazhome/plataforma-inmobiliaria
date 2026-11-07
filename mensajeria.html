@@ -106,7 +106,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--gold)}
 
   <!-- ============ CONFIGURACIÓN ============ -->
   <section id="tab-config" hidden>
-    <div class="aviso info">Solo un administrador puede guardar cambios. Lo que cambies aquí lo usa Lomi desde la siguiente respuesta, sin tocar código. Los textos de privacidad y autorización fueron revisados por legal: si los cambias, vuelve a pasarlos por revisión.</div>
+    <div class="aviso info">Solo un administrador puede guardar cambios. Lo que cambies aquí lo usa Lomi desde la siguiente respuesta, sin tocar código. El aviso de privacidad y los textos de autorización no se editan aquí: son textos legales con versión y solo se cambian en el código, con revisión legal.</div>
     <div class="fila">
       <div class="campo"><label for="cNombre">Nombre del agente</label><input type="text" id="cNombre" maxlength="40"></div>
       <div class="campo"><label for="cPolitica">Versión de la política de datos</label><input type="text" id="cPolitica" maxlength="40"><div class="ayuda">Se guarda junto con cada autorización como prueba.</div></div>
@@ -141,10 +141,9 @@ const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 const $ = function(id){ return document.getElementById(id); };
 let token = "", yo = null, sesion = "", ultimoCliente = "", ocupado = false, textosBase = {};
 
+// El aviso de privacidad y las autorizaciones no se editan aquí: son textos legales con
+// versión (api/_lib/textos-lomi.js) y cambiarlos exige revisión legal.
 const MENSAJES_EDITABLES = [
-  ["aviso", "Aviso de privacidad (primer mensaje de cada conversación)"],
-  ["autorizacion_interesado", "Autorización de datos · compradores e inquilinos (máx. 1.024 caracteres)"],
-  ["autorizacion_propietario", "Autorización de datos · propietarios (máx. 1.024 caracteres)"],
   ["no_autorizo", "Respuesta cuando el cliente no autoriza"],
   ["sin_dato", "Cuando falta un dato del inventario"],
   ["solo_texto", "Cuando el cliente manda audio o foto"],
@@ -295,7 +294,7 @@ async function cargarConfig(){
   }).join("");
   MENSAJES_EDITABLES.forEach(function(m){
     const ta = $("m_" + m[0]);
-    const contar = function(){ const n = (ta.value || ta.placeholder).length; $("n_" + m[0]).textContent = (ta.value ? "Texto propio" : "Texto aprobado") + " · " + n + " caracteres" + (n > 1024 && /^autorizacion/.test(m[0]) ? " · supera el límite de WhatsApp" : ""); };
+    const contar = function(){ const n = (ta.value || ta.placeholder).length; $("n_" + m[0]).textContent = (ta.value ? "Texto propio" : "Texto aprobado") + " · " + n + " caracteres"; };
     ta.addEventListener("input", contar); contar();
   });
 }
@@ -303,9 +302,6 @@ async function cargarConfig(){
 $("btnGuardar").addEventListener("click", async function(){
   const mensajes = {};
   MENSAJES_EDITABLES.forEach(function(m){ const v = $("m_" + m[0]).value.trim(); if(v) mensajes[m[0]] = v; });
-  for(const k of ["autorizacion_interesado", "autorizacion_propietario"]){
-    if((mensajes[k] || "").length > 1024){ $("estadoGuardar").textContent = "La autorización no puede pasar de 1.024 caracteres (límite de WhatsApp)."; return; }
-  }
   this.disabled = true; $("estadoGuardar").textContent = "Guardando…";
   const cambios = {
     nombre_agente: $("cNombre").value.trim() || "Lomi", politica_version: $("cPolitica").value.trim(), ficha: $("cFicha").value,

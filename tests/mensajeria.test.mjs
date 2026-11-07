@@ -186,15 +186,18 @@ test("autorización con botones: Autorizo → se registra la prueba y se guarda 
   });
   const agente = crearAgente({ repo: repo, claude: claude });
   const r1 = await agente.atender(msg("quiero visitar el LH-7"));
-  const botones = r1.salidas.find(function(s){ return s.tipo === "botones"; });
-  assert.equal(botones.texto, T.MENSAJES.autorizacion_interesado);
+  const iLegal = r1.salidas.findIndex(function(s){ return s.texto === T.MENSAJES.autorizacion_interesado; });
+  const botones = r1.salidas[iLegal + 1];
+  assert.ok(iLegal >= 0, "el texto legal completo se envía");
+  assert.equal(botones.tipo, "botones", "los botones van justo después del texto legal");
+  assert.equal(botones.texto, T.PREGUNTA_AUTORIZACION);
   assert.deepEqual(botones.botones.map(function(b){ return b.id; }), ["autorizo", "no_autorizo"]);
   assert.equal(claude.pedidos.length, 1, "después de pedir la autorización Lomi espera la respuesta");
 
   const r2 = await agente.atender(msg("", { tipo: "boton", botonId: "autorizo", botonTitulo: "Autorizo", idMensaje: "wamid.BOTON1" }));
   assert.equal(r2.conversacion.consentimientos.interesado.estado, "autorizo");
   assert.equal(r2.conversacion.consentimientos.interesado.mensaje, "wamid.BOTON1");
-  assert.equal(r2.conversacion.consentimientos.interesado.version, "chat-interesado-v1");
+  assert.equal(r2.conversacion.consentimientos.interesado.version, T.VERSION_TEXTO.interesado);
 
   await agente.atender(msg("Carlos Pérez"));
   assert.equal(repo.st.contactos.length, 1);
@@ -203,7 +206,7 @@ test("autorización con botones: Autorizo → se registra la prueba y se guarda 
   assert.equal(c.telefono, "573001112233");
   assert.equal(c.propiedad_id, "7");
   assert.equal(c.asesor_id, "asesor-1");
-  assert.ok(c.consent_at && /chat-interesado-v1/.test(c.consent_version));
+  assert.ok(c.consent_at && c.consent_version.indexOf(T.VERSION_TEXTO.interesado) === 0);
 });
 
 test("No autorizo: responde el texto aprobado sin pasar por Claude y no guarda nada", async () => {
@@ -217,10 +220,30 @@ test("No autorizo: responde el texto aprobado sin pasar por Claude y no guarda n
   assert.equal(repo.st.contactos.length, 0);
 });
 
-test("los textos de autorización caben en un mensaje con botones de WhatsApp (1.024 caracteres)", () => {
-  assert.ok(T.MENSAJES.autorizacion_interesado.length <= 1024, "interesado: " + T.MENSAJES.autorizacion_interesado.length);
-  assert.ok(T.MENSAJES.autorizacion_propietario.length <= 1024, "propietario: " + T.MENSAJES.autorizacion_propietario.length);
+test("los textos legales caben en WhatsApp: texto completo hasta 4.096 y pregunta con botones hasta 1.024", () => {
+  ["aviso", "autorizacion_interesado", "autorizacion_propietario"].forEach(function(k){
+    assert.ok(T.MENSAJES[k].length <= 4096, k + ": " + T.MENSAJES[k].length);
+  });
+  assert.ok(T.PREGUNTA_AUTORIZACION.length <= 1024);
   T.BOTONES_AUTORIZACION.forEach(function(b){ assert.ok(b.titulo.length <= 20); });
+});
+
+test("el aviso y las autorizaciones no se pueden cambiar desde el panel", async () => {
+  const repo = repoFalso();
+  repo.st.config.mensajes = { aviso: "Aviso inventado", autorizacion_interesado: "Autorización inventada", sin_dato: "Texto propio" };
+  const claude = claudeFalso([usar("pedir_autorizacion", { tipo: "interesado" })]);
+  const r = await crearAgente({ repo: repo, claude: claude }).atender(msg("quiero que me llamen"));
+  assert.equal(r.salidas[0].texto, T.MENSAJES.aviso);
+  assert.ok(r.salidas.some(function(s){ return s.texto === T.MENSAJES.autorizacion_interesado; }));
+  assert.ok(!r.salidas.some(function(s){ return /inventad/.test(s.texto || ""); }));
+  assert.equal(r.conversacion.datos.aviso_version, T.VERSION_TEXTO.aviso);
+});
+
+test("el aviso de privacidad trae los datos de contacto del Responsable", () => {
+  assert.match(T.MENSAJES.aviso, /Salomón Mazabell Torres Barrera/);
+  assert.match(T.MENSAJES.aviso, /lomazhome@gmail\.com/);
+  assert.match(T.MENSAJES.aviso, /300 330 0343/);
+  assert.match(T.MENSAJES.aviso, /politica-de-datos\.html/);
 });
 
 /* ---------- Límites que se verifican en código ---------- */

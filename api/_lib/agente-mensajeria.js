@@ -293,6 +293,7 @@ function crearAgente(dep){
 
   async function responder(conv, pendientes, entrada, config){
     const mensajesFijos = Object.assign({}, T.MENSAJES, config.mensajes || {});
+    T.MENSAJES_LEGALES.forEach(function(k){ mensajesFijos[k] = T.MENSAJES[k]; }); // los textos legales no se cambian desde el panel
     const salidas = [], herramientas = [], alertas = [];
     const datos = Object.assign({}, conv.datos || {});
     const consentimientos = Object.assign({}, conv.consentimientos || {});
@@ -302,6 +303,7 @@ function crearAgente(dep){
     if(!conv.aviso_enviado_at){
       salidas.push({ tipo: "texto", texto: mensajesFijos.aviso });
       cambios.aviso_enviado_at = ahora().toISOString();
+      datos.aviso_version = T.VERSION_TEXTO.aviso;
     }
 
     // Texto del cliente en este turno (si mandó varios seguidos, van juntos).
@@ -420,7 +422,8 @@ function crearAgente(dep){
         const tipo = args.tipo === "propietario" ? "propietario" : "interesado";
         if(consentimientos[tipo] && consentimientos[tipo].estado === "autorizo") return { ok: true, ya_autorizado: true };
         datos.autorizacion_pendiente = tipo;
-        salidas.push({ tipo: "botones", texto: mensajesFijos["autorizacion_" + tipo], botones: T.BOTONES_AUTORIZACION });
+        salidas.push({ tipo: "texto", texto: mensajesFijos["autorizacion_" + tipo], legal: true });
+        salidas.push({ tipo: "botones", texto: T.PREGUNTA_AUTORIZACION, botones: T.BOTONES_AUTORIZACION });
         finTurno = true;
         return { ok: true, enviado: "texto de autorización con botones" };
       }
@@ -526,8 +529,8 @@ function crearAgente(dep){
       final = mensajesFijos.sin_dato;
     }
     const textosSalida = final ? partirEnMensajes(final).map(function(t){ return { tipo: "texto", texto: t }; }) : [];
-    // El texto de Claude va después de los medios y antes de los botones de autorización.
-    const iBotones = salidas.findIndex(function(s){ return s.tipo === "botones"; });
+    // El texto de Claude va después de los medios y antes del texto legal de autorización.
+    const iBotones = salidas.findIndex(function(s){ return s.legal || s.tipo === "botones"; });
     if(iBotones >= 0) salidas.splice.apply(salidas, [iBotones, 0].concat(textosSalida));
     else textosSalida.forEach(function(s){ salidas.push(s); });
     if(!salidas.length) salidas.push({ tipo: "texto", texto: mensajesFijos.sin_dato });
