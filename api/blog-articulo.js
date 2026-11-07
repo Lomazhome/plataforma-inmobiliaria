@@ -992,7 +992,7 @@ relacionados +
 '<div class="cta-fija" id="ctaFija"><div class="cta-fija-txt"><strong>¿Tienes una pregunta?</strong>Te respondemos por WhatsApp.</div><a class="btn-wa" data-wa="fijo" href="' + esc(waEnlace) + '" target="_blank" rel="noopener">' + ICONO_WA + "<span>Escríbenos</span></a></div>\n" +
 '<div class="aviso-copiado" id="avisoCopiado" role="status" aria-live="polite"></div>\n' +
 "<script>window.__ART=" + datosPagina + ";</script>\n<script>\n" + GUION + "\n</script>\n" +
-'<script src="/config.js"></script>\n<script src="/lomaz-nav.js" defer></script>\n' +
+'<script src="/config.js"></script>\n<script src="/lomaz-nav.js" defer></script>\n<script src="/lomaz-legal.js" defer></script>\n' +
 "</body>\n</html>\n";
 }
 
