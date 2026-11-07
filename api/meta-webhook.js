@@ -91,14 +91,16 @@ function crearManejador(opciones){
   return async function manejador(req, res){
     if(req.method === "GET"){
       const q = req.query || Object.fromEntries(new URL(req.url, "http://x").searchParams);
-      if(q["hub.mode"] === "subscribe" && entorno.META_VERIFY_TOKEN && q["hub.verify_token"] === entorno.META_VERIFY_TOKEN) return texto(res, 200, String(q["hub.challenge"] || ""));
+      // Se ignoran espacios o saltos de línea sobrantes al pegar el token en Vercel.
+      const esperado = String(entorno.META_VERIFY_TOKEN || "").trim();
+      if(q["hub.mode"] === "subscribe" && esperado && String(q["hub.verify_token"] || "").trim() === esperado) return texto(res, 200, String(q["hub.challenge"] || ""));
       return texto(res, 403, "Token de verificación inválido.");
     }
     if(req.method !== "POST") return texto(res, 405, "Método no permitido.");
 
     const crudo = await leerCrudo(req);
     const firma = req.headers && (req.headers["x-hub-signature-256"] || req.headers["X-Hub-Signature-256"]);
-    if(!firmaValida(crudo, firma, entorno.META_APP_SECRET)) return texto(res, 401, "Firma inválida.");
+    if(!firmaValida(crudo, firma, String(entorno.META_APP_SECRET || "").trim())) return texto(res, 401, "Firma inválida.");
 
     let cuerpo;
     try{ cuerpo = JSON.parse(crudo.toString("utf8")); }catch(e){ return texto(res, 400, "Cuerpo inválido."); }
