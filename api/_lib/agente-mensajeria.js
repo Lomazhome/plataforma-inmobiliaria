@@ -40,6 +40,10 @@ function precioTexto(n, negocio){
   return "$" + miles(n);
 }
 
+function areaDe(p){ return num(p.area_construida) || num(p.m2_construccion) || num(p.area_privada) || num(p.area_total); }
+function comoTexto(v){ return v === null || v === undefined ? "" : (typeof v === "string" ? v : JSON.stringify(v)); }
+// Palabras que no sirven para reconocer un inmueble por su nombre.
+const PALABRAS_VACIAS = ["apartamento", "apto", "casa", "local", "lote", "finca", "apartaestudio", "venta", "arriendo", "vendo", "arrienda", "los", "las", "del", "con", "para", "por", "que", "una", "uno", "este", "ese", "esa", "barrio", "bogota", "inmueble", "publicacion", "edificio", "conjunto", "torre", "habitaciones", "alcobas"];
 function referencia(p){ return p.codigo_interno ? String(p.codigo_interno).replace(/^REF\s*/i, "") : "LH-" + p.id; }
 function paginaDe(p){ return T.SITIO + "/propiedad-publica.html?id=" + p.id; }
 function admin(p){ return num(p.precio_admin) || num(p.administracion); }
@@ -57,7 +61,7 @@ function fichaParaModelo(p){
     precio: precioTexto(num(p.precio), p.tipo_negocio),
     administracion: admin(p) ? precioTexto(admin(p), "arriendo") : null,
     precio_negociable: p.precio_negociable === true ? "sí" : (p.precio_negociable === false ? "no" : null),
-    area_m2: num(p.area_construida) || num(p.m2_construccion) || num(p.area_privada) || num(p.area_total),
+    area_m2: areaDe(p),
     habitaciones: p.habitaciones, banos: p.banos,
     garajes: p.garajes !== null && p.garajes !== undefined ? p.garajes : p.parqueaderos,
     estrato: p.estrato, piso: p.piso, antiguedad: p.antiguedad || p.edad_inmueble, deposito: p.deposito,
@@ -173,19 +177,22 @@ function respuestaAutorizacion(texto){
 const HERRAMIENTAS = [
   {
     name: "buscar_inmuebles",
-    description: "Busca en el inventario activo de LoMaz Home los inmuebles que coinciden con lo que el cliente describe, SOLO para identificar cuál vio. Devuelve máximo 3 candidatos con barrio, habitaciones y precio. Nunca uses el resultado como catálogo.",
+    description: "Busca en el inventario activo de LoMaz Home los inmuebles que coinciden con el nombre o las características que da el cliente, SOLO para identificar cuál vio. Devuelve máximo 3 candidatos con nombre, barrio, habitaciones y precio. Nunca uses el resultado como catálogo.",
     input_schema: { type: "object", properties: {
+      nombre: { type: "string", description: "Nombre con el que el cliente se refiere al inmueble: nombre del apartamento, conjunto o edificio, o palabras del título de la publicación." },
       negocio: { type: "string", enum: ["venta", "arriendo"] },
       tipo: { type: "string", description: "apartamento, casa, apartaestudio, local, lote, finca…" },
       barrio: { type: "string" },
       habitaciones: { type: "integer" },
+      banos: { type: "integer" },
+      area_aprox: { type: "number", description: "Área en m² que menciona el cliente." },
       precio_aprox: { type: "number", description: "Precio que menciona el cliente, en pesos (450 millones = 450000000)." }
     } }
   },
   {
     name: "detalle_inmueble",
-    description: "Trae los datos de un inmueble del inventario (por id o referencia LH-…) y lo fija como inmueble actual de la conversación. No incluye la dirección exacta.",
-    input_schema: { type: "object", properties: { id: { type: "string", description: "Número o referencia (LH-42)." } }, required: ["id"] }
+    description: "Trae los datos de un inmueble del inventario (por el id que devolvió buscar_inmuebles, o por la referencia o enlace que escribió el cliente) y lo fija como inmueble actual de la conversación. No incluye la dirección exacta.",
+    input_schema: { type: "object", properties: { id: { type: "string", description: "Id del inmueble." } }, required: ["id"] }
   },
   {
     name: "enviar_video",
@@ -374,8 +381,17 @@ function crearAgente(dep){
       await inventarioActivo();
       if(nombre === "buscar_inmuebles"){
         const barrio = sinTildes(args.barrio), tipo = sinTildes(args.tipo);
+        const buscadas = palabras(args.nombre).filter(function(w){ return PALABRAS_VACIAS.indexOf(w) < 0; });
         const candidatos = inventario.map(function(p){
           let puntos = 0;
+          if(buscadas.length){
+            const enTitulo = sinTildes([p.titulo, p.barrio, p.codigo_interno].map(comoTexto).join(" "));
+            const enTexto = sinTildes([p.subtipo, p.descripcion, p.caracteristicas, p.amenidades].map(comoTexto).join(" "));
+            const t = buscadas.filter(function(w){ return enTitulo.indexOf(w) >= 0; }).length;
+            const d = buscadas.filter(function(w){ return enTitulo.indexOf(w) < 0 && enTexto.indexOf(w) >= 0; }).length;
+            if(!t && !d) return null;
+            puntos += 3 * t + d;
+          }
           if(args.negocio){ if(p.tipo_negocio !== args.negocio) return null; puntos += 1; }
           if(tipo){ if(sinTildes([p.tipo_propiedad, p.subtipo, p.titulo].join(" ")).indexOf(tipo) < 0) return null; puntos += 1; }
           if(barrio){
@@ -385,14 +401,17 @@ function crearAgente(dep){
             else return null;
           }
           if(args.habitaciones){ if(Number(p.habitaciones) === Number(args.habitaciones)) puntos += 2; else if(Math.abs(Number(p.habitaciones) - args.habitaciones) > 1) return null; }
+          if(args.banos && num(p.banos)){ if(Number(p.banos) === Number(args.banos)) puntos += 1; else if(Math.abs(Number(p.banos) - args.banos) > 1) return null; }
+          const area = areaDe(p);
+          if(args.area_aprox && area){ const ra = Math.abs(area - args.area_aprox) / args.area_aprox; if(ra > 0.2) return null; puntos += ra < 0.06 ? 2 : 1; }
           const precio = num(p.precio);
           if(args.precio_aprox && precio){ const r = Math.abs(precio - args.precio_aprox) / args.precio_aprox; if(r > 0.25) return null; puntos += r < 0.08 ? 2 : 1; }
           return { p: p, puntos: puntos };
         }).filter(Boolean).sort(function(a, b){ return b.puntos - a.puntos; }).slice(0, MAX_CANDIDATOS);
         candidatos.forEach(function(c){ permitirPreciosDe(c.p); });
         return { candidatos: candidatos.map(function(c){
-          return { id: c.p.id, ref: referencia(c.p), tipo: c.p.tipo_propiedad, negocio: c.p.tipo_negocio, barrio: c.p.barrio, habitaciones: c.p.habitaciones, precio: precioTexto(num(c.p.precio), c.p.tipo_negocio) };
-        }), nota: candidatos.length ? "Para confirmar cuál vio, nombra solo barrio, habitaciones y precio. Sin enlaces ni fotos." : "No hay coincidencias en el inventario activo. Dilo y remite a lomazhome.com." };
+          return { id: c.p.id, nombre: c.p.titulo, tipo: c.p.tipo_propiedad, negocio: c.p.tipo_negocio, barrio: c.p.barrio, habitaciones: c.p.habitaciones, area_m2: areaDe(c.p), precio: precioTexto(num(c.p.precio), c.p.tipo_negocio) };
+        }), nota: candidatos.length ? "Para confirmar cuál vio, nómbralo por su nombre o por barrio, habitaciones y precio. No menciones referencias ni códigos, ni pongas enlaces o fotos." : "No hay coincidencias en el inventario activo. Dilo y pide otro dato que recuerde (nombre, barrio, habitaciones, precio) o remite a lomazhome.com." };
       }
 
       if(["detalle_inmueble", "enviar_video", "enviar_fotos", "enviar_ficha"].indexOf(nombre) >= 0){

@@ -150,6 +150,27 @@ test("buscar_inmuebles devuelve máximo 3 candidatos, sin fotos ni enlaces", asy
   assert.ok(!JSON.stringify(r).includes("http"), "la búsqueda no debe traer enlaces ni fotos");
 });
 
+test("buscar_inmuebles ubica por el nombre de la publicación y no devuelve códigos de referencia", async () => {
+  const repo = repoFalso(), claude = claudeFalso([usar("buscar_inmuebles", { nombre: "el apto Cedritos piso 2" }), texto("¿Es el apartamento en Cedritos piso 2, 2 habitaciones?")]);
+  await crearAgente({ repo: repo, claude: claude }).atender(msg("me interesa el apto cedritos piso 2"));
+  const r = JSON.parse(claude.pedidos[1].messages.at(-1).content[0].content);
+  assert.equal(r.candidatos[0].id, 9, "el que coincide con el nombre va primero");
+  assert.equal(r.candidatos[0].nombre, "Apartamento en Cedritos piso 2");
+  assert.ok(!/LH-|"ref"/.test(JSON.stringify(r)), "la búsqueda no debe traer referencias");
+});
+
+test("buscar_inmuebles descarta los que no cuadran con el área", async () => {
+  const repo = repoFalso(), claude = claudeFalso([usar("buscar_inmuebles", { barrio: "colina campestre", area_aprox: 300 }), texto("No encuentro ese.")]);
+  await crearAgente({ repo: repo, claude: claude }).atender(msg("uno en colina campestre de 300 metros"));
+  const r = JSON.parse(claude.pedidos[1].messages.at(-1).content[0].content);
+  assert.equal(r.candidatos.length, 0, "el de Colina Campestre tiene 85 m²");
+});
+
+test("las reglas de Lomi no piden referencia para ubicar el inmueble", () => {
+  assert.ok(/Nunca pidas referencia/.test(T.REGLAS));
+  assert.ok(!/pides la referencia/.test(T.REGLAS));
+});
+
 test("enviar_fotos manda máximo 4 fotos y el enlace a la ficha", async () => {
   const repo = repoFalso(), claude = claudeFalso([usar("enviar_fotos", { id: "7", cantidad: 9 }), texto("Ahí van. ¿Qué más te interesa saber?")]);
   const r = await crearAgente({ repo: repo, claude: claude }).atender(msg("mándame fotos del LH-7"));
