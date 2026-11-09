@@ -1404,6 +1404,8 @@ function etPintar(){
  if(vid.length)h+='<div class="pz-sec">Lo que está funcionando en video</div><ul class="et-lista">'+vid.map(function(v){return '<li>'+esc(v)+'</li>';}).join('')+'</ul>';
  const an=e.angulos||{};
  if(an.autoridad||an.conocimiento||an.viralidad)h+='<div class="pz-sec">Una idea por ángulo (ACV)</div><ul class="et-lista">'+(an.autoridad?'<li><b>Autoridad:</b> '+esc(an.autoridad)+'</li>':'')+(an.conocimiento?'<li><b>Conocimiento:</b> '+esc(an.conocimiento)+'</li>':'')+(an.viralidad?'<li><b>Viralidad:</b> '+esc(an.viralidad)+'</li>':'')+'</ul>';
+ const mi=e.mirada||{};
+ if(mi.dolor_real||mi.mecanismo||mi.verdad_universal||mi.pregunta_llave||mi.caso)h+='<div class="pz-sec">La mirada: lo que todos sienten y nadie dice</div><ul class="et-lista">'+(mi.dolor_real?'<li><b>Dolor real:</b> '+esc(mi.dolor_real)+'</li>':'')+(mi.mecanismo?'<li><b>Mecanismo (por qué pasa):</b> '+esc(mi.mecanismo)+'</li>':'')+(mi.verdad_universal?'<li><b>Verdad universal:</b> '+esc(mi.verdad_universal)+'</li>':'')+(mi.pregunta_llave?'<li><b>Pregunta llave:</b> '+esc(mi.pregunta_llave)+'</li>':'')+(mi.caso?'<li><b>Caso para contar:</b> '+esc(mi.caso)+'</li>':'')+'</ul>';
  const fu=(Array.isArray(e.fuentes)?e.fuentes:[]).concat(Array.isArray(d.fuentes)?d.fuentes:[]).filter(function(x,i,a){return x&&a.indexOf(x)===i;}).slice(0,20);
  if(fu.length)h+='<details><summary class="pz-sec" style="cursor:pointer;display:block">Fuentes consultadas ('+fu.length+')</summary><div class="et-fuentes">'+fu.map(function(f){return /^https?:\/\//.test(f)?'<a href="'+escAttr(f)+'" target="_blank" rel="noopener">'+esc(f)+'</a>':esc(f);}).join('<br>')+'</div></details>';
  if(d.notas)h+='<details style="margin-top:.5rem"><summary class="pz-sec" style="cursor:pointer;display:block">Notas de la búsqueda</summary><div class="gb-body" style="font-size:.78rem;white-space:pre-wrap;color:var(--txt-soft)">'+esc(d.notas)+'</div></details>';
@@ -1422,6 +1424,8 @@ function etTexto(d){
  if(Array.isArray(e.video)&&e.video.length)t+="\nLO QUE FUNCIONA EN VIDEO\n"+e.video.map(function(v){return "- "+v;}).join("\n")+"\n";
  const an=e.angulos||{};
  if(an.autoridad||an.conocimiento||an.viralidad)t+="\nÁNGULOS ACV\n- Autoridad: "+(an.autoridad||"")+"\n- Conocimiento: "+(an.conocimiento||"")+"\n- Viralidad: "+(an.viralidad||"")+"\n";
+ const mi=e.mirada||{};
+ if(mi.dolor_real||mi.mecanismo)t+="\nLA MIRADA (lo que todos sienten y nadie dice)\n- Dolor real: "+(mi.dolor_real||"")+"\n- Mecanismo: "+(mi.mecanismo||"")+"\n- Verdad universal: "+(mi.verdad_universal||"")+"\n- Pregunta llave: "+(mi.pregunta_llave||"")+"\n- Caso para contar: "+(mi.caso||"")+"\n";
  if(Array.isArray(e.fuentes)&&e.fuentes.length)t+="\nFUENTES\n"+e.fuentes.map(function(f){return "- "+f;}).join("\n")+"\n";
  return t.trim();
 }
@@ -1437,7 +1441,8 @@ function etUsarEnPieza(){
  const notas=document.getElementById("agNotas");
  if(!notas.value.trim()){
   const dudas=[];(Array.isArray(e.dolores)?e.dolores:[]).forEach(function(x){(x.dudas||[]).slice(0,2).forEach(function(q){dudas.push(q);});});
-  notas.value=["Palabra clave: "+(pr.frase||d.tema),dudas.length?"Dudas que responde: "+dudas.slice(0,4).join(" / "):"",(e.angulos&&e.angulos.viralidad)?"Gancho sugerido (viralidad): "+e.angulos.viralidad:""].filter(Boolean).join("\n");
+  const mi=e.mirada||{};
+  notas.value=["Palabra clave: "+(pr.frase||d.tema),dudas.length?"Dudas que responde: "+dudas.slice(0,4).join(" / "):"",(e.angulos&&e.angulos.viralidad)?"Gancho sugerido (viralidad): "+e.angulos.viralidad:"",mi.dolor_real?"Mirada · dolor real: "+mi.dolor_real:"",mi.mecanismo?"Mirada · mecanismo: "+mi.mecanismo:"",mi.verdad_universal?"Mirada · verdad universal: "+mi.verdad_universal:"",mi.pregunta_llave?"Mirada · pregunta llave: "+mi.pregunta_llave:"",mi.caso?"Mirada · caso: "+mi.caso:""].filter(Boolean).join("\n");
  }
  if(!_agTocoPilar)document.getElementById("agPilar").value="Educacion y Autoridad";
  agPintarClave();
