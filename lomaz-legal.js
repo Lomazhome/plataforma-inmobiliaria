@@ -10,7 +10,7 @@
    ============================================================ */
 (function () {
   if (document.getElementById('lmz-legal')) return;
-  if (/politica-de-datos\.html$/.test(location.pathname)) return;
+  if (/(politica-de-datos|terminos-de-uso|eliminacion-de-datos)\.html$/.test(location.pathname)) return;
   var enPie = document.querySelector('footer a[href*="politica-de-datos.html"]');
   if (enPie) return;
 
@@ -28,6 +28,8 @@
   d.setAttribute('role', 'contentinfo');
   d.innerHTML = '© ' + new Date().getFullYear() + ' LoMaz Home · Bogotá' +
     '<span class="sep">·</span><a href="/politica-de-datos.html">Política de Tratamiento de Datos Personales</a>' +
+    '<span class="sep">·</span><a href="/terminos-de-uso.html">Términos de uso</a>' +
+    '<span class="sep">·</span><a href="/eliminacion-de-datos.html">Eliminación de datos</a>' +
     '<span class="sep">·</span>Tus datos: <a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a>';
   document.body.appendChild(d);
 })();
