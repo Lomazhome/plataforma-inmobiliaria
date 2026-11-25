@@ -431,6 +431,7 @@ function pasa(p,sin){
 function contar(sin,prueba){return allProps.filter(function(p){return pasa(p,sin)&&prueba(p);}).length;}
 function opcion(valor,texto,n,actual){
   const sel=valor===actual;
+  if(n===0&&!sel)return""; // no se ofrece una opción que deja la lista vacía
   return '<option value="'+esc(valor)+'"'+(sel?" selected":"")+(n===0&&!sel?" disabled":"")+'>'+esc(texto)+(n==null?"":" ("+n+")")+'</option>';
 }
 function pintarFiltros(){
@@ -454,8 +455,11 @@ function pintarFiltros(){
   const zonas=ZONAS_BOG.filter(function(z){return deCiudad.some(function(p){return enZona(p,z);});});
   const barrios={};deCiudad.forEach(function(p){const k=norm(p.barrio);if(k)barrios[k]=bonito(p.barrio)+(s.ciudad||esBogota(p)?"":", "+bonito(p.ciudad));});
   let h=opcion("","Todos los barrios",null,s.lugar);
-  if(zonas.length)h+='<optgroup label="Zonas de Bogotá">'+zonas.map(function(z){return opcion("z:"+norm(z.n),z.n,contar("lugar",function(p){return enZona(p,z);}),s.lugar);}).join("")+'</optgroup>';
-  h+='<optgroup label="Barrios">'+Object.keys(barrios).sort().map(function(k){return opcion("b:"+k,barrios[k],contar("lugar",function(p){return norm(p.barrio)===k;}),s.lugar);}).join("")+'</optgroup>';
+  const hz=zonas.map(function(z){return opcion("z:"+norm(z.n),z.n,contar("lugar",function(p){return enZona(p,z);}),s.lugar);}).join("");
+  // un barrio que ya aparece como zona (p. ej. Santa Bárbara) no se repite
+  const hb=Object.keys(barrios).sort().filter(function(k){return !ZONAS_BOG.some(function(z){return norm(z.n)===k;});}).map(function(k){return opcion("b:"+k,barrios[k],contar("lugar",function(p){return norm(p.barrio)===k;}),s.lugar);}).join("");
+  if(hz)h+='<optgroup label="Zonas de Bogotá">'+hz+'</optgroup>';
+  if(hb)h+='<optgroup label="Barrios">'+hb+'</optgroup>';
   if(s.lugar&&s.lugar.slice(0,2)==="q:")h+=opcion(s.lugar,"«"+s.lugar.slice(2)+"»",null,s.lugar);
   document.getElementById("f-lugar").innerHTML=h;
   // Precio: depende de si es venta o arriendo
