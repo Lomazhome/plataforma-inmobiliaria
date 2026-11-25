@@ -142,83 +142,99 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   .acm-x{width:40px;height:40px;font-size:1.2rem}
   .btn-sec{min-height:44px}
 }
+
+/* ---- Fase 4: rótulos legibles, sin mayúsculas espaciadas ---- */
+label{font-size:.875rem;letter-spacing:0;text-transform:none;font-weight:500;color:#44403c}
+.card-title{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.3rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--navy);margin-bottom:1rem}
+.rl{font-size:.8125rem;letter-spacing:0;text-transform:none}
+.rv{font-variant-numeric:tabular-nums}
+.btn-calc{color:#0D1B2E;font-size:.9375rem;font-weight:600;letter-spacing:0;text-transform:none;min-height:48px;border-radius:4px;transition:background-color .18s ease,transform .12s cubic-bezier(.16,1,.3,1)}
+.btn-calc:active{transform:scale(.97)}
+.nav-back{font-size:.875rem;letter-spacing:0;text-transform:none}
+.sidebar-title{font-size:.8125rem;letter-spacing:0;text-transform:none;color:rgba(255,255,255,.6)}
+.mod-header h1{font-weight:500;text-wrap:balance}
+.mod-header p{max-width:65ch}
+.bt{font-variant-numeric:tabular-nums}
+.gncard-title{letter-spacing:0!important;text-transform:none!important;font-size:1rem!important}
+.gncard-total{letter-spacing:0!important;text-transform:none!important}
+.cmpc h4{letter-spacing:0;text-transform:none}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
 </head><body>
 <nav class="topnav">
   <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
-  <a href="index.html" class="nav-back">&#8592; Inicio</a>
+  <a href="index.html" class="nav-back">Vuelve al inicio</a>
 </nav>
 <div class="layout">
 <nav class="sidebar">
-  <div class="sidebar-title">Suite Calculadoras</div>
-  <a class="sb-item active" href="#" onclick="showMod('notariales',this);return false"><span class="sb-num">01</span><span class="sb-text"><strong>Gastos Notariales</strong><small>Escrituración y cierre</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('credito',this);return false"><span class="sb-num">02</span><span class="sb-text"><strong>Crédito Hipotecario</strong><small>Cuota y amortización</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('rentabilidad',this);return false"><span class="sb-num">03</span><span class="sb-text"><strong>Rentabilidad</strong><small>Cap Rate e inversión</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('ganancia',this);return false"><span class="sb-num">04</span><span class="sb-text"><strong>Ganancia Ocasional</strong><small>Impuesto al vender</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('endeudamiento',this);return false"><span class="sb-num">05</span><span class="sb-text"><strong>Capacidad Endeudamiento</strong><small>VIS / No VIS</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('airbnb',this);return false"><span class="sb-num">06</span><span class="sb-text"><strong>Tradicional vs Airbnb</strong><small>Comparador de modelo</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('vacancia',this);return false"><span class="sb-num">07</span><span class="sb-text"><strong>Vacancia y Reserva</strong><small>Costos ocultos</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('cartera',this);return false"><span class="sb-num">08</span><span class="sb-text"><strong>Compra de Cartera</strong><small>Refinanciación</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('prorrateo',this);return false"><span class="sb-num">09</span><span class="sb-text"><strong>Prorrateo Predial</strong><small>Vendedor y comprador</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('acm',this);return false"><span class="sb-num">10</span><span class="sb-text"><strong>ACM · Valor Comercial</strong><small>Análisis comparativo de mercado</small></span></a>
-  <a class="sb-item" href="#" onclick="showMod('neto',this);return false"><span class="sb-num">11</span><span class="sb-text"><strong>¿Cuánto te queda?</strong><small>Dinero neto al vender</small></span></a>
+  <div class="sidebar-title">Once calculadoras</div>
+  <a class="sb-item active" href="#notariales" onclick="showMod('notariales',this);return false"><span class="sb-text"><strong>Gastos notariales</strong><small>Escrituración y cierre</small></span></a>
+  <a class="sb-item" href="#credito" onclick="showMod('credito',this);return false"><span class="sb-text"><strong>Crédito hipotecario</strong><small>Cuota y amortización</small></span></a>
+  <a class="sb-item" href="#rentabilidad" onclick="showMod('rentabilidad',this);return false"><span class="sb-text"><strong>Rentabilidad</strong><small>Cap rate e inversión</small></span></a>
+  <a class="sb-item" href="#ganancia" onclick="showMod('ganancia',this);return false"><span class="sb-text"><strong>Ganancia ocasional</strong><small>Impuesto al vender</small></span></a>
+  <a class="sb-item" href="#endeudamiento" onclick="showMod('endeudamiento',this);return false"><span class="sb-text"><strong>Capacidad endeudamiento</strong><small>VIS / no VIS</small></span></a>
+  <a class="sb-item" href="#airbnb" onclick="showMod('airbnb',this);return false"><span class="sb-text"><strong>Tradicional vs Airbnb</strong><small>Comparador de modelo</small></span></a>
+  <a class="sb-item" href="#vacancia" onclick="showMod('vacancia',this);return false"><span class="sb-text"><strong>Vacancia y reserva</strong><small>Costos ocultos</small></span></a>
+  <a class="sb-item" href="#cartera" onclick="showMod('cartera',this);return false"><span class="sb-text"><strong>Compra de cartera</strong><small>Refinanciación</small></span></a>
+  <a class="sb-item" href="#prorrateo" onclick="showMod('prorrateo',this);return false"><span class="sb-text"><strong>Prorrateo predial</strong><small>Vendedor y comprador</small></span></a>
+  <a class="sb-item" href="#acm" onclick="showMod('acm',this);return false"><span class="sb-text"><strong>ACM · valor comercial</strong><small>Análisis comparativo de mercado</small></span></a>
+  <a class="sb-item" href="#neto" onclick="showMod('neto',this);return false"><span class="sb-text"><strong>¿Cuánto te queda?</strong><small>Dinero neto al vender</small></span></a>
 </nav>
 <main class="main-content">
 
 <div class="module active" id="notariales">
 <div class="mod-header">
-  <h1>&#128220; Gastos Notariales y de Escrituración</h1>
+  <h1>Gastos notariales y de escrituración</h1>
   <p>Preliquidación según la Resolución 964 de 2026. Derechos notariales, escrituración, IVA, Super-Notariado, cuenta especial y registro ORIP.</p>
 </div>
 <div class="card">
   <div class="card-title">Valor de la transacción</div>
   <div class="form-grid">
-    <div class="form-group full"><label>Cuantía / Valor de Venta (COP)</label><input type="text" id="m1_vv" placeholder="$455.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Cuantía / valor de venta (COP)</label><input type="text" id="m1_vv" placeholder="$455.000.000" oninput="fmtF(this)"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM1()">&#9654; Calcular Gastos</button>
+  <br/><button class="btn-calc" onclick="calcM1()">Calcula los gastos</button>
 </div>
 <div id="m1_r" style="display:none">
   <div class="rg" style="margin-bottom:1.5rem">
-    <div class="rc hi"><div class="rl">Total Comprador Paga</div><div class="rv g" id="m1_tc">-</div></div>
-    <div class="rc ok"><div class="rl">Total Vendedor Paga</div><div class="rv gr" id="m1_tv">-</div></div>
-    <div class="rc"><div class="rl">Total General Transacción</div><div class="rv" id="m1_gt">-</div></div>
+    <div class="rc hi"><div class="rl">Total comprador paga</div><div class="rv g" id="m1_tc">-</div></div>
+    <div class="rc ok"><div class="rl">Total vendedor paga</div><div class="rv gr" id="m1_tv">-</div></div>
+    <div class="rc"><div class="rl">Total general transacción</div><div class="rv" id="m1_gt">-</div></div>
   </div>
   <div class="gn2col">
     <div class="gncard gncard-c">
-      <div class="gncard-hdr"><span class="gncard-ico">&#128100;</span><span class="gncard-title">Gastos del Comprador</span></div>
+      <div class="gncard-hdr"><span class="gncard-ico"></span><span class="gncard-title">Gastos del comprador</span></div>
       <div id="m1_cb" class="gncard-body"></div>
       <div class="gncard-total"><span>Total Comprador</span><span id="m1_tc2">-</span></div>
     </div>
     <div class="gncard gncard-v">
-      <div class="gncard-hdr"><span class="gncard-ico">&#127968;</span><span class="gncard-title">Gastos del Vendedor</span></div>
+      <div class="gncard-hdr"><span class="gncard-ico"></span><span class="gncard-title">Gastos del vendedor</span></div>
       <div id="m1_vb" class="gncard-body"></div>
       <div class="gncard-total"><span>Total Vendedor</span><span id="m1_tv2">-</span></div>
     </div>
   </div>
-  <div class="al info" style="margin-top:1rem">&#9432; Cálculo estimado con base en la Resolución 964 de 2026. Los valores definitivos los liquida la notaría correspondiente.</div>
+  <div class="al info" style="margin-top:1rem">Cálculo estimado con base en la Resolución 964 de 2026. Los valores definitivos los liquida la notaría correspondiente.</div>
 </div>
 </div>
 
 <div class="module" id="credito">
-<div class="mod-header"><h1>&#127968; Crédito Hipotecario y Amortización</h1><p>Simula tu cuota mensual, tabla de amortización y el impacto de abonos extraordinarios a capital.</p></div>
+<div class="mod-header"><h1>Crédito hipotecario y amortización</h1><p>Simula tu cuota mensual, tabla de amortización y el impacto de abonos extraordinarios a capital.</p></div>
 <div class="card">
-  <div class="card-title">Datos del Crédito</div>
+  <div class="card-title">Datos del crédito</div>
   <div class="form-grid">
-    <div class="form-group"><label>Valor del Inmueble (COP)</label><input type="text" id="m2_vi" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Cuota Inicial (%)</label><input type="number" id="m2_pci" value="30" min="10" max="90"/></div>
-    <div class="form-group"><label>Tasa de Interés EA (%)</label><input type="number" id="m2_ea" value="12" min="1" max="30" step="0.1"/></div>
+    <div class="form-group"><label>Valor del inmueble (COP)</label><input type="text" id="m2_vi" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Cuota inicial (%)</label><input type="number" id="m2_pci" value="30" min="10" max="90"/></div>
+    <div class="form-group"><label>Tasa de interés EA (%)</label><input type="number" id="m2_ea" value="12" min="1" max="30" step="0.1"/></div>
     <div class="form-group"><label>Plazo (años)</label><input type="number" id="m2_pl" value="20" min="1" max="30"/></div>
-    <div class="form-group full"><label>Abono Extra Mensual a Capital — Opcional (COP)</label><input type="text" id="m2_ae" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Abono extra mensual a capital — opcional (COP)</label><input type="text" id="m2_ae" placeholder="$0" oninput="fmtF(this)"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM2()">&#9654; Calcular Crédito</button>
+  <br/><button class="btn-calc" onclick="calcM2()">Calcula tu cuota</button>
 </div>
 <div id="m2_r" style="display:none">
   <div class="rg c4">
-    <div class="rc"><div class="rl">Monto del Crédito</div><div class="rv" id="m2_mo">—</div></div>
-    <div class="rc hi"><div class="rl">Cuota Mensual Base</div><div class="rv g" id="m2_cu">—</div></div>
-    <div class="rc dng"><div class="rl">Total Intereses Sin Abono</div><div class="rv rd" id="m2_is">—</div></div>
-    <div class="rc ok"><div class="rl">Total Intereses Con Abono</div><div class="rv gr" id="m2_ic">—</div><div class="rs" id="m2_ma"></div></div>
+    <div class="rc"><div class="rl">Monto del crédito</div><div class="rv" id="m2_mo">—</div></div>
+    <div class="rc hi"><div class="rl">Cuota mensual base</div><div class="rv g" id="m2_cu">—</div></div>
+    <div class="rc dng"><div class="rl">Total intereses sin abono</div><div class="rv rd" id="m2_is">—</div></div>
+    <div class="rc ok"><div class="rl">Total intereses con abono</div><div class="rv gr" id="m2_ic">—</div><div class="rs" id="m2_ma"></div></div>
   </div>
   <div class="card" style="margin-top:1.5rem">
     <div class="card-title">Primeros 24 meses de amortización</div>
@@ -228,104 +244,104 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
 </div>
 
 <div class="module" id="rentabilidad">
-<div class="mod-header"><h1>&#128200; Rentabilidad de Inversión (Cap Rate)</h1><p>Evalúa si una propiedad es un activo financiero viable con flujo de caja neto y tasa de capitalización.</p></div>
+<div class="mod-header"><h1>Rentabilidad de inversión (cap rate)</h1><p>Evalúa si una propiedad es un activo financiero viable con flujo de caja neto y tasa de capitalización.</p></div>
 <div class="card">
-  <div class="card-title">Datos del Inmueble y Operación</div>
+  <div class="card-title">Datos del inmueble y operación</div>
   <div class="form-grid">
-    <div class="form-group"><label>Valor del Inmueble (COP)</label><input type="text" id="m3_v" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Gastos de Adquisición / Cierre (COP)</label><input type="text" id="m3_ga" placeholder="$18.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Canon de Arriendo Mensual (COP)</label><input type="text" id="m3_ca" placeholder="$2.500.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Cuota Hipotecaria Mensual (COP)</label><input type="text" id="m3_ch" placeholder="$0 si no aplica" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Administración Mensual (COP)</label><input type="text" id="m3_adm" placeholder="$350.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Impuesto Predial Anual (COP)</label><input type="text" id="m3_pr" placeholder="$1.200.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Seguro de Arrendamiento Mensual (COP)</label><input type="text" id="m3_sg" placeholder="$120.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Vacancia Estimada Anual (%)</label><input type="number" id="m3_vc" value="5" min="0" max="50"/></div>
+    <div class="form-group"><label>Valor del inmueble (COP)</label><input type="text" id="m3_v" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Gastos de adquisición / cierre (COP)</label><input type="text" id="m3_ga" placeholder="$18.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Canon de arriendo mensual (COP)</label><input type="text" id="m3_ca" placeholder="$2.500.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Cuota hipotecaria mensual (COP)</label><input type="text" id="m3_ch" placeholder="$0 si no aplica" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Administración mensual (COP)</label><input type="text" id="m3_adm" placeholder="$350.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Impuesto predial anual (COP)</label><input type="text" id="m3_pr" placeholder="$1.200.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Seguro de arrendamiento mensual (COP)</label><input type="text" id="m3_sg" placeholder="$120.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Vacancia estimada anual (%)</label><input type="number" id="m3_vc" value="5" min="0" max="50"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM3()">&#9654; Calcular Rentabilidad</button>
+  <br/><button class="btn-calc" onclick="calcM3()">Calcula la rentabilidad</button>
 </div>
 <div id="m3_r" style="display:none">
   <div class="rg c4">
-    <div class="rc"><div class="rl">Inversión Total</div><div class="rv" id="m3_it">—</div></div>
-    <div class="rc hi"><div class="rl">Cap Rate Neto</div><div class="rv g" id="m3_cr">—</div></div>
-    <div class="rc"><div class="rl">NOI Anual</div><div class="rv" id="m3_noi">—</div></div>
-    <div class="rc" id="m3_fcc"><div class="rl">Flujo de Caja / Mes</div><div class="rv" id="m3_fc">—</div></div>
+    <div class="rc"><div class="rl">Inversión total</div><div class="rv" id="m3_it">—</div></div>
+    <div class="rc hi"><div class="rl">Cap rate neto</div><div class="rv g" id="m3_cr">—</div></div>
+    <div class="rc"><div class="rl">NOI anual</div><div class="rv" id="m3_noi">—</div></div>
+    <div class="rc" id="m3_fcc"><div class="rl">Flujo de caja / mes</div><div class="rv" id="m3_fc">—</div></div>
   </div>
 </div>
 </div>
 
 <div class="module" id="ganancia">
-<div class="mod-header"><h1>&#128181; Impuesto a la Ganancia Ocasional</h1><p>Calcula el impuesto real al liquidar una propiedad según la reforma tributaria colombiana vigente (Tarifa: 15%).</p></div>
+<div class="mod-header"><h1>Impuesto a la ganancia ocasional</h1><p>Calcula el impuesto real al liquidar una propiedad según la reforma tributaria colombiana vigente (Tarifa: 15%).</p></div>
 <div class="card">
-  <div class="card-title">Datos de la Compraventa</div>
+  <div class="card-title">Datos de la compraventa</div>
   <div class="form-grid">
-    <div class="form-group"><label>Precio de Compra Original (COP)</label><input type="text" id="m4_pc" placeholder="$200.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Precio de Venta Actual (COP)</label><input type="text" id="m4_pv" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Años de Posesión</label><input type="number" id="m4_an" value="5" min="0" max="50"/></div>
-    <div class="form-group"><label>Mejoras Declaradas (COP)</label><input type="text" id="m4_mj" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Precio de compra original (COP)</label><input type="text" id="m4_pc" placeholder="$200.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Precio de venta actual (COP)</label><input type="text" id="m4_pv" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Años de posesión</label><input type="number" id="m4_an" value="5" min="0" max="50"/></div>
+    <div class="form-group"><label>Mejoras declaradas (COP)</label><input type="text" id="m4_mj" placeholder="$0" oninput="fmtF(this)"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM4()">&#9654; Calcular Impuesto</button>
+  <br/><button class="btn-calc" onclick="calcM4()">Calcula el impuesto</button>
 </div>
 <div id="m4_r" style="display:none">
-  <div id="m4_w" class="al warn" style="display:none">&#9888; <strong>Atención:</strong> Menos de 2 años de posesión. La utilidad tributa como <strong>Renta Líquida Ordinaria</strong> según tarifas progresivas de renta. Consulte con su contador.</div>
+  <div id="m4_w" class="al warn" style="display:none"><strong>Atención:</strong> Menos de 2 años de posesión. La utilidad tributa como <strong>Renta líquida ordinaria</strong> según tarifas progresivas de renta. Consulte con su contador.</div>
   <div class="rg c3">
-    <div class="rc"><div class="rl">Utilidad Bruta</div><div class="rv" id="m4_ub">—</div></div>
-    <div class="rc"><div class="rl">Costo Fiscal Total</div><div class="rv" id="m4_cf">—</div></div>
+    <div class="rc"><div class="rl">Utilidad bruta</div><div class="rv" id="m4_ub">—</div></div>
+    <div class="rc"><div class="rl">Costo fiscal total</div><div class="rv" id="m4_cf">—</div></div>
     <div class="rc dng"><div class="rl">Impuesto G.O. (15%)</div><div class="rv rd" id="m4_imp">—</div></div>
   </div>
   <div class="rg" style="margin-top:1rem">
-    <div class="rc ok"><div class="rl">Utilidad Gravable Neta</div><div class="rv gr" id="m4_ug">—</div></div>
-    <div class="rc hi"><div class="rl">Dinero Neto Después de Impuestos</div><div class="rv g" id="m4_net">—</div></div>
+    <div class="rc ok"><div class="rl">Utilidad gravable neta</div><div class="rv gr" id="m4_ug">—</div></div>
+    <div class="rc hi"><div class="rl">Dinero neto después de impuestos</div><div class="rv g" id="m4_net">—</div></div>
   </div>
 </div>
 </div>
 <div class="module" id="endeudamiento">
-<div class="mod-header"><h1>&#127968; Capacidad de Endeudamiento VIS / No VIS</h1><p>Determina el valor máximo del inmueble que puedes adquirir según la Ley de Vivienda colombiana y tu ingreso familiar.</p></div>
+<div class="mod-header"><h1>Capacidad de endeudamiento VIS / no VIS</h1><p>Determina el valor máximo del inmueble que puedes adquirir según la Ley de Vivienda colombiana y tu ingreso familiar.</p></div>
 <div class="card">
-  <div class="card-title">Perfil Financiero del Hogar</div>
+  <div class="card-title">Perfil financiero del hogar</div>
   <div class="form-grid">
-    <div class="form-group"><label>Ingresos Mensuales Totales del Hogar (COP)</label><input type="text" id="m5_ing" placeholder="$8.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Obligaciones Financieras Actuales / Mes (COP)</label><input type="text" id="m5_obl" placeholder="$500.000" oninput="fmtF(this)"/></div>
-    <div class="form-group full"><label>Tipo de Vivienda</label><select id="m5_tip"><option value="vis">VIS — Vivienda de Interés Social (límite 40% ingresos)</option><option value="novis">NO VIS — Vivienda Estándar (límite 30% ingresos)</option></select></div>
+    <div class="form-group"><label>Ingresos mensuales totales del hogar (COP)</label><input type="text" id="m5_ing" placeholder="$8.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Obligaciones financieras actuales / mes (COP)</label><input type="text" id="m5_obl" placeholder="$500.000" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Tipo de vivienda</label><select id="m5_tip"><option value="vis">VIS — Vivienda de Interés Social (límite 40% ingresos)</option><option value="novis">NO VIS — Vivienda Estándar (límite 30% ingresos)</option></select></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM5()">&#9654; Calcular Capacidad</button>
+  <br/><button class="btn-calc" onclick="calcM5()">Calcula tu capacidad</button>
 </div>
 <div id="m5_r" style="display:none">
   <div class="rg c3">
-    <div class="rc"><div class="rl">Cuota Máxima Permitida / Mes</div><div class="rv" id="m5_cm">—</div></div>
-    <div class="rc hi"><div class="rl">Crédito Máximo Estimado</div><div class="rv g" id="m5_cr">—</div></div>
-    <div class="rc ok"><div class="rl">Valor Máximo del Inmueble</div><div class="rv gr" id="m5_vm">—</div></div>
+    <div class="rc"><div class="rl">Cuota máxima permitida / mes</div><div class="rv" id="m5_cm">—</div></div>
+    <div class="rc hi"><div class="rl">Crédito máximo estimado</div><div class="rv g" id="m5_cr">—</div></div>
+    <div class="rc ok"><div class="rl">Valor máximo del inmueble</div><div class="rv gr" id="m5_vm">—</div></div>
   </div>
-  <div class="al info" style="margin-top:1rem">&#128161; Cálculo con tasa EA del 12% y plazo de 240 meses. El banco realiza su propio análisis. Este resultado es una guía orientativa.</div>
+  <div class="al info" style="margin-top:1rem">Cálculo con tasa EA del 12% y plazo de 240 meses. El banco realiza su propio análisis. Este resultado es una guía orientativa.</div>
 </div>
 </div>
 
 <div class="module" id="airbnb">
-<div class="mod-header"><h1>&#127968; Arriendo Tradicional vs. Vacacional (Airbnb)</h1><p>Compara cuál modelo de negocio genera mayor rentabilidad neta para tu inmueble.</p></div>
+<div class="mod-header"><h1>Arriendo tradicional vs. vacacional (Airbnb)</h1><p>Compara cuál modelo de negocio genera mayor rentabilidad neta para tu inmueble.</p></div>
 <div class="card">
-  <div class="card-title">Modelo Vacacional</div>
+  <div class="card-title">Modelo vacacional</div>
   <div class="form-grid">
-    <div class="form-group"><label>Tarifa por Noche (COP)</label><input type="text" id="m6_tn" placeholder="$250.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Ocupación Mensual Estimada (%)</label><input type="number" id="m6_oc" value="60" min="0" max="100"/></div>
-    <div class="form-group full"><label>Gastos Operacionales Mensuales — limpieza, check-in, lavandería (COP)</label><input type="text" id="m6_go" placeholder="$800.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Tarifa por noche (COP)</label><input type="text" id="m6_tn" placeholder="$250.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Ocupación mensual estimada (%)</label><input type="number" id="m6_oc" value="60" min="0" max="100"/></div>
+    <div class="form-group full"><label>Gastos operacionales mensuales — limpieza, check-in, lavandería (COP)</label><input type="text" id="m6_go" placeholder="$800.000" oninput="fmtF(this)"/></div>
   </div>
 </div>
 <div class="card">
-  <div class="card-title">Modelo Tradicional</div>
+  <div class="card-title">Modelo tradicional</div>
   <div class="form-grid">
-    <div class="form-group"><label>Canon de Arriendo Mensual (COP)</label><input type="text" id="m6_ct" placeholder="$2.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Gastos Asociados Mensuales — Admin, Seguros (COP)</label><input type="text" id="m6_gt" placeholder="$350.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Canon de arriendo mensual (COP)</label><input type="text" id="m6_ct" placeholder="$2.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Gastos asociados mensuales — admin, seguros (COP)</label><input type="text" id="m6_gt" placeholder="$350.000" oninput="fmtF(this)"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM6()">&#9654; Comparar Modelos</button>
+  <br/><button class="btn-calc" onclick="calcM6()">Compara los dos modelos</button>
 </div>
 <div id="m6_r" style="display:none">
   <div class="cmpw">
-    <div class="cmpc"><h4>&#9729; Modelo Vacacional</h4>
+    <div class="cmpc"><h4>Modelo vacacional</h4>
       <div class="cmpr"><span>Ingreso Bruto</span><span id="m6_ba">—</span></div>
       <div class="cmpr"><span>Comisión Plataforma (5%)</span><span id="m6_com">—</span></div>
       <div class="cmpr"><span>Gastos Operación</span><span id="m6_ga">—</span></div>
       <div class="cmpr"><span>INGRESO NETO / MES</span><span id="m6_na">—</span></div>
     </div>
-    <div class="cmpc"><h4>&#128203; Modelo Tradicional</h4>
+    <div class="cmpc"><h4>Modelo tradicional</h4>
       <div class="cmpr"><span>Canon de Arriendo</span><span id="m6_ca">—</span></div>
       <div class="cmpr"><span>Gastos Asociados</span><span id="m6_gta">—</span></div>
       <div class="cmpr" style="min-height:1.8rem"></div>
@@ -333,146 +349,146 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
     </div>
   </div>
   <div class="rg" style="margin-top:1.5rem">
-    <div class="rc hi"><div class="rl">Diferencia Mensual</div><div class="rv g" id="m6_dif">—</div><div class="rs" id="m6_gan"></div></div>
-    <div class="rc"><div class="rl">Diferencia Anual Estimada</div><div class="rv" id="m6_difa">—</div></div>
+    <div class="rc hi"><div class="rl">Diferencia mensual</div><div class="rv g" id="m6_dif">—</div><div class="rs" id="m6_gan"></div></div>
+    <div class="rc"><div class="rl">Diferencia anual estimada</div><div class="rv" id="m6_difa">—</div></div>
   </div>
-  <div class="al warn" style="margin-top:1rem">&#9888; El modelo vacacional requiere gestión activa continua. Considere el costo de un co-host externo (15-25% del ingreso bruto).</div>
+  <div class="al warn" style="margin-top:1rem">El modelo vacacional requiere gestión activa continua. Considere el costo de un co-host externo (15-25% del ingreso bruto).</div>
 </div>
 </div>
 
 <div class="module" id="vacancia">
-<div class="mod-header"><h1>&#127981; Vacancia y Fondo de Reserva</h1><p>Calcula los costos ocultos que erosionan la rentabilidad: mantenimiento estructural y períodos sin arrendar.</p></div>
+<div class="mod-header"><h1>Vacancia y fondo de reserva</h1><p>Calcula los costos ocultos que erosionan la rentabilidad: mantenimiento estructural y períodos sin arrendar.</p></div>
 <div class="card">
-  <div class="card-title">Datos del Inmueble</div>
+  <div class="card-title">Datos del inmueble</div>
   <div class="form-grid">
-    <div class="form-group"><label>Valor del Inmueble (COP)</label><input type="text" id="m7_v" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Canon de Arriendo Mensual (COP)</label><input type="text" id="m7_c" placeholder="$2.500.000" oninput="fmtF(this)"/></div>
-    <div class="form-group full"><label>Antigüedad del Inmueble</label><select id="m7_e"><option value="nuevo">Nuevo (reserva 0.5% anual del valor)</option><option value="1-10">1 a 10 años (reserva 1.0% anual)</option><option value="mas10">Más de 10 años (reserva 1.5% anual)</option></select></div>
+    <div class="form-group"><label>Valor del inmueble (COP)</label><input type="text" id="m7_v" placeholder="$450.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Canon de arriendo mensual (COP)</label><input type="text" id="m7_c" placeholder="$2.500.000" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><label>Antigüedad del inmueble</label><select id="m7_e"><option value="nuevo">Nuevo (reserva 0.5% anual del valor)</option><option value="1-10">1 a 10 años (reserva 1.0% anual)</option><option value="mas10">Más de 10 años (reserva 1.5% anual)</option></select></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM7()">&#9654; Calcular Costos Ocultos</button>
+  <br/><button class="btn-calc" onclick="calcM7()">Calcula los costos ocultos</button>
 </div>
 <div id="m7_r" style="display:none">
   <div class="rg c3">
-    <div class="rc hi"><div class="rl">Fondo de Mantenimiento / Mes</div><div class="rv g" id="m7_fm">—</div><div class="rs">Reserva recomendada para imprevistos estructurales</div></div>
-    <div class="rc dng"><div class="rl">Costo de Vacancia Anual</div><div class="rv rd" id="m7_cv">—</div><div class="rs">1.5 meses de canon sin ingreso (promedio Colombia)</div></div>
-    <div class="rc"><div class="rl">Pérdida Oculta Total / Año</div><div class="rv" id="m7_pt">—</div><div class="rs">Fondo anual + costo vacancia</div></div>
+    <div class="rc hi"><div class="rl">Fondo de mantenimiento / mes</div><div class="rv g" id="m7_fm">—</div><div class="rs">Reserva recomendada para imprevistos estructurales</div></div>
+    <div class="rc dng"><div class="rl">Costo de vacancia anual</div><div class="rv rd" id="m7_cv">—</div><div class="rs">1.5 meses de canon sin ingreso (promedio Colombia)</div></div>
+    <div class="rc"><div class="rl">Pérdida oculta total / año</div><div class="rv" id="m7_pt">—</div><div class="rs">Fondo anual + costo vacancia</div></div>
   </div>
-  <div class="al info" style="margin-top:1rem">&#128161; Descuenta estos costos del ingreso bruto para calcular la rentabilidad real. Un propietario puede perder entre 8-15% del ingreso potencial en estos rubros.</div>
+  <div class="al info" style="margin-top:1rem">Descuenta estos costos del ingreso bruto para calcular la rentabilidad real. Un propietario puede perder entre 8-15% del ingreso potencial en estos rubros.</div>
 </div>
 </div>
 
 <div class="module" id="cartera">
-<div class="mod-header"><h1>&#128260; Compra de Cartera / Refinanciación</h1><p>Simula cuánto ahorrarías si trasladas tu crédito hipotecario a un banco con menor tasa de interés.</p></div>
+<div class="mod-header"><h1>Compra de cartera / refinanciación</h1><p>Simula cuánto ahorrarías si trasladas tu crédito hipotecario a un banco con menor tasa de interés.</p></div>
 <div class="card">
-  <div class="card-title">Datos de tu Crédito Actual</div>
+  <div class="card-title">Datos de tu crédito actual</div>
   <div class="form-grid">
-    <div class="form-group"><label>Saldo Actual de la Deuda (COP)</label><input type="text" id="m8_s" placeholder="$280.000.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Plazo Restante (meses)</label><input type="number" id="m8_pl" value="180" min="12" max="360"/></div>
-    <div class="form-group"><label>Tasa Actual EA (%)</label><input type="number" id="m8_ta" value="14" min="1" max="30" step="0.1"/></div>
-    <div class="form-group"><label>Tasa Nueva Oferta EA (%)</label><input type="number" id="m8_tn" value="11" min="1" max="30" step="0.1"/></div>
+    <div class="form-group"><label>Saldo actual de la deuda (COP)</label><input type="text" id="m8_s" placeholder="$280.000.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Plazo restante (meses)</label><input type="number" id="m8_pl" value="180" min="12" max="360"/></div>
+    <div class="form-group"><label>Tasa actual EA (%)</label><input type="number" id="m8_ta" value="14" min="1" max="30" step="0.1"/></div>
+    <div class="form-group"><label>Tasa nueva oferta EA (%)</label><input type="number" id="m8_tn" value="11" min="1" max="30" step="0.1"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM8()">&#9654; Calcular Ahorro</button>
+  <br/><button class="btn-calc" onclick="calcM8()">Calcula el ahorro</button>
 </div>
 <div id="m8_r" style="display:none">
   <div class="rg c4">
-    <div class="rc dng"><div class="rl">Cuota Actual / Mes</div><div class="rv rd" id="m8_ca">—</div></div>
-    <div class="rc ok"><div class="rl">Cuota Nueva / Mes</div><div class="rv gr" id="m8_cn">—</div></div>
-    <div class="rc hi"><div class="rl">Ahorro Mensual</div><div class="rv g" id="m8_am">—</div></div>
-    <div class="rc ok"><div class="rl">Ahorro Neto Total de Vida</div><div class="rv gr" id="m8_at">—</div><div class="rs">Restando $600.000 de gastos de trámite</div></div>
+    <div class="rc dng"><div class="rl">Cuota actual / mes</div><div class="rv rd" id="m8_ca">—</div></div>
+    <div class="rc ok"><div class="rl">Cuota nueva / mes</div><div class="rv gr" id="m8_cn">—</div></div>
+    <div class="rc hi"><div class="rl">Ahorro mensual</div><div class="rv g" id="m8_am">—</div></div>
+    <div class="rc ok"><div class="rl">Ahorro neto total de vida</div><div class="rv gr" id="m8_at">—</div><div class="rs">Restando $600.000 de gastos de trámite</div></div>
   </div>
 </div>
 </div>
 
 <div class="module" id="prorrateo">
-<div class="mod-header"><h1>&#129534; Prorrateo del Impuesto Predial</h1><p>Distribuye el predial de la vigencia entre vendedor y comprador según la fecha de entrega material del inmueble y calcula el valor que una parte debe reembolsar a la otra.</p></div>
+<div class="mod-header"><h1>Prorrateo del impuesto predial</h1><p>Distribuye el predial de la vigencia entre vendedor y comprador según la fecha de entrega material del inmueble y calcula el valor que una parte debe reembolsar a la otra.</p></div>
 <div class="card">
-  <div class="card-title">Datos de la Liquidación</div>
+  <div class="card-title">Datos de la liquidación</div>
   <div class="form-grid">
-    <div class="form-group"><label>Impuesto Predial Pagado — Vigencia del Año (COP)</label><input type="text" id="m9_imp" placeholder="$1.857.000" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Año de la Vigencia Fiscal</label><input type="number" id="m9_an" value="2026" min="2000" max="2100"/></div>
-    <div class="form-group"><label>Fecha de Entrega Material del Inmueble</label><input type="date" id="m9_fe" onchange="syncM9Anio(this)"/></div>
-    <div class="form-group"><label>Parte que Pagó el 100% del Impuesto</label><select id="m9_pg"><option value="vendedor">Vendedor(a)</option><option value="comprador">Comprador(a)</option></select></div>
+    <div class="form-group"><label>Impuesto predial pagado — vigencia del año (COP)</label><input type="text" id="m9_imp" placeholder="$1.857.000" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Año de la vigencia fiscal</label><input type="number" id="m9_an" value="2026" min="2000" max="2100"/></div>
+    <div class="form-group"><label>Fecha de entrega material del inmueble</label><input type="date" id="m9_fe" onchange="syncM9Anio(this)"/></div>
+    <div class="form-group"><label>Parte que pagó el 100% del impuesto</label><select id="m9_pg"><option value="vendedor">Vendedor(a)</option><option value="comprador">Comprador(a)</option></select></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM9()">&#9654; Calcular Prorrateo</button>
+  <br/><button class="btn-calc" onclick="calcM9()">Calcula el prorrateo</button>
 </div>
 <div id="m9_r" style="display:none">
   <div class="rc hi pr-total"><div class="rl" id="m9_rl">Valor a Reembolsar</div><div class="rv g" id="m9_re">—</div><div class="rs" id="m9_rs"></div></div>
   <div class="rg c3">
-    <div class="rc"><div class="rl">Valor Diario del Impuesto</div><div class="rv" id="m9_vd">—</div><div class="rs" id="m9_vds"></div></div>
-    <div class="rc"><div class="rl">Cuota a Cargo del Vendedor(a)</div><div class="rv" id="m9_cv">—</div><div class="rs" id="m9_cvs"></div></div>
-    <div class="rc"><div class="rl">Cuota a Cargo del Comprador(a)</div><div class="rv" id="m9_cc">—</div><div class="rs" id="m9_ccs"></div></div>
+    <div class="rc"><div class="rl">Valor diario del impuesto</div><div class="rv" id="m9_vd">—</div><div class="rs" id="m9_vds"></div></div>
+    <div class="rc"><div class="rl">Cuota a cargo del vendedor(a)</div><div class="rv" id="m9_cv">—</div><div class="rs" id="m9_cvs"></div></div>
+    <div class="rc"><div class="rl">Cuota a cargo del comprador(a)</div><div class="rv" id="m9_cc">—</div><div class="rs" id="m9_ccs"></div></div>
   </div>
   <div class="card" style="margin-top:1.5rem">
-    <div class="card-title">Distribución del Periodo</div>
+    <div class="card-title">Distribución del periodo</div>
     <div style="overflow-x:auto"><table class="bt"><thead><tr><th>Parte y periodo a cargo</th><th style="text-align:right">Días</th><th style="text-align:right">Proporción</th></tr></thead><tbody id="m9_tb"></tbody></table></div>
   </div>
   <div class="al info" id="m9_nota"></div>
-  <div class="al warn">&#9888; La fecha de entrega material cuenta para quien recibe el inmueble. Este es el criterio de prorrateo por días calendario; las partes pueden pactar otro criterio en la promesa o en la escritura.</div>
+  <div class="al warn">La fecha de entrega material cuenta para quien recibe el inmueble. Este es el criterio de prorrateo por días calendario; las partes pueden pactar otro criterio en la promesa o en la escritura.</div>
 </div>
 </div>
 
 <div class="module" id="acm">
-<div class="mod-header"><h1>&#128678; ACM · Valor Comercial del Inmueble</h1><p>Análisis Comparativo de Mercado por el método de comparación (Decreto 1420 de 1998 y Resolución 620 de 2008 del IGAC): homogeneiza de 3 a 10 comparables y entrega el semáforo de valores mínimo, comercial y máximo.</p></div>
+<div class="mod-header"><h1>ACM · valor comercial del inmueble</h1><p>Análisis Comparativo de Mercado por el método de comparación (Decreto 1420 de 1998 y Resolución 620 de 2008 del IGAC): homogeneiza de 3 a 10 comparables y entrega el semáforo de valores mínimo, comercial y máximo.</p></div>
 <div class="card">
-  <div class="card-title">Inmueble Estudiado</div>
+  <div class="card-title">Inmueble estudiado</div>
   <div class="form-grid">
-    <div class="form-group full"><label>Dirección o Referencia del Inmueble — Opcional</label><input type="text" id="acm_dir" placeholder="Calle 109 No. 21-41 AP 403" maxlength="120"/></div>
-    <div class="form-group"><label>Área Privada (m²)</label><input type="text" inputmode="decimal" id="acm_area" placeholder="118,40"/></div>
+    <div class="form-group full"><label>Dirección o referencia del inmueble — opcional</label><input type="text" id="acm_dir" placeholder="Calle 109 No. 21-41 AP 403" maxlength="120"/></div>
+    <div class="form-group"><label>Área privada (m²)</label><input type="text" inputmode="decimal" id="acm_area" placeholder="118,40"/></div>
     <div class="form-group"><label>Antigüedad (años)</label><input type="number" inputmode="numeric" id="acm_ant" placeholder="14" min="0" max="150"/></div>
-    <div class="form-group"><label>Nivel de Acabados</label><select id="acm_acab"><option>Lujoso</option><option selected>Bueno</option><option>Normal</option><option>Sencillo</option></select><div class="rs">Lujoso: mármol, domótica, herrajes importados · Bueno: porcelanato, cocina integral de gama media-alta · Normal: acabados estándar de constructora · Sencillo: acabados básicos o por mejorar.</div></div>
+    <div class="form-group"><label>Nivel de acabados</label><select id="acm_acab"><option>Lujoso</option><option selected>Bueno</option><option>Normal</option><option>Sencillo</option></select><div class="rs">Lujoso: mármol, domótica, herrajes importados · Bueno: porcelanato, cocina integral de gama media-alta · Normal: acabados estándar de constructora · Sencillo: acabados básicos o por mejorar.</div></div>
     <div class="form-group"><label>Garajes (cantidad)</label><input type="number" inputmode="numeric" id="acm_gar" value="0" min="0" max="10"/></div>
     <div class="form-group"><label>Depósitos (cantidad)</label><input type="number" inputmode="numeric" id="acm_dep" value="0" min="0" max="10"/></div>
-    <div class="form-group"><label>Valor Unitario Garaje (COP) — Opcional</label><input type="text" id="acm_vgar" placeholder="$0" oninput="fmtF(this)"/></div>
-    <div class="form-group"><label>Valor Unitario Depósito (COP) — Opcional</label><input type="text" id="acm_vdep" placeholder="$0" oninput="fmtF(this)"/></div>
-    <div class="form-group full"><div class="al info" style="margin:0">&#9432; Usa los valores unitarios de garaje y depósito <strong>solo si los comparables NO incluyen</strong> garaje/depósito en su precio, para no duplicar valor. Las alcobas no se ajustan: su efecto ya está en el área.</div></div>
+    <div class="form-group"><label>Valor unitario garaje (COP) — opcional</label><input type="text" id="acm_vgar" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group"><label>Valor unitario depósito (COP) — opcional</label><input type="text" id="acm_vdep" placeholder="$0" oninput="fmtF(this)"/></div>
+    <div class="form-group full"><div class="al info" style="margin:0">Usa los valores unitarios de garaje y depósito <strong>solo si los comparables NO incluyen</strong> garaje/depósito en su precio, para no duplicar valor. Las alcobas no se ajustan: su efecto ya está en el área.</div></div>
   </div>
 </div>
 <div class="card">
-  <div class="card-title">Comparables de Mercado <span id="acm_cnt" style="float:right;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:500"></span></div>
-  <div class="al info" style="margin-top:0">&#128161; Usa comparables vigentes del mismo sector, estrato y tipología. <strong>Amenidades</strong> (piscina, gimnasio, salón social, ascensor, vigilancia 24h): "le faltan" = las que el inmueble estudiado SÍ tiene y este no (su factor sube); "le sobran" = las que este tiene y el estudiado no (su factor baja). Cada tarjeta muestra en vivo su semáforo: &#128994; útil o &#128308; descartar.</div>
+  <div class="card-title">Comparables de mercado <span id="acm_cnt" style="float:right;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:500"></span></div>
+  <div class="al info" style="margin-top:0">Usa comparables vigentes del mismo sector, estrato y tipología. <strong>Amenidades</strong> (piscina, gimnasio, salón social, ascensor, vigilancia 24h): "le faltan" = las que el inmueble estudiado SÍ tiene y este no (su factor sube); "le sobran" = las que este tiene y el estudiado no (su factor baja). Cada tarjeta te dice en vivo si el comparable es útil o si conviene descartarlo.</div>
   <div id="acm_list"></div>
   <button type="button" class="btn-sec" id="acm_add" onclick="acmAdd()">+ Agregar comparable</button><button type="button" class="btn-sec" onclick="acmReset()">Limpiar todo</button>
-  <br/><button class="btn-calc" onclick="calcACM()">&#9654; Calcular ACM</button>
+  <br/><button class="btn-calc" onclick="calcACM()">Calcula el valor comercial</button>
 </div>
 <div id="acm_r" style="display:none">
   <div id="acm_alert" class="al warn"></div>
   <div class="rg c3">
-    <div class="rc dng"><div class="rl">&#128308; Valor Mínimo de Venta</div><div class="rv rd" id="acm_vmin">—</div><div class="rs">Piso de negociación · límite inferior</div></div>
-    <div class="rc hi"><div class="rl">&#128993; Valor Comercial Estimado</div><div class="rv g" id="acm_vcom">—</div><div class="rs">Precio justo de mercado · promedio</div></div>
-    <div class="rc ok"><div class="rl">&#128994; Valor Máximo de Oferta</div><div class="rv gr" id="acm_vmax">—</div><div class="rs">Precio de salida para publicar · límite superior</div></div>
+    <div class="rc dng"><div class="rl">Valor mínimo de venta</div><div class="rv rd" id="acm_vmin">—</div><div class="rs">Piso de negociación · límite inferior</div></div>
+    <div class="rc hi"><div class="rl">Valor comercial estimado</div><div class="rv g" id="acm_vcom">—</div><div class="rs">Precio justo de mercado · promedio</div></div>
+    <div class="rc ok"><div class="rl">Valor máximo de oferta</div><div class="rv gr" id="acm_vmax">—</div><div class="rs">Precio de salida para publicar · límite superior</div></div>
   </div>
   <div class="acm-letras" id="acm_letras"></div>
   <div class="card" style="margin-top:1.5rem">
-    <div class="card-title">Estadística de la Muestra (comparables útiles)</div>
+    <div class="card-title">Estadística de la muestra (comparables útiles)</div>
     <div class="rg c3" style="margin-top:0">
       <div class="rc"><div class="rl">Promedio m²</div><div class="rv" id="acm_prom">—</div></div>
-      <div class="rc"><div class="rl">Desviación Estándar</div><div class="rv" id="acm_desv">—</div></div>
-      <div class="rc" id="acm_cvc"><div class="rl">Coeficiente de Variación</div><div class="rv" id="acm_cv">—</div><div class="rs">Criterio: CV ≤ 7,5% (Res. 620/2008 IGAC)</div></div>
-      <div class="rc"><div class="rl">Límite Inferior m²</div><div class="rv" id="acm_linf">—</div></div>
-      <div class="rc"><div class="rl">Límite Superior m²</div><div class="rv" id="acm_lsup">—</div></div>
-      <div class="rc"><div class="rl">Comparables Útiles</div><div class="rv" id="acm_n">—</div></div>
+      <div class="rc"><div class="rl">Desviación estándar</div><div class="rv" id="acm_desv">—</div></div>
+      <div class="rc" id="acm_cvc"><div class="rl">Coeficiente de variación</div><div class="rv" id="acm_cv">—</div><div class="rs">Criterio: CV ≤ 7,5% (Res. 620/2008 IGAC)</div></div>
+      <div class="rc"><div class="rl">Límite inferior m²</div><div class="rv" id="acm_linf">—</div></div>
+      <div class="rc"><div class="rl">Límite superior m²</div><div class="rv" id="acm_lsup">—</div></div>
+      <div class="rc"><div class="rl">Comparables útiles</div><div class="rv" id="acm_n">—</div></div>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">Comparables Homogeneizados</div>
+    <div class="card-title">Comparables homogeneizados</div>
     <div style="overflow-x:auto"><table class="bt acm-tb"><thead><tr><th>#</th><th>Referencia</th><th>Área</th><th>Precio</th><th class="acm-fx">F. Área</th><th class="acm-fx">F. Cond.</th><th class="acm-fx">F. Com.</th><th>Valor m² hom.</th><th>Estado</th></tr></thead><tbody id="acm_tb"></tbody></table></div>
   </div>
   <div class="card">
-    <div class="card-title">Liquidación del Valor Comercial</div>
+    <div class="card-title">Liquidación del valor comercial</div>
     <div style="overflow-x:auto"><table class="bt acm-tb"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Valor unitario</th><th>Subtotal</th></tr></thead><tbody id="acm_liq"></tbody></table></div>
   </div>
-  <div class="al info">&#9432; <strong>Metodología:</strong> valor m² homogeneizado = (precio ÷ área) × Factor Área × Factor Condiciones (antigüedad × acabados × amenidades) × Factor Comercial. Regla de oro: si al comparable le falta algo frente al estudiado, su factor sube de 100%; si le sobra, baja. Se descartan los comparables con diferencia de área mayor al 30% o ajuste total superior a ±15%. Sobre los útiles se calcula promedio, desviación estándar muestral y coeficiente de variación; los límites son promedio ± desviación.</div>
-  <div class="al warn">&#9888; Este cálculo es un Análisis Comparativo de Mercado con fines de orientación comercial; no sustituye un avalúo certificado suscrito por avaluador inscrito en el Registro Abierto de Avaluadores — RAA (Ley 1673 de 2013). Vigencia de un (1) año (Decreto 1420 de 1998).</div>
+  <div class="al info"><strong>Metodología:</strong> valor m² homogeneizado = (precio ÷ área) × Factor Área × Factor Condiciones (antigüedad × acabados × amenidades) × Factor Comercial. Regla de oro: si al comparable le falta algo frente al estudiado, su factor sube de 100%; si le sobra, baja. Se descartan los comparables con diferencia de área mayor al 30% o ajuste total superior a ±15%. Sobre los útiles se calcula promedio, desviación estándar muestral y coeficiente de variación; los límites son promedio ± desviación.</div>
+  <div class="al warn">Este cálculo es un Análisis Comparativo de Mercado con fines de orientación comercial; no sustituye un avalúo certificado suscrito por avaluador inscrito en el Registro Abierto de Avaluadores — RAA (Ley 1673 de 2013). Vigencia de un (1) año (Decreto 1420 de 1998).</div>
   <div class="card acm-bridge">
-    <div class="card-title">Informe PDF Profesional</div>
+    <div class="card-title">Informe PDF profesional</div>
     <p>Para generar el informe completo (portada, carta de presentación, metodología, registro fotográfico y firma) pasa estos datos al <strong>Semáforo del Inversionista</strong>, la herramienta exclusiva para asesores LoMaz Home. Allí completarás la ficha del inmueble y las fotos.</p>
-    <button class="btn-calc" type="button" onclick="acmEnviarSemaforo()">&#128196; Generar informe PDF en el Semáforo &#8594;</button>
+    <button class="btn-calc" type="button" onclick="acmEnviarSemaforo()">Pasa los datos al Semáforo</button>
   </div>
 </div>
 </div>
 
 <div class="module" id="neto">
-<div class="mod-header"><h1>&#128176; ¿Cuánto dinero te queda al vender?</h1><p>El precio de venta no es lo que recibes. Resta comisión, notaría, retención, impuestos, hipoteca y cuentas pendientes y mira el dinero neto estimado. Pensado para propietarios personas naturales en Bogotá.</p></div>
+<div class="mod-header"><h1>¿Cuánto dinero te queda al vender?</h1><p>El precio de venta no es lo que recibes. Resta comisión, notaría, retención, impuestos, hipoteca y cuentas pendientes y mira el dinero neto estimado. Pensado para propietarios personas naturales en Bogotá.</p></div>
 <div class="card">
   <div class="card-title">1 · La venta</div>
   <div class="form-grid">
@@ -499,7 +515,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
     <div class="form-group"><label>Administración y otros pendientes (COP)</label><input type="text" id="m11_adm" placeholder="$0" oninput="fmtF(this)"/></div>
     <div class="form-group"><label>Otros gastos (certificados, arreglos, mudanza)</label><input type="text" id="m11_otr" placeholder="$0" oninput="fmtF(this)"/></div>
   </div>
-  <br/><button class="btn-calc" onclick="calcM11()">&#9654; Calcular cuánto me queda</button>
+  <br/><button class="btn-calc" onclick="calcM11()">Calcula cuánto te queda</button>
 </div>
 <div id="m11_r" style="display:none">
   <div class="rc hi" style="text-align:center;padding:1.6rem"><div class="rl">Dinero neto estimado (después de todo)</div><div class="rv g" id="m11_net" style="font-size:2.2rem">—</div><div class="rs" id="m11_nets"></div></div>
@@ -510,7 +526,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-heigh
   </div>
   <div class="card" style="margin-top:1.5rem"><div class="card-title">Desglose</div><div id="m11_tb"></div></div>
   <div id="m11_w" class="al warn" style="display:none"></div>
-  <div class="al info" style="margin-top:1rem">&#128161; <strong>Es una estimación</strong>, no una liquidación. Gastos notariales con la tarifa de la Resolución 964 de 2026 (50 % a cargo del vendedor); retención en la fuente del 1 % sobre el precio cuando el vendedor es persona natural (art. 398 del Estatuto Tributario), que el notario descuenta y luego se cruza con el impuesto; ganancia ocasional del 15 % sobre la utilidad cuando el inmueble se tuvo dos años o más (arts. 300 y 313 del E.T.); exención de las primeras 5.000 UVT para la vivienda de habitación si se cumplen los requisitos del art. 311-1 del E.T. (Ley 2277 de 2022); UVT 2026 de $52.374 (Resolución DIAN 000238 de 2025). Confirma con tu contador antes de firmar.</div>
+  <div class="al info" style="margin-top:1rem"><strong>Es una estimación</strong>, no una liquidación. Gastos notariales con la tarifa de la Resolución 964 de 2026 (50 % a cargo del vendedor); retención en la fuente del 1 % sobre el precio cuando el vendedor es persona natural (art. 398 del Estatuto Tributario), que el notario descuenta y luego se cruza con el impuesto; ganancia ocasional del 15 % sobre la utilidad cuando el inmueble se tuvo dos años o más (arts. 300 y 313 del E.T.); exención de las primeras 5.000 UVT para la vivienda de habitación si se cumplen los requisitos del art. 311-1 del E.T. (Ley 2277 de 2022); UVT 2026 de $52.374 (Resolución DIAN 000238 de 2025). Confirma con tu contador antes de firmar.</div>
   <div class="card" style="margin-top:1.5rem;border-color:var(--gold)"><div class="card-title">¿Y si el precio no es el correcto?</div><p style="font-size:.9rem;line-height:1.6;margin-bottom:1rem">Este número depende del precio que esperas. Antes de publicar, revisamos competencia, demanda y presentación en 20 minutos, sin costo.</p><a class="btn-calc" style="display:inline-block;text-decoration:none;text-align:center" href="vender.html#diagnostico">Quiero mi Diagnóstico LO MÁS</a></div>
 </div>
 </div>
@@ -740,7 +756,7 @@ function calcM11(){
   document.getElementById('m11_imp').textContent=pc&&an>=2?fmt(imp):'—';
   document.getElementById('m11_imps').textContent=pc&&an>=2?(imp>retefuente?'Pagas '+fmt(impAdicional)+' más en la declaración del año siguiente':'Queda cubierto con la retención'+(devolucion?'; saldo a favor '+fmt(devolucion):'')):'Sin datos de compra';
   document.getElementById('m11_pct').textContent=(neto/pv*100).toFixed(1).replace('.',',')+' %';
-  var w=document.getElementById('m11_w');w.style.display=avisos.length?'block':'none';w.innerHTML='&#9888; '+avisos.join('<br>&#9888; ');
+  var w=document.getElementById('m11_w');w.style.display=avisos.length?'block':'none';w.innerHTML=avisos.join('<br>');
   document.getElementById('m11_r').style.display='block';
   if(typeof irA==='function'&&typeof esCelular==='function'&&esCelular())irA(document.getElementById('m11_r'),true);
 }
@@ -889,7 +905,7 @@ function calcM9(){
     '<tr class="tr-tot"><td>Total vigencia'+sub+'Año '+an+' completo'+(dTot===366?' (bisiesto)':'')+'</span></td><td>'+dTot+'</td><td>100%</td></tr>';
 
   // Nota
-  document.getElementById('m9_nota').innerHTML='&#9432; Nota: la parte que pagó el impuesto (<strong>'+(pg==='vendedor'?'Vendedor(a)':'Comprador(a)')+'</strong>) asumió el 100% de la vigencia '+an+'. La otra parte reembolsa la porción proporcional según la fecha de entrega material (<strong>'+fechaCorta(fy,fm,fd)+'</strong>, inclusive para quien recibe). Valores redondeados al peso.';
+  document.getElementById('m9_nota').innerHTML='Nota: la parte que pagó el impuesto (<strong>'+(pg==='vendedor'?'Vendedor(a)':'Comprador(a)')+'</strong>) asumió el 100% de la vigencia '+an+'. La otra parte reembolsa la porción proporcional según la fecha de entrega material (<strong>'+fechaCorta(fy,fm,fd)+'</strong>, inclusive para quien recibe). Valores redondeados al peso.';
 
   document.getElementById('m9_r').style.display='block';
 }
@@ -962,14 +978,14 @@ function acmCardHTML(c,i){
   return '<div class="acm-comp" data-id="'+c.id+'">'+
     '<div class="acm-comp-head"><strong>Comparable '+(i+1)+'</strong><div style="display:flex;align-items:center;gap:.5rem"><span class="acm-badge gray" data-badge></span><button type="button" class="acm-x" title="Eliminar comparable" onclick="acmRemove(\''+c.id+'\')">&times;</button></div></div>'+
     '<div class="form-grid">'+
-    '<div class="form-group full"><label>Dirección o Referencia — Opcional</label><input type="text" data-k="direccion" value="'+acmEsc(c.direccion)+'" placeholder="Calle 109 No. 20-15 · Metrocuadrado" maxlength="120"/></div>'+
+    '<div class="form-group full"><label>Dirección o referencia — opcional</label><input type="text" data-k="direccion" value="'+acmEsc(c.direccion)+'" placeholder="Calle 109 No. 20-15 · Metrocuadrado" maxlength="120"/></div>'+
     '<div class="form-group acm-precio"><label>Precio Publicado (COP)</label><input type="text" inputmode="numeric" data-k="precio" value="'+acmEsc(c.precio)+'" placeholder="$750.000.000" oninput="fmtF(this)"/></div>'+
     '<div class="form-group"><label>Área (m²)</label><input type="text" inputmode="decimal" data-k="area" value="'+acmEsc(c.area)+'" placeholder="120"/></div>'+
-    '<div class="form-group"><label>Años de Construido</label><input type="number" inputmode="numeric" min="0" max="150" data-k="anios" value="'+acmEsc(c.anios)+'" placeholder="14"/></div>'+
+    '<div class="form-group"><label>Años de construido</label><input type="number" inputmode="numeric" min="0" max="150" data-k="anios" value="'+acmEsc(c.anios)+'" placeholder="14"/></div>'+
     '<div class="form-group"><label>Acabados</label><select data-k="acabados">'+['Lujoso','Bueno','Normal','Sencillo'].map(function(o){return opt(o,o,c.acabados);}).join('')+'</select></div>'+
     '<div class="form-group full acm-tipo"><label>Tipo de Precio</label><select data-k="tipoPrecio">'+opt('aviso','Aviso en portal (negociable) · factor 95%',c.tipoPrecio)+opt('cierre','Precio de cierre real · factor 100%',c.tipoPrecio)+opt('urgente','Venta urgente · factor 91%',c.tipoPrecio)+'</select></div>'+
-    '<div class="form-group"><label>Amenidades que le Faltan (0-4)</label><input type="number" inputmode="numeric" min="0" max="4" data-k="faltan" value="'+acmEsc(c.faltan)+'"/></div>'+
-    '<div class="form-group"><label>Amenidades que le Sobran (0-4)</label><input type="number" inputmode="numeric" min="0" max="4" data-k="sobran" value="'+acmEsc(c.sobran)+'"/></div>'+
+    '<div class="form-group"><label>Amenidades que le faltan (0-4)</label><input type="number" inputmode="numeric" min="0" max="4" data-k="faltan" value="'+acmEsc(c.faltan)+'"/></div>'+
+    '<div class="form-group"><label>Amenidades que le sobran (0-4)</label><input type="number" inputmode="numeric" min="0" max="4" data-k="sobran" value="'+acmEsc(c.sobran)+'"/></div>'+
     '</div><div class="acm-live" data-live></div></div>';
 }
 function acmUpdateCard(id){
@@ -980,8 +996,8 @@ function acmUpdateCard(id){
   el.classList.remove('ok','bad');
   if(!(p.area>0)){badge.className='acm-badge gray';badge.textContent='Falta el área del inmueble estudiado';live.innerHTML='';return;}
   if(!r.completo){badge.className='acm-badge gray';badge.textContent='Pendiente: área y precio';live.innerHTML='';return;}
-  if(r.ok){el.classList.add('ok');badge.className='acm-badge green';badge.innerHTML='&#128994; Comparable útil';}
-  else{el.classList.add('bad');badge.className='acm-badge red';badge.innerHTML='&#128308; Descartar';}
+  if(r.ok){el.classList.add('ok');badge.className='acm-badge green';badge.innerHTML='Comparable útil';}
+  else{el.classList.add('bad');badge.className='acm-badge red';badge.innerHTML='Descartar';}
   live.innerHTML='<div>F. Área: <b>'+acmFac(r.fArea)+'</b></div><div>F. Antigüedad: <b>'+acmFac(r.fAnt)+'</b></div><div>F. Acabados: <b>'+acmFac(r.fAcab)+'</b></div><div>F. Amenidades: <b>'+acmFac(r.fAmen)+'</b></div><div>F. Comercial: <b>'+acmFac(r.fCom)+'</b></div><div>Ajuste total: <b>'+(r.ajuste>=0?'+':'')+acmPct(r.ajuste)+'</b></div><div>Valor m² homog.: <b>'+fmt(r.m2)+'</b></div>'+(r.ok?'':'<div class="motivo">Motivo: '+r.motivo+'</div>');
 }
 function acmCounter(){
@@ -1061,8 +1077,8 @@ function calcACM(){
 
   // Alerta de calidad de la muestra
   var al=document.getElementById('acm_alert');
-  if(cv>0.075){al.className='al warn';al.innerHTML='&#9888; <strong>Muestra poco homogénea:</strong> coeficiente de variación '+acmPct(cv)+' &gt; 7,5% — depura los comparables atípicos (criterio Res. 620/2008 IGAC). Los valores se muestran, pero con menor confianza.';}
-  else{al.className='al ok';al.innerHTML='&#10004; <strong>Muestra homogénea:</strong> coeficiente de variación '+acmPct(cv)+' &le; 7,5% (criterio Res. 620/2008 IGAC). Sello de confianza del análisis.';}
+  if(cv>0.075){al.className='al warn';al.innerHTML='<strong>Muestra poco homogénea:</strong> coeficiente de variación '+acmPct(cv)+' &gt; 7,5% — depura los comparables atípicos (criterio Res. 620/2008 IGAC). Los valores se muestran, pero con menor confianza.';}
+  else{al.className='al ok';al.innerHTML='<strong>Muestra homogénea:</strong> coeficiente de variación '+acmPct(cv)+' &le; 7,5% (criterio Res. 620/2008 IGAC). Sello de confianza del análisis.';}
 
   document.getElementById('acm_vmin').textContent=fmt(vmin);
   document.getElementById('acm_vcom').textContent=fmt(vcom);
@@ -1080,7 +1096,7 @@ function calcACM(){
   // Tabla de comparables homogeneizados (los descartados quedan visibles, tachados)
   document.getElementById('acm_tb').innerHTML=completos.map(function(c,i){
     var r=c._r;
-    return '<tr'+(r.ok?'':' class="desc"')+'><td>'+(i+1)+'</td><td>'+acmEsc(c.direccion||'—')+'</td><td class="num">'+acmArea(c.area)+'</td><td class="num">'+fmt(pCOP(c.precio))+'</td><td class="num acm-fx">'+acmFac(r.fArea)+'</td><td class="num acm-fx">'+acmFac(r.fCond)+'</td><td class="num acm-fx">'+acmFac(r.fCom)+'</td><td class="num">'+fmt(r.m2)+'</td><td class="est">'+(r.ok?'&#128994; Útil':'&#128308; '+r.motivo)+'</td></tr>';
+    return '<tr'+(r.ok?'':' class="desc"')+'><td>'+(i+1)+'</td><td>'+acmEsc(c.direccion||'—')+'</td><td class="num">'+acmArea(c.area)+'</td><td class="num">'+fmt(pCOP(c.precio))+'</td><td class="num acm-fx">'+acmFac(r.fArea)+'</td><td class="num acm-fx">'+acmFac(r.fCond)+'</td><td class="num acm-fx">'+acmFac(r.fCom)+'</td><td class="num">'+fmt(r.m2)+'</td><td class="est">'+(r.ok?'Útil':''+r.motivo)+'</td></tr>';
   }).join('');
 
   // Liquidación del valor comercial
@@ -1272,7 +1288,7 @@ window.addEventListener('DOMContentLoaded',function(){
     var calc=null; for(var i=0;i<btns.length;i++){ if(/calcular/i.test(btns[i].textContent||'')){ calc=btns[i]; break; } }
     var b=document.createElement('button');
     b.id='m9_pdf_btn'; b.type='button';
-    b.innerHTML='📄 Descargar Recibo PDF';
+    b.innerHTML='Descarga el recibo en PDF';
     b.style.cssText='margin-top:10px;display:block;width:100%;background:#c9a24b;color:#14213d;border:none;border-radius:8px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;';
     b.onclick=descargarPDF;
     if(calc && calc.parentNode){ calc.parentNode.insertBefore(b, calc.nextSibling); } else { panel.appendChild(b); }

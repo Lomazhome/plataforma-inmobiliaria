@@ -199,46 +199,49 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:var(--navy);box-shado
 
 #lm-nav{transform:translateY(-105%)!important;transition:transform .28s ease;will-change:transform;}
 body.nav-show #lm-nav{transform:translateY(0)!important;}
+
+/* ---- Fase 4: sin rótulos en mayúsculas ni apariciones al hacer scroll ---- */
+.reveal{opacity:1!important;transform:none!important}
+.blog-hero h1{font-weight:500;letter-spacing:0;text-wrap:balance;max-width:20ch;margin-left:auto;margin-right:auto}
+.blog-hero-sub{max-width:52ch;margin-left:auto;margin-right:auto;font-size:1.0625rem;line-height:1.6}
+.section-title,.nl-title{text-wrap:balance}
+.cat-label,.cat-chip,.blog-card-cat,.feat-badge,.feat-cat,.feat-cta,.nl-btn,.blog-card-link,.blog-card-date,.feat-date,.feat-read{letter-spacing:0!important;text-transform:none!important}
+.cat-chip,.cat-label{font-size:.9rem}
+.blog-card-cat,.feat-badge,.feat-cat,.blog-card-date,.feat-date,.feat-read{font-size:.8125rem}
+.feat-cta,.nl-btn,.blog-card-link{font-size:.9375rem;font-weight:600}
+.blog-card-link{text-decoration:underline;text-underline-offset:4px;text-decoration-color:#c9a96e}
+.blog-empty-text,.nl-sub,.feat-excerpt,.blog-card-excerpt{max-width:65ch}
+.nl-legal{margin-top:1rem;font-size:.8125rem;opacity:.75}
+.nl-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.nl-btn{min-height:48px}
+.nl-btn:active{transform:scale(.97)}
+#main-nav .nav-links a{letter-spacing:0!important;text-transform:none!important;font-size:.9rem!important}
+.blog-hero::before,.blog-hero::after{display:none!important}
 </style>
 <script src="config.js"></script>
 <link rel="stylesheet" href="lomaz-mobile.css">
 </head>
 <body>
 <nav id="main-nav" class="nav" style="position:static;width:100%;z-index:1;padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,46,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,169,110,0.2)">
-  <a href="index.html" class="nav-logo" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;color:#F4E5C2;text-decoration:none">LoMaz <span style="color:#c9a96e">Home</span></a>
+  <a href="index.html" class="nav-logo" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;letter-spacing:0;font-weight:500;color:#F4E5C2;text-decoration:none">Lo<i style="color:#c9a96e">Maz</i> Home</a>
   <ul class="nav-links" id="nav-links" style="gap:2rem;list-style:none;align-items:center;margin:0;padding:0">
-    <li><a href="index.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Inicio</a></li>
-    <li class="has-dropdown">
-      <a href="propiedades.html" class="nav-parent" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none;display:flex;align-items:center;gap:.3rem">Propiedades <svg class="nav-arrow" viewBox="0 0 10 6" width="9" height="9" style="transition:transform .3s"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
-      <div class="nav-dropdown" style="position:absolute;top:calc(100% + .8rem);left:50%;transform:translateX(-50%) translateY(-8px);min-width:240px;background:rgba(13,27,46,.97);border:1px solid rgba(201,169,110,.4);border-top:2px solid #c9a96e;backdrop-filter:blur(16px);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s;z-index:2000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
-        <a href="propiedades.html" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.12);text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#127968; Todas las propiedades</a>
-        <a href="propiedades.html?tipo=venta" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.12);text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#128273; En venta</a>
-        <a href="propiedades.html?tipo=arriendo" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#128203; En arriendo</a>
-      </div>
-    </li>
-    <li><a href="blog.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:#c9a96e;text-decoration:none;font-weight:700">Blog</a></li>
-    <li class="has-dropdown">
-      <a href="calculadora.html" class="nav-parent" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none;display:flex;align-items:center;gap:.3rem">Calculadora <svg class="nav-arrow" viewBox="0 0 10 6" width="9" height="9" style="transition:transform .3s"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
-      <div class="nav-dropdown" style="position:absolute;top:calc(100% + .8rem);left:50%;transform:translateX(-50%) translateY(-8px);min-width:240px;background:rgba(13,27,46,.97);border:1px solid rgba(201,169,110,.4);border-top:2px solid #c9a96e;backdrop-filter:blur(16px);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s;z-index:2000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
-        <a href="calculadora.html#tab-hipotecaria" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.12);text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#127968; Cuota Hipotecaria</a>
-        <a href="calculadora.html#tab-notarial" class="dropdown-item" style="display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;text-decoration:none;color:#F4E5C2;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;transition:background .2s">&#128220; Gastos Notariales</a>
-      </div>
-    </li>
-    <li><a href="sobre-nosotros.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Nosotros</a></li>
-    <li><a href="contacto.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(244,229,194,.7);text-decoration:none">Contacto</a></li>
+    <li><a href="index.html" style="font-size:.9rem;color:rgba(244,229,194,.8);text-decoration:none">Inicio</a></li>
+    <li><a href="propiedades-publica.html" style="font-size:.9rem;color:rgba(244,229,194,.8);text-decoration:none">Inmuebles</a></li>
+    <li><a href="blog.html" style="font-size:.9rem;color:#c9a96e;text-decoration:none;font-weight:600">Blog</a></li>
+    <li><a href="calculadora.html" style="font-size:.9rem;color:rgba(244,229,194,.8);text-decoration:none">Calculadora</a></li>
+    <li><a href="sobre-nosotros.html" style="font-size:.9rem;color:rgba(244,229,194,.8);text-decoration:none">Nosotros</a></li>
+    <li><a href="contacto.html" style="font-size:.9rem;color:rgba(244,229,194,.8);text-decoration:none">Contacto</a></li>
   </ul>
-  <a href="login.html" style="border:1px solid #c9a96e;color:#F4E5C2;padding:.5rem 1.2rem;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .3s">Acceso Asesores</a>
+  <a href="contacto.html" style="border:1px solid #c9a96e;color:#F4E5C2;padding:.55rem 1.2rem;font-size:.9rem;font-weight:500;text-decoration:none">Asesoría</a>
   <button class="nav-ham" id="nav-ham" aria-label="Abrir menú" aria-expanded="false" onclick="var n=document.getElementById('nav-links');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.classList.toggle('is-open',o);"><span></span><span></span><span></span></button>
 </nav>
 <section class="blog-hero">
-  <p class="blog-hero-eyebrow">Blog Inmobiliario</p>
-  <h1>Conocimiento que<br><em>transforma decisiones</em></h1>
-  <p class="blog-hero-sub">Guías expertas sobre el mercado inmobiliario de Bogotá y Colombia. Todo lo que necesitas saber antes de arrendar, comprar o vender.</p>
+  <h1>Guías para arrendar, comprar y vender en Bogotá</h1>
+  <p class="blog-hero-sub">Las escribimos nosotros, con la ley citada y las cifras revisadas antes de publicar.</p>
 </section>
-<div class="gold-div"></div>
 <div class="cat-bar" id="cat-bar" hidden>
   <div class="cat-bar-inner">
-    <span class="cat-label">Temas:</span>
+    <span class="cat-label">Temas</span>
     <button class="cat-chip active" data-cat="" onclick="filterCat(this)">Todos</button>
     <button class="cat-chip" data-cat="Arrendamiento" onclick="filterCat(this)">Arrendamiento</button>
     <button class="cat-chip" data-cat="Compraventa" onclick="filterCat(this)">Compraventa</button>
@@ -246,100 +249,53 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
     <button class="cat-chip" data-cat="Mercado" onclick="filterCat(this)">Mercado</button>
     <button class="cat-chip" data-cat="Zonas" onclick="filterCat(this)">Zonas</button>
     <button class="cat-chip" data-cat="Trámites" onclick="filterCat(this)">Trámites</button>
-    <input type="search" class="cat-search" placeholder="Buscar por tema..." aria-label="Buscar artículos por tema" oninput="filterSearch(this)">
+    <input type="search" class="cat-search" placeholder="Busca por tema" aria-label="Buscar artículos por tema" oninput="filterSearch(this)">
   </div>
 </div>
 <!-- Estado "en preparación": se muestra solo cuando no hay artículos publicados en Supabase -->
 <section class="blog-empty" id="blog-empty" hidden>
   <div class="blog-empty-inner">
-    <p class="section-eyebrow">N&deg;01 &mdash; En preparación</p>
-    <h2 class="section-title">Estamos escribiendo las guías más completas para arrendar y comprar en Bogotá</h2>
-    <p class="blog-empty-text">Cada guía se publica solo cuando está terminada: con la ley citada, las cifras verificadas y los consejos que les damos a nuestros clientes en Bogotá. La primera, <strong>Cómo arrendar un apartamento en Bogotá</strong>, está en camino.</p>
+    <h2 class="section-title">Estamos escribiendo la primera guía</h2>
+    <p class="blog-empty-text">Cada guía sale solo cuando está terminada: con la ley citada, las cifras revisadas y los consejos que les damos a nuestros clientes. La primera será <strong>Cómo arrendar un apartamento en Bogotá</strong>.</p>
     <div class="blog-empty-actions">
-      <a href="propiedades.html" class="feat-cta feat-cta--dark">Ver propiedades</a>
-      <a href="calculadora.html" class="feat-cta feat-cta--dark">Usar la calculadora</a>
+      <a href="propiedades-publica.html" class="feat-cta feat-cta--dark">Mira los inmuebles</a>
+      <a href="calculadora.html" class="feat-cta feat-cta--dark">Abre la calculadora</a>
     </div>
-    <p class="blog-empty-note">¿Quieres que te avisemos cuando salga? Déjanos tu correo aquí abajo.</p>
+    <p class="blog-empty-note">Si quieres que te avisemos cuando salga, déjanos tu correo aquí abajo.</p>
   </div>
 </section>
 <!-- Artículo destacado y catálogo: se llenan desde Supabase (tabla articulos_blog) -->
-<section class="featured-section reveal" id="featured-section" hidden>
-  <p class="section-eyebrow">N&deg;01 &mdash; Destacado</p>
-  <h2 class="section-title">Artículo de la semana</h2>
+<section class="featured-section" id="featured-section" hidden>
+  <h2 class="section-title">La guía más reciente</h2>
   <a href="blog.html" class="featured-card" data-cat=""></a>
 </section>
 <div class="gold-div" id="catalog-divider" style="margin:3rem 0 0;" hidden></div>
 <section class="blog-section" id="catalog-section" hidden>
-  <p class="section-eyebrow">N&deg;02 &mdash; Catálogo</p>
-  <h2 class="section-title">Todos los artículos</h2>
+  <h2 class="section-title">Todas las guías</h2>
   <div class="blog-grid" id="blog-grid"></div>
 </section>
-<section class="quote-section reveal">
-  <div class="quote-inner">
-    <div class="quote-mark">&#8220;</div>
-    <p class="quote-text">Comprar o arrendar una propiedad es una de las decisiones más importantes de tu vida. Informarte bien es el primer paso hacia una elección que realmente te represente.</p>
-    <p class="quote-author">Equipo LoMaz Home &middot; Asesores Inmobiliarios</p>
-  </div>
-</section>
-<section class="nl-section reveal" id="newsletter">
+<section class="nl-section" id="newsletter">
   <div class="nl-inner">
-    <p class="nl-eyebrow" id="nl-eyebrow">N&deg;03 &mdash; Newsletter</p>
-    <h2 class="nl-title">Recibe consejos inmobiliarios cada semana</h2>
-    <p class="nl-sub">Artículos, análisis de mercado y oportunidades de inversión directo en tu bandeja de entrada. Sin spam.</p>
+    <h2 class="nl-title">Recibe cada guía nueva en tu correo</h2>
+    <p class="nl-sub">Déjanos tu correo y te avisamos cuando publiquemos una guía.</p>
     <form class="nl-form" onsubmit="handleNL(event)">
-      <input type="email" class="nl-input" placeholder="tu@correo.com" required aria-label="Email para newsletter"/>
+      <input type="email" class="nl-input" placeholder="tu@correo.com" required aria-label="Tu correo"/>
       <input type="text" name="web" class="nl-web" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;"/>
-      <button type="submit" class="nl-btn">Suscribirse</button>
+      <button type="submit" class="nl-btn">Suscríbete</button>
     </form>
-    <p id="nl-msg" style="margin-top:1rem;font-size:.8rem;color:var(--gold);display:none;">¡Gracias! Te contactaremos pronto.</p>
+    <p class="nl-legal">Al suscribirte autorizas el tratamiento de tu correo según nuestra <a href="politica-de-datos.html">política de datos</a>.</p>
+    <p id="nl-msg" role="status" style="margin-top:1rem;font-size:.9rem;color:var(--gold);display:none;"></p>
   </div>
 </section>
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="brand-name">LoMaz <span>Home</span></div>
-        <p class="footer-tagline">Inmobiliaria boutique</p>
-        <p class="footer-desc">Conectamos personas con propiedades excepcionales en Bogotá. Asesoría personalizada, transparencia total y resultados reales.</p>
-        <div class="footer-social">
-          <a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">&#128222;</a>
-          <a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email">&#9993;</a>
-          <a href="https://www.instagram.com/lomazhome" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Propiedades</h4>
-        <ul>
-          <li><a href="propiedades.html?tipo=arriendo">Arriendo</a></li>
-          <li><a href="propiedades.html?tipo=venta">Venta</a></li>
-          <li><a href="propiedades.html?barrio=Chapinero">Chapinero</a></li>
-          <li><a href="propiedades.html?barrio=Usaquén">Usaquén</a></li>
-          <li><a href="propiedades.html?barrio=Chicó">Chicó</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Blog</h4>
-        <ul>
-          <li><a href="blog.html?cat=Arrendamiento">Arrendamiento</a></li>
-          <li><a href="blog.html?cat=Compraventa">Compraventa</a></li>
-          <li><a href="blog.html?cat=Financiación">Financiación</a></li>
-          <li><a href="blog.html?cat=Trámites">Trámites</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contacto</h4>
-        <ul>
-          <li><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></li>
-          <li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li>
-          <li><a href="contacto.html">Bogotá, Colombia</a></li>
-        </ul>
-      </div>
+      <div class="footer-brand"><div class="brand-name">LoMaz <span>Home</span></div><p class="footer-desc">Te damos lo más para encontrar tu hogar. Vendemos y arrendamos apartamentos, casas y locales en Bogotá.</p><p class="footer-desc"><a href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener">Instagram @lomazhome</a></p></div>
+      <div class="footer-col"><h4>Inmuebles</h4><ul><li><a href="propiedades-publica.html?negocio=venta">En venta</a></li><li><a href="propiedades-publica.html?negocio=arriendo">En arriendo</a></li><li><a href="propiedades-publica.html?barrio=Suba">En Suba</a></li><li><a href="mapa.html">En el mapa</a></li></ul></div>
+      <div class="footer-col"><h4>LoMaz Home</h4><ul><li><a href="sobre-nosotros.html">Sobre nosotros</a></li><li><a href="blog.html">Blog</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="contacto.html">Bogotá, Colombia</a></li></ul></div>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">&copy; <span id="footer-year">2026</span> LoMaz Home. Todos los derechos reservados.</span>
-      <span class="footer-city">Bogotá &middot; Desde 2024</span>
-      <a href="login.html" class="footer-admin-link">Acceso asesores</a>
-    </div>
+    <div class="footer-bottom"><span class="footer-copy">&copy; 2026 LoMaz Home</span><span class="footer-city">Bogotá, Colombia</span><a href="/admin/login.html" class="footer-admin-link">Acceso asesores</a></div>
   </div>
 </footer>
 <div class="aria-overlay" id="aria-overlay" onclick="closeAria()"></div>
@@ -385,7 +341,7 @@ const NL_INICIO = Date.now();
   // Resultado del enlace de confirmación del correo (?suscripcion=...).
   const r = new URLSearchParams(location.search).get("suscripcion");
   const textos = {
-    confirmada: ["\u00a1Suscripci\u00f3n confirmada! Recibir\u00e1s nuestros art\u00edculos en tu correo.", "var(--gold)"],
+    confirmada: ["Suscripci\u00f3n confirmada. Te avisaremos cuando salga una gu\u00eda nueva.", "var(--gold)"],
     vencida: ["El enlace de confirmaci\u00f3n venci\u00f3. Suscr\u00edbete de nuevo y te enviaremos otro.", "#c0392b"],
     invalida: ["El enlace de confirmaci\u00f3n no es v\u00e1lido o ya fue usado.", "#c0392b"],
     error: ["No pudimos confirmar tu suscripci\u00f3n. Intenta de nuevo en un momento.", "#c0392b"]
@@ -408,7 +364,7 @@ async function handleNL(e){
   const email = (input.value||"").trim();
   const web = (form.querySelector(".nl-web")||{}).value || "";
   if(!email) return;
-  btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = "Enviando...";
+  btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = "Enviando\u2026";
   msg.style.display = "none";
   try {
     const base = window.SUPABASE_URL;
@@ -419,7 +375,7 @@ async function handleNL(e){
       body: JSON.stringify({ email, web, t: Date.now() - NL_INICIO })
     });
     if(!resp.ok) throw new Error("fallo");
-    msg.textContent = "\u00a1Gracias! Revisa tu correo y confirma tu suscripci\u00f3n con el bot\u00f3n que te enviamos.";
+    msg.textContent = "Revisa tu correo y confirma la suscripci\u00f3n con el bot\u00f3n que te enviamos.";
     msg.style.color = "var(--gold)";
     msg.style.display = "block";
     form.reset();
@@ -436,7 +392,7 @@ let ariaHistory=JSON.parse(localStorage.getItem(ARIA_KEY)||"[]");
 function openAria(){
   document.getElementById("aria-panel").classList.add("open");
   document.getElementById("aria-overlay").classList.add("open");
-  if(ariaHistory.length===0)addBotMsg("&#161;Hola! Soy ARIA, asesora virtual de LoMaz Home. &#191;Estás buscando información sobre cómo arrendar o comprar en Bogotá, o quieres ver propiedades disponibles?");
+  if(ariaHistory.length===0)addBotMsg("Hola. Soy ARIA, asesora virtual de LoMaz Home. &#191;Estás buscando información sobre cómo arrendar o comprar en Bogotá, o quieres ver propiedades disponibles?");
   else renderHistory();
   setTimeout(()=>document.getElementById("aria-input").focus(),300);
 }
@@ -476,16 +432,16 @@ function removeTyping(){const t=document.getElementById("typing-ind");if(t)t.rem
 function processAria(txt){
   removeTyping();const t=txt.toLowerCase();
   if(t.includes("asesor")||t.includes("humano")||t.includes("hablar con")){
-    addBotMsg("Con gusto te comunico con un asesor:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'>&#128222; Hablar por WhatsApp</a>");return;
+    addBotMsg("Con gusto te comunico con un asesor:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'>Escríbenos por WhatsApp</a>");return;
   }
   if(t.includes("arrendar")||t.includes("arriendo")){
-    addBotMsg("Tenemos propiedades en arriendo en Bogotá. Puedes ver el catálogo completo aquí: <a href='propiedades.html?tipo=arriendo' style='color:var(--gold)'>Ver propiedades en arriendo</a>. También te recomiendo leer nuestra <a href='/blog/como-arrendar-apartamento-bogota' style='color:var(--gold)'>guía completa</a>.");return;
+    addBotMsg("Tenemos propiedades en arriendo en Bogotá. Puedes ver el catálogo completo aquí: <a href='propiedades-publica.html?negocio=arriendo' style='color:var(--gold)'>inmuebles en arriendo</a>. También te recomiendo leer nuestra <a href='/blog/como-arrendar-apartamento-bogota' style='color:var(--gold)'>guía completa</a>.");return;
   }
   if(t.includes("comprar")||t.includes("venta")){
-    addBotMsg("Excelente decisión. Tenemos propiedades en venta en Bogotá: <a href='propiedades.html?tipo=venta' style='color:var(--gold)'>Ver propiedades en venta</a>. También puedes leer sobre los <a href='blog.html?cat=Compraventa' style='color:var(--gold)'>requisitos para comprar vivienda</a>.");return;
+    addBotMsg("Tenemos inmuebles en venta en Bogotá: <a href='propiedades-publica.html?negocio=venta' style='color:var(--gold)'>inmuebles en venta</a>. También puedes leer sobre los <a href='blog.html?cat=Compraventa' style='color:var(--gold)'>requisitos para comprar vivienda</a>.");return;
   }
   if(t.includes("propiedad")||t.includes("catálogo")||t.includes("ver")){
-    addBotMsg("Puedes explorar todo nuestro catálogo en: <a href='propiedades.html' style='color:var(--gold)'>Ver todas las propiedades</a>. ¿Tienes alguna preferencia de zona o tipo de inmueble?");return;
+    addBotMsg("Puedes explorar todo nuestro catálogo en: <a href='propiedades-publica.html' style='color:var(--gold)'>todos los inmuebles</a>. ¿Tienes alguna preferencia de zona o tipo de inmueble?");return;
   }
   addBotMsg("¿Me puedes contar más? ¿Estás buscando arrendar o comprar, y en qué zona de Bogotá?");
 }
@@ -579,14 +535,14 @@ document.addEventListener("DOMContentLoaded", function() {
   function card(a){
     var img=a.imagen_url||PLACEHOLDER;
     var meta=fmtDate(a.published_at||a.created_at)+(a.tiempo_lectura?(" &middot; "+a.tiempo_lectura+" min"):"");
-    return '<article class="blog-card reveal visible" data-cat="'+esc(a.categoria||"")+'">'+
+    return '<article class="blog-card" data-cat="'+esc(a.categoria||"")+'">'+
       '<div class="blog-card-img"><img src="'+esc(img)+'" alt="'+esc(a.titulo)+'" loading="lazy"/>'+
       (a.categoria?'<span class="blog-card-cat">'+esc(a.categoria)+'</span>':"")+'</div>'+
       '<div class="blog-card-body">'+
       '<h3 class="blog-card-title">'+esc(a.titulo)+'</h3>'+
       '<p class="blog-card-excerpt">'+esc(a.extracto||"")+'</p>'+
       '<div class="blog-card-footer"><span class="blog-card-date">'+meta+'</span>'+
-      '<a href="/blog/'+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Leer &rarr;</a></div>'+
+      '<a href="/blog/'+encodeURIComponent(a.slug||"")+'" class="blog-card-link">Lee la guía</a></div>'+
       '</div></article>';
   }
   function featured(a){
@@ -600,8 +556,8 @@ document.addEventListener("DOMContentLoaded", function() {
       '<h3 class="feat-title">'+esc(a.titulo)+'</h3>'+
       '<p class="feat-excerpt">'+esc(a.extracto||"")+'</p>'+
       '<div class="feat-meta"><span class="feat-date">'+fmtDate(a.published_at||a.created_at)+'</span>'+
-      (a.tiempo_lectura?'<span class="feat-read">&#128338; '+a.tiempo_lectura+' min de lectura</span>':"")+'</div>'+
-      '<span class="feat-cta">Leer artículo &rarr;</span></div>';
+      (a.tiempo_lectura?'<span class="feat-read">'+a.tiempo_lectura+' min de lectura</span>':"")+'</div>'+
+      '<span class="feat-cta">Lee la guía</span></div>';
   }
   // Datos estructurados (schema.org) generados con los artículos reales; sin artículos, solo el blog
   function injectSchema(arts){
