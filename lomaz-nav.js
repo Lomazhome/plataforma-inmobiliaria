@@ -52,11 +52,12 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 .lm-item { position:relative; } .lm-item::after { content:''; position:absolute; bottom:-8px; left:0; right:0; height:8px; }
 .lm-link {
   display:flex; align-items:center; gap:4px; padding:0.5rem 0.75rem;
-  font-size:0.78rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+  font-size:0.9rem; font-weight:500; letter-spacing:0;
   text-decoration:none; color:var(--lm-ink-soft); border-radius:4px;
   transition:color var(--lm-tr); white-space:nowrap; position:relative;
 }
 .lm-link:hover { color:var(--lm-ink); }
+@media (max-width:1180px){ .lm-link { padding:0.5rem 0.5rem; font-size:0.85rem; } .lm-menu { gap:0; } }
 .lm-link svg { width:10px; height:10px; opacity:0.5; transition:transform var(--lm-tr); }
 .lm-item:hover .lm-link svg { transform:rotate(180deg); opacity:1; }
 #lm-nav.lm-dark .lm-link { color:rgba(255,255,255,0.7); }
@@ -71,7 +72,7 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
   background:var(--lm-white); border:1px solid rgba(0,0,0,0.06);
   border-radius:8px; box-shadow:0 12px 40px rgba(0,0,0,0.12);
   padding:0.5rem; opacity:0; visibility:hidden; transform:translateY(-8px);
-  transition:all 0.2s cubic-bezier(0.4,0,0.2,1); pointer-events:none;
+  transition:opacity 0.2s cubic-bezier(.16,1,.3,1),transform 0.2s cubic-bezier(.16,1,.3,1),visibility 0.2s; pointer-events:none;
 }
 .lm-item:hover .lm-dropdown {
   opacity:1; visibility:visible; transform:translateY(0); pointer-events:all;
@@ -84,21 +85,21 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 .lm-dropdown a:hover { background:var(--lm-cream-light); color:var(--lm-ink); }
 .dd-icon { font-size:1rem; flex-shrink:0; }
 .dd-text { display:flex; flex-direction:column; gap:1px; }
-.dd-label { font-weight:500; font-size:0.83rem; }
-.dd-sub { font-size:0.7rem; color:var(--lm-ink-soft); opacity:0.7; }
+.dd-label { font-weight:500; font-size:0.9rem; }
+.dd-sub { font-size:0.8125rem; color:var(--lm-ink-soft); opacity:0.8; }
 .lm-nav-right { display:flex; align-items:center; gap:0.75rem; flex-shrink:0; }
 .lm-aria-nav-btn {
   display:flex; align-items:center; gap:6px;
   padding:0.35rem 0.875rem 0.35rem 0.6rem;
   background:rgba(255,255,255,0.55); backdrop-filter:blur(14px) saturate(160%); -webkit-backdrop-filter:blur(14px) saturate(160%); color:var(--lm-gold-dark);
   border:1px solid rgba(201,169,110,0.3); border-radius:20px;
-  font-size:0.75rem; font-weight:600; letter-spacing:0.06em;
+  font-size:0.875rem; font-weight:600; letter-spacing:0;
   cursor:pointer; font-family:var(--lm-sans); transition:all var(--lm-tr);
 }
 .lm-aria-nav-btn:hover { background:rgba(255,255,255,0.75); border-color:rgba(201,169,110,0.55); box-shadow:0 4px 18px rgba(201,169,110,0.18); }
 .lm-aria-dot {
   width:5px; height:5px; background:var(--lm-gold); border-radius:50%;
-  box-shadow:0 0 6px rgba(201,169,110,0.7); animation:lm-pulse 2s infinite;
+  
 }
 @keyframes lm-pulse {
   0%,100% { opacity:1; transform:scale(1); }
@@ -106,8 +107,8 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 }
 .lm-asesores-btn {
   padding:0.4rem 1rem; border:1px solid var(--lm-ink); border-radius:2px;
-  font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--lm-ink); text-decoration:none; transition:all var(--lm-tr);
+  font-size:0.875rem; font-weight:500; letter-spacing:0;
+  color:var(--lm-ink); text-decoration:none; transition:background-color var(--lm-tr),color var(--lm-tr);
 }
 .lm-asesores-btn:hover { background:var(--lm-ink); color:var(--lm-white); }
 #lm-nav.lm-dark .lm-asesores-btn { border-color:rgba(255,255,255,0.4); color:var(--lm-white); }
@@ -269,57 +270,55 @@ a.wa-float,[class*="wa-float"],[class*="whatsapp-float"] {
 `;
 
 const NAV = [
-  {l:'Vende',h:'vender.html',d:[
-    {i:'🔎',l:'Diagnóstico LO MÁS',s:'20 min · sin costo',h:'vender.html#diagnostico'},
-    {i:'🧭',l:'Cómo trabajamos',s:'Método LO MÁS',h:'vender.html#metodo'},
-    {i:'🔑',l:'Arrienda tu inmueble',s:'Administración y arriendo',h:'vender.html'},
-    {i:'💰',l:'¿Cuánto te queda?',s:'Calcula tu dinero neto',h:'calculadora.html#neto'},
-    {i:'✅',l:'Negocios cerrados',s:'Hechos, no promesas',h:'index.html#cerrados'},
+  {l:'Inmuebles',h:'propiedades-publica.html',d:[
+    {l:'En venta',s:'Apartamentos, casas y lotes',h:'propiedades-publica.html?negocio=venta'},
+    {l:'En arriendo',s:'Listos para habitar',h:'propiedades-publica.html?negocio=arriendo'},
+    {l:'Apartamentos',s:'Venta y arriendo',h:'propiedades-publica.html?tipo=apartamento'},
+    {l:'Casas',s:'Venta y arriendo',h:'propiedades-publica.html?tipo=casa'},
+    {l:'Busca en el mapa',s:'Dibuja la zona que te interesa',h:'mapa.html'},
   ]},
-  {l:'Propiedades',h:'propiedades.html',d:[
-    {i:'🏠',l:'Apartamentos',s:'Unidades residenciales',h:'propiedades.html?tipo=apartamento'},
-    {i:'🏡',l:'Casas',s:'Propiedades independientes',h:'propiedades.html?tipo=casa'},
-    {i:'🏢',l:'Oficinas',s:'Espacios corporativos',h:'propiedades.html?tipo=oficina'},
-    {i:'🏪',l:'Locales Comerciales',s:'Comercio y retail',h:'propiedades.html?tipo=local'},
-    {i:'🔍',l:'Ver todo el portafolio',s:'Todas las propiedades',h:'propiedades.html'},
+  {l:'Vende',h:'vender.html',d:[
+    {l:'Diagnóstico LO MÁS',s:'20 min · sin costo',h:'vender.html#diagnostico'},
+    {l:'Cómo trabajamos',s:'Método LO MÁS',h:'vender.html#metodo'},
+    {l:'Arrienda tu inmueble',s:'Administración y arriendo',h:'vender.html'},
+    {l:'¿Cuánto te queda?',s:'Calcula tu dinero neto',h:'calculadora.html#neto'},
+    {l:'Negocios cerrados',s:'Ventas y arriendos que ya hicimos',h:'index.html#cerrados'},
   ]},
   {l:'Zonas',h:'index.html#zonas',d:[
-    {i:'🏡',l:'Colina Campestre',s:'Donde más hemos cerrado',h:'propiedades.html?barrio=Colina'},
-    {i:'🌿',l:'Suba',s:'Pinar, Salitre, El Redil',h:'propiedades.html?barrio=Suba'},
-    {i:'⭐',l:'Usaquén y Bella Suiza',s:'Norte',h:'propiedades.html?barrio=Usaquén'},
-    {i:'🏙️',l:'Chicó y Chapinero',s:'Centro-norte',h:'propiedades.html?barrio=Chicó'},
-    {i:'🗺️',l:'Todas las zonas',s:'Dónde trabajamos',h:'index.html#zonas'},
+    {l:'Colina Campestre',s:'Norte de Bogotá',h:'propiedades-publica.html?barrio=Colina%20Campestre'},
+    {l:'Suba',s:'Pinar, El Redil y alrededores',h:'propiedades-publica.html?barrio=Suba'},
+    {l:'Usaquén',s:'Norte de Bogotá',h:'propiedades-publica.html?barrio=Usaqu%C3%A9n'},
+    {l:'Chapinero',s:'Centro-norte de Bogotá',h:'propiedades-publica.html?barrio=Chapinero'},
+    {l:'Todas las zonas',s:'Dónde trabajamos',h:'index.html#zonas',f:1},
   ]},
   {l:'Blog',h:'blog.html',d:[
-    {i:'📊',l:'Mercado Inmobiliario',s:'Tendencias y análisis',h:'blog.html?cat=mercado'},
-    {i:'💡',l:'Consejos Compradores',s:'Guías prácticas',h:'blog.html?cat=compradores'},
-    {i:'📋',l:'Legal y Notarial',s:'Trámites y documentos',h:'blog.html?cat=legal'},
-    {i:'🏗️',l:'Inversión Inmobiliaria',s:'Rentabilidad y estrategia',h:'blog.html?cat=inversion'},
-    {i:'📰',l:'Ver todos los artículos',s:'Toda nuestra biblioteca',h:'blog.html'},
+    {l:'Arrendamiento',s:'Guías para arrendar',h:'blog.html?cat=Arrendamiento'},
+    {l:'Compraventa',s:'Guías para comprar y vender',h:'blog.html?cat=Compraventa'},
+    {l:'Financiación',s:'Crédito y subsidios',h:'blog.html?cat=Financiaci%C3%B3n'},
+    {l:'Trámites',s:'Notaría, registro e impuestos',h:'blog.html?cat=Tr%C3%A1mites'},
+    {l:'Todas las guías',s:'El blog completo',h:'blog.html'},
   ]},
   {l:'Calculadora',h:'calculadora.html',d:[
-    {i:'📝',l:'Gastos Notariales',s:'Escrituración y cierre',h:'calculadora.html#notariales'},
-    {i:'🏦',l:'Crédito Hipotecario',s:'Cuota y amortización',h:'calculadora.html#credito'},
-    {i:'📈',l:'Rentabilidad',s:'Cap Rate e inversión',h:'calculadora.html#rentabilidad'},
-    {i:'💸',l:'Ganancia Ocasional',s:'Impuesto al vender',h:'calculadora.html#ganancia'},
-    {i:'💳',l:'Capacidad Endeudamiento',s:'VIS / No VIS',h:'calculadora.html#endeudamiento'},
-    {i:'🏨',l:'Tradicional vs Airbnb',s:'Comparador de modelo',h:'calculadora.html#airbnb'},
-    {i:'📊',l:'Vacancia y Reserva',s:'Costos ocultos',h:'calculadora.html#vacancia'},
-    {i:'🔄',l:'Compra de Cartera',s:'Refinanciación',h:'calculadora.html#cartera'},
-    {i:'🧾',l:'Prorrateo Predial',s:'Vendedor y comprador',h:'calculadora.html#prorrateo'},
-    {i:'🚦',l:'ACM · Valor Comercial',s:'Análisis comparativo',h:'calculadora.html#acm'},
-    {i:'💰',l:'¿Cuánto te queda?',s:'Dinero neto al vender',h:'calculadora.html#neto'},
-    {i:'🧮',l:'Suite Completa',s:'Todas las calculadoras',h:'calculadora.html'},
+    {l:'Gastos notariales',s:'Escrituración y cierre',h:'calculadora.html#notariales'},
+    {l:'Crédito hipotecario',s:'Cuota y amortización',h:'calculadora.html#credito'},
+    {l:'Rentabilidad',s:'Cap rate e inversión',h:'calculadora.html#rentabilidad'},
+    {l:'Ganancia ocasional',s:'Impuesto al vender',h:'calculadora.html#ganancia'},
+    {l:'Capacidad de endeudamiento',s:'VIS / no VIS',h:'calculadora.html#endeudamiento'},
+    {l:'Tradicional vs. Airbnb',s:'Compara los dos modelos',h:'calculadora.html#airbnb'},
+    {l:'Vacancia y reserva',s:'Costos ocultos',h:'calculadora.html#vacancia'},
+    {l:'Compra de cartera',s:'Refinanciación',h:'calculadora.html#cartera'},
+    {l:'Prorrateo predial',s:'Vendedor y comprador',h:'calculadora.html#prorrateo'},
+    {l:'ACM · valor comercial',s:'Análisis comparativo',h:'calculadora.html#acm'},
+    {l:'¿Cuánto te queda?',s:'Dinero neto al vender',h:'calculadora.html#neto'},
   ]},
-  {l:'Nosotros',h:'index.html#nosotros',d:[
-    {i:'🏛️',l:'Nuestra Historia',s:'Quiénes somos',h:'index.html#nosotros'},
-    {i:'👥',l:'El Equipo',s:'Asesores especializados',h:'asesores.html'},
-    {i:'🤝',l:'Valores y Filosofía',s:'Lo que nos mueve',h:'index.html#valores'},
+  {l:'Nosotros',h:'sobre-nosotros.html',d:[
+    {l:'Nuestra historia',s:'Quiénes somos',h:'sobre-nosotros.html'},
+    {l:'El equipo',s:'Los asesores',h:'asesores.html'},
   ]},
   {l:'Contacto',h:'contacto.html',d:[
-    {i:'📞',l:'Hablar con un Asesor',s:'Asesoría personalizada',h:'contacto.html'},
-    {i:'📍',l:'Nuestra Oficina',s:'Bogotá, Colombia',h:'contacto.html#ubicacion'},
-    {i:'✉️',l:'Escríbenos',s:'lomazhome@gmail.com',h:'mailto:lomazhome@gmail.com'},
+    {l:'Habla con un asesor',s:'WhatsApp o llamada',h:'contacto.html'},
+    {l:'Dónde estamos',s:'Bogotá, Colombia',h:'contacto.html#ubicacion'},
+    {l:'Escríbenos',s:'lomazhome@gmail.com',h:'mailto:lomazhome@gmail.com'},
   ]},
 ];
 
@@ -353,6 +352,7 @@ function lmFilterZonas(){
         var items=zonasLi.querySelectorAll(".lm-dropdown a");
         var visible=0;
         items.forEach(function(a){
+          if(a.getAttribute("data-fijo"))return;
           var el=a.querySelector(".dd-label");
           var z=(el?el.textContent:"").toLowerCase().trim();
           var match=!!z&&barrios.some(function(b){return b.indexOf(z)>-1||z.indexOf(b)>-1;});
@@ -366,11 +366,11 @@ function lmFilterZonas(){
 function bNav() {
   const cp = location.pathname.split('/').pop()||'index.html';
   const mi = NAV.map(n=>{
-    const act = cp===n.h||cp.includes(n.h.split('.')[0]);
-    const dd = n.d.map(d=>'<a href="'+d.h+'"><span class="dd-icon">'+d.i+'</span><span class="dd-text"><span class="dd-label">'+d.l+'</span><span class="dd-sub">'+d.s+'</span></span></a>').join('');
+    const act = cp===n.h||cp===n.h.split('#')[0];
+    const dd = n.d.map(d=>'<a href="'+d.h+'"'+(d.f?' data-fijo="1"':'')+'><span class="dd-text"><span class="dd-label">'+d.l+'</span><span class="dd-sub">'+d.s+'</span></span></a>').join('');
     return '<li class="lm-item"><a class="lm-link'+(act?' lm-active':'')+'" href="'+n.h+'">'+n.l+' '+CV+'</a><div class="lm-dropdown">'+dd+'</div></li>';
   }).join('');
-  return '<nav id="lm-nav" class="lm-transparent"><div id="lm-progress"></div><div class="lm-nav-inner"><a class="lm-logo" href="index.html">Lo<span>Maz</span> Home</a><ul class="lm-menu">'+mi+'</ul><div class="lm-nav-right"><button class="lm-aria-nav-btn" id="lm-aria-btn"><span class="lm-aria-dot"></span>ARIA IA</button><a class="lm-asesores-btn" href="login.html">ACCESO ASESORES</a><button class="lm-hamburger" id="lm-ham"><span></span><span></span><span></span></button></div></div></nav>';
+  return '<nav id="lm-nav" class="lm-transparent"><div id="lm-progress"></div><div class="lm-nav-inner"><a class="lm-logo" href="index.html">Lo<span>Maz</span> Home</a><ul class="lm-menu">'+mi+'</ul><div class="lm-nav-right"><button class="lm-aria-nav-btn" id="lm-aria-btn"><span class="lm-aria-dot"></span>ARIA</button><a class="lm-asesores-btn" href="login.html">Acceso asesores</a><button class="lm-hamburger" id="lm-ham"><span></span><span></span><span></span></button></div></div></nav>';
 }
 
 function bFAB() {
@@ -382,7 +382,7 @@ function bChat() {
 }
 
 function bMob() {
-  return '<div id="lm-mobile-menu"><button id="lm-mob-cls" aria-label="Cerrar menu" style="position:absolute;top:1rem;right:1rem;width:48px;height:48px;background:none;border:none;color:white;font-size:1.6rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="login.html" style="color:var(--lm-gold)">Acceso Asesores</a></div>';
+  return '<div id="lm-mobile-menu"><button id="lm-mob-cls" aria-label="Cerrar menu" style="position:absolute;top:1rem;right:1rem;width:48px;height:48px;background:none;border:none;color:white;font-size:1.6rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="login.html" style="color:var(--lm-gold)">Acceso asesores</a></div>';
 }
 
 const KB = {
