@@ -202,6 +202,23 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
 .prop-cta{font-size:.875rem;letter-spacing:0;text-transform:none;min-height:44px;padding:0 1rem;display:inline-flex;align-items:center;transition:background-color .18s ease,color .18s ease}
 :focus-visible{outline:2px solid #a07840;outline-offset:3px}
 @media (hover:none){.prop-card:hover{transform:none;box-shadow:none}.prop-card:hover .prop-card-img img{transform:none}}
+
+/* ===== Filtros en una línea (nov 2026) ===== */
+.filters-section{padding:2rem 2rem 1.25rem}
+.filtros{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:1.5rem;row-gap:1rem}
+.filtro{display:flex;flex-direction:column;min-width:0}
+.filtro span{font-size:.8125rem;color:#57534e;margin-bottom:.25rem}
+.filtro select{appearance:none;-webkit-appearance:none;width:100%;min-height:48px;padding:0 1.75rem 0 0;border:0;border-bottom:1px solid var(--navy);border-radius:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%230D1B2E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right .25rem center/12px 8px;font:400 1rem "Inter",sans-serif;color:var(--navy);cursor:pointer;text-overflow:ellipsis;transition:border-color .18s ease}
+.filtro.activo select{font-weight:600;border-bottom-color:#a07840;border-bottom-width:2px}
+.filtro select:disabled{color:#78716c;border-bottom-color:#d6d3d1;cursor:default;opacity:1}
+.filtro select:focus-visible{outline:2px solid #a07840;outline-offset:3px}
+.filtros-pie{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:44px;margin-top:.75rem}
+.filtros-limpiar{background:none;border:0;padding:0;min-height:44px;font:500 .9375rem "Inter",sans-serif;color:var(--navy);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.filtros-mapa{margin-left:auto;font-size:.9375rem;color:var(--navy);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--gold)}
+.results-title{font-size:clamp(1.5rem,3vw,2rem);text-wrap:balance;max-width:28ch}
+.empty-state .prop-cta{margin-top:1rem;background:none;cursor:pointer}
+@media(max-width:1000px){.filtros{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.filtros{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1rem}.filtro:first-child{grid-column:1/-1}.filters-section{padding:1.5rem 1.5rem 1rem}}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
 </head>
@@ -222,67 +239,30 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
 </nav>
 <section class="prop-hero">
   <div class="prop-hero-in">
-  <h1>Inmuebles en venta y arriendo en Bogot&#225;</h1>
-  <p class="prop-hero-sub">Apartamentos, casas y locales. Filtra por negocio, tipo de inmueble, zona y precio.</p>
+  <h1>Inmuebles en venta y arriendo</h1>
+  <p class="prop-hero-sub">Elige negocio, tipo, ciudad, zona y precio. La lista cambia al instante.</p>
   </div>
 </section>
 <div class="gold-div"></div>
 <section class="filters-section" id="filters-section">
   <div class="filters-inner">
-    <div class="filters-row">
-      <div class="filter-group">
-        <span class="filter-label">Negocio</span>
-        <div class="tipo-toggle">
-          <button class="tipo-btn active" data-tipo="todos" onclick="setTipo(this)">Todos</button>
-          <button class="tipo-btn" data-tipo="arriendo" onclick="setTipo(this)">Arriendo</button>
-          <button class="tipo-btn" data-tipo="venta" onclick="setTipo(this)">Venta</button>
-          <a class="tipo-btn tipo-btn--mapa" href="mapa.html">Buscar en el mapa</a>
-        </div>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Tipo de inmueble</span>
-        <div class="chips" id="chips-tipo">
-          <button class="chip active" data-val="" onclick="setChip(this,'tipo')">Todos</button>
-          <button class="chip" data-val="apartamento" onclick="setChip(this,'tipo')">Apartamento</button>
-          <button class="chip" data-val="apartaestudio" onclick="setChip(this,'tipo')">Apartaestudio</button>
-          <button class="chip" data-val="casa" onclick="setChip(this,'tipo')">Casa</button>
-          <button class="chip" data-val="oficina" onclick="setChip(this,'tipo')">Oficina</button>
-          <button class="chip" data-val="local" onclick="setChip(this,'tipo')">Local</button>
-          <button class="chip" data-val="bodega" onclick="setChip(this,'tipo')">Bodega</button>
-          <button class="chip" data-val="lote" onclick="setChip(this,'tipo')">Lote</button>
-          <button class="chip" data-val="finca" onclick="setChip(this,'tipo')">Finca o rural</button>
-          <button class="chip" data-val="parqueadero" onclick="setChip(this,'tipo')">Parqueadero</button>
-          <button class="chip" data-val="consultorio" onclick="setChip(this,'tipo')">Consultorio</button>
-          <button class="chip" data-val="habitacion" onclick="setChip(this,'tipo')">Habitación</button>
-        </div>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Barrio o zona</span>
-        <div class="chips" id="chips-barrio">
-          <button class="chip active" data-val="" onclick="setChip(this,'barrio')">Todos</button>
-          <button class="chip" data-val="Chapinero" onclick="setChip(this,'barrio')">Chapinero</button>
-          <button class="chip" data-val="Usaquén" onclick="setChip(this,'barrio')">Usaquén</button>
-          <button class="chip" data-val="Chicó" onclick="setChip(this,'barrio')">Chicó</button>
-          <button class="chip" data-val="Santa Bárbara" onclick="setChip(this,'barrio')">Santa Bárbara</button>
-          <button class="chip" data-val="Cedritos" onclick="setChip(this,'barrio')">Cedritos</button>
-          <button class="chip" data-val="Salitre" onclick="setChip(this,'barrio')">Salitre</button>
-          <button class="chip" data-val="Rosales" onclick="setChip(this,'barrio')">Rosales</button>
-        </div>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Precio máximo</span>
-        <div class="price-range">
-          <input type="range" class="range-input" id="price-range" min="500000" max="20000000" step="500000" value="20000000" oninput="updatePrice(this)"/>
-          <span class="price-display" id="price-display">Hasta: Sin límite</span>
-        </div>
-      </div>
+    <form class="filtros" id="filtros" onsubmit="return false" aria-label="Filtros de búsqueda">
+      <label class="filtro"><span>Venta o arriendo</span><select id="f-negocio"></select></label>
+      <label class="filtro"><span>Tipo de inmueble</span><select id="f-tipo"></select></label>
+      <label class="filtro"><span>Ciudad</span><select id="f-ciudad"></select></label>
+      <label class="filtro"><span>Barrio o zona</span><select id="f-lugar"></select></label>
+      <label class="filtro"><span>Precio</span><select id="f-precio"></select></label>
+    </form>
+    <div class="filtros-pie">
+      <button type="button" class="filtros-limpiar" id="f-limpiar" hidden>Quitar los filtros</button>
+      <a class="filtros-mapa" href="mapa.html">Buscar en el mapa</a>
     </div>
   </div>
 </section>
 <section class="results-section">
   <div class="results-header">
     <div>
-      <h2 class="results-title">Inmuebles disponibles <span class="results-count" id="results-count"></span></h2>
+      <h2 class="results-title" id="results-count" aria-live="polite">Inmuebles disponibles</h2>
     </div>
     <select class="sort-select" id="sort-select" onchange="applyFilters()">
       <option value="reciente">Más recientes</option>
@@ -374,7 +354,7 @@ const _sUrl="https://lniouebpuuuqctrgxoiw.supabase.co";
 const _sKey=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
 const sb=supabase.createClient(_sUrl,_sKey);
 let allProps=[];
-let state={tipo:"todos",tipoInmueble:"",barrio:"",precioMax:20000000,sort:"reciente"};
+let state={negocio:"",tipo:"",ciudad:"",lugar:"",precio:0,sort:"reciente"};
 function stackNavs(){
   const lm=document.getElementById("lm-nav");
   const mn=document.getElementById("main-nav");
@@ -402,66 +382,158 @@ window.addEventListener("load",function(){stackNavs();initNavToggle();setTimeout
 stackNavs();initNavToggle();
 document.addEventListener("DOMContentLoaded",stackNavs);
 function toggleNav(){document.getElementById("nav-links").classList.toggle("open");}
-function setTipo(btn){
-  document.querySelectorAll(".tipo-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  state.tipo=btn.dataset.tipo;
-  applyFilters();
+/* ============================================================
+   FILTROS — cómo funcionan
+   1. Cada filtro es una lista desplegable. Al cambiar una, la lista de
+      inmuebles se actualiza de inmediato.
+   2. Cada opción muestra cuántos inmuebles tiene con los demás filtros
+      puestos, para no llevar a nadie a una lista vacía.
+   3. Lo elegido queda en la dirección de la página (?negocio=venta&...),
+      así el enlace se puede compartir y la búsqueda de la portada llega bien.
+   ============================================================ */
+const ZONAS_BOG=[
+  {n:"Colina Campestre",t:["colina"]},
+  {n:"Suba",t:["suba","pinar","redil","angeles"]},
+  {n:"Usaquén",t:["usaquen","bella suiza"]},
+  {n:"Chicó",t:["chico"]},
+  {n:"Chapinero",t:["chapinero"]},
+  {n:"La Alhambra",t:["alhambra"]},
+  {n:"Santa Bárbara",t:["santa barbara"]},
+  {n:"Cedritos",t:["cedritos"]}
+];
+const TIPOS={apartamento:["Apartamento","apartamento","apartamentos"],apartaestudio:["Apartaestudio","apartaestudio","apartaestudios"],casa:["Casa","casa","casas"],lote:["Lote","lote","lotes"],local:["Local comercial","local","locales"],oficina:["Oficina","oficina","oficinas"],bodega:["Bodega","bodega","bodegas"],finca:["Finca o rural","finca","fincas"],parqueadero:["Parqueadero","parqueadero","parqueaderos"],consultorio:["Consultorio","consultorio","consultorios"],habitacion:["Habitación","habitación","habitaciones"]};
+const PRECIOS={arriendo:[1500000,2000000,3000000,5000000,8000000],venta:[250000000,300000000,400000000,600000000,800000000,1000000000,2500000000]};
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim();}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+// «CAÑIZA» → «Cañiza»; «Rafael Uribe ( barrios unidos )» → «Rafael Uribe (barrios unidos)»
+function bonito(s){
+  s=String(s||"").replace(/\s+/g," ").replace(/\(\s+/g,"(").replace(/\s+\)/g,")").trim();
+  if(s&&s===s.toUpperCase())s=s.toLowerCase().replace(/(^|\s)(\S)/g,function(m,a,b){return a+b.toUpperCase();});
+  return s;
 }
-function buildBarrioChips(){
-  var cont=document.getElementById("chips-barrio");
-  if(!cont)return;
-  var counts={};
-  (allProps||[]).forEach(function(p){
-    var b=(p.barrio||"").trim();
-    if(!b)return;
-    counts[b]=(counts[b]||0)+1;
-  });
-  var names=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b,"es");});
-  cont.innerHTML="";
-  function mk(val,label){
-    var btn=document.createElement("button");
-    btn.className="chip";
-    if(val==="")btn.classList.add("active");
-    btn.setAttribute("data-val",val);
-    btn.textContent=label;
-    btn.addEventListener("click",function(){setChip(btn,"barrio");});
-    cont.appendChild(btn);
+function esBogota(p){return norm(p.ciudad).indexOf("bogota")>=0;}
+function enZona(p,z){const b=norm(p.barrio);return esBogota(p)&&z.t.some(function(x){return b.indexOf(x)>=0;});}
+// ¿El inmueble pasa los filtros? «sin» deja por fuera un filtro, para contar las opciones de ese filtro.
+function pasa(p,sin){
+  const s=state;
+  if(sin!=="negocio"&&s.negocio&&p.tipo_operacion!==s.negocio)return false;
+  if(sin!=="tipo"&&s.tipo&&norm(p.tipo_propiedad)!==s.tipo)return false;
+  if(sin!=="ciudad"&&s.ciudad&&norm(p.ciudad)!==s.ciudad)return false;
+  if(sin!=="lugar"&&s.lugar){
+    const k=s.lugar.slice(0,2),v=s.lugar.slice(2);
+    if(k==="z:"){const z=ZONAS_BOG.find(function(x){return norm(x.n)===v;});if(!z||!enZona(p,z))return false;}
+    else if(k==="b:"){if(norm(p.barrio)!==v)return false;}
+    else if(norm(p.barrio).indexOf(v)<0)return false;
   }
-  mk("","Todos");
-  names.forEach(function(n){mk(n,n);});
+  if(sin!=="precio"&&s.precio&&s.negocio&&Number(p.precio)>s.precio)return false;
+  return true;
 }
-function setChip(btn,group){
-  const container=document.getElementById("chips-"+group);
-  container.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
-  btn.classList.add("active");
-  if(group==="tipo")state.tipoInmueble=btn.dataset.val;
-  else if(group==="barrio")state.barrio=btn.dataset.val;
-  applyFilters();
+function contar(sin,prueba){return allProps.filter(function(p){return pasa(p,sin)&&prueba(p);}).length;}
+function opcion(valor,texto,n,actual){
+  const sel=valor===actual;
+  return '<option value="'+esc(valor)+'"'+(sel?" selected":"")+(n===0&&!sel?" disabled":"")+'>'+esc(texto)+(n==null?"":" ("+n+")")+'</option>';
 }
-function updatePrice(input){
-  const v=parseInt(input.value);
-  state.precioMax=v;
-  const display=document.getElementById("price-display");
-  if(v>=20000000)display.textContent="Hasta: Sin límite";
-  else display.textContent="Hasta: $"+v.toLocaleString("es-CO")+" COP";
-  // Update range track gradient
-  const pct=((v-500000)/(20000000-500000))*100;
-  input.style.background=`linear-gradient(to right,var(--gold) ${pct}%,rgba(201,169,110,.2) ${pct}%)`;
+function pintarFiltros(){
+  const s=state;
+  // Venta o arriendo
+  document.getElementById("f-negocio").innerHTML=opcion("","Venta y arriendo",null,s.negocio)+
+    opcion("venta","En venta",contar("negocio",function(p){return p.tipo_operacion==="venta";}),s.negocio)+
+    opcion("arriendo","En arriendo",contar("negocio",function(p){return p.tipo_operacion==="arriendo";}),s.negocio);
+  // Tipo: solo los tipos que hay en el inventario
+  const tipos=[...new Set(allProps.map(function(p){return norm(p.tipo_propiedad);}).filter(Boolean))].sort();
+  document.getElementById("f-tipo").innerHTML=opcion("","Todos los tipos",null,s.tipo)+tipos.map(function(k){
+    return opcion(k,(TIPOS[k]||[bonito(k).replace(/^./,function(c){return c.toUpperCase();})])[0],contar("tipo",function(p){return norm(p.tipo_propiedad)===k;}),s.tipo);
+  }).join("");
+  // Ciudad
+  const ciudades={};allProps.forEach(function(p){const k=norm(p.ciudad);if(k)ciudades[k]=bonito(p.ciudad);});
+  document.getElementById("f-ciudad").innerHTML=opcion("","Todas las ciudades",null,s.ciudad)+Object.keys(ciudades).sort().map(function(k){
+    return opcion(k,ciudades[k],contar("ciudad",function(p){return norm(p.ciudad)===k;}),s.ciudad);
+  }).join("");
+  // Barrio o zona: primero las zonas de Bogotá, luego los barrios
+  const deCiudad=allProps.filter(function(p){return !s.ciudad||norm(p.ciudad)===s.ciudad;});
+  const zonas=ZONAS_BOG.filter(function(z){return deCiudad.some(function(p){return enZona(p,z);});});
+  const barrios={};deCiudad.forEach(function(p){const k=norm(p.barrio);if(k)barrios[k]=bonito(p.barrio)+(s.ciudad||esBogota(p)?"":", "+bonito(p.ciudad));});
+  let h=opcion("","Todos los barrios",null,s.lugar);
+  if(zonas.length)h+='<optgroup label="Zonas de Bogotá">'+zonas.map(function(z){return opcion("z:"+norm(z.n),z.n,contar("lugar",function(p){return enZona(p,z);}),s.lugar);}).join("")+'</optgroup>';
+  h+='<optgroup label="Barrios">'+Object.keys(barrios).sort().map(function(k){return opcion("b:"+k,barrios[k],contar("lugar",function(p){return norm(p.barrio)===k;}),s.lugar);}).join("")+'</optgroup>';
+  if(s.lugar&&s.lugar.slice(0,2)==="q:")h+=opcion(s.lugar,"«"+s.lugar.slice(2)+"»",null,s.lugar);
+  document.getElementById("f-lugar").innerHTML=h;
+  // Precio: depende de si es venta o arriendo
+  const fp=document.getElementById("f-precio");
+  if(!s.negocio){fp.disabled=true;fp.innerHTML='<option value="">Elige primero venta o arriendo</option>';}
+  else{fp.disabled=false;fp.innerHTML=opcion("0","Cualquier precio",null,String(s.precio||0))+PRECIOS[s.negocio].map(function(v){
+    return opcion(String(v),"Hasta "+fmtPrice(v),contar("precio",function(p){return Number(p.precio)<=v;}),String(s.precio||0));
+  }).join("");}
+  document.querySelectorAll(".filtro select").forEach(function(el){el.closest(".filtro").classList.toggle("activo",!!el.value&&el.value!=="0");});
+  document.getElementById("f-limpiar").hidden=!(s.negocio||s.tipo||s.ciudad||s.lugar||s.precio);
+}
+function nombreLugar(){
+  const s=state;if(!s.lugar)return"";
+  const k=s.lugar.slice(0,2),v=s.lugar.slice(2);
+  if(k==="z:"){const z=ZONAS_BOG.find(function(x){return norm(x.n)===v;});return z?z.n:v;}
+  if(k==="b:"){const p=allProps.find(function(x){return norm(x.barrio)===v;});return p?bonito(p.barrio):v;}
+  return v;
+}
+// «3 apartamentos en venta en Suba, Bogotá, hasta $ 300 millones»
+function resumen(n){
+  const s=state;
+  if(!n)return"Ningún inmueble coincide con esos filtros";
+  let t=n+" "+(s.tipo&&TIPOS[s.tipo]?TIPOS[s.tipo][n===1?1:2]:(n===1?"inmueble":"inmuebles"));
+  if(s.negocio)t+=s.negocio==="venta"?" en venta":" en arriendo";
+  const lugar=nombreLugar(),p=s.ciudad&&allProps.find(function(x){return norm(x.ciudad)===s.ciudad;}),ciudad=p?bonito(p.ciudad):"";
+  if(lugar)t+=" en "+lugar+(ciudad?", "+ciudad:"");else if(ciudad)t+=" en "+ciudad;
+  if(s.precio&&s.negocio)t+=", hasta "+fmtPrice(s.precio);
+  if(!s.negocio&&!s.tipo&&!lugar&&!ciudad)t+=n===1?" disponible":" disponibles";
+  return t;
+}
+function guardarEnDireccion(){
+  const s=state,q=new URLSearchParams();
+  if(s.negocio)q.set("negocio",s.negocio);
+  if(s.tipo)q.set("tipo",s.tipo);
+  if(s.ciudad)q.set("ciudad",s.ciudad);
+  if(s.lugar)q.set("barrio",nombreLugar());
+  if(s.precio&&s.negocio)q.set("precio",String(s.precio));
+  if(s.sort&&s.sort!=="reciente")q.set("orden",s.sort);
+  const txt=q.toString();
+  try{history.replaceState(null,"",location.pathname+(txt?"?"+txt:""));}catch(e){}
+}
+function leerDireccion(){
+  const q=new URLSearchParams(location.search),s=state;
+  let neg=norm(q.get("negocio")),tipo=norm(q.get("tipo"));
+  // enlaces viejos: ?tipo=venta quería decir «en venta»
+  if(!neg&&(tipo==="venta"||tipo==="arriendo")){neg=tipo;tipo="";}
+  if(neg==="venta"||neg==="arriendo")s.negocio=neg;
+  if(tipo)s.tipo=tipo;
+  const c=norm(q.get("ciudad"));if(c)s.ciudad=c;
+  const b=norm(q.get("barrio"));
+  if(b){
+    const z=ZONAS_BOG.find(function(x){return norm(x.n)===b||norm(x.n).indexOf(b)>=0||x.t.indexOf(b)>=0;});
+    if(z)s.lugar="z:"+norm(z.n);
+    else if(allProps.some(function(p){return norm(p.barrio)===b;}))s.lugar="b:"+b;
+    else s.lugar="q:"+b;
+  }
+  const pr=Number(q.get("precio"));if(pr>0&&s.negocio)s.precio=pr;
+  const o=q.get("orden");if(o==="precio_asc"||o==="precio_desc"){s.sort=o;document.getElementById("sort-select").value=o;}
+}
+function limpiarFiltros(){state.negocio="";state.tipo="";state.ciudad="";state.lugar="";state.precio=0;applyFilters();}
+function iniciarFiltros(){
+  leerDireccion();
+  document.getElementById("f-negocio").addEventListener("change",function(e){state.negocio=e.target.value;state.precio=0;applyFilters();});
+  document.getElementById("f-tipo").addEventListener("change",function(e){state.tipo=e.target.value;applyFilters();});
+  document.getElementById("f-ciudad").addEventListener("change",function(e){state.ciudad=e.target.value;state.lugar="";applyFilters();});
+  document.getElementById("f-lugar").addEventListener("change",function(e){state.lugar=e.target.value;applyFilters();});
+  document.getElementById("f-precio").addEventListener("change",function(e){state.precio=Number(e.target.value)||0;applyFilters();});
+  document.getElementById("f-limpiar").addEventListener("click",limpiarFiltros);
   applyFilters();
 }
 function applyFilters(){
   state.sort=document.getElementById("sort-select").value;
-  let filtered=allProps.filter(p=>{
-    if(state.tipo!=="todos"&&p.tipo_operacion!==state.tipo)return false;
-    if(state.tipoInmueble&&(p.tipo_propiedad||"").toLowerCase()!==state.tipoInmueble.toLowerCase())return false;
-    if(state.barrio&&(!p.barrio||!p.barrio.toLowerCase().includes(state.barrio.toLowerCase())))return false;
-    if(state.precioMax<20000000&&p.precio>state.precioMax)return false;
-    return true;
-  });
+  const filtered=allProps.filter(function(p){return pasa(p,null);});
   if(state.sort==="precio_asc")filtered.sort((a,b)=>a.precio-b.precio);
   else if(state.sort==="precio_desc")filtered.sort((a,b)=>b.precio-a.precio);
   else filtered.sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+  pintarFiltros();
+  guardarEnDireccion();
   renderProps(filtered);
 }
 function fmtPrice(n){
@@ -474,9 +546,9 @@ function fmtPrice(n){
 function renderProps(props){
   const grid=document.getElementById("prop-grid");
   const cnt=document.getElementById("results-count");
-  cnt.textContent=props.length+(props.length===1?" inmueble":" inmuebles");
+  cnt.textContent=resumen(props.length);
   if(props.length===0){
-    grid.innerHTML='<div class="empty-state"><p>Ningún inmueble coincide con esos filtros</p><span>Quita un filtro o sube el precio máximo.</span></div>';
+    grid.innerHTML='<div class="empty-state"><span>Prueba con otra zona, otro tipo de inmueble o un precio más alto.</span><button type="button" class="prop-cta" onclick="limpiarFiltros()">Quita los filtros</button></div>';
     return;
   }
   grid.innerHTML=props.map(p=>{
@@ -524,23 +596,7 @@ async function loadProps(){
     const{data,error}=await sb.from("propiedades").select("id,titulo,tipo_operacion,tipo_propiedad,precio,barrio,ciudad,habitaciones,banos,m2_construccion,foto_principal,fotos,estado,created_at").eq("estado","activa").order("created_at",{ascending:false}).limit(100);
     if(error)throw error;
     allProps=data||[];
-    buildBarrioChips();
-    // Check URL params
-    const params=new URLSearchParams(window.location.search);
-    if(params.get("tipo")){
-      const t=params.get("tipo");
-      state.tipo=t;
-      document.querySelectorAll(".tipo-btn").forEach(b=>{b.classList.toggle("active",b.dataset.tipo===t||b.dataset.tipo==="todos"&&!t);});
-      document.querySelectorAll(".tipo-btn").forEach(b=>{if(b.dataset.tipo===t)b.classList.add("active");else b.classList.remove("active");});
-    }
-    if(params.get("barrio")){
-      const bar=params.get("barrio");
-      state.barrio=bar;
-      document.querySelectorAll("#chips-barrio .chip").forEach(c=>{
-        c.classList.toggle("active",c.dataset.val===bar);
-      });
-    }
-    applyFilters();
+    iniciarFiltros();
   }catch(e){
     document.getElementById("prop-grid").innerHTML='<div class="empty-state"><p>Error al cargar propiedades</p><span>'+e.message+'</span></div>';
   }
