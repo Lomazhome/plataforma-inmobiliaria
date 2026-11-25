@@ -814,7 +814,7 @@ function renderProps(props) {
     const imgHtml = imgSrc
       ? '<img class=\"prop-card__img\" src=\"' + imgSrc + '\" alt=\"' + (p.titulo||'Propiedad') + '\" loading=\"lazy\"/>'
       : '<div class=\"prop-card__nophoto\">LH</div>';
-    return '<a class=\"prop-card\" href=\"propiedad.html?id=' + p.id + '\">' +
+    return '<a class=\"prop-card\" href=\"propiedad-publica.html?id=' + p.id + '\">' +
       '<div class=\"prop-card__wrap\">' + imgHtml + badge + '</div>' +
       '<div class=\"prop-card__body\">' +
         '<div class=\"prop-card__zone\">' + (p.ciudad||'Bogotá') + (p.barrio ? ' · ' + p.barrio : '') + '</div>' +

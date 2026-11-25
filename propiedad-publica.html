@@ -103,15 +103,29 @@ h1{color:#12233F !important;}
 /*ASESOR-NOMBRE*/
 .asesor-nombre{margin-top:10px;font-size:.9rem;color:#4A5A76;}
 .asesor-nombre strong{color:#12233F;font-weight:600;}
+
+/* ===== Fase 3 · ficha (nov 2026) ===== */
+.brand{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:1.5rem;letter-spacing:0}
+.brand i{font-style:italic;color:#c9a96e}
+nav.top .links{letter-spacing:0;font-size:.9375rem;font-weight:500}
+.tag{font-size:.875rem;letter-spacing:0;text-transform:none}
+.tag::first-letter{text-transform:uppercase}
+.badge-op{letter-spacing:0;text-transform:none;font-size:.8125rem}
+.fact .ic{display:flex;justify-content:center;color:#a07840}
+.fact .ic svg{width:26px;height:26px}
+.fact .l{letter-spacing:0;text-transform:none;font-size:.875rem}
+.price2{font-variant-numeric:tabular-nums}
+.ph--txt{font-size:1rem}
+:focus-visible{outline:2px solid #a07840;outline-offset:3px}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
 </head>
 <body>
 <nav class="top"><div class="wrap">
-  <a href="/" class="brand">Lomaz<b>Home</b></a>
+  <a href="/" class="brand">Lo<i>Maz</i> Home</a>
   <div class="links">
-    <a href="/">INICIO</a>
-    <a href="/propiedades.html">PROPIEDADES</a>
+    <a href="/">Inicio</a>
+    <a href="/propiedades-publica.html">Inmuebles</a>
     
   </div>
 </div></nav>
@@ -125,7 +139,9 @@ h1{color:#12233F !important;}
   var app=document.getElementById('app');
   function qp(n){return new URLSearchParams(window.location.search).get(n);}
   var ID=qp('id');
-  if(!ID){app.innerHTML='<div class="center-msg">Propiedad no especificada.</div>';return;}
+  if(!ID){var __facts=[['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15h18M6 10V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3M3 18v2M21 18v2"/></svg>',p.habitaciones,'Habitaciones'],['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16v2a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-2zM6 12V6a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2"/></svg>',p.banos,'Baños'],['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16h14M4 16v-3l2-5h12l2 5v3M4 16v2h3v-2M17 16v2h3v-2"/></svg>',(p.garajes||p.parqueaderos),'Garajes'],['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4zM4 9h3M4 14h3M9 20v-3M14 20v-3"/></svg>',area,'m\u00b2 de área']].filter(function(f){return Number(f[1])>0;});
+  var factsHtml=__facts.length?'<div class="facts">'+__facts.map(function(f){return '<div class="fact"><div class="ic">'+f[0]+'</div><div class="v">'+esc(f[1])+'</div><div class="l">'+f[2]+'</div></div>';}).join('')+'</div>':'';
+  app.innerHTML='<div class="center-msg">Propiedad no especificada.</div>';return;}
   var SB=null; var myName='';
   try{
     var cfg=await (await fetch('/config.js')).text();
@@ -138,7 +154,7 @@ h1{color:#12233F !important;}
   try{ var r=await SB.from('propiedades').select('*').eq('id',ID).single(); p=r.data; }catch(e){}
   if(!p){app.innerHTML='<div class="center-msg">No se encontro la propiedad o no esta disponible.</div>';return;}
   var asrId=p.asesor_id||''; var asrName='Asesor Lomaz Home'; var asrAv='LH'; if(asrId){ try{ var ar=await SB.from('perfiles_usuarios').select('nombre_completo,avatar_url').eq('id',asrId).single(); if(ar.data){ asrName=ar.data.nombre_completo||asrName; if(ar.data.avatar_url) asrAv='<img src="'+ar.data.avatar_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'; } }catch(e){} }
-  function fmtPrice(n){n=Number(n)||0;if(n>=1e9)return '$'+(n/1e9).toFixed(n%1e9===0?0:1).replace('.0','')+' Mil M';if(n>=1e6)return '$'+(n/1e6).toFixed(n%1e6===0?0:1).replace('.0','')+'M';return '$'+n.toLocaleString('es-CO');}
+  function fmtPrice(n){n=Number(n)||0;if(!n)return 'Precio a convenir';if(n>=1e7){var m=n/1e6;return '$\u00a0'+(m%1===0?m.toLocaleString('es-CO'):m.toLocaleString('es-CO',{maximumFractionDigits:1}))+'\u00a0millones';}return '$\u00a0'+n.toLocaleString('es-CO');}
   function full(n){return '$'+(Number(n)||0).toLocaleString('es-CO');}
   function cap(s){s=(s||'').toString();return s.charAt(0).toUpperCase()+s.slice(1);}
   function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
@@ -152,27 +168,27 @@ h1{color:#12233F !important;}
   var galInner;
   if(fotos.length){
     galInner='<div class="main"><span class="badge-op">'+esc(op).toUpperCase()+'</span><img id="mainImg" src="'+esc(fotos[0])+'" alt="foto"/>'+(fotos.length>1?'<div class="gnav prev" onclick="GAL(-1)">&#8249;</div><div class="gnav next" onclick="GAL(1)">&#8250;</div>':'')+'<div class="gcount"><span id="gIdx">1</span> / '+fotos.length+'</div></div>';
-  }else{ galInner='<div class="main"><span class="badge-op">'+esc(op).toUpperCase()+'</span><span class="ph">&#127968;</span></div>'; }
+  }else{ galInner='<div class="main"><span class="badge-op">'+esc(op).toUpperCase()+'</span><span class="ph ph--txt">Sin fotos todavía</span></div>'; }
   var thumbs='';
   if(fotos.length>1){ thumbs='<div class="thumbs">'+fotos.map(function(f,i){return '<img src="'+esc(f)+'" class="'+(i===0?'active':'')+'" onclick="GAL_SET('+i+')"/>';}).join('')+'</div>'; }
   var specRows=[
     ['Tipo', cap(p.tipo_propiedad||p.tipo||'-')],['Negocio', cap(op)],['Estrato', p.estrato||'-'],['Piso', (p.piso!=null?p.piso:'-')],
-    ['Area construida', (p.m2_construccion||p.area_construida)?((p.m2_construccion||p.area_construida)+' m\u00b2'):'-'],
-    ['Area privada', p.area_privada?(p.area_privada+' m\u00b2'):'-'],['Area terreno', p.m2_terreno?(p.m2_terreno+' m\u00b2'):'-'],
+    ['Área construida', (p.m2_construccion||p.area_construida)?((p.m2_construccion||p.area_construida)+' m\u00b2'):'-'],
+    ['Área privada', p.area_privada?(p.area_privada+' m\u00b2'):'-'],['Área del terreno', p.m2_terreno?(p.m2_terreno+' m\u00b2'):'-'],
     ['Habitaciones', (p.habitaciones!=null?p.habitaciones:'-')],['Baños', (p.banos!=null?p.banos:'-')],
     ['Garajes', (p.garajes!=null?p.garajes:(p.parqueaderos!=null?p.parqueaderos:'-'))],
     ['Antigüedad', (p.antiguedad!=null?p.antiguedad+' años':(p.edad_inmueble!=null?p.edad_inmueble:'-'))],
-    ['Tipo de piso', cap(p.tipo_piso||'-')],['Administracion', (p.administracion||p.precio_admin)?full(p.administracion||p.precio_admin):'-'],
-    ['Acepta creditos', p.acepta_creditos?'Si':'No'],['Acepta mascotas', p.acepta_mascotas?'Si':'No'],
+    ['Tipo de piso', cap(p.tipo_piso||'-')],['Administración', (p.administracion||p.precio_admin)?full(p.administracion||p.precio_admin):'-'],
+    ['Acepta créditos', p.acepta_creditos?'Sí':'No'],['Acepta mascotas', p.acepta_mascotas?'Sí':'No'],
     ['Estado', cap(p.estado||p.estado_propiedad||'-')]
   ].filter(function(r){return r[1]!=='-' && r[1]!=='' && r[1]!=null;});
   var specsHtml=specRows.map(function(r){return '<div class="spec"><span class="k">'+esc(r[0])+'</span><span class="vv">'+esc(r[1])+'</span></div>';}).join('');
   var amenHtml = amen.length? '<div class="sec"><h2>Amenidades</h2><div class="rule"></div><div class="amen">'+amen.map(function(a){return '<div class="a">'+esc(a)+'</div>';}).join('')+'</div></div>' : '';
   var hasGeo = p.latitud && p.longitud && !p.ocultar_mapa;
   var addrLine = p.ocultar_calle? '' : (p.direccion||p.calle_carrera||'');
-  var mapHtml = hasGeo ? '<div class="sec"><h2>Ubicacion</h2><div class="rule"></div>'+(addrLine?'<p class="desc" style="margin-bottom:14px">\ud83d\udccd '+esc(addrLine)+'</p>':'')+'<div id="map"></div></div>' : '<div class="sec"><h2>Ubicacion</h2><div class="rule"></div><p class="noaddr">'+esc(locTxt||'Ubicacion no disponible')+'</p></div>';
+  var mapHtml = hasGeo ? '<div class="sec"><h2>Ubicación</h2><div class="rule"></div>'+(addrLine?'<p class="desc" style="margin-bottom:14px">'+esc(addrLine)+'</p>':'')+'<div id="map"></div></div>' : '<div class="sec"><h2>Ubicación</h2><div class="rule"></div><p class="noaddr">'+esc(locTxt||'Ubicacion no disponible')+'</p></div>';
   var waMsg=encodeURIComponent('Hola, estoy interesado en la propiedad: '+(p.titulo||'')+' ('+window.location.href+')');
-  var sideHtml='<div class="side"><div class="card"><div class="price2">'+fmtPrice(p.precio)+'</div><div class="neg">'+full(p.precio)+(p.precio_negociable?' \u00b7 Negociable':'')+'</div><div class="asesor-nombre">Asesor Encargado: <strong>'+esc(asrName)+'</strong></div><a class="advisor" href="asesor.html?id='+esc(asrId)+'" style="text-decoration:none;color:inherit"><div class="av">'+asrAv+'</div><div><div class="nm">'+esc(asrName)+'</div><div class="rl">Inmobiliaria Lomaz</div></div></a><a class="btn btn-wa" target="_blank" href="https://wa.me/573003300343?text='+waMsg+'">Contactar por WhatsApp</a><button class="btn btn-ghost" onclick="navigator.share?navigator.share({title:document.title,url:location.href}):(navigator.clipboard.writeText(location.href),alert(\'Enlace copiado\'))">Compartir</button>'+
+  var sideHtml='<div class="side"><div class="card"><div class="price2">'+fmtPrice(p.precio)+'</div><div class="neg">'+[(Number(p.precio)>=1e7?full(p.precio):''),(p.precio_negociable?'Negociable':'')].filter(Boolean).join(', ')+'</div><div class="asesor-nombre">Asesor encargado: <strong>'+esc(asrName)+'</strong></div><a class="advisor" href="asesor.html?id='+esc(asrId)+'" style="text-decoration:none;color:inherit"><div class="av">'+asrAv+'</div><div><div class="nm">'+esc(asrName)+'</div><div class="rl">Inmobiliaria Lomaz</div></div></a><a class="btn btn-wa" target="_blank" href="https://wa.me/573003300343?text='+waMsg+'">Contactar por WhatsApp</a><button class="btn btn-ghost" onclick="navigator.share?navigator.share({title:document.title,url:location.href}):(navigator.clipboard.writeText(location.href),alert(\'Enlace copiado\'))">Compartir</button>'+
     '<form id="lhLeadForm" onsubmit="return LH_ENVIAR(event)" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.1)"><div style="font-size:13px;font-weight:600;color:inherit;margin-bottom:8px">¿Quieres más información? Te escribimos.</div>'+
     '<input name="nombre" required placeholder="Tu nombre" style="width:100%;margin-bottom:8px;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.18);background:#fff;color:#1b2a41;font-size:16px;font-family:inherit">'+
     '<input name="telefono" required inputmode="tel" placeholder="Tu WhatsApp" style="width:100%;margin-bottom:8px;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.18);background:#fff;color:#1b2a41;font-size:16px;font-family:inherit">'+
@@ -184,20 +200,15 @@ h1{color:#12233F !important;}
     }catch(e){ m.style.color='#c0392b'; m.textContent='No se pudo enviar. Escríbenos por WhatsApp.'; }
     b.disabled=false; b.textContent='Quiero que me contacten'; return false; };
   app.innerHTML=
-    '<div class="crumb"><a href="/">Inicio</a> \u203a <a href="/propiedades.html">Propiedades</a> \u203a <span>'+esc(p.titulo||'')+'</span></div>'+
+    '<div class="crumb"><a href="/">Inicio</a> \u203a <a href="/propiedades-publica.html">Inmuebles</a> \u203a <span>'+esc(p.titulo||'')+'</span></div>'+
     '<div class="gallery">'+galInner+'</div>'+thumbs+
     '<div class="layout"><div class="content">'+
       '<h1 class="title serif">'+esc(p.titulo||'')+'</h1>'+
-      '<div class="loc">\ud83d\udccd '+esc(locTxt)+'</div>'+
-      '<div class="tags"><span class="tag">'+esc(op)+'</span><span class="tag">'+esc(p.tipo_propiedad||p.tipo||'')+'</span>'+(p.estado?'<span class="tag">'+esc(p.estado)+'</span>':'')+'</div>'+
-      '<div class="facts">'+
-        '<div class="fact"><div class="ic">\ud83d\udecf\ufe0f</div><div class="v">'+(p.habitaciones||0)+'</div><div class="l">Habitaciones</div></div>'+
-        '<div class="fact"><div class="ic">\ud83d\udec1</div><div class="v">'+(p.banos||0)+'</div><div class="l">Baños</div></div>'+
-        '<div class="fact"><div class="ic">\ud83d\ude97</div><div class="v">'+(p.garajes||p.parqueaderos||0)+'</div><div class="l">Garajes</div></div>'+
-        '<div class="fact"><div class="ic">\ud83d\udcd0</div><div class="v">'+(area||0)+'</div><div class="l">m\u00b2 Area</div></div>'+
-      '</div>'+
-      (p.descripcion?'<div class="sec"><h2>Descripcion</h2><div class="rule"></div><div class="desc">'+esc(p.descripcion)+'</div></div>':'')+
-      '<div class="sec"><h2>Caracteristicas</h2><div class="rule"></div><div class="specs">'+specsHtml+'</div></div>'+
+      '<div class="loc">'+esc(locTxt)+'</div>'+
+      '<div class="tags"><span class="tag">'+esc(op)+'</span><span class="tag">'+esc(p.tipo_propiedad||p.tipo||'')+'</span>'+'</div>'+
+      factsHtml+
+      (p.descripcion?'<div class="sec"><h2>Descripción</h2><div class="rule"></div><div class="desc">'+esc(p.descripcion)+'</div></div>':'')+
+      '<div class="sec"><h2>Características</h2><div class="rule"></div><div class="specs">'+specsHtml+'</div></div>'+
       amenHtml+ mapHtml+
     '</div>'+sideHtml+'</div>';
   if(window.lhCasillaConsent) lhCasillaConsent('lhConsentBox');

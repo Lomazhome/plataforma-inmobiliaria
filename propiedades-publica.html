@@ -173,6 +173,35 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
 
 /*PUBLIC-LISTING-CLEAN*/
 .footer-admin-link,a[href*="login.html"],a[href*="admin"],#navLoginBtn{display:none !important;}
+
+/* ===== Fase 3 · listado sin aspecto de plantilla (nov 2026) ===== */
+.reveal{opacity:1;transform:none;transition:none}
+.prop-hero{text-align:left;padding:7rem 2rem 3rem}
+.prop-hero-in{max-width:1200px;margin:0 auto}
+.prop-hero h1{font-weight:500;text-wrap:balance;max-width:20ch}
+.prop-hero-sub{margin:0;max-width:56ch;font-size:1.0625rem;line-height:1.6;color:rgba(255,255,255,.78)}
+.gold-div{background:var(--gold);opacity:.5}
+.filters-section{position:static;background:#f4f3ef}
+.filters-row{justify-content:flex-start;align-items:flex-start;gap:1.5rem 2rem}
+.filter-label{font-size:.8125rem;font-weight:600;letter-spacing:0;text-transform:none;opacity:1;margin-bottom:.5rem}
+.tipo-btn{font-size:.875rem;letter-spacing:0;text-transform:none;min-height:44px;padding:0 1.1rem;display:inline-flex;align-items:center;transition:background-color .18s ease,color .18s ease}
+.tipo-btn--mapa{margin-left:.6rem;color:#fff;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--gold)}
+.chip{font-size:.875rem;letter-spacing:0;min-height:40px;padding:0 .9rem;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.chip:hover{color:var(--navy);border-color:var(--navy)}
+.results-count{display:block;margin-top:.25rem;font-family:"Inter",sans-serif;font-size:.9375rem;font-variant-numeric:tabular-nums}
+.prop-card{transition:box-shadow .2s ease,transform .2s cubic-bezier(.16,1,.3,1)}
+.prop-card:hover{box-shadow:0 10px 30px rgba(13,27,46,.12);transform:translateY(-2px)}
+.prop-card-img{aspect-ratio:3/2;background:#e7e5e4}
+.prop-card:hover .prop-card-img img{transform:scale(1.025)}
+.prop-sinfoto{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#57534e;font-size:.9375rem}
+.prop-badge{font-size:.75rem;letter-spacing:0;text-transform:none;font-weight:600;padding:.35rem .7rem}
+.prop-card-title{font-size:1.3rem;text-wrap:balance}
+.prop-card-loc{font-size:.875rem}
+.prop-price{color:var(--navy);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.prop-price-label{font-size:.8125rem}
+.prop-cta{font-size:.875rem;letter-spacing:0;text-transform:none;min-height:44px;padding:0 1rem;display:inline-flex;align-items:center;transition:background-color .18s ease,color .18s ease}
+:focus-visible{outline:2px solid #a07840;outline-offset:3px}
+@media (hover:none){.prop-card:hover{transform:none;box-shadow:none}.prop-card:hover .prop-card-img img{transform:none}}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
 </head>
@@ -192,42 +221,43 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
   </div>
 </nav>
 <section class="prop-hero">
-  <p class="prop-hero-eyebrow">Cat&#225;logo de Propiedades</p>
-  <h1>Tu propiedad ideal<br><em>en Bogot&#225;</em></h1>
-  <p class="prop-hero-sub">Apartamentos, casas y locales en arriendo y venta. Selecciona filtros para encontrar exactamente lo que buscas.</p>
+  <div class="prop-hero-in">
+  <h1>Inmuebles en venta y arriendo en Bogot&#225;</h1>
+  <p class="prop-hero-sub">Apartamentos, casas y locales. Filtra por negocio, tipo de inmueble, zona y precio.</p>
+  </div>
 </section>
 <div class="gold-div"></div>
 <section class="filters-section" id="filters-section">
   <div class="filters-inner">
     <div class="filters-row">
       <div class="filter-group">
-        <span class="filter-label">Tipo</span>
+        <span class="filter-label">Negocio</span>
         <div class="tipo-toggle">
           <button class="tipo-btn active" data-tipo="todos" onclick="setTipo(this)">Todos</button>
           <button class="tipo-btn" data-tipo="arriendo" onclick="setTipo(this)">Arriendo</button>
           <button class="tipo-btn" data-tipo="venta" onclick="setTipo(this)">Venta</button>
-          <a class="tipo-btn" href="mapa.html" style="margin-left:.6rem">🗺️ Buscar en el mapa</a>
+          <a class="tipo-btn tipo-btn--mapa" href="mapa.html">Buscar en el mapa</a>
         </div>
       </div>
       <div class="filter-group">
-        <span class="filter-label">Inmueble</span>
+        <span class="filter-label">Tipo de inmueble</span>
         <div class="chips" id="chips-tipo">
           <button class="chip active" data-val="" onclick="setChip(this,'tipo')">Todos</button>
-          <button class="chip" data-val="apartamento" onclick="setChip(this,'tipo')">Apto</button>
-          <button class="chip" data-val="apartaestudio" onclick="setChip(this,'tipo')">Aparta-estudio</button>
+          <button class="chip" data-val="apartamento" onclick="setChip(this,'tipo')">Apartamento</button>
+          <button class="chip" data-val="apartaestudio" onclick="setChip(this,'tipo')">Apartaestudio</button>
           <button class="chip" data-val="casa" onclick="setChip(this,'tipo')">Casa</button>
           <button class="chip" data-val="oficina" onclick="setChip(this,'tipo')">Oficina</button>
           <button class="chip" data-val="local" onclick="setChip(this,'tipo')">Local</button>
           <button class="chip" data-val="bodega" onclick="setChip(this,'tipo')">Bodega</button>
           <button class="chip" data-val="lote" onclick="setChip(this,'tipo')">Lote</button>
-          <button class="chip" data-val="finca" onclick="setChip(this,'tipo')">Finca/Rural</button>
+          <button class="chip" data-val="finca" onclick="setChip(this,'tipo')">Finca o rural</button>
           <button class="chip" data-val="parqueadero" onclick="setChip(this,'tipo')">Parqueadero</button>
           <button class="chip" data-val="consultorio" onclick="setChip(this,'tipo')">Consultorio</button>
           <button class="chip" data-val="habitacion" onclick="setChip(this,'tipo')">Habitación</button>
         </div>
       </div>
       <div class="filter-group">
-        <span class="filter-label">Barrio / Zona</span>
+        <span class="filter-label">Barrio o zona</span>
         <div class="chips" id="chips-barrio">
           <button class="chip active" data-val="" onclick="setChip(this,'barrio')">Todos</button>
           <button class="chip" data-val="Chapinero" onclick="setChip(this,'barrio')">Chapinero</button>
@@ -240,7 +270,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
         </div>
       </div>
       <div class="filter-group">
-        <span class="filter-label">Precio máx.</span>
+        <span class="filter-label">Precio máximo</span>
         <div class="price-range">
           <input type="range" class="range-input" id="price-range" min="500000" max="20000000" step="500000" value="20000000" oninput="updatePrice(this)"/>
           <span class="price-display" id="price-display">Hasta: Sin límite</span>
@@ -250,10 +280,9 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
   </div>
 </section>
 <section class="results-section">
-  <div class="results-header reveal">
+  <div class="results-header">
     <div>
-      <p class="section-num">N&deg;01 &mdash; Catálogo</p>
-      <h2 class="results-title">Propiedades disponibles <span class="results-count" id="results-count"></span></h2>
+      <h2 class="results-title">Inmuebles disponibles <span class="results-count" id="results-count"></span></h2>
     </div>
     <select class="sort-select" id="sort-select" onchange="applyFilters()">
       <option value="reciente">Más recientes</option>
@@ -435,25 +464,31 @@ function applyFilters(){
   else filtered.sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
   renderProps(filtered);
 }
-function fmtPrice(n){if(!n||n===0)return"Consultar";return"$"+Number(n).toLocaleString("es-CO");}
+function fmtPrice(n){
+  // «$ 280 millones», «$ 2.100 millones», «$ 1.800.000»
+  n=Number(n);
+  if(!n)return"Precio a convenir";
+  if(n>=10000000){const m=n/1000000;return"$\u00a0"+(m%1===0?m.toLocaleString("es-CO"):m.toLocaleString("es-CO",{maximumFractionDigits:1}))+"\u00a0millones";}
+  return"$\u00a0"+n.toLocaleString("es-CO");
+}
 function renderProps(props){
   const grid=document.getElementById("prop-grid");
   const cnt=document.getElementById("results-count");
-  cnt.textContent="("+props.length+" "+( props.length===1?"propiedad":"propiedades")+")";
+  cnt.textContent=props.length+(props.length===1?" inmueble":" inmuebles");
   if(props.length===0){
-    grid.innerHTML='<div class="empty-state"><p>No encontramos propiedades</p><span>Intenta ajustar los filtros de búsqueda.</span></div>';
+    grid.innerHTML='<div class="empty-state"><p>Ningún inmueble coincide con esos filtros</p><span>Quita un filtro o sube el precio máximo.</span></div>';
     return;
   }
   grid.innerHTML=props.map(p=>{
-    const img=p.foto_principal||(p.fotos&&p.fotos[0])||"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format";
+    const img=p.foto_principal||(p.fotos&&p.fotos[0])||"";
     const badge=p.tipo_operacion==="arriendo"?"arriendo":"venta";
     const badgeTxt=p.tipo_operacion==="arriendo"?"Arriendo":"Venta";
     const title=p.titulo||p.tipo_propiedad||"Propiedad";
     const loc=p.barrio?p.barrio+(p.ciudad?", "+p.ciudad:""):"Bogotá, Colombia";
     return `
-    <article class="prop-card reveal" onclick="window.location='propiedad-publica.html?id=${p.id}'">
+    <article class="prop-card" onclick="window.location='propiedad-publica.html?id=${p.id}'">
       <div class="prop-card-img">
-        <img src="${img}" alt="${title} en ${loc}" loading="lazy"/>
+        ${img?`<img src="${img}" alt="${title} en ${loc}" loading="lazy"/>`:`<div class="prop-sinfoto">Sin fotos todavía</div>`}
         <span class="prop-badge ${badge}">${badgeTxt}</span>
       </div>
       <div class="prop-card-body">
@@ -463,9 +498,9 @@ function renderProps(props){
           ${loc}
         </p>
         <div class="prop-card-specs">
-          ${p.habitaciones?`<span class="spec-item"><svg width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M2 11h20M7 7V5a2 2 0 014 0v2M13 7V5a2 2 0 014 0v2"/></svg>${p.habitaciones} Hab</span>`:""}
-          ${p.banos?`<span class="spec-item"><svg width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6a3 3 0 016 0v2H9V6z"/><rect x="3" y="10" width="18" height="10" rx="2"/></svg>${p.banos} Bañ</span>`:""}
-          ${p.m2_construccion?`<span class="spec-item"><svg width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>${p.m2_construccion}m²</span>`:""}
+          ${p.habitaciones?`<span class="spec-item"><svg width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M2 11h20M7 7V5a2 2 0 014 0v2M13 7V5a2 2 0 014 0v2"/></svg>${p.habitaciones} hab.</span>`:""}
+          ${p.banos?`<span class="spec-item"><svg width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 6a3 3 0 016 0v2H9V6z"/><rect x="3" y="10" width="18" height="10" rx="2"/></svg>${p.banos} baños</span>`:""}
+          ${p.m2_construccion?`<span class="spec-item"><svg width="14" height="14" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>${p.m2_construccion} m²</span>`:""}
         </div>
         <div class="prop-card-footer">
           <div>
