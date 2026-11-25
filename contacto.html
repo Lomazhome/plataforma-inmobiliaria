@@ -119,6 +119,29 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
 @media(max-width:900px){.nav-links{display:none;}.nav-ham{display:flex;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;right:0;width:280px;height:100vh;background:var(--navy);padding:5rem 2rem 2rem;z-index:300;}.contact-section{grid-template-columns:1fr;gap:3rem;}.cf-row{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}}
 @media(max-width:600px){.footer-grid{grid-template-columns:1fr;}.aria-panel{width:100%;right:-100%;}.aria-panel.open{right:0;}}
 #lm-nav{transform:translateY(-105%)!important;transition:transform .28s ease;will-change:transform;} body.nav-show #lm-nav{transform:translateY(0)!important;}
+
+/* ===== Fase 4 · sin aspecto de plantilla (nov 2026) ===== */
+html,body{overflow-x:clip}
+.reveal{opacity:1;transform:none;transition:none}
+.gold-div{display:none}
+.nav-links a{letter-spacing:0;text-transform:none;font-size:.9375rem}
+.footer-col h4{letter-spacing:0;text-transform:none;font-size:.9375rem}
+.footer-desc a{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid #a07840;outline-offset:3px}
+.contact-hero{text-align:left}
+.ct-hero-in{max-width:1200px;margin:0 auto}
+.contact-hero h1{font-weight:500}
+.contact-hero p{margin:1rem 0 0;max-width:52ch;font-size:1.0625rem;line-height:1.6;color:rgba(255,255,255,.82)}
+.ct-datos{margin:0 0 2rem;border-top:1px solid #e7e5e4}
+.ct-datos>div{display:grid;grid-template-columns:11rem minmax(0,1fr);gap:1rem;padding:1rem 0;border-bottom:1px solid #e7e5e4}
+.ct-datos dt{font-size:.9375rem;color:#57534e}
+.ct-datos dd{margin:0;font-size:1.0625rem;color:var(--navy);font-variant-numeric:tabular-nums}
+.ct-datos a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--gold)}
+.ct-wa{display:inline-flex;align-items:center;min-height:48px;padding:0 1.5rem;background:var(--navy);color:#fff;font:600 .9375rem "Inter",sans-serif;transition:background-color .18s ease}
+.cf-label{letter-spacing:0;text-transform:none;font-size:.875rem}
+.cf-submit{letter-spacing:0;text-transform:none;font-size:1rem;min-height:52px;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+@media (hover:hover) and (pointer:fine){.ct-wa:hover{background:#162540}}
+@media(max-width:600px){.ct-datos>div{grid-template-columns:1fr;gap:.25rem}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -129,7 +152,7 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
   <a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>
   <ul class="nav-links" id="nav-links">
     <li><a href="index.html">Inicio</a></li>
-    <li><a href="propiedades.html">Propiedades</a></li>
+    <li><a href="propiedades-publica.html">Inmuebles</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="sobre-nosotros.html">Nosotros</a></li>
     <li><a href="contacto.html" class="active">Contacto</a></li>
@@ -138,79 +161,49 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
   <div class="nav-ham" onclick="document.getElementById('nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
 </nav>
 <section class="contact-hero">
-  <p class="eyebrow">Contacto</p>
-  <h1>Hablemos sobre<br><em>tu propiedad ideal</em></h1>
-  <p>Nuestros asesores están disponibles para acompañarte desde el primer mensaje hasta la firma del contrato. Sin compromisos.</p>
+  <div class="ct-hero-in">
+  <h1>Escríbenos</h1>
+  <p>Cuéntanos qué necesitas y te respondemos por WhatsApp o por correo.</p>
+  </div>
 </section>
-<div class="gold-div"></div>
-<section class="contact-section reveal">
+<section class="contact-section">
   <div id="ubicacion" class="contact-info">
-    <p class="section-eyebrow">N&deg;01 &mdash; Infórmanos</p>
-    <h2 class="section-title">Cómo contactarnos</h2>
-    <div class="info-items">
-      <div class="info-item"><div class="info-icon" style="color:var(--gold)">&#128222;</div><div><p class="info-label">Teléfono / WhatsApp</p><p class="info-value"><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></p></div></div>
-      <div class="info-item"><div class="info-icon" style="color:var(--gold)">&#9993;</div><div><p class="info-label">Correo electrónico</p><p class="info-value"><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></p></div></div>
-      <div class="info-item"><div class="info-icon" style="color:var(--gold)">&#9679;</div><div><p class="info-label">Ciudad</p><p class="info-value">Bogotá, Colombia</p></div></div>
-    </div>
-    <a href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20me%20interesa%20una%20propiedad" target="_blank" rel="noopener" class="wa-big">
-      <span class="wa-icon">&#128172;</span>
-      <span class="wa-text"><span class="wa-label">Chat directo</span><span class="wa-num">Escribir por WhatsApp</span></span>
-    </a>
-    <div class="horario-box">
-      <p class="horario-title">Horario de atención</p>
-      <div class="horario-row"><span class="horario-days">Lunes &mdash; Viernes</span><span class="horario-time">8:00 am &mdash; 6:00 pm</span></div>
-      <div class="horario-row"><span class="horario-days">Sábados</span><span class="horario-time">9:00 am &mdash; 2:00 pm</span></div>
-      <div class="horario-row"><span class="horario-days">Domingos</span><span class="horario-time">Previa cita</span></div>
-    </div>
+    <h2 class="section-title">Por dónde nos encuentras</h2>
+    <dl class="ct-datos">
+      <div><dt>WhatsApp y teléfono</dt><dd><a href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">300 330 0343</a></dd></div>
+      <div><dt>Correo</dt><dd><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></dd></div>
+      <div><dt>Horario</dt><dd>Lunes a sábado, de 7:00 a.&nbsp;m. a 6:00 p.&nbsp;m.</dd></div>
+      <div><dt>Ciudad</dt><dd>Bogotá, Colombia</dd></div>
+    </dl>
+    <a href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener" class="ct-wa">Escríbenos por WhatsApp</a>
   </div>
   <div class="contact-form-wrap">
     <h3 class="form-title">Envíanos un mensaje</h3>
-    <p class="form-sub">Cuéntanos qué buscas y uno de nuestros asesores te contactará en menos de 24 horas.</p>
+    <p class="form-sub">Si prefieres, déjanos tus datos y un asesor te escribe.</p>
     <form class="cf" id="contact-form" onsubmit="handleForm(event)">
       <div class="cf-row">
         <div class="cf-field"><label class="cf-label">Nombre</label><input type="text" class="cf-input" name="nombre" placeholder="Tu nombre completo" required/></div>
-        <div class="cf-field"><label class="cf-label">Teléfono</label><input type="tel" class="cf-input" name="telefono" placeholder="+57 300 000 0000"/></div>
+        <div class="cf-field"><label class="cf-label">Teléfono</label><input type="tel" class="cf-input" name="telefono" placeholder="300 000 0000"/></div>
       </div>
       <div class="cf-field"><label class="cf-label">Correo electrónico</label><input type="email" class="cf-input" name="email" placeholder="tu@correo.com" required/></div>
       <div class="cf-field"><label class="cf-label">Tipo de consulta</label>
         <select class="cf-select" name="tipo_consulta" required>
-          <option value="">Selecciona una opción...</option>
+          <option value="">Elige una opción</option>
           <option value="venta">Quiero vender mi inmueble</option>
           <option value="arrendar_mi">Quiero poner mi inmueble en arriendo</option>
           <option value="compra">Quiero comprar</option>
           <option value="arriendo">Quiero tomar un inmueble en arriendo</option>
-          <option value="inversion">Asesoría de inversión</option>
+          <option value="inversion">Quiero invertir en un inmueble</option>
           <option value="otro">Otra consulta</option>
         </select>
       </div>
       <div class="cf-row">
-        <div class="cf-field"><label class="cf-label">Presupuesto aprox.</label>
-          <select class="cf-select" name="presupuesto">
-            <option value="">Sin especificar</option>
-            <option value="menos1M">Menos de $1.000.000</option>
-            <option value="1M-2M">$1.000.000 &mdash; $2.000.000</option>
-            <option value="2M-5M">$2.000.000 &mdash; $5.000.000</option>
-            <option value="5M-10M">$5.000.000 &mdash; $10.000.000</option>
-            <option value="mas10M">Más de $10.000.000</option>
-          </select>
-        </div>
-        <div class="cf-field"><label class="cf-label">Zona de interés</label>
-          <select class="cf-select" name="zona">
-            <option value="">Cualquier zona</option>
-            <option value="chapinero">Chapinero</option>
-            <option value="usaquen">Usaquén</option>
-            <option value="chico">Chicó</option>
-            <option value="santa-barbara">Santa Bárbara</option>
-            <option value="cedritos">Cedritos</option>
-            <option value="salitre">Salitre</option>
-            <option value="rosales">Rosales</option>
-            <option value="otra">Otra zona</option>
-          </select>
-        </div>
+        <div class="cf-field"><label class="cf-label" for="cf-presupuesto">Presupuesto aproximado (opcional)</label><input type="text" class="cf-input" id="cf-presupuesto" name="presupuesto" placeholder="Por ejemplo: 300 millones"/></div>
+        <div class="cf-field"><label class="cf-label" for="cf-zona">Barrio o zona (opcional)</label><input type="text" class="cf-input" id="cf-zona" name="zona" placeholder="Por ejemplo: Suba"/></div>
       </div>
       <div class="cf-field"><label class="cf-label">Mensaje</label><textarea class="cf-textarea" name="mensaje" placeholder="Cuéntanos más sobre lo que buscas…"></textarea></div>
       <div id="cfConsent" style="margin:14px 0 18px"></div>
-      <button type="submit" class="cf-submit">Enviar mensaje &rarr;</button>
+      <button type="submit" class="cf-submit">Envía tu mensaje</button>
       <div class="cf-success" id="cf-success">&#10003; Mensaje enviado. Te contactaremos pronto.</div>
     </form>
   </div>
@@ -218,12 +211,12 @@ nav{position:static;width:100%;z-index:1;background:var(--navy);box-shadow:0 2px
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-grid">
-      <div class="footer-brand"><div class="brand-name">LoMaz <span>Home</span></div><p class="footer-tagline">Inmobiliaria boutique</p><p class="footer-desc">Conectamos personas con propiedades excepcionales en Bogotá. Asesoría personalizada, transparencia total y resultados reales.</p><div class="footer-social"><a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">&#128222;</a><a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email">&#9993;</a><a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a></div></div>
-      <div class="footer-col"><h4>Propiedades</h4><ul><li><a href="propiedades.html?tipo=arriendo">Arriendo</a></li><li><a href="propiedades.html?tipo=venta">Venta</a></li><li><a href="propiedades.html?barrio=Chapinero">Chapinero</a></li><li><a href="propiedades.html?barrio=Usaquén">Usaquén</a></li></ul></div>
+      <div class="footer-brand"><div class="brand-name">LoMaz <span>Home</span></div><p class="footer-desc">Te damos lo más para encontrar tu hogar. Vendemos y arrendamos apartamentos, casas y locales en Bogotá.</p><p class="footer-desc"><a href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener">Instagram @lomazhome</a></p></div>
+      <div class="footer-col"><h4>Inmuebles</h4><ul><li><a href="propiedades-publica.html?negocio=venta">En venta</a></li><li><a href="propiedades-publica.html?negocio=arriendo">En arriendo</a></li><li><a href="propiedades-publica.html?barrio=Suba">En Suba</a></li><li><a href="mapa.html">En el mapa</a></li></ul></div>
       <div class="footer-col"><h4>LoMaz Home</h4><ul><li><a href="sobre-nosotros.html">Sobre nosotros</a></li><li><a href="blog.html">Blog</a></li><li><a href="calculadora.html">Calculadora</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
       <div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/573003300343" target="_blank" rel="noopener">+57 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="contacto.html">Bogotá, Colombia</a></li></ul></div>
     </div>
-    <div class="footer-bottom"><span class="footer-copy">&copy; 2024 LoMaz Home. Todos los derechos reservados.</span><span class="footer-city">Bogotá &middot; Desde 2024</span><a href="/admin/login.html" class="footer-admin-link">Acceso asesores</a></div>
+    <div class="footer-bottom"><span class="footer-copy">&copy; 2026 LoMaz Home</span><span class="footer-city">Bogotá, Colombia</span><a href="/admin/login.html" class="footer-admin-link">Acceso asesores</a></div>
   </div>
 </footer>
 <div class="aria-overlay" id="aria-overlay" onclick="closeAria()"></div>

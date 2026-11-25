@@ -98,6 +98,13 @@ footer{padding:28px 0;border-top:1px solid var(--s200);font-size:.74rem;color:va
 footer a{color:var(--gold-d)}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.grid3,.inc{grid-template-columns:1fr}.lomas{grid-template-columns:1fr 1fr}.lomas .cell:last-child{grid-column:1/-1}}
 @media(max-width:560px){.g2{grid-template-columns:1fr}.hero .proof{gap:18px}.panel{padding:20px 16px}}
+
+/* ===== Fase 4 (nov 2026) ===== */
+html,body{overflow-x:clip}
+.reveal{opacity:1!important;transform:none!important;transition:none!important}
+h1 em,h2 em,h3 em{font-style:normal;color:inherit;font-weight:inherit}
+:focus-visible{outline:2px solid #a07840;outline-offset:3px}
+.proof-txt{margin-top:1.5rem;font-size:1rem;line-height:1.6;max-width:52ch}
 </style>
 </head>
 <body>
@@ -105,25 +112,20 @@ footer a{color:var(--gold-d)}
 <div class="wrap">
   <div class="hero">
     <div>
-      <div class="tag">Para propietarios · Bogotá</div>
-      <h1>Vende tu inmueble en Bogotá con una <em>estrategia</em>, no con una publicación.</h1>
+      
+      <h1>Vende tu inmueble en Bogotá con una estrategia</h1>
       <p>Analizamos precio, competencia y demanda; preparamos la propiedad, activamos compradores, filtramos prospectos y dirigimos la negociación. También para arriendo.</p>
       <div class="acts">
         <a class="btn" href="#diagnostico">Quiero mi Diagnóstico LO MÁS</a>
         <a class="btn ghost" href="#metodo">Ver cómo funciona</a>
       </div>
-      <div class="proof">
-        <div><b>11</b><span>Ventas cerradas</span></div>
-        <div><b>6</b><span>Arriendos cerrados</span></div>
-        <div><b>3</b><span>Portales por inmueble</span></div>
-        <div><b>20 min</b><span>Dura el diagnóstico</span></div>
-      </div>
+      <p class="proof-txt">Llevamos 11 ventas y 6 arriendos cerrados. El diagnóstico dura 20 minutos y no tiene costo.</p>
     </div>
 
     <!-- FORMULARIO -->
     <div class="panel" id="diagnostico">
       <div id="formBox">
-        <h3>Diagnóstico <em>LO MÁS</em> de venta</h3>
+        <h3>Diagnóstico LO MÁS de venta</h3>
         <p class="sub">Sin costo y sin compromiso. En 20 minutos identificamos si el problema de tu inmueble es precio, presentación, demanda o estrategia.</p>
         <div class="steps-ind"><i class="on" id="ind1"></i><i id="ind2"></i></div>
         <form id="dxForm" onsubmit="return enviar(event)">
@@ -168,7 +170,7 @@ footer a{color:var(--gold-d)}
 <!-- EL PROBLEMA -->
 <section>
   <div class="wrap">
-    <div class="sec-h"><div class="tag">El problema</div><h2>Publicar es fácil. <em>Comercializar bien</em> es otra cosa.</h2><p>Si llevas meses publicado y no llega una oferta seria, el problema suele estar en una de estas tres cosas. Antes de bajar el precio, hay que saber cuál.</p></div>
+    <div class="sec-h"><h2>Publicar es fácil. Comercializar bien es otra cosa.</h2><p>Si llevas meses publicado y no llega una oferta seria, el problema suele estar en una de estas tres cosas. Antes de bajar el precio, hay que saber cuál.</p></div>
     <div class="grid3">
       <div class="cell"><div class="n">01</div><h3>Precio</h3><p>Lo que pide tu vecino no es lo que vale tu inmueble. El precio se defiende con comparables reales, no con intuición.</p></div>
       <div class="cell"><div class="n">02</div><h3>Presentación</h3><p>Tres fotos pueden matar una publicación. Un comprador decide en los primeros siete segundos si sigue mirando.</p></div>
@@ -180,11 +182,11 @@ footer a{color:var(--gold-d)}
 <!-- MÉTODO -->
 <section id="metodo">
   <div class="wrap">
-    <div class="sec-h"><div class="tag">Así trabajamos</div><h2>Método <em>LO MÁS</em></h2><p>Cinco pasos, uno después del otro. Así convertimos un inmueble en una campaña de venta que se puede medir.</p></div>
+    <div class="sec-h"><h2>Método LO MÁS</h2><p>Cinco pasos, uno después del otro. Así convertimos un inmueble en una campaña de venta que se puede medir.</p></div>
     <div class="lomas">
       <div class="cell"><div class="l">L</div><h3>Lectura del mercado</h3><p>Comparables, competencia directa, demanda y rango de precio.</p></div>
       <div class="cell"><div class="l">O</div><h3>Oferta y precio</h3><p>Cómo presentar el inmueble y cuál es el precio estratégico de salida.</p></div>
-      <div class="cell"><div class="l">M</div><h3>Marketing</h3><p>Fotografía, texto, publicación en Finca Raíz, Metrocuadrado y Proppit, y pauta cuando los números lo justifican.</p></div>
+      <div class="cell"><div class="l">M</div><h3>Marketing</h3><p>Fotografía, texto, publicación en Finca Raíz y Metrocuadrado, y pauta cuando los números lo justifican.</p></div>
       <div class="cell"><div class="l">A</div><h3>Atracción y filtro</h3><p>Captamos compradores y separamos curiosos de prospectos antes de cada visita.</p></div>
       <div class="cell"><div class="l">S</div><h3>Seguimiento y cierre</h3><p>Visitas, ofertas, negociación y coordinación del proceso hasta la firma.</p></div>
     </div>
@@ -195,7 +197,7 @@ footer a{color:var(--gold-d)}
 <!-- QUÉ INCLUYE -->
 <section class="dark">
   <div class="wrap">
-    <div class="sec-h"><div class="tag">Qué incluye el diagnóstico</div><h2>En 20 minutos te llevas <em>esto</em></h2><p>Es un diagnóstico comercial, no un avalúo oficial. Te sirve aunque decidas no trabajar con nosotros.</p></div>
+    <div class="sec-h"><h2>En 20 minutos te llevas esto</h2><p>Es un diagnóstico comercial, no un avalúo oficial. Te sirve aunque decidas no trabajar con nosotros.</p></div>
     <ul class="inc">
       <li>Rango comercial estimado de tu inmueble</li>
       <li>Competencia directa: quién más vende cerca y a cuánto</li>
@@ -213,7 +215,7 @@ footer a{color:var(--gold-d)}
 <!-- PRUEBA -->
 <section>
   <div class="wrap">
-    <div class="sec-h"><div class="tag">Hechos, no promesas</div><h2>17 negocios cerrados y <em>publicados</em></h2><p>Once ventas y seis arriendos en Colina Campestre, Suba, Bella Suiza, Chicó Navarra, Chapinero, La Alhambra, Kennedy, Villa Luz, Venecia y más. Cada uno está en nuestro Instagram, en los destacados «Ventas Exitosas» y «Arriendos».</p></div>
+    <div class="sec-h"><h2>17 negocios cerrados y publicados</h2><p>Once ventas y seis arriendos en Colina Campestre, Suba, Bella Suiza, Chicó Navarra, Chapinero, La Alhambra, Kennedy, Villa Luz, Venecia y más. Cada uno está en nuestro Instagram, en los destacados «Ventas Exitosas» y «Arriendos».</p></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn ghost" href="index.html#cerrados">Ver los negocios cerrados</a><a class="btn ghost" href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener">Verificar en Instagram</a></div>
   </div>
 </section>
@@ -221,7 +223,7 @@ footer a{color:var(--gold-d)}
 <!-- FAQ -->
 <section>
   <div class="wrap">
-    <div class="sec-h"><div class="tag">Preguntas frecuentes</div><h2>Lo que todos <em>preguntan</em></h2></div>
+    <div class="sec-h"><h2>Lo que todos preguntan</h2></div>
     <div class="faq">
       <details><summary>¿El diagnóstico tiene costo o compromiso?</summary><p>No. Es sin costo y no te obliga a nada. Si después quieres que comercialicemos tu inmueble, lo conversamos aparte.</p></details>
       <details><summary>¿Es un avalúo oficial?</summary><p>No. Es un diagnóstico comercial basado en comparables, competencia y demanda. Si necesitas un avalúo con fines legales o bancarios, te orientamos sobre cómo conseguirlo.</p></details>
@@ -235,7 +237,7 @@ footer a{color:var(--gold-d)}
 
 <section class="cta-final">
   <div class="wrap">
-    <h2>¿Tu inmueble está realmente <em>listo para venderse</em>?</h2>
+    <h2>¿Tu inmueble está realmente listo para venderse?</h2>
     <p>Antes de bajar el precio, hay que saber qué está fallando.</p>
     <a class="btn" href="#diagnostico">Quiero revisar mi inmueble</a>
   </div>
