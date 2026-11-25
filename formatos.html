@@ -207,7 +207,7 @@ function pintar(){
   var listos=formatos.filter(function(f){return f.tipo==="archivo"&&archivosDe(f).length;}).length;
   var herr=formatos.filter(function(f){return f.tipo==="herramienta";}).length;
   var falt=formatos.length-listos-herr;
-  $("resumen").innerHTML=formatos.length?('<b>'+formatos.length+'</b> formatos · <b>'+listos+'</b> listos para descargar · <b>'+herr+'</b> en línea'+(falt?' · <b>'+falt+'</b> sin archivo':'')):'';
+  $("resumen").innerHTML=formatos.length?('<b>'+formatos.length+'</b> formatos · <b>'+listos+'</b> '+(listos===1?'listo':'listos')+' para descargar · <b>'+herr+'</b> en línea'+(falt?' · <b>'+falt+'</b> sin archivo':'')):'';
 }
 
 async function cargar(){
