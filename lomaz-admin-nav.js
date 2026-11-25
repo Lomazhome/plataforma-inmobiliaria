@@ -21,6 +21,7 @@
       { h: 'agregar-propiedad.html', i: '➕', n: 'Agregar Propiedad' },
       { h: 'mis-propiedades.html',   i: '📋', n: 'Mis Propiedades' },
       { h: 'contactos.html',         i: '👥', n: 'Contactos (CRM)' },
+      { h: 'formatos.html',          i: '📄', n: 'Formatos' },
       { h: 'mensajeria.html',        i: '💬', n: 'Mensajes (Lomi)' } ] },
     { t: 'Publicación', l: [
       { h: 'portales.html',       i: '🌐', n: 'Portales' },
