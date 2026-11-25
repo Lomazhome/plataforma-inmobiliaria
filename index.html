@@ -329,6 +329,58 @@ button{font-family:var(--sans)}
   .btn-primary{width:100%;justify-content:center}
   .btn-ghost{width:100%;justify-content:center}
 }
+
+/* ===== Portada · dirección «Ladrillo y cerros» (nov 2026) ===== */
+:root{--navy:#0D1B2E}
+.reveal{opacity:1;transform:none;transition:none}
+.sec-title em{font-style:normal;color:inherit;font-weight:inherit}
+.hero{display:block;min-height:0;padding-top:68px}
+.hero__left{display:block;padding:clamp(40px,7vh,80px) var(--gut) clamp(32px,5vh,48px)}
+.hero__title{font-size:clamp(2.6rem,6.2vw,5rem);margin-bottom:16px;text-wrap:balance}
+.hero__sub{font-size:1.0625rem;line-height:1.6;color:var(--s600);max-width:54ch;margin-bottom:32px;text-wrap:pretty}
+.hero__actions{gap:24px}
+.btn-ghost{text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--gold)}
+.hero .search-bar{margin-top:40px;border:0;border-bottom:1px solid var(--ink);max-width:880px;animation:fadeUp 700ms var(--expo) .7s both}
+.hero .search-bar__field{border:0;background:transparent;font-size:1rem;color:var(--ink);min-height:52px}
+.hero .search-bar__btn{background:transparent;color:var(--ink);font-weight:600;letter-spacing:0;text-transform:none;font-size:1rem;min-height:52px;padding:0 8px 0 24px;transition:color .18s ease}
+.hero__foto{margin:0}
+.hero__foto img{display:block;width:100%;height:auto;aspect-ratio:1920/510;object-fit:cover}
+.hero__foto figcaption{padding:12px var(--gut) 0;font-size:.8125rem;color:var(--s500)}
+.portals-bar{display:block;padding:24px var(--gut) 0;background:transparent;border:0;font-size:.9375rem;color:var(--s600)}
+.value-sec{display:block;background:var(--navy)}
+.value-sec__txt{max-width:62ch}
+.value-sec__desc{font-size:1.0625rem;line-height:1.7;color:#d9d4cc}
+.value-sec .exp-cta{margin-top:32px}
+.footer{background:var(--navy)}
+.zones-hdr{margin-bottom:32px}
+.zones-intro{margin-top:12px;max-width:58ch;font-size:1.0625rem;line-height:1.6;color:var(--s600)}
+.zonas-fotos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;padding:0 var(--gut)}
+.zona-foto figure{margin:0}
+.zona-foto__marco{overflow:hidden;background:var(--s200)}
+.zona-foto__marco img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;transition:transform .5s var(--expo)}
+.zona-foto figcaption{display:flex;flex-direction:column;gap:4px;padding-top:16px}
+.zona-foto__nombre{font-family:var(--serif);font-size:1.75rem;line-height:1.2;color:var(--ink)}
+.zona-foto__dato{font-size:.9375rem;color:var(--ink)}
+.zona-foto__pie{font-size:.8125rem;color:var(--s500)}
+.zonas-lista{list-style:none;margin:48px var(--gut) 0;border-top:1px solid var(--s300);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
+.zonas-lista a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;min-height:56px;border-bottom:1px solid var(--s200)}
+.zonas-lista__nombre{font-family:var(--serif);font-size:1.375rem;color:var(--ink)}
+.zonas-lista__dato{font-size:.875rem;color:var(--s600);text-align:right}
+.zones-note{font-size:.9375rem;line-height:1.6;padding-top:32px;max-width:70ch}
+.deals-sub{font-size:1.0625rem;line-height:1.6;max-width:60ch}
+:focus-visible{outline:2px solid var(--gold-d);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){
+  .zona-foto:hover .zona-foto__marco img{transform:scale(1.025)}
+  .zonas-lista a:hover .zonas-lista__nombre,.hero .search-bar__btn:hover{color:var(--gold-d)}
+}
+@media(max-width:768px){
+  .hero .search-bar{flex-direction:column;border-bottom:0}
+  .hero .search-bar__field{border-bottom:1px solid var(--s300);width:100%}
+  .hero .search-bar__btn{margin-top:16px;background:var(--ink);color:var(--cream);justify-content:center;padding:0 24px;width:100%}
+  .zonas-fotos,.zonas-lista{grid-template-columns:1fr}
+}
+@media(max-width:640px){.hero__foto img{aspect-ratio:4/3}}
+@media (prefers-reduced-motion:reduce){.hero *{animation:none!important}.zona-foto__marco img{transition:none}}
 </style>
 <script type="application/ld+json">
 {
@@ -393,120 +445,73 @@ button{font-family:var(--sans)}
 <!-- HERO -->
 <section class="hero">
   <div class="hero__left">
-    <div class="hero__eyebrow">
-      <div class="hero__eyebrow-line"></div>
-      <span class="hero__eyebrow-text">Inmobiliaria Boutique &bull; Bogotá &bull; Desde 2024</span>
-    </div>
-    <h1 class="hero__title">Encuentra tu<br><em>lugar</em><br>en Bogotá</h1>
-    <p class="hero__sub">Vendemos y arrendamos apartamentos, casas y locales en Bogotá, con foco en el norte de la ciudad. Un asesor lleva tu proceso de principio a fin.</p>
+    <h1 class="hero__title">Encuentra tu <em>lugar</em> en Bogotá</h1>
+    <p class="hero__sub">Vendemos y arrendamos apartamentos, casas y locales, sobre todo en el norte de la ciudad. Un mismo asesor lleva tu negocio de principio a fin.</p>
     <div class="hero__actions">
-      <a href="vender.html" class="btn-primary">
-        <span>Vender o arrendar mi inmueble</span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="propiedades-publica.html" class="btn-ghost">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 10l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Explorar propiedades
-      </a>
+      <a href="vender.html" class="btn-primary"><span>Vende o arrienda tu inmueble</span></a>
+      <a href="#propiedades" class="btn-ghost">Mira los inmuebles disponibles</a>
     </div>
-    <div class="hero__trust">
-      <div>
-        <div class="hero__trust-val">11</div>
-        <div class="hero__trust-lbl">Ventas cerradas</div>
-      </div>
-      <div>
-        <div class="hero__trust-val">6</div>
-        <div class="hero__trust-lbl">Arriendos cerrados</div>
-      </div>
-      <div>
-        <div class="hero__trust-val" id="heroProps">&mdash;</div>
-        <div class="hero__trust-lbl">Inmuebles disponibles hoy</div>
-      </div>
+    <div class="search-bar" role="search" aria-label="Buscar inmuebles">
+      <select class="search-bar__field" id="sbNegocio" aria-label="Tipo de negocio">
+        <option value="">Venta o arriendo</option>
+        <option value="venta">En venta</option>
+        <option value="arriendo">En arriendo</option>
+      </select>
+      <select class="search-bar__field" id="sbTipo" aria-label="Tipo de inmueble">
+        <option value="">Tipo de inmueble</option>
+        <option value="apartamento">Apartamento</option>
+        <option value="apartaestudio">Apartaestudio</option>
+        <option value="casa">Casa</option>
+        <option value="local">Local comercial</option>
+        <option value="oficina">Oficina</option>
+        <option value="bodega">Bodega</option>
+        <option value="lote">Lote</option>
+        <option value="finca">Finca o rural</option>
+        <option value="parqueadero">Parqueadero</option>
+        <option value="consultorio">Consultorio</option>
+        <option value="habitacion">Habitaci&oacute;n</option>
+      </select>
+      <select class="search-bar__field" id="sbZona" aria-label="Barrio o zona">
+        <option value="">Barrio o zona</option>
+        <option value="Colina">Colina Campestre</option>
+        <option value="Suba">Suba</option>
+        <option value="Usaquén">Usaquén</option>
+        <option value="Chicó">Chicó</option>
+        <option value="Chapinero">Chapinero</option>
+        <option value="Santa Bárbara">Santa Bárbara</option>
+        <option value="Cedritos">Cedritos</option>
+        <option value="Alhambra">La Alhambra</option>
+      </select>
+      <button class="search-bar__btn" onclick="doSearch()">Buscar</button>
     </div>
   </div>
-  <div class="hero__right">
-    <img class="hero__right-img"
-      src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80&auto=format&fit=crop"
-      alt="Propiedad exclusiva en Bogotá"
-      loading="eager"/>
-    <a class="hero__badge" href="#cerrados" style="text-decoration:none">
-      <div class="hero__badge-author" style="margin:0 0 6px">Último cierre</div>
-      <div class="hero__badge-quote">Bodega en Venecia — <strong style="font-style:normal;color:var(--ink)">Vendida</strong></div>
-      <div class="hero__badge-author">Ver negocios cerrados &rarr;</div>
-    </a>
-  </div>
+  <figure class="hero__foto">
+    <picture>
+      <source media="(max-width:640px)" srcset="img/portada-chapinero-movil.webp" width="960" height="720"/>
+      <img src="img/portada-chapinero.webp" width="1920" height="510" alt="Edificios de Chapinero con los cerros orientales al fondo, vistos desde una terraza" fetchpriority="high"/>
+    </picture>
+    <figcaption>Chapinero, con los cerros al fondo. Foto de LoMaz Home.</figcaption>
+  </figure>
 </section>
 
-<!-- SEARCH BAR -->
-<div class="search-wrap">
-  <div class="search-bar">
-    <div class="search-bar__pre"><span>Buscar</span></div>
-    <select class="search-bar__field" id="sbNegocio">
-      <option value="">Tipo de negocio</option>
-      <option value="venta">En Venta</option>
-      <option value="arriendo">En Arriendo</option>
-    </select>
-    <select class="search-bar__field" id="sbTipo">
-      <option value="">Tipo de inmueble</option>
-      <option value="apartamento">Apartamento</option>
-      <option value="apartaestudio">Apartaestudio</option>
-      <option value="casa">Casa</option>
-      <option value="local">Local Comercial</option>
-      <option value="oficina">Oficina</option>
-      <option value="bodega">Bodega</option>
-      <option value="lote">Lote</option>
-      <option value="finca">Finca/Rural</option>
-      <option value="parqueadero">Parqueadero</option>
-      <option value="consultorio">Consultorio</option>
-      <option value="habitacion">Habitaci&oacute;n</option>
-    </select>
-    <select class="search-bar__field" id="sbZona">
-      <option value="">Barrio / Zona</option>
-      <option value="Colina">Colina Campestre</option>
-      <option value="Suba">Suba</option>
-      <option value="Usaquén">Usaquén</option>
-      <option value="Chicó">Chicó</option>
-      <option value="Chapinero">Chapinero</option>
-      <option value="Santa Bárbara">Santa Bárbara</option>
-      <option value="Cedritos">Cedritos</option>
-      <option value="Alhambra">La Alhambra</option>
-    </select>
-    <button class="search-bar__btn" onclick="doSearch()">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 10l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Buscar
-    </button>
-  </div>
-</div>
-
-<!-- PORTALS BAR -->
-<div class="portals-bar reveal">
-  <span class="portals-bar__label">Publicamos en</span>
-  <div class="portals-bar__divider"></div>
-  <div class="portals-bar__logos">
-    <span class="portals-bar__logo">Metrocuadrado</span>
-    <div class="portals-bar__divider"></div>
-    <span class="portals-bar__logo">Finca Raíz</span>
-    <div class="portals-bar__divider"></div>
-    <span class="portals-bar__logo">Proppit</span>
-  </div>
-</div>
+<!-- PORTALES -->
+<p class="portals-bar">Publicamos tu inmueble en Metrocuadrado y Finca Raíz.</p>
 
 <!-- PROPIEDADES DESTACADAS -->
 <section class="props-section" id="propiedades">
-  <div class="sec-header reveal">
+  <div class="sec-header">
     <div>
-      <p class="sec-tag">Disponibles hoy</p>
-      <h2 class="sec-title">Propiedades <em>destacadas</em></h2>
+      <h2 class="sec-title">Inmuebles disponibles hoy</h2>
     </div>
     <a href="propiedades-publica.html" class="sec-link">
-      Ver portafolio completo
+      Mira todos los inmuebles
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </div>
-  <div class="filter-tabs reveal">
+  <div class="filter-tabs">
     <button class="filter-tab active" data-filter="all">Todos</button>
-    <button class="filter-tab" data-filter="venta">En Venta</button>
-    <button class="filter-tab" data-filter="arriendo">En Arriendo</button>
+    <button class="filter-tab" data-filter="venta">En venta</button>
+    <button class="filter-tab" data-filter="arriendo">En arriendo</button>
     <button class="filter-tab" data-filter="apartamento">Apartamentos</button>
     <button class="filter-tab" data-filter="casa">Casas</button>
   </div>
@@ -517,100 +522,47 @@ button{font-family:var(--sans)}
   </div>
 </section>
 
-<!-- PROPUESTA DE VALOR -->
-<section class="value-sec" id="nosotros">
-  <div class="reveal">
-    <p class="sec-tag">Por qué LoMaz Home</p>
-    <h2 class="sec-title">Una experiencia<br><em>diferente.</em></h2>
-    <p class="value-sec__desc">Somos un equipo pequeño que vende, arrienda y gestiona inmuebles en Bogotá. Un asesor lleva tu caso de principio a fin, y nuestra propia plataforma publica tu inmueble en los portales y organiza a cada interesado.</p>
-    <div class="exp-divider"></div>
-    <div class="exp-stats">
-      <div class="exp-aura" aria-hidden="true">
-      <svg viewBox="0 0 200 200" fill="none" stroke="#c9a96e" stroke-width="0.5">
-        <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="74"/><circle cx="100" cy="100" r="52"/>
-        <ellipse cx="100" cy="100" rx="96" ry="40"/><ellipse cx="100" cy="100" rx="40" ry="96"/>
-        <ellipse cx="100" cy="100" rx="96" ry="70"/><ellipse cx="100" cy="100" rx="70" ry="96"/>
-        <line x1="4" y1="100" x2="196" y2="100"/><line x1="100" y1="4" x2="100" y2="196"/>
-      </svg>
-    </div>
-      <div class="exp-stat"><div class="exp-stat__num">3</div><div class="exp-stat__lbl">Portales: Finca Raíz, Metrocuadrado y Proppit</div></div>
-      <div class="exp-stat"><div class="exp-stat__num">1</div><div class="exp-stat__lbl">Asesor de principio a fin</div></div>
-      <div class="exp-stat"><div class="exp-stat__num">24<em>/7</em></div><div class="exp-stat__lbl">Chatbot ARIA siempre activo</div></div>
-      <div class="exp-stat"><div class="exp-stat__num">17</div><div class="exp-stat__lbl">Negocios cerrados y publicados</div></div>
-    </div>
-    <div class="exp-seal">
-      <div class="exp-seal__badge">L</div>
-      <div class="exp-seal__txt">Acompañamiento boutique,<br>respaldo de plataforma.</div>
-    </div>
-    <div class="exp-cta">
-      <a class="exp-btn exp-btn--gold" href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20quiero%20agendar%20una%20asesor%C3%ADa." target="_blank" rel="noopener">Agendar asesoría <span aria-hidden="true">&rarr;</span></a>
-      <a class="exp-btn exp-btn--ghost" href="propiedades-publica.html">Ver propiedades</a>
-    </div>
-  </div>
-  <div id="equipo" class="pillars reveal reveal-delay-2">
-    <div class="pillar">
-      <span class="pillar__num">01</span>
-      <div>
-        <div class="pillar__title">Experiencia en el norte</div>
-        <div class="pillar__desc">Hemos vendido y arrendado en Colina Campestre, Suba, Usaquén, Chicó y Chapinero. Conocemos cómo se mueve el precio en esas zonas.</div>
-      </div>
-    </div>
-    <div class="pillar">
-      <span class="pillar__num">02</span>
-      <div>
-        <div class="pillar__title">Tecnología en Tiempo Real</div>
-        <div class="pillar__desc">Plataforma propia con inventario actualizado, calculadora de crédito y chatbot ARIA disponible 24/7.</div>
-      </div>
-    </div>
-    <div class="pillar">
-      <span class="pillar__num">03</span>
-      <div>
-        <div class="pillar__title">Asesoría Sin Fricciones</div>
-        <div class="pillar__desc">Un solo asesor acompaña todo tu proceso. Sin transferencias, sin repetir información, sin sorpresas.</div>
-      </div>
-    </div>
-    <div class="pillar">
-      <span class="pillar__num">04</span>
-      <div>
-        <div class="pillar__title">Publicación en portales</div>
-        <div class="pillar__desc">Publicamos tu inmueble en Finca Raíz, Metrocuadrado y Proppit desde nuestra plataforma, con una sola ficha.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ZONAS -->
-<section class="zones-sec" id="zonas">
-  <div class="zones-hdr reveal">
-    <p class="sec-tag">Dónde trabajamos</p>
-    <h2 class="sec-title">Experiencia real en el <em>norte de Bogotá</em></h2>
-  </div>
-  <div class="zones-track" id="zonesTrack"></div>
-  <p class="zones-note reveal">Fuera del norte también hemos cerrado negocios en Venecia, Kennedy, Villa Luz, Paloquemao, Nicolás de Federmán y Ciudadela La Salle, y hoy comercializamos inmuebles en Santa Lucía y Villa Mayor.</p>
-</section>
-
 <!-- NEGOCIOS CERRADOS -->
 <section class="test-sec" id="cerrados">
-  <div class="sec-header reveal">
+  <div class="sec-header">
     <div>
-      <p class="sec-tag">Negocios cerrados</p>
-      <h2 class="sec-title">Hechos, <em>no promesas</em></h2>
-      <p class="deals-sub">Cada uno de estos negocios está publicado en nuestro Instagram. Puedes verificarlos en los destacados «Ventas Exitosas» y «Arriendos».</p>
+      <h2 class="sec-title">Negocios cerrados</h2>
+      <p class="deals-sub" id="dealsSub">Cada negocio está publicado en nuestro Instagram, en los destacados «Ventas Exitosas» y «Arriendos».</p>
     </div>
-    <a href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener" class="sec-link">
-      Ver en Instagram
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+    <a href="https://www.instagram.com/lomazhome/" target="_blank" rel="noopener" class="sec-link">Míralos en Instagram</a>
   </div>
   <div class="deals-grid" id="dealsGrid"></div>
 </section>
 
+<!-- ZONAS -->
+<section class="zones-sec" id="zonas">
+  <div class="zones-hdr">
+    <h2 class="sec-title">Dónde trabajamos</h2>
+    <p class="zones-intro">Conocemos el norte de Bogotá porque ahí vivimos y ahí hemos cerrado la mayoría de nuestros negocios.</p>
+  </div>
+  <div class="zonas-fotos" id="zonasFotos"></div>
+  <ul class="zonas-lista" id="zonasLista"></ul>
+  <p class="zones-note">Fuera del norte también hemos cerrado negocios en Venecia, Kennedy, Villa Luz, Paloquemao, Nicolás de Federmán y Ciudadela La Salle, y hoy comercializamos inmuebles en Santa Lucía y Villa Mayor.</p>
+</section>
+
+<!-- QUIÉNES SOMOS -->
+<section class="value-sec" id="nosotros">
+  <div id="equipo" class="value-sec__txt">
+    <h2 class="sec-title">Un equipo pequeño, un asesor por negocio</h2>
+    <p class="value-sec__desc">Somos una inmobiliaria familiar de Bogotá. Vendemos y arrendamos apartamentos, casas y locales, sobre todo en Colina Campestre, Suba, Usaquén, Chicó y Chapinero.</p>
+    <p class="value-sec__desc">El asesor que recibe tu inmueble es el mismo que lo muestra, negocia y te acompaña hasta la firma. Lo publicamos en Finca Raíz y Metrocuadrado desde nuestra propia plataforma, que organiza a cada interesado.</p>
+    <div class="exp-cta">
+      <a class="exp-btn exp-btn--gold" href="https://wa.me/573003300343?text=Hola%20LoMaz%20Home%2C%20quiero%20agendar%20una%20asesor%C3%ADa." target="_blank" rel="noopener">Agenda tu asesoría</a>
+      <a class="exp-btn exp-btn--ghost" href="sobre-nosotros.html">Lee nuestra historia</a>
+    </div>
+  </div>
+</section>
+
 <!-- CONSULTA PRIVADA -->
 <section class="consult-sec" id="contacto">
-  <div class="reveal">
-    <p class="sec-tag">Contacto Directo</p>
-    <h2 class="sec-title">Solicita tu<br><em>consulta privada.</em></h2>
-    <p style="font-size:.88rem;color:var(--s500);line-height:1.8;margin-top:18px;max-width:400px">Te respondemos por WhatsApp o por correo. Sin compromisos. Sin presiones. Solo claridad.</p>
+  <div>
+    <h2 class="sec-title">Solicita tu consulta privada</h2>
+    <p style="font-size:.88rem;color:var(--s500);line-height:1.8;margin-top:18px;max-width:400px">Cuéntanos qué necesitas y te respondemos por WhatsApp o por correo.</p>
     <div style="margin-top:36px;display:flex;flex-direction:column;gap:16px">
       <div style="display:flex;align-items:center;gap:12px">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="var(--gold)" stroke-width="1.5"/><path d="M2 5l6 4 6-4" stroke="var(--gold)" stroke-width="1.5"/></svg>
@@ -799,10 +751,15 @@ function showToast(msg, type = 'success') {
 
 // ---- FORMAT PRICE ----
 function fmtPrice(n) {
+  // Precios como se dicen en Colombia: «$ 280 millones», «$ 2.100 millones», «$ 2.000.000»
+  n = Number(n);
   if (!n) return '';
-  if (n >= 1000000000) return '\$' + (n/1000000000).toFixed(1).replace('.0','') + 'B';
-  if (n >= 1000000) return '\$' + Math.round(n/1000000).toLocaleString('es-CO') + 'M';
-  return '\$' + Number(n).toLocaleString('es-CO');
+  if (n >= 10000000) {
+    var m = n / 1000000;
+    var txt = (m % 1 === 0) ? m.toLocaleString('es-CO') : m.toLocaleString('es-CO', { maximumFractionDigits: 1 });
+    return '$\u00a0' + txt + '\u00a0millones';
+  }
+  return '$\u00a0' + n.toLocaleString('es-CO');
 }
 
 // ---- SEARCH ----
@@ -916,6 +873,12 @@ const CIERRES = [
 function renderCierres() {
   const g = document.getElementById('dealsGrid');
   if (!g) return;
+  // La frase de arriba se arma con la lista real, para que la cifra nunca quede desactualizada
+  const sub = document.getElementById('dealsSub');
+  if (sub) {
+    const v = CIERRES.filter(c => c.op === 'venta').length, a = CIERRES.length - v;
+    sub.textContent = 'Llevamos ' + v + ' ventas y ' + a + ' arriendos. ' + sub.textContent;
+  }
   g.innerHTML = CIERRES.map(c =>
     '<div class="deal">' +
       '<span class="deal__tag' + (c.op === 'arriendo' ? ' deal__tag--r' : '') + '">' + (c.op === 'arriendo' ? 'Arrendado' : 'Vendido') + '</span>' +
@@ -927,33 +890,43 @@ function renderCierres() {
 // ---- ZONAS DONDE TRABAJAMOS ----
 // cerrados: cuántos negocios de CIERRES caen en la zona; terms: cómo se busca en el inventario activo
 // img: foto de ambiente de la zona (Supabase, bucket fotos-propiedades/blog). Son imágenes de ambiente, no de un inmueble en particular.
-const ZONAS_IMG = 'https://lniouebpuuuqctrgxoiw.supabase.co/storage/v1/object/public/fotos-propiedades/blog/zonas/';
+// foto: solo las zonas con foto propia de LoMaz Home llevan imagen; las demás van en lista.
 const ZONAS = [
-  {name:'Colina Campestre', q:'Colina',       terms:['colina'],                                   cerr:['colina campestre'], img:'1.jpg'},
-  {name:'Suba',             q:'Suba',         terms:['suba','pinar','salitre','redil','ángeles','angeles'], cerr:['suba','pinar de suba','el redil'], img:'zona-suba.jpg'},
-  {name:'Usaquén',          q:'Usaquén',      terms:['usaquén','usaquen','bella suiza'],          cerr:['bella suiza'], img:'zona-usaquen.jpg'},
-  {name:'Chicó',            q:'Chicó',        terms:['chicó','chico'],                            cerr:['chicó'], img:'zona-chico.jpg'},
-  {name:'Chapinero',        q:'Chapinero',    terms:['chapinero'],                                cerr:['chapinero'], img:'zona-chapinero.jpg'},
-  {name:'La Alhambra',      q:'Alhambra',     terms:['alhambra'],                                 cerr:['alhambra'], img:'zona-la-alhambra.jpg'},
-  {name:'Santa Bárbara',    q:'Santa Bárbara',terms:['santa bárbara','santa barbara'],            cerr:[], img:'zona-santa-barbara.jpg'},
-  {name:'Cedritos',         q:'Cedritos',     terms:['cedritos'],                                 cerr:[], img:'zona-cedritos.jpg'}
+  {name:'Colina Campestre', q:'Colina',       terms:['colina'],                                   cerr:['colina campestre'], foto:'img/zona-colina-campestre.webp', alt:'Conjunto de torres de ladrillo y zonas verdes en Colina Campestre, visto desde un piso alto', pie:'Un conjunto de Colina Campestre visto desde arriba.'},
+  {name:'Chapinero',        q:'Chapinero',    terms:['chapinero'],                                cerr:['chapinero'], foto:'img/zona-chapinero.webp', alt:'Terraza comunal de un edificio en Chapinero, con sendero y jardineras', pie:'La terraza de un edificio en Chapinero.'},
+  {name:'Suba',             q:'Suba',         terms:['suba','pinar','salitre','redil','ángeles','angeles'], cerr:['suba','pinar de suba','el redil']},
+  {name:'Usaquén',          q:'Usaquén',      terms:['usaquén','usaquen','bella suiza'],          cerr:['bella suiza']},
+  {name:'Chicó',            q:'Chicó',        terms:['chicó','chico'],                            cerr:['chicó']},
+  {name:'La Alhambra',      q:'Alhambra',     terms:['alhambra'],                                 cerr:['alhambra']},
+  {name:'Santa Bárbara',    q:'Santa Bárbara',terms:['santa bárbara','santa barbara'],            cerr:[]},
+  {name:'Cedritos',         q:'Cedritos',     terms:['cedritos'],                                 cerr:[]}
 ];
 async function loadZones() {
-  const track = document.getElementById('zonesTrack');
-  if (!track) return;
-  const pintar = (activos) => { track.innerHTML = ZONAS.map(z => {
+  const fotos = document.getElementById('zonasFotos'), lista = document.getElementById('zonasLista');
+  if (!fotos || !lista) return;
+  const datos = (z, activos) => {
     const cerrados = CIERRES.filter(c => z.cerr.some(t => c.zona.toLowerCase().includes(t))).length;
-    const disp = activos ? activos.filter(p => z.terms.some(t => (p.barrio||'').toLowerCase().includes(t))).length : null;
-    const l1 = cerrados > 0 ? cerrados + (cerrados === 1 ? ' negocio cerrado' : ' negocios cerrados') : 'Zona de trabajo';
-    const l2 = disp ? disp + (disp === 1 ? ' disponible hoy' : ' disponibles hoy') : '';
-    return '<a class="zone-card' + (z.img ? '' : ' zone-card--plain') + '" href="propiedades-publica.html?barrio=' + encodeURIComponent(z.q) + '" style="text-decoration:none">' +
-      (z.img ? '<img class="zone-card__img" src="' + ZONAS_IMG + z.img + '" alt="Ambiente de ' + z.name + ', Bogotá" width="900" height="1200" loading="lazy" onerror="this.remove();this.closest(\'.zone-card\')&&this.closest(\'.zone-card\').classList.add(\'zone-card--plain\')">' : '') +
-      '<div class="zone-card__cnt">' +
-        '<div class="zone-card__name">' + z.name + '</div>' +
-        '<div class="zone-card__count">' + l1 + '</div>' +
-        (l2 ? '<div class="zone-card__count">' + l2 + '</div>' : '') +
-      '</div></a>';
-  }).join(''); };
+    const disp = activos ? activos.filter(p => z.terms.some(t => (p.barrio||'').toLowerCase().includes(t))).length : 0;
+    const partes = [];
+    if (cerrados) partes.push(cerrados + (cerrados === 1 ? ' negocio cerrado' : ' negocios cerrados'));
+    if (disp) partes.push(disp + (disp === 1 ? ' disponible hoy' : ' disponibles hoy'));
+    return partes.join(' y ');
+  };
+  const pintar = (activos) => {
+    const url = z => 'propiedades-publica.html?barrio=' + encodeURIComponent(z.q);
+    fotos.innerHTML = ZONAS.filter(z => z.foto).map(z => {
+      const d = datos(z, activos);
+      return '<a class="zona-foto" href="' + url(z) + '"><figure>' +
+        '<div class="zona-foto__marco"><img src="' + z.foto + '" alt="' + z.alt + '" width="1200" height="800" loading="lazy"></div>' +
+        '<figcaption><span class="zona-foto__nombre">' + z.name + '</span>' +
+        (d ? '<span class="zona-foto__dato">' + d + '</span>' : '') +
+        '<span class="zona-foto__pie">' + z.pie + ' Foto de LoMaz Home.</span></figcaption></figure></a>';
+    }).join('');
+    lista.innerHTML = ZONAS.filter(z => !z.foto).map(z => {
+      const d = datos(z, activos);
+      return '<li><a href="' + url(z) + '"><span class="zonas-lista__nombre">' + z.name + '</span>' + (d ? '<span class="zonas-lista__dato">' + d + '</span>' : '') + '</a></li>';
+    }).join('');
+  };
   pintar(null); // se muestra de inmediato con los cierres
   try {
     const { data } = await db.from('propiedades').select('barrio,ciudad').eq('estado','activa');
@@ -1008,25 +981,6 @@ async function submitForm(e) {
   }
 }
 
-// ---- ZONES DRAG SCROLL ----
-const track = document.getElementById('zonesTrack');
-if (track) {
-  let isDown = false, startX, scrollLeft;
-  track.addEventListener('mousedown', e => {
-    isDown = true;
-    track.classList.add('grabbing');
-    startX = e.pageX - track.offsetLeft;
-    scrollLeft = track.scrollLeft;
-  });
-  track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('grabbing'); });
-  track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('grabbing'); });
-  track.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX) * 1.5;
-  });
-}
-
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
   loadProps();
@@ -1036,8 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script src="lomaz-nav.js" defer></script>
-  <script src="lomaz-social-orbit.js" defer></script>
-<script src="/lomaz-legal.js" defer></script>
+  <script src="/lomaz-legal.js" defer></script>
 </body>
   <script>
 // Anti-spam LoMaz: campo trampa (honeypot) para el formulario de contacto.
