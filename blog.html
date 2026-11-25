@@ -17,6 +17,7 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://www.lomazhome.com/og-blog.jpg"/>
 <link rel="canonical" href="https://www.lomazhome.com/blog.html"/>
+<link rel="preload" as="image" href="https://lniouebpuuuqctrgxoiw.supabase.co/storage/v1/object/public/fotos-propiedades/sitio/cabecera-cuero-hilo.webp"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -216,15 +217,12 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
 .nl-btn{min-height:48px}
 .nl-btn:active{transform:scale(.97)}
 #main-nav .nav-links a{letter-spacing:0!important;text-transform:none!important;font-size:.9rem!important}
-/* Cabecera premium: grano de cuero muy tenue + hilo dorado en curva */
-.blog-hero{background-color:#0D1B2E;background-image:radial-gradient(120% 90% at 50% 0%,rgba(29,46,77,.55),rgba(13,27,46,0) 70%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 .92  0 0 0 0 .8  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)' opacity='.11'/%3E%3C/svg%3E");padding:clamp(5rem,9vw,7.5rem) 1.5rem clamp(7.5rem,13vw,11rem)}
-.blog-hero::before{display:none!important}
-.blog-hero::after{display:none!important}
-.hilo-oro{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.hilo-oro path{fill:none;stroke:#c9a96e;stroke-width:1;vector-effect:non-scaling-stroke;stroke-linecap:round}
-.hilo-oro .h2{stroke:#e8d5b0;opacity:.28}
-.hilo-oro .h1{opacity:.7}
-@media(max-width:700px){.hilo-oro{top:auto;bottom:0;height:34%}.hilo-oro .h2{display:none}.blog-hero{padding-bottom:6.5rem}}
+/* Cabecera premium: cuero azul con hilo dorado (imagen hecha en Canva) */
+.blog-hero{background-color:#0D1B2E;background-image:linear-gradient(180deg,rgba(13,27,46,.62) 0%,rgba(13,27,46,.38) 55%,rgba(13,27,46,.12) 100%),url("https://lniouebpuuuqctrgxoiw.supabase.co/storage/v1/object/public/fotos-propiedades/sitio/cabecera-cuero-hilo.webp");background-size:cover;background-position:50% 82%;padding:clamp(5rem,9vw,7.5rem) 1.5rem clamp(8rem,14vw,12rem)}
+.blog-hero::before,.blog-hero::after{display:none!important}
+.blog-hero h1,.blog-hero-sub{text-shadow:0 1px 18px rgba(13,27,46,.55)}
+.blog-hero-sub{color:rgba(255,255,255,.86)}
+@media(max-width:700px){.blog-hero{background-position:50% 88%;padding-bottom:7.5rem}}
 </style>
 <script src="config.js"></script>
 <link rel="stylesheet" href="lomaz-mobile.css">
@@ -244,7 +242,6 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
   <button class="nav-ham" id="nav-ham" aria-label="Abrir menú" aria-expanded="false" onclick="var n=document.getElementById('nav-links');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.classList.toggle('is-open',o);"><span></span><span></span><span></span></button>
 </nav>
 <section class="blog-hero">
-  <svg class="hilo-oro" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true"><path class="h1" d="M-20 410 C 180 470, 330 300, 520 372 S 860 500, 1010 330 S 1150 60, 1230 110"/><path class="h2" d="M-20 440 C 200 500, 350 340, 540 402 S 880 520, 1030 360 S 1160 100, 1230 150"/></svg>
   <h1>Guías para arrendar, comprar y vender en Bogotá</h1>
   <p class="blog-hero-sub">Las escribimos nosotros, con la ley citada y las cifras revisadas antes de publicar.</p>
 </section>
