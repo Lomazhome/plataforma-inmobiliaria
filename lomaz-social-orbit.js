@@ -148,7 +148,7 @@
       animation: lm-sun-aura 4s ease-in-out infinite;
     }
     .lm-sun-letter {
-      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 20px;
       font-weight: 600;
       font-style: italic;

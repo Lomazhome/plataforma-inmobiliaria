@@ -42,7 +42,7 @@
   #lmz-adm-dw.abierto{transform:translateX(0)}\
   #lmz-adm-ov.abierto{display:block}\
   .lmz-adm-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1rem 1rem 1.25rem;border-bottom:1px solid rgba(201,169,110,.2);position:sticky;top:0;background:#0A1626}\
-  .lmz-adm-head b{font-family:"Playfair Display",Georgia,serif;color:#f3e7c9;font-size:1.15rem;letter-spacing:1px}\
+  .lmz-adm-head b{font-family:"Cormorant Garamond",Georgia,serif;color:#f3e7c9;font-size:1.15rem;letter-spacing:1px}\
   .lmz-adm-head b span{color:#c9a96e}\
   .lmz-adm-cls{width:44px;height:44px;border:none;background:none;color:#f3e7c9;font-size:1.5rem;cursor:pointer}\
   .lmz-adm-sec{font-size:.68rem;color:#c9a96e;letter-spacing:2px;text-transform:uppercase;font-weight:600;padding:1.2rem 1.25rem .4rem}\

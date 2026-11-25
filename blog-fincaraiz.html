@@ -7,15 +7,15 @@
   <meta name="description" content="Paso a paso para publicar los inmuebles de LoMaz Home en Fincaraiz: documentación técnica, validación de campos, prueba y pase a producción."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    :root{--navy:#0D1B2E;--gold:#C4992A;--cream:#F4E5C2;--white:#fff;--text:#1a1a1a;--muted:#6b7280;--light-bg:#f8f9fb;}
+    :root{--navy:#0D1B2E;--gold:#c9a96e;--cream:#F4E5C2;--white:#fff;--text:#1a1a1a;--muted:#6b7280;--light-bg:#f8f9fb;}
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:"Inter",sans-serif;color:var(--text);background:var(--white);line-height:1.7;}
 
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:999;background:var(--navy);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;}
-    .nav-brand{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--white);text-decoration:none;}
+    .nav-brand{font-family:"Cormorant Garamond",serif;font-size:1.3rem;color:var(--white);text-decoration:none;}
     .nav-brand span{color:var(--gold);}
     .nav-links{display:flex;gap:2rem;list-style:none;}
     .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;}
@@ -26,14 +26,14 @@
     /* HERO */
     .article-hero{margin-top:62px;background:var(--navy);padding:4rem 2rem 3rem;text-align:center;}
     .article-cat{display:inline-block;background:var(--gold);color:var(--navy);font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .8rem;margin-bottom:1.2rem;}
-    .article-title{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);max-width:800px;margin:0 auto 1rem;line-height:1.2;}
+    .article-title{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);max-width:800px;margin:0 auto 1rem;line-height:1.2;}
     .article-subtitle{color:rgba(255,255,255,.65);font-size:1rem;max-width:620px;margin:0 auto 1.5rem;}
     .article-meta{color:rgba(255,255,255,.45);font-size:.8rem;letter-spacing:.04em;}
 
     /* CONTENT */
     .article-body{max-width:780px;margin:0 auto;padding:3rem 2rem 4rem;}
     .article-body p{margin-bottom:1.4rem;font-size:1rem;color:#333;line-height:1.8;}
-    .article-body h2{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--navy);margin:2.5rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--gold);}
+    .article-body h2{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);margin:2.5rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--gold);}
     .article-body h3{font-size:1.05rem;font-weight:600;color:var(--navy);margin:1.8rem 0 .7rem;}
     .article-body ul,
     .article-body ol{margin:0 0 1.4rem 1.5rem;}
@@ -44,7 +44,7 @@
     /* STEP BOXES */
     .step-box{background:var(--light-bg);border-left:4px solid var(--gold);padding:1.2rem 1.5rem;margin:1.5rem 0;border-radius:0 6px 6px 0;}
     .step-box .step-num{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
-    .step-box .step-title{font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--navy);margin-bottom:.5rem;}
+    .step-box .step-title{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--navy);margin-bottom:.5rem;}
     .step-box p{margin-bottom:0;font-size:.93rem;}
 
     /* NOTE / DISCLAIMER */
@@ -59,8 +59,8 @@
     .link-card-text strong{font-size:.9rem;color:var(--gold);}
 
     /* CTA SECTION */
-    .cta-section{background:var(--light-bg);border-top:1px solid rgba(196,153,42,.2);padding:3rem 2rem;text-align:center;}
-    .cta-section h2{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--navy);margin-bottom:.8rem;}
+    .cta-section{background:var(--light-bg);border-top:1px solid rgba(201,169,110,.2);padding:3rem 2rem;text-align:center;}
+    .cta-section h2{font-family:"Cormorant Garamond",serif;font-size:1.8rem;color:var(--navy);margin-bottom:.8rem;}
     .cta-section p{color:var(--muted);max-width:480px;margin:0 auto 1.5rem;}
     .btn-gold{display:inline-block;background:var(--gold);color:var(--navy);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;padding:.75rem 1.8rem;text-decoration:none;transition:opacity .2s;}
     .btn-gold:hover{opacity:.85;}

@@ -17,7 +17,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script src="/config.js"></script>
 <style>
-:root{--navy:#0f2038;--gold:#b8860b;}
+:root{--navy:#0f2038;--gold:#c9a96e;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#0f2038;}
 .topbar{background:var(--navy);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
@@ -208,7 +208,7 @@ async function cargar(){
     try{ perf=await buscarPerfil(); }catch(e){ perf=null; }
   }
   if(!perf){
-    hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="/asesores.html" style="color:#b8860b">Ver todo el equipo</a></div>';
+    hero.innerHTML='<div style="width:100%;text-align:center;color:#fff">No encontramos esta tarjeta. <a href="/asesores.html" style="color:#c9a96e">Ver todo el equipo</a></div>';
     var secNF=document.querySelector("h2.sec"); if(secNF) secNF.style.display="none";
     var gridNF=document.getElementById("grid"); if(gridNF) gridNF.style.display="none";
     return;

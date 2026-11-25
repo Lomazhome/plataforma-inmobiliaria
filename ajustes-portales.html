@@ -7,11 +7,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
+body{font-family:Inter,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
 .topbar{background:#111;border-bottom:1px solid #222;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.logo{font-size:1.2rem;font-weight:800;color:#c9a484;letter-spacing:2px}
+.logo{font-size:1.2rem;font-weight:800;color:#c9a96e;letter-spacing:2px}
 .user-info{display:flex;align-items:center;gap:1rem;font-size:.85rem;color:#aaa}
-.btn-back{background:transparent;border:1px solid #444;color:#fff;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:.8rem;font-family:Montserrat,sans-serif}
+.btn-back{background:transparent;border:1px solid #444;color:#fff;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:.8rem;font-family:Inter,sans-serif}
 .container{max-width:900px;margin:2rem auto;padding:0 1rem}
 .page-title{font-size:1.8rem;font-weight:800;letter-spacing:1px;margin-bottom:.3rem}
 .page-sub{color:#888;font-size:.9rem;margin-bottom:2rem}
@@ -35,15 +35,15 @@ body{font-family:Montserrat,sans-serif;background:#0a0a0a;color:#fff;min-height:
 .form-group{margin-bottom:1rem}
 label{display:block;font-size:.75rem;color:#aaa;font-weight:600;letter-spacing:.5px;margin-bottom:.4rem}
 .input-row{display:flex;gap:.8rem;align-items:flex-end}
-input,select{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Montserrat,sans-serif;font-size:.9rem;outline:none;transition:.3s;width:100%}
-input:focus{border-color:#c9a484}
-.btn-save{background:#c9a484;color:#000;border:none;border-radius:6px;padding:.7rem 1.4rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;letter-spacing:.5px;white-space:nowrap;transition:.3s}
+input,select{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:.7rem .9rem;color:#fff;font-family:Inter,sans-serif;font-size:.9rem;outline:none;transition:.3s;width:100%}
+input:focus{border-color:#c9a96e}
+.btn-save{background:#c9a96e;color:#000;border:none;border-radius:6px;padding:.7rem 1.4rem;font-family:Inter,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;letter-spacing:.5px;white-space:nowrap;transition:.3s}
 .btn-save:hover{background:#b8956d}
-.btn-test{background:transparent;border:1px solid #c9a484;color:#c9a484;border-radius:6px;padding:.7rem 1.2rem;font-family:Montserrat,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:.3s}
-.btn-test:hover{background:rgba(201,164,132,.1)}
-.btn-toggle{background:transparent;border:none;color:#888;cursor:pointer;font-size:.82rem;font-family:Montserrat,sans-serif;padding:.4rem .8rem;border-radius:4px;transition:.3s}
-.btn-toggle:hover{color:#c9a484}
-.btn-disconnect{background:transparent;border:1px solid rgba(220,53,69,.4);color:#ff6b7a;border-radius:6px;padding:.5rem 1rem;font-family:Montserrat,sans-serif;font-weight:600;font-size:.78rem;cursor:pointer;transition:.3s}
+.btn-test{background:transparent;border:1px solid #c9a96e;color:#c9a96e;border-radius:6px;padding:.7rem 1.2rem;font-family:Inter,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:.3s}
+.btn-test:hover{background:rgba(201,169,110,.1)}
+.btn-toggle{background:transparent;border:none;color:#888;cursor:pointer;font-size:.82rem;font-family:Inter,sans-serif;padding:.4rem .8rem;border-radius:4px;transition:.3s}
+.btn-toggle:hover{color:#c9a96e}
+.btn-disconnect{background:transparent;border:1px solid rgba(220,53,69,.4);color:#ff6b7a;border-radius:6px;padding:.5rem 1rem;font-family:Inter,sans-serif;font-weight:600;font-size:.78rem;cursor:pointer;transition:.3s}
 .btn-disconnect:hover{background:rgba(220,53,69,.1)}
 .info-box{background:rgba(13,110,253,.06);border:1px solid rgba(13,110,253,.2);border-radius:8px;padding:1rem;font-size:.8rem;color:#aaa;line-height:1.7;margin-top:.8rem}
 .info-box a{color:#6ea8fe;text-decoration:none}

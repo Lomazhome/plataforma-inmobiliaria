@@ -12,7 +12,7 @@
 <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#0D1B2E;--navy2:#162540;--gold:#C4992A;--gold-l:#e8d5b0;--cream:#F4E5C2;--line:rgba(201,169,110,.25);--txt:#e8edf5;--txt-soft:#9fb0c6}
+:root{--navy:#0D1B2E;--navy2:#162540;--gold:#c9a96e;--gold-l:#e8d5b0;--cream:#F4E5C2;--line:rgba(201,169,110,.25);--txt:#e8edf5;--txt-soft:#9fb0c6}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--navy);color:var(--txt);min-height:100vh}
 a{color:inherit;text-decoration:none}
@@ -115,7 +115,7 @@ select,input[type=number]{background:#0a1424;border:1px solid var(--line);color:
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(mapa);
     CAPA=L.featureGroup().addTo(mapa);
     var dibujo=new L.FeatureGroup(); mapa.addLayer(dibujo);
-    var dibujar=new L.Draw.Polygon(mapa,{shapeOptions:{color:"#C4992A",weight:2,fillOpacity:.08}});
+    var dibujar=new L.Draw.Polygon(mapa,{shapeOptions:{color:"#c9a96e",weight:2,fillOpacity:.08}});
     document.getElementById("btnDibujar").addEventListener("click",function(){ dibujo.clearLayers(); POLI=null; dibujar.enable(); });
     document.getElementById("btnLimpiar").addEventListener("click",function(){ dibujo.clearLayers(); POLI=null; pinta(); ajusta(); });
     mapa.on(L.Draw.Event.CREATED,function(e){ dibujo.clearLayers(); dibujo.addLayer(e.layer); POLI=e.layer.getLatLngs()[0].map(function(ll){ return [ll.lat,ll.lng]; }); pinta(); });
