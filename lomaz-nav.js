@@ -342,8 +342,9 @@ function lmFilterZonas(){
       var _u="https://lniouebpuuuqctrgxoiw.supabase.co";
       var _k=atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==");
       var sb=window.supabase.createClient(_u,_k);
-      sb.from("propiedades").select("barrio").eq("estado","activa").limit(1000).then(function(r){
+      sb.from("propiedades").select("barrio,ciudad,tipo_operacion,tipo_propiedad").eq("estado","activa").limit(1000).then(function(r){
         if(r.error||!r.data)return;
+        window.__lmInv=r.data;
         var barrios=r.data.map(function(x){return (x.barrio||"").toLowerCase().trim();}).filter(Boolean);
         var lis=document.querySelectorAll("#lm-nav .lm-item");
         var zonasLi=null;
@@ -378,23 +379,12 @@ function bFAB() {
 }
 
 function bChat() {
-  return '<div id="lm-chat-widget"><div class="lm-chat-header"><div class="lm-chat-avatar">A</div><div class="lm-chat-info"><p class="lm-chat-name">ARIA</p><div class="lm-chat-status"><span class="lm-chat-status-dot"></span><span>Asesora IA · En línea</span></div></div><div class="lm-chat-actions"><button class="lm-chat-action-btn" id="lm-chat-exp">⤢</button><button class="lm-chat-close-btn" id="lm-chat-cls">✕</button></div></div><div class="lm-chat-messages" id="lm-msgs"><div class="lm-chat-welcome" id="lm-cwel"><div class="lm-chat-welcome-logo">A</div><h3>Hola, soy ARIA</h3><p>Tu asesora inmobiliaria IA.<br>¿En qué puedo ayudarte?</p><div class="lm-chat-suggestions"><button class="lm-suggestion-chip" data-msg="¿Cuáles son las propiedades en Usaquén?">🏠 Propiedades en Usaquén</button><button class="lm-suggestion-chip" data-msg="¿Cómo funciona el proceso de compra?">📋 Proceso de compra</button><button class="lm-suggestion-chip" data-msg="¿Qué gastos notariales debo considerar?">💸 Gastos notariales</button></div></div></div><div class="lm-chat-input-area"><div class="lm-chat-input-row"><textarea class="lm-chat-textarea" id="lm-cinp" placeholder="Escribe tu consulta..." rows="1"></textarea><button class="lm-chat-send-btn" id="lm-csnd" disabled><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg></button></div><div class="lm-chat-footer-note">ARIA · LoMaz Home IA</div></div></div>';
+  return '<div id="lm-chat-widget"><div class="lm-chat-header"><div class="lm-chat-avatar">A</div><div class="lm-chat-info"><p class="lm-chat-name">ARIA</p><div class="lm-chat-status"><span class="lm-chat-status-dot"></span><span>Asesora IA · En línea</span></div></div><div class="lm-chat-actions"><button class="lm-chat-action-btn" id="lm-chat-exp">⤢</button><button class="lm-chat-close-btn" id="lm-chat-cls">✕</button></div></div><div class="lm-chat-messages" id="lm-msgs"><div class="lm-chat-welcome" id="lm-cwel"><div class="lm-chat-welcome-logo">A</div><h3>Hola, soy ARIA</h3><p>Tu asesora inmobiliaria IA.<br>¿En qué puedo ayudarte?</p><div class="lm-chat-suggestions"><button class="lm-suggestion-chip" data-msg="¿Qué inmuebles tienen disponibles?">Inmuebles disponibles</button><button class="lm-suggestion-chip" data-msg="¿Cómo funciona el proceso de compra?">Proceso de compra</button><button class="lm-suggestion-chip" data-msg="¿Qué gastos notariales debo considerar?">Gastos notariales</button></div></div></div><div class="lm-chat-input-area"><div class="lm-chat-input-row"><textarea class="lm-chat-textarea" id="lm-cinp" placeholder="Escribe tu consulta..." rows="1"></textarea><button class="lm-chat-send-btn" id="lm-csnd" disabled><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg></button></div><div class="lm-chat-footer-note">ARIA · LoMaz Home IA</div></div></div>';
 }
 
 function bMob() {
   return '<div id="lm-mobile-menu"><button id="lm-mob-cls" aria-label="Cerrar menu" style="position:absolute;top:1rem;right:1rem;width:48px;height:48px;background:none;border:none;color:white;font-size:1.6rem;cursor:pointer">✕</button>'+NAV.map(n=>'<a class="lm-mob-link" href="'+n.h+'">'+n.l+'</a>').join('')+'<a class="lm-mob-link" href="login.html" style="color:var(--lm-gold)">Acceso asesores</a></div>';
 }
-
-const KB = {
-  p:'Tenemos un portafolio selecto en Bogotá: Usaquén, Chapinero, La Cabrera, Rosales y Santa Bárbara. Apartamentos, casas y locales disponibles. ¿Filtro por zona o tipo?',
-  u:'Usaquén es uno de los barrios más exclusivos de Bogotá Norte. Ofrecemos desde $450M COP. Ambiente tranquilo, gastronomía premium y cercanía empresarial.',
-  c:'Chapinero Alto: zona cotizada con arquitectura moderna, restaurantes y cultura. Excelente para inversión y arriendo con alta rentabilidad.',
-  b:'El proceso de compra incluye: promesa de compraventa, estudio jurídico, crédito hipotecario, escrituración notarial y registro ORIP. Te acompañamos en cada paso.',
-  n:'Gastos notariales 2026: derechos notariales 0.27%, beneficencia 1%, registro ORIP 0.5%, IVA sobre honorarios. Usa nuestra calculadora para tu estimado exacto.',
-  h:'Para un crédito hipotecario necesitas ingresos demostrables, historial limpio y cuota inicial mínima del 30% (VIS) o 20% (No VIS). ¿Calculamos tu capacidad?',
-  k:'Contáctanos: lomazhome@gmail.com | +57 300 330 0343. Agenda tu consulta privada sin costo desde nuestra página de contacto.',
-  d:'Soy ARIA, asesora inmobiliaria IA de LoMaz Home. Te ayudo con propiedades, zonas, proceso de compra, gastos y créditos. ¿Qué necesitas?'
-};
 
 // === ARIA: Motor de captacion de leads ===
 const LEAD={intencion:null,nombre:null,whatsapp:null,email:null,zona:null,tipo_inmueble:null,habitaciones:null,area_m2:null,precio_esperado:null,presupuesto_aprox:null,mensaje_libre:'',consentimiento:false};
@@ -402,7 +392,7 @@ let LEAD_STEP='idle';
 let RETRY=0;
 const HIST=[];
 const RX={email:/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i,wa:/(?:\+?57\s?)?(3\d{2})\s?\d{3}\s?\d{4}/,hab:/(\d+)\s*(hab|habitaciones|alcobas|cuartos|dormitorios)/i,area:/(\d{2,4})\s*(m2|m²|metros)/i};
-const ZONAS=['usaquen','usaquén','chapinero','la cabrera','cabrera','rosales','santa bárbara','santa barbara'];
+const ZONAS=['colina campestre','colina','suba','cedritos','chicó','chico','usaquen','usaquén','chapinero','la cabrera','cabrera','rosales','santa bárbara','santa barbara'];
 const TIPOS=['apartamento','apto','casa','local','oficina','penthouse','duplex','dúplex','lote','bodega'];
 const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 function cleanName(s){
@@ -465,18 +455,52 @@ function finalizeLead(){
   }
   return 'Entendido, no guardo tus datos. Si cambias de opinión, escríbeme.';
 }
+// ARIA responde con el inventario publicado hoy (window.__lmInv); nunca con cifras fijas.
+const LISTADO='propiedades-publica.html';
+const enlace=(h,txt)=>'<a href="'+h+'" style="color:var(--lm-gold-dark);font-weight:600;text-decoration:underline">'+txt+'</a>';
+const cuantos=(n)=>n===1?'1 inmueble':n+' inmuebles';
+const ZONAS_ARIA=[
+  {k:'colina',n:'Colina Campestre',q:'Colina Campestre'},
+  {k:'suba',n:'Suba',q:'Suba',alias:['pinar','redil','angeles']},
+  {k:'usaquen',n:'Usaquén',q:'Usaquén'},
+  {k:'chapinero',n:'Chapinero',q:'Chapinero'},
+  {k:'cedritos',n:'Cedritos',q:'Cedritos'},
+  {k:'chico',n:'Chicó',q:'Chicó'},
+  {k:'cabrera',n:'La Cabrera',q:'La Cabrera'},
+  {k:'rosales',n:'Rosales',q:'Rosales'},
+  {k:'santa barbara',n:'Santa Bárbara',q:'Santa Bárbara'},
+  {k:'cali',n:'Cali',q:'Cali',ciudad:true},
+  {k:'cartagena',n:'Cartagena',q:'Cartagena de Indias',ciudad:true}
+];
+function invResumen(){
+  const inv=window.__lmInv;
+  if(!inv) return 'Puedes ver los inmuebles publicados hoy en '+enlace(LISTADO,'el listado')+', con filtros por zona, tipo y precio.';
+  if(!inv.length) return 'Hoy no tenemos inmuebles publicados. Si me cuentas qué buscas, un asesor te avisa cuando entre algo que te sirva.';
+  const v=inv.filter(p=>norm(p.tipo_operacion).includes('venta')).length;
+  const a=inv.filter(p=>norm(p.tipo_operacion).includes('arriendo')).length;
+  return 'Hoy tenemos '+cuantos(inv.length)+' publicados: '+v+' en venta y '+a+' en arriendo. Míralos en '+enlace(LISTADO,'el listado')+' o '+enlace('mapa.html','en el mapa')+'. ¿Buscas para comprar o para arrendar?';
+}
+function invZona(z){
+  const inv=window.__lmInv;
+  const url=LISTADO+'?'+(z.ciudad?'ciudad=':'barrio=')+encodeURIComponent(z.q);
+  if(!inv) return 'Puedes ver lo que hay publicado en '+z.n+' en '+enlace(url,'el listado')+'.';
+  const claves=[z.k].concat(z.alias||[]);
+  const n=inv.filter(p=>{const b=norm(z.ciudad?p.ciudad:p.barrio);return claves.some(c=>b.includes(c));}).length;
+  if(!n) return 'Hoy no tenemos inmuebles publicados en '+z.n+'. Puedes ver lo que sí hay en '+enlace(LISTADO,'el listado')+'. Si quieres, deja tus datos y un asesor te avisa cuando entre algo en esa zona.';
+  return 'Hoy tenemos '+cuantos(n)+' en '+z.n+'. '+(n===1?'Míralo':'Míralos')+' en '+enlace(url,'el listado')+'. ¿Quieres que un asesor te lo muestre?';
+}
 const KB_ARIA={
-  usaquen:'Tenemos un portafolio activo en Usaquén con apartamentos desde 2 habitaciones. ¿Quieres que un asesor te muestre opciones?',
-  chapinero:'Chapinero (La Cabrera, Rosales, El Refugio) tiene gran oferta boutique. ¿Te ayudo con compra, arriendo o venta?',
-  notarial:'En Bogotá los gastos notariales y de registro rondan el 3-4% del valor del inmueble. ¿Quieres una cotización personalizada?',
-  credito:'Trabajamos con asesores hipotecarios. Aprobaciones desde 70% del valor con tasa preferencial. ¿Te conectamos con uno?'
+  proceso:'Una compra pasa por estos pasos: oferta, promesa de compraventa, estudio de títulos, crédito si lo necesitas, escritura en notaría y registro. Un asesor te acompaña en cada uno. ¿Buscas para comprar?',
+  notarial:'Los gastos de notaría y registro dependen del valor de la venta. Calcula el estimado de tu caso en '+enlace('calculadora.html#notariales','la calculadora de gastos notariales')+'; el valor definitivo lo liquida la notaría.',
+  credito:'El crédito lo aprueba el banco según tus ingresos y tu historial. Puedes simular la cuota en '+enlace('calculadora.html#credito','la calculadora de crédito')+' y tu capacidad en '+enlace('calculadora.html#endeudamiento','la de endeudamiento')+'. Si quieres, un asesor te orienta.'
 };
 function kbAnswerAria(t){
   const x=norm(t);
-  if(/usaquen|usaqu\u00e9n/.test(x)) return KB_ARIA.usaquen;
-  if(/chapinero|cabrera|rosales|refugio/.test(x)) return KB_ARIA.chapinero;
-  if(/notarial|escritura|registro/.test(x)) return KB_ARIA.notarial;
-  if(/credito|crédito|hipotec|financ/.test(x)) return KB_ARIA.credito;
+  for(const z of ZONAS_ARIA){ if(x.includes(z.k)||(z.alias||[]).some(a=>x.includes(a))) return invZona(z); }
+  if(/proceso|pasos|como funciona|como es la compra/.test(x)) return KB_ARIA.proceso;
+  if(/notarial|notaria|escritura|registro/.test(x)) return KB_ARIA.notarial;
+  if(/credito|hipotec|financ/.test(x)) return KB_ARIA.credito;
+  if(/que (tienen|hay)|disponibles|inmuebles|propiedades|portafolio|inventario|catalogo/.test(x)) return invResumen();
   if(/contacto|asesor|hablar con|llamar|wpp|whatsapp/.test(x)) return 'Con gusto te conecto con un asesor. ¿Cuál es tu nombre?';
   return null;
 }
@@ -492,12 +516,13 @@ async function resp(m){
 
   // Si aún no hay intención, intentar detectar
   if(!LEAD.intencion){
+    // Primero las preguntas informativas (zonas, inventario, gastos, crédito); luego la intención
     const it=detectIntent(txt);
-    if(it){LEAD.intencion=it;RETRY=0;return nextQuestion();}
-    // Si no es intención pero pregunta del KB_ARIA, responder y seguir
+    if(it==='venta'){LEAD.intencion=it;RETRY=0;return nextQuestion();}
     const kb=kbAnswerAria(txt);
     if(kb) return kb;
-    if(LEAD_STEP==='idle'){RETRY++;if(RETRY===1)return '¡Hola! Soy ARIA. ¿Quieres comprar, vender o arrendar una propiedad? También puedo resolver dudas sobre zonas, crédito o gastos notariales.';return 'Cuéntame en una frase qué necesitas: comprar, vender o arrendar.';}
+    if(it){LEAD.intencion=it;RETRY=0;return nextQuestion();}
+    if(LEAD_STEP==='idle'){RETRY++;if(RETRY===1)return 'Hola, soy ARIA. ¿Quieres comprar, vender o arrendar? También te digo qué inmuebles hay publicados hoy y te ayudo con gastos notariales o crédito.';return 'Cuéntame en una frase qué necesitas: comprar, vender o arrendar.';}
   }
 
   // Flujo paso a paso
@@ -572,7 +597,7 @@ async function stream(t) {
   const b=document.createElement('div'); b.className='lm-msg-bubble';
   d.innerHTML='<div class="lm-msg-avatar">A</div>'; d.appendChild(b); m.appendChild(d);
   let i=0;
-  return new Promise(r=>{(function f(){if(i<t.length){b.textContent+=t[i++];m.scrollTop=m.scrollHeight;setTimeout(f,16);}else{b.innerHTML=t;m.scrollTop=m.scrollHeight;r();}})();});
+  const pl=String(t).replace(/<[^>]+>/g,'');return new Promise(r=>{(function f(){if(i<pl.length){b.textContent+=pl[i++];m.scrollTop=m.scrollHeight;setTimeout(f,16);}else{b.innerHTML=t;m.scrollTop=m.scrollHeight;r();}})();});
 }
 
 async function send(t) {
