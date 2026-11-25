@@ -347,7 +347,11 @@ button{font-family:var(--sans)}
 .hero__foto img{display:block;width:100%;height:auto;aspect-ratio:1920/510;object-fit:cover}
 .hero__foto figcaption{padding:12px var(--gut) 0;font-size:.8125rem;color:var(--s500)}
 .portals-bar{display:block;padding:24px var(--gut) 0;background:transparent;border:0;font-size:.9375rem;color:var(--s600)}
-.value-sec{display:block;background:var(--navy)}
+.value-sec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:center;background:var(--navy)}
+.value-sec__foto{margin:0}
+.value-sec__foto img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.value-sec__foto figcaption{padding-top:12px;font-size:.8125rem;line-height:1.5;color:#a8a29e}
+@media(max-width:920px){.value-sec{grid-template-columns:1fr}}
 .value-sec__txt{max-width:62ch}
 .value-sec__desc{font-size:1.0625rem;line-height:1.7;color:#d9d4cc}
 .value-sec .exp-cta{margin-top:32px}
@@ -556,6 +560,10 @@ button{font-family:var(--sans)}
       <a class="exp-btn exp-btn--ghost" href="sobre-nosotros.html">Lee nuestra historia</a>
     </div>
   </div>
+  <figure class="value-sec__foto">
+    <img src="img/equipo-lomaz-home.webp" width="1200" height="800" loading="lazy" alt="El equipo de LoMaz Home sentado en un sofá: Francy Emir Vargas Lomelín, Salomón Mazabell Torres Barrera y María Angélica Vargas Lomelín"/>
+    <figcaption>De izquierda a derecha: Francy Emir Vargas Lomelín, Salomón Mazabell Torres Barrera y María Angélica Vargas Lomelín.</figcaption>
+  </figure>
 </section>
 
 <!-- CONSULTA PRIVADA -->
