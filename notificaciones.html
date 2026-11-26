@@ -229,11 +229,6 @@ async function loadNotifs(){
       notifs.push({id:"cli_"+c.id,tipo:"cliente",icon:"<i class=lzi data-i=bandera></i>",titulo:"Negocio cerrado: "+(c.nombre||"Sin nombre"),desc:c.precio_final?("$"+Number(c.precio_final).toLocaleString("es-CO")):"Sin valor registrado",fecha:c.cerrado_at||new Date().toISOString(),link:"contactos.html?id="+c.id});
     });
   }
-  // System notifications (static milestones)
-  notifs.push({id:"sys_welcome",tipo:"sistema",icon:"<i class=lzi data-i=campana></i>",titulo:"Bienvenido a LoMaz Home",desc:"Tu plataforma inmobiliaria está lista. Completa tu perfil para mejor visibilidad.",fecha:new Date().toISOString(),link:"perfil-asesor.html"});
-  notifs.push({id:"sys_aria",tipo:"sistema",icon:"<i class=lzi data-i=campana></i>",titulo:"ARIA lista para usar",desc:"El asistente virtual ARIA está activo. Puedes hablar con ella desde cualquier página.",fecha:new Date().toISOString(),link:"aria.html"});
-  notifs.push({id:"sys_portales",tipo:"portal",icon:"<i class=lzi data-i=enlace></i>",titulo:"Portales de publicación",desc:"Conecta Finca Raíz y Metrocuadrado para publicar.",fecha:new Date().toISOString(),link:"portales.html"});
-  notifs.push({id:"sys_calcu",tipo:"sistema",icon:"<i class=lzi data-i=calculadora></i>",titulo:"Calculadora financiera disponible",desc:"Calcula ROI, crédito hipotecario y rentabilidad de arriendo en segundos.",fecha:new Date().toISOString(),link:"calculadora.html"});
   // sort by date desc
   notifs.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});
   allNotifs=notifs;
