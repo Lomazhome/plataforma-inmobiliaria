@@ -71,7 +71,7 @@
   document.head.appendChild(css);
 
   var tab = document.createElement('div');
-  tab.className = 'tab'; tab.dataset.panel = 'pauta'; tab.innerHTML = '&#128226; Pauta';
+  tab.className = 'tab'; tab.dataset.panel = 'pauta'; tab.innerHTML = '<i class=lzi data-i=megafono></i> Pauta';
   tab.onclick = function () { window.switchTab('pauta'); };
   document.querySelector('.tabs').appendChild(tab);
 
