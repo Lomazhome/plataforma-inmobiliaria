@@ -155,17 +155,17 @@ table th{color:#a8a29e}
 <div class="stats-row">
 <div class="scard gold"><div class="sv" id="st-total">0</div><div class="sl">Total</div></div>
 <div class="scard red"><div class="sv" id="st-unread">0</div><div class="sl">Sin leer</div></div>
-<div class="scard blue"><div class="sv" id="st-leads">0</div><div class="sl">Leads</div></div>
-<div class="scard green"><div class="sv" id="st-props">0</div><div class="sl">Propiedades</div></div>
+<div class="scard blue"><div class="sv" id="st-leads">0</div><div class="sl">Contactos</div></div>
+<div class="scard green"><div class="sv" id="st-props">0</div><div class="sl">Inmuebles</div></div>
 </div>
 <!-- FILTER TABS -->
 <div class="filter-tabs">
 <button class="ftab active" data-type="all" onclick="filterNotifs('all',this)">Todas <span class="badge" id="fb-all">0</span></button>
-<button class="ftab" data-type="lead" onclick="filterNotifs('lead',this)"><i class=lzi data-i=correo></i> Leads <span class="badge" id="fb-lead">0</span></button>
-<button class="ftab" data-type="propiedad" onclick="filterNotifs('propiedad',this)"><i class=lzi data-i=casa></i> Propiedades <span class="badge" id="fb-prop">0</span></button>
-<button class="ftab" data-type="cliente" onclick="filterNotifs('cliente',this)"><i class=lzi data-i=personas></i> Clientes <span class="badge" id="fb-cli">0</span></button>
-<button class="ftab" data-type="sistema" onclick="filterNotifs('sistema',this)"><i class=lzi data-i=ajustes></i> Sistema <span class="badge" id="fb-sis">0</span></button>
-<button class="ftab" data-type="portal" onclick="filterNotifs('portal',this)"><i class=lzi data-i=enlace></i> Portales <span class="badge" id="fb-port">0</span></button>
+<button class="ftab" data-type="lead" onclick="filterNotifs('lead',this)"><i class=lzi data-i=correo></i> Contactos <span class="badge" id="fb-lead">0</span></button>
+<button class="ftab" data-type="propiedad" onclick="filterNotifs('propiedad',this)"><i class=lzi data-i=casa></i> Inmuebles <span class="badge" id="fb-prop">0</span></button>
+<button class="ftab" data-type="cliente" onclick="filterNotifs('cliente',this)"><i class=lzi data-i=personas></i> Cierres <span class="badge" id="fb-cli">0</span></button>
+<button class="ftab" data-type="sistema" style="display:none" onclick="filterNotifs('sistema',this)"><i class=lzi data-i=ajustes></i> Sistema <span class="badge" id="fb-sis">0</span></button>
+<button class="ftab" data-type="portal" style="display:none" onclick="filterNotifs('portal',this)"><i class=lzi data-i=enlace></i> Portales <span class="badge" id="fb-port">0</span></button>
 </div>
 <!-- LIST -->
 <div id="notif-list" class="notif-list"></div>
