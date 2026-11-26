@@ -88,6 +88,21 @@ a{color:inherit;text-decoration:none}
 .topbar{padding:.75rem 1rem}
 .brand-text{font-size:1.3rem}
 }
+
+/* ---- Fase 5: iconos de línea y rótulos sin mayúsculas espaciadas ---- */
+.sidebar a .icon{display:inline-flex;width:22px;justify-content:center;opacity:.8;font-size:0}
+.sidebar a .icon svg{width:19px;height:19px}
+.sidebar a{letter-spacing:0;transition:background-color .15s ease,color .15s ease}
+.sidebar-section{font-size:.8125rem;letter-spacing:0;text-transform:none;font-weight:500;color:var(--txt-mute,#8b8680)}
+.stat .ico,.card .ico{display:inline-flex;font-size:0;filter:none;color:var(--gold)}
+.stat .ico svg{width:24px;height:24px}
+.card .ico svg{width:30px;height:30px}
+.stat .lbl{font-size:.875rem;letter-spacing:0;text-transform:none;font-weight:500;color:var(--txt,#f5f1ea)}
+.stat .num{font-variant-numeric:tabular-nums}
+.section-title{letter-spacing:0}
+.btn-logout{letter-spacing:0;text-transform:none}
+.user-role{letter-spacing:0;text-transform:none;font-size:.8125rem}
+@media(min-width:1100px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -112,57 +127,57 @@ a{color:inherit;text-decoration:none}
 <div id="userEmail" class="user-email">Cargando...</div>
 <div class="user-role" id="userRole">&nbsp;</div>
 </div>
-<button class="btn-logout" onclick="logout()">Cerrar sesion</button>
+<button class="btn-logout" onclick="logout()">Cerrar sesión</button>
 </div>
 </div>
 <div class="layout">
 <nav class="sidebar">
 <div class="sidebar-section">Principal</div>
-<a href="dashboard.html" class="active"><span class="icon">🏠</span>Dashboard</a>
-<a href="catalogo-global.html"><span class="icon">🌐</span>Inventario Compartido</a>
-<a href="propiedades.html"><span class="icon">🏢</span>Ver Propiedades</a>
-<div class="sidebar-section">Mis Herramientas</div>
-<a href="agregar-propiedad.html"><span class="icon">➕</span>Agregar Propiedad</a>
-<a href="mis-propiedades.html"><span class="icon">📋</span>Mis Propiedades</a>
-<a href="contactos.html"><span class="icon">👥</span>Contactos (CRM)</a>
-<a href="formatos.html"><span class="icon">📄</span>Formatos</a>
-<a href="mensajeria.html"><span class="icon">💬</span>Mensajes (Lomi)</a>
-<div class="sidebar-section">Publicacion</div><a href="portales.html"><span class="icon">🌐</span>Portales</a>
-<a href="marketing.html"><span class="icon">📱</span>Marketing / Contenido</a>
-<a href="crear-articulo.html"><span class="icon">✍️</span>Crear Artículo</a>
-<div class="sidebar-section">Analisis</div>
-<a href="calculadora.html"><span class="icon">📝</span>Calculadora</a>
+<a href="dashboard.html" class="active"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/></svg></span>Inicio</a>
+<a href="catalogo-global.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M9 9v11M15 9v11"/></svg></span>Inventario compartido</a>
+<a href="propiedades.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V8l6-4v16"/><path d="M10 20V10h10v10"/><path d="M2.5 20h19M13.5 13.5h3M13.5 16.5h3"/></svg></span>Todos los inmuebles</a>
+<div class="sidebar-section">Mis herramientas</div>
+<a href="agregar-propiedad.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span>Agregar inmueble</a>
+<a href="mis-propiedades.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></span>Mis inmuebles</a>
+<a href="contactos.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.7.8 2.7 2.5 3 5.2"/></svg></span>Contactos (CRM)</a>
+<a href="formatos.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></span>Formatos</a>
+<a href="mensajeria.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span>Mensajes (Lomi)</a>
+<div class="sidebar-section">Publicación</div><a href="portales.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span>Portales</a>
+<a href="marketing.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l8 4V6L7 10z"/><path d="M18 9.5a3.5 3.5 0 0 1 0 5"/></svg></span>Marketing y contenido</a>
+<a href="crear-articulo.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 0 1 3 3L8 18.5 4 20z"/><path d="M14.5 6l3 3"/></svg></span>Crear artículo</a>
+<div class="sidebar-section">Análisis</div>
+<a href="calculadora.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></span>Calculadora</a>
 <div class="sidebar-section">Cuenta</div>
-<a href="admin-usuarios.html" id="navGestionUsuarios" style="display:none"><span class="icon">🔑</span>Gestión de Usuarios</a>
-<a href="perfil-asesor.html"><span class="icon">⚙</span>Mi Perfil</a>
-<a href="index.html"><span class="icon">🌐</span>Ver Sitio Web</a>
+<a href="admin-usuarios.html" id="navGestionUsuarios" style="display:none"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.5 12l2 2 3.5-4"/></svg></span>Usuarios</a>
+<a href="perfil-asesor.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.2 4-6.5 8-6.5s7.2 2.3 8 6.5"/></svg></span>Mi perfil</a>
+<a href="index.html"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8"/><path d="M11 6H5v13h13v-6"/></svg></span>Ver el sitio público</a>
 </nav>
 <main class="main">
 <div class="welcome">
 <div>
-<h1>Bienvenido de vuelta, <em id="welcomeName">...</em></h1>
-<p>Aqui tienes un resumen de tu actividad reciente.</p>
+<h1>Hola, <span id="welcomeName">…</span></h1>
+<p>Esto es lo que tienes hoy.</p>
 </div>
 <div class="date" id="todayDate"></div>
 </div>
-<h2 class="section-title">Tu <em>resumen</em></h2>
+<h2 class="section-title">Tu resumen</h2>
 <div class="section-divider"></div>
 <div class="stats">
-<div class="stat" onclick="location.href='mis-propiedades.html'" style="cursor:pointer"><div class="ico">🏢</div><div class="num" id="totalProps">0</div><div class="lbl">Propiedades Activas</div><div class="sub">Total publicadas activas</div></div>
-<div class="stat" onclick="location.href='contactos.html'" style="cursor:pointer"><div class="ico">☀️</div><div class="num" id="totalHoy">0</div><div class="lbl">Para hoy</div><div class="sub">Contactos que esperan algo hoy</div></div>
-<div class="stat" onclick="location.href='contactos.html#todos'" style="cursor:pointer"><div class="ico">🎯</div><div class="num" id="totalLeads">0</div><div class="lbl">Contactos nuevos (30d)</div><div class="sub up">↑ Ultimos 30 dias</div></div>
-<div class="stat" onclick="location.href='contactos.html#todos'" style="cursor:pointer"><div class="ico">👥</div><div class="num" id="totalClientes">0</div><div class="lbl">Contactos activos</div><div class="sub">Del equipo, sin cerrar ni perder</div></div>
+<div class="stat" onclick="location.href='mis-propiedades.html'" style="cursor:pointer"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V8l6-4v16"/><path d="M10 20V10h10v10"/><path d="M2.5 20h19M13.5 13.5h3M13.5 16.5h3"/></svg></div><div class="num" id="totalProps">0</div><div class="lbl">Inmuebles activos</div><div class="sub">Los que tienes publicados</div></div>
+<div class="stat" onclick="location.href='contactos.html'" style="cursor:pointer"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div class="num" id="totalHoy">0</div><div class="lbl">Para hoy</div><div class="sub">Contactos que esperan algo hoy</div></div>
+<div class="stat" onclick="location.href='contactos.html#todos'" style="cursor:pointer"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg></div><div class="num" id="totalLeads">0</div><div class="lbl">Contactos nuevos</div><div class="sub">En los últimos 30 días</div></div>
+<div class="stat" onclick="location.href='contactos.html#todos'" style="cursor:pointer"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.7.8 2.7 2.5 3 5.2"/></svg></div><div class="num" id="totalClientes">0</div><div class="lbl">Contactos activos</div><div class="sub">Del equipo, sin cerrar ni perder</div></div>
 </div>
-<h2 class="section-title">Accesos <em>rapidos</em></h2>
+<h2 class="section-title">Accesos rápidos</h2>
 <div class="section-divider"></div>
 <div class="cards">
-<a href="agregar-propiedad.html" class="card"><div class="ico">➕</div><h3>Agregar Propiedad</h3><p>Publicar nueva propiedad</p></a>
-<a href="mis-propiedades.html" class="card"><div class="ico">📋</div><h3>Mis Propiedades</h3><p>Gestionar inventario</p></a>
-<a href="contactos.html" class="card"><div class="ico">👥</div><h3>Contactos (CRM)</h3><p>Propietarios, compradores e inquilinos</p></a>
-<a href="formatos.html" class="card"><div class="ico">📄</div><h3>Formatos</h3><p>Contratos, actas y cuentas de cada proceso</p></a>
-<a href="calculadora.html" class="card"><div class="ico">📝</div><h3>Calculadora</h3><p>ROI, credito, arriendo</p></a>
-<a href="marketing.html" class="card"><div class="ico">📱</div><h3>Marketing / Contenido</h3><p>Calendario de redes sociales</p></a>
-<a href="crear-articulo.html" class="card"><div class="ico">✍️</div><h3>Crear Artículo</h3><p>Publicar en el blog</p></a><a href="portales.html" class="card"><div class="ico">🌐</div><h3>Portales</h3><p>Integracion y publicacion</p></a>
+<a href="agregar-propiedad.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div><h3>Agregar inmueble</h3><p>Publica un inmueble nuevo</p></a>
+<a href="mis-propiedades.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></div><h3>Mis inmuebles</h3><p>Edita, pausa o cierra los tuyos</p></a>
+<a href="contactos.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.7.8 2.7 2.5 3 5.2"/></svg></div><h3>Contactos (CRM)</h3><p>Propietarios, compradores e inquilinos</p></a>
+<a href="formatos.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><h3>Formatos</h3><p>Contratos, actas y cuentas de cada proceso</p></a>
+<a href="calculadora.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></div><h3>Calculadora</h3><p>Gastos notariales, crédito y rentabilidad</p></a>
+<a href="marketing.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l8 4V6L7 10z"/><path d="M18 9.5a3.5 3.5 0 0 1 0 5"/></svg></div><h3>Marketing y contenido</h3><p>Calendario de redes sociales</p></a>
+<a href="crear-articulo.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 0 1 3 3L8 18.5 4 20z"/><path d="M14.5 6l3 3"/></svg></div><h3>Crear artículo</h3><p>Escribe una guía para el blog</p></a><a href="portales.html" class="card"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></div><h3>Portales</h3><p>Finca Raíz y Metrocuadrado</p></a>
 </div>
 </main>
 </div>
@@ -248,7 +263,7 @@ init();
 document.addEventListener('DOMContentLoaded', function(){
 try {
 var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-var dias=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+var dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 var d=new Date();
 var fecha=dias[d.getDay()]+', '+d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear();
 var el=document.getElementById('todayDate'); if(el) el.textContent=fecha;
