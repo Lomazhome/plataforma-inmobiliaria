@@ -190,6 +190,7 @@ td strong{font-weight:600;color:#fff}
 
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -209,7 +210,7 @@ td strong{font-weight:600;color:#fff}
 <div class="container">
   <div class="page-header">
     <div>
-      <div class="page-title">&#127968; Catálogo Global</div>
+      <div class="page-title"><i class=lzi data-i=casa></i> Catálogo Global</div>
       <div class="page-subtitle">Inventario compartido — todas las propiedades en modo solo lectura</div>
     </div>
   </div>
@@ -240,7 +241,7 @@ td strong{font-weight:600;color:#fff}
     </div>
   </div>
   <div class="filters-bar">
-    <input type="text" id="searchInput" placeholder="&#128269; Buscar por t&#237;tulo, ciudad, barrio..." oninput="filterProps()">
+    <input type="text" id="searchInput" placeholder="Buscar por t&#237;tulo, ciudad, barrio..." oninput="filterProps()">
     <select id="filterEstado" onchange="filterProps()">
       <option value="">Todos los estados</option>
       <option value="Disponible">Disponible</option>
@@ -282,7 +283,7 @@ td strong{font-weight:600;color:#fff}
 </div>
 <div class="modal-overlay hidden" id="deleteModal">
   <div class="modal">
-    <h3>&#128465;&#65039; Eliminar propiedad</h3>
+    <h3><i class=lzi data-i=papelera></i> Eliminar propiedad</h3>
     <p>&#191;Est&#225;s seguro de que quieres eliminar esta propiedad? Esta acci&#243;n no se puede deshacer.</p>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
@@ -315,7 +316,7 @@ async function loadProps(uid) {
     .select("id,titulo,tipo_negocio,tipo_propiedad,precio,estado,ciudad,barrio,area_construida,habitaciones,foto_principal,created_at,descripcion,direccion,banos,parqueaderos,area_total,estrato,moneda,tipo_operacion,asesor_id")
           .filter("asesor_id","not.is",null)
     .order("created_at", { ascending: false });
-  if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon">&#10060;</span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
+  if (error) { document.getElementById("tableContainer").innerHTML = `<div class="empty-state"><span class="icon"><i class=lzi data-i=error></i></span><p>Error cargando propiedades: ${error.message}</p></div>`; return; }
   allProps = data || [];
     if (window._isAdmin && allProps.length) {
         const { data: perfs } = await sb.from("perfiles_usuarios").select("id,nombre_completo,avatar_url");
@@ -365,7 +366,7 @@ function renderTable() {
 const container = document.getElementById("tableContainer");
 document.getElementById("countBadge").textContent = filtered.length + " propiedad" + (filtered.length !== 1 ? "es" : "");
 if (filtered.length === 0) {
-container.innerHTML = `<div class="empty-state"><span class="icon">&#127968;</span><p>No hay propiedades. <a href="agregar-propiedad.html">&#43; Agregar primera propiedad</a></p></div>`;
+container.innerHTML = `<div class="empty-state"><span class="icon"><i class=lzi data-i=casa></i></span><p>No hay propiedades. <a href="agregar-propiedad.html">&#43; Agregar primera propiedad</a></p></div>`;
 return;
 }
 const start = (currentPage - 1) * PER_PAGE;
@@ -373,14 +374,14 @@ const page = filtered.slice(start, start + PER_PAGE);
 let html = '<div class="props-grid">';
 page.forEach(p => {
 const photo = p.foto_principal
-? `<img src="${p.foto_principal}" onerror="this.parentElement.innerHTML='<span class=ph-ico>&#127968;</span>'">`
-: `<span class="ph-ico">&#127968;</span>`;
+? `<img src="${p.foto_principal}" onerror="this.parentElement.innerHTML='<span class=ph-ico><i class=lzi data-i=casa></i></span>'">`
+: `<span class="ph-ico"><i class=lzi data-i=casa></i></span>`;
 const badgeE = `<span class="badge badge-${(p.estado||"disponible").toLowerCase()}">${p.estado||"N/A"}</span>`;
 const _negLbl = {"venta":"Venta","arriendo":"Arriendo","arriendo_temporal":"Arriendo temporal","venta y arriendo":"Venta y Arriendo","permuta":"Permuta"}; const _negKey = (p.tipo_negocio||"").toLowerCase(); const badgeN = `<span class="badge badge-${_negKey.replace(/ /g,"-")}">${_negLbl[_negKey]||(p.tipo_negocio||"-")}</span>`;
 const badgeT = p.tipo_propiedad ? `<span class="badge">${p.tipo_propiedad}</span>` : "";
 const price = "$" + Number(p.precio||0).toLocaleString("es-CO");
 const fecha = p.created_at ? new Date(p.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}) : "-";
-const loc = `&#128205; ${p.ciudad||""}${p.barrio?", "+p.barrio:""}${(p.area_construida)?" &#183; "+p.area_construida+"m\u00b2":""}${p.habitaciones?" &#183; "+p.habitaciones+" hab":""}`;
+const loc = `${p.ciudad||""}${p.barrio?", "+p.barrio:""}${(p.area_construida)?" &#183; "+p.area_construida+"m\u00b2":""}${p.habitaciones?" &#183; "+p.habitaciones+" hab":""}`;
 html += `<div class="prop-card">
 <div class="prop-card-photo">${photo}</div>
 <div class="prop-card-body">

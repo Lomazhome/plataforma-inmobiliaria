@@ -388,6 +388,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
   .pz-btns .pm-act{padding:.4rem .7rem}
 }
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -405,7 +406,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 </div>
 
 <div class="container">
-<div class="page-title">&#128241; Centro de Mando <em>Social</em></div>
+<div class="page-title"><i class=lzi data-i=celular></i> Centro de Mando <em>Social</em></div>
 <div class="page-sub">Controla tu calendario de creación de contenido digital y toda la publicidad y el marketing que haces en redes sociales cada mes. Planifica, programa y haz seguimiento de cada publicación de LoMaz Home y de tu marca personal.</div>
 
 <div class="hero-strip">
@@ -429,10 +430,10 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 </div>
 
 <div class="tabs">
-<div class="tab active" data-panel="plan" onclick="switchTab('plan')">&#128203; Planificador</div>
-<div class="tab" data-panel="cal" onclick="switchTab('cal')">&#128197; Calendario visual</div>
-<div class="tab" data-panel="agente" onclick="switchTab('agente')">&#129302; Agente de Marketing IA</div>
-<div class="tab" data-panel="marca" onclick="switchTab('marca')">&#127919; Plan de Marca</div>
+<div class="tab active" data-panel="plan" onclick="switchTab('plan')"><i class=lzi data-i=lista></i> Planificador</div>
+<div class="tab" data-panel="cal" onclick="switchTab('cal')"><i class=lzi data-i=calendario></i> Calendario visual</div>
+<div class="tab" data-panel="agente" onclick="switchTab('agente')">Agente de Marketing IA</div>
+<div class="tab" data-panel="marca" onclick="switchTab('marca')">Plan de Marca</div>
 </div>
 
 <div class="panel active" id="panel-plan">
@@ -441,7 +442,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <select id="fEnfoque" onchange="render()"><option value="">Todos los enfoques</option></select>
 <select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>Borrador</option><option>Por confirmar</option><option>Programado</option><option>Publicado</option></select>
 <select id="fArt" onchange="render()"><option value="">Todos los art&iacute;culos</option></select>
-<input type="text" id="fSearch" placeholder="&#128269; Buscar tema, copy..." oninput="render()" autocomplete="off" style="min-width:200px">
+<input type="text" id="fSearch" placeholder="Buscar tema, copy..." oninput="render()" autocomplete="off" style="min-width:200px">
 <div class="spacer"></div>
 <button class="btn btn-secondary" onclick="clearFilters()">Limpiar</button>
 <button class="btn btn-primary" onclick="openEditor()">+ Nueva</button>
@@ -482,7 +483,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="pm-head">
   <div>
     <div style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.25rem">Posicionamiento de marca &middot; Plan de acci&oacute;n</div>
-    <p>Todas las tareas del plan en un solo lugar. Marca lo hecho, cambia temas, fechas o responsables con el l&aacute;piz &#9998;, y agrega tareas o fases nuevas cuando el plan crezca. El avance se comparte con todo el equipo.</p>
+    <p>Todas las tareas del plan en un solo lugar. Marca lo hecho, cambia temas, fechas o responsables con el l&aacute;piz , y agrega tareas o fases nuevas cuando el plan crezca. El avance se comparte con todo el equipo.</p>
   </div>
 </div>
 <div class="pm-tiles" id="pmTiles"></div>
@@ -493,7 +494,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
   <button class="pm-chip" onclick="pmSetWho('ang',this)">Ang&eacute;lica</button>
   <button class="pm-chip" onclick="pmSetWho('amb',this)">Los dos</button>
   <select id="pmFase" onchange="pmRender()"><option value="">Todas las fases</option></select>
-  <input type="text" id="pmQ" placeholder="&#128269; Buscar tarea..." oninput="pmRender()" autocomplete="off" style="min-width:180px">
+  <input type="text" id="pmQ" placeholder="Buscar tarea..." oninput="pmRender()" autocomplete="off" style="min-width:180px">
   <label class="pm-tog"><input type="checkbox" id="pmHide" onchange="pmRender()"> Ocultar hechas</label>
   <div class="spacer"></div>
   <button class="btn btn-secondary" onclick="pmOpenFase()">+ Nueva fase</button>
@@ -525,7 +526,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 </div>
 <div class="qn-btns">
 <button type="button" class="btn btn-secondary" id="qnBtnCopiar" onclick="qnCopiarTodo(this)" style="display:none">Copiar toda la quincena</button>
-<button type="button" class="btn btn-primary qn-go" id="qnBtn" onclick="qnGenerar()">&#10024; Generar la quincena completa</button>
+<button type="button" class="btn btn-primary qn-go" id="qnBtn" onclick="qnGenerar()">Generar la quincena completa</button>
 </div>
 </div>
 <details class="qn-src" id="qnSrc">
@@ -555,7 +556,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="et-row">
 <div class="fg"><label>Tema que quieres estudiar</label><input type="text" id="etTema" autocomplete="off" placeholder="Ej: arrendar sin codeudor en Bogot&aacute;"></div>
 <div class="fg"><label>Indicaciones (opcional)</label><input type="text" id="etNotas" autocomplete="off" placeholder="Ej: enfocado en propietarios"></div>
-<button type="button" class="btn btn-primary" id="etBtn" onclick="etEstudiar()">&#128269; Estudiar tema</button>
+<button type="button" class="btn btn-primary" id="etBtn" onclick="etEstudiar()"><i class=lzi data-i=buscar></i> Estudiar tema</button>
 </div>
 <div id="etProg"></div>
 <div id="etOut"></div>
@@ -571,7 +572,7 @@ details.pz>summary:hover{background:rgba(201,169,110,.04)}
 <div class="fg" id="agNotasWrap"><label>Datos o indicaciones (opcional)</label><textarea id="agNotas" placeholder="Los datos reales de la pieza: barrio, d&iacute;as, cifras, nombres. El agente no inventa cifras."></textarea></div>
 <div class="fg"><label>Enfoque de marca</label><select id="agEnfoque"><option value="LOMAZ HOME">LoMaz Home</option><option value="Marca personal">Marca personal</option><option value="Fusion">Fusión</option></select></div>
 <div class="fg"><label>Pilar / Objetivo</label><select id="agPilar" onchange="_agTocoPilar=true"><option value="Portafolio Inmobiliario">Portafolio Inmobiliario</option><option value="Educacion y Autoridad">Educación y Autoridad</option><option value="Detras de Escena">Detrás de Escena</option><option value="Tendencias y Estilo de vida">Tendencias y Estilo de vida</option></select></div>
-<button type="button" class="btn btn-primary" id="agBtnPieza" style="width:100%;margin-top:.4rem" onclick="generarContenido()">&#10024; Generar pieza</button>
+<button type="button" class="btn btn-primary" id="agBtnPieza" style="width:100%;margin-top:.4rem" onclick="generarContenido()">Generar pieza</button>
 </div>
 <div class="agent-card">
 <div class="agent-out" id="agOut"><div class="agent-empty">A&uacute;n no has generado una pieza suelta. Elige el formato y pulsa &laquo;Generar pieza&raquo;.</div></div>
@@ -1379,7 +1380,7 @@ async function etEstudiar(){
  const g=await etGuardar(_etActual);
  if(g)agToast("Estudio guardado en el banco de palabras clave.","ok");
 }
-function etFin(btn){_etTrabajando=false;btn.disabled=false;btn.innerHTML="&#128269; Estudiar tema";}
+function etFin(btn){_etTrabajando=false;btn.disabled=false;btn.innerHTML="Estudiar tema";}
 function etClaseVer(v){return v==="Artículo madre"?"v-art":v==="Descartar"?"v-no":"v-reel";}
 function etClaseRuta(r){return r==="Océano azul"?"r-azul":r==="Competir"?"r-comp":"r-no";}
 function etPintar(){
@@ -1466,7 +1467,7 @@ function etPintarBanco(){
  if(!_etBancoTabla){el.innerHTML='<div class="ag-aviso" style="margin-top:.9rem"><b>Falta crear el banco de palabras clave.</b> Ejecuta en Supabase el archivo <code>supabase/marketing_palabras_clave.sql</code> y recarga esta página. Mientras tanto, cada estudio se puede copiar pero no se guarda.</div>';return;}
  if(!_etBanco.length){el.innerHTML='<div class="fab-hint" style="margin-top:.8rem">El banco de palabras clave está vacío: el primer estudio que hagas queda guardado aquí para todo el equipo.</div>';return;}
  el.innerHTML='<div class="pz-sec" style="margin-top:1.2rem">Banco de palabras clave · '+_etBanco.length+' tema'+(_etBanco.length===1?"":"s")+'</div><div class="et-banco">'+_etBanco.map(function(b){
-  return '<span class="chip" onclick="etMostrarGuardado(\''+escAttr(String(b.id))+'\')" title="'+escAttr((b.veredicto||"")+(b.principal?" · "+b.principal:""))+'">'+esc(b.tema||"")+(b.veredicto==="Artículo madre"?' &#9733;':'')+'</span>';
+  return '<span class="chip" onclick="etMostrarGuardado(\''+escAttr(String(b.id))+'\')" title="'+escAttr((b.veredicto||"")+(b.principal?" · "+b.principal:""))+'">'+esc(b.tema||"")+(b.veredicto==="Artículo madre"?' ★':'')+'</span>';
  }).join('')+'</div>';
 }
 function etMostrarGuardado(id){
@@ -1612,7 +1613,7 @@ function qnCabecera(){
  document.getElementById("qnSub").textContent=[piezas.length+(piezas.length===1?" pieza":" piezas")+" del plan y las rutinas",rango,hechas+" de "+total+" escritas"].filter(Boolean).join(" · ");
  const b=document.getElementById("qnBtn");
  b.disabled=_qTrabajando;
- b.innerHTML=_qTrabajando?"Escribiendo…":hechas===0?"&#10024; Generar la quincena completa":hechas<total?"&#10024; Escribir lo que falta ("+(total-hechas)+")":"&#8635; Volver a escribir toda la quincena";
+ b.innerHTML=_qTrabajando?"Escribiendo…":hechas===0?"Generar la quincena completa":hechas<total?"Escribir lo que falta ("+(total-hechas)+")":"&#8635; Volver a escribir toda la quincena";
  b.className="btn qn-go "+(hechas>=total&&!_qTrabajando?"btn-secondary":"btn-primary");
  document.getElementById("qnBtnCopiar").style.display=hechas?"":"none";
 }
@@ -2005,7 +2006,7 @@ async function generarContenido(){
  let r=null;
  if(_iaListo===null)await agEstadoIA();
  if(_iaListo===true)r=await agEscribir(cuerpo);
- btn.disabled=false;btn.innerHTML="&#10024; Generar pieza";
+ btn.disabled=false;btn.innerHTML="Generar pieza";
  if(r&&r.ok&&r.pieza&&r.pieza.secciones){
   _suelta={titulo:titulo,formato:formato,enlace:enlace,articulo:articulo,redes:(cuerpo.pieza&&cuerpo.pieza.redes)||[],secciones:r.pieza.secciones};
  }else if(local&&(_iaListo!==true||(r&&["sin_clave","sin_funcion"].indexOf(r.codigo)>=0))){
@@ -2118,7 +2119,7 @@ window.pmRender=function(){
     const d=ts.filter(pmIsDone).length;
     const mm={sal:0,ang:0}; ts.forEach(t=>{ if(t.repetir||!t.minutos) return; if(t.quien==='amb'){mm.sal+=t.minutos/2;mm.ang+=t.minutos/2;} else if(mm[t.quien]!=null) mm[t.quien]+=t.minutos; });
     const carga=(mm.sal+mm.ang)>=60?'<span class="pm-dates" title="Suma de los minutos de las tareas con fecha (sin rutinas)">&#8776; Salom&oacute;n '+fmtH(Math.round(mm.sal))+' &middot; Ang&eacute;lica '+fmtH(Math.round(mm.ang))+'</span>':'';
-    html+='<section class="pm-phase"><div class="pm-phase-head"><span class="pm-step"><i></i>'+esc(f.nombre)+'</span><span class="pm-dates">'+esc(f.fechas||'')+'</span>'+carga+'<span class="pm-cnt">'+d+' / '+ts.length+' hechas</span><button class="pm-act" title="Editar fase" onclick="pmOpenFase(\''+esc(f.id)+'\')">&#9998; Fase</button></div>';
+    html+='<section class="pm-phase"><div class="pm-phase-head"><span class="pm-step"><i></i>'+esc(f.nombre)+'</span><span class="pm-dates">'+esc(f.fechas||'')+'</span>'+carga+'<span class="pm-cnt">'+d+' / '+ts.length+' hechas</span><button class="pm-act" title="Editar fase" onclick="pmOpenFase(\''+esc(f.id)+'\')">Fase</button></div>';
     if(f.titulo) html+='<h2>'+esc(f.titulo)+'</h2>';
     if(f.intro) html+='<p class="pm-intro">'+esc(f.intro)+'</p>';
     if(f.meta) html+='<div class="pm-goal">'+esc(f.meta)+'</div>';
@@ -2138,7 +2139,7 @@ function pmTaskHtml(t){
   if(!t.repetir) h+='<button class="pm-box" role="checkbox" aria-checked="'+done+'" title="Marcar hecha" onclick="pmToggle(\''+id+'\','+(!done)+')"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></button>';
   else h+='<button class="pm-box" role="checkbox" aria-checked="'+done+'" title="Marcar toda la rutina" onclick="pmToggleAll(\''+id+'\','+t.repetir+','+(!done)+')"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></button>';
   h+='<div><div class="t">'+esc(t.titulo)+'</div>'+(t.detalle?'<div class="dtl">'+esc(t.detalle)+'</div>':'')+'</div>';
-  h+='<div class="pm-tags">'+(t.fecha_txt?'<span class="pm-date">'+esc(t.fecha_txt)+'</span>':'')+'<span class="pm-who '+esc(t.quien)+'">'+esc(PM_WHO[t.quien]||t.quien||'')+'</span>'+(t.tipo?'<span class="pm-kind">'+esc(t.tipo)+'</span>':'')+(t.minutos?'<span class="pm-kind pm-min">~'+t.minutos+' min</span>':'')+'<button class="pm-act" title="Editar tarea" onclick="pmOpenEditor(\''+id+'\')">&#9998;</button></div>';
+  h+='<div class="pm-tags">'+(t.fecha_txt?'<span class="pm-date">'+esc(t.fecha_txt)+'</span>':'')+'<span class="pm-who '+esc(t.quien)+'">'+esc(PM_WHO[t.quien]||t.quien||'')+'</span>'+(t.tipo?'<span class="pm-kind">'+esc(t.tipo)+'</span>':'')+(t.minutos?'<span class="pm-kind pm-min">~'+t.minutos+' min</span>':'')+'<button class="pm-act" title="Editar tarea" onclick="pmOpenEditor(\''+id+'\')"></button></div>';
   if(t.repetir){ h+='<div class="pm-dots">'; for(let i=0;i<t.repetir;i++){ const on=!!pmAvance[t.id+':'+i]; h+='<button class="d'+(on?' on':'')+'" title="Vez '+(i+1)+'" onclick="pmToggle(\''+id+':'+i+'\','+(!on)+')">'+(i+1)+'</button>'; } h+=(t.desde?'<span class="dl">desde el '+esc(t.desde)+'</span>':'')+'</div>'; }
   return h+'</div>';
 }

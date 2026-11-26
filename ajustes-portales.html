@@ -57,6 +57,7 @@ input:focus{border-color:#c9a96e}
 .access-denied h2{color:#ff6b7a;font-size:1.5rem;margin-bottom:.8rem}
 .access-denied p{color:#888;font-size:.9rem}
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -64,17 +65,17 @@ input:focus{border-color:#c9a96e}
   <div class="user-info"><span id="user-email"></span><button class="btn-back" onclick="window.location.href='dashboard.html'">&#8592; Panel</button></div>
 </div>
 <div class="access-denied" id="access-denied">
-  <h2>&#128274; Acceso Denegado</h2>
+  <h2><i class=lzi data-i=candado></i> Acceso Denegado</h2>
   <p>Solo el administrador puede configurar los portales de publicacion.</p>
 </div>
 <div class="container" id="main-content" style="display:none">
-  <div class="page-title">&#127759; Ajustes de Portales</div>
+  <div class="page-title"><i class=lzi data-i=mundo></i> Ajustes de Portales</div>
   <div class="page-sub">Configura las credenciales de cada portal para activar la publicacion automatica de propiedades.</div>
   <div id="alert" class="alert" style="display:none"></div>
   <div class="portal-card" id="card-metrocuadrado">
   <div class="portal-header">
   <div class="portal-info">
-  <div class="portal-icon">&#127970;</div>
+  <div class="portal-icon"><i class=lzi data-i=edificio></i></div>
   <div>
   <div class="portal-name">Metrocuadrado</div>
   <div class="portal-desc">Portal #1 de Colombia - Integracion API real</div>
@@ -110,7 +111,7 @@ input:focus{border-color:#c9a96e}
   <div class="portal-card" id="card-fincaraiz">
     <div class="portal-header">
       <div class="portal-info">
-        <div class="portal-icon">&#127969;</div>
+        <div class="portal-icon"><i class=lzi data-i=casa></i></div>
         <div>
           <div class="portal-name">Finca Raiz</div>
           <div class="portal-desc">Portal inmobiliario especializado de Colombia</div>
@@ -147,7 +148,7 @@ input:focus{border-color:#c9a96e}
   <div class="portal-card" id="card-proppit">
     <div class="portal-header">
       <div class="portal-info">
-        <div class="portal-icon">&#128225;</div>
+        <div class="portal-icon"><i class=lzi data-i=mundo></i></div>
         <div>
           <div class="portal-name">Proppit (x6 portales)</div>
           <div class="portal-desc">Publica simultaneamente en Metrocuadrado, Finca Raiz, Properati, Lamudi, Vivendo y mas</div>
@@ -170,7 +171,7 @@ input:focus{border-color:#c9a96e}
       <div class="form-group"><label>USUARIO PROPPIT</label><input type="text" id="proppit-usuario" placeholder="Tu usuario o email en Proppit"/></div>
       <div class="test-result" id="test-proppit"></div>
       <div class="info-box">
-        <strong>&#127775; Con un solo token publicas en 6 portales:</strong><br/>
+        <strong><i class=lzi data-i=estrella></i> Con un solo token publicas en 6 portales:</strong><br/>
         Metrocuadrado, Finca Raiz, Properati, Lamudi, Vivendo, Icasas<br/><br/>
         <strong>Como obtenerlo:</strong><br/>
         1. Crea cuenta en <a href="https://www.proppit.com" target="_blank">proppit.com</a> como inmobiliaria<br/>
@@ -183,7 +184,7 @@ input:focus{border-color:#c9a96e}
   <div class="portal-card" id="card-marketplace">
     <div class="portal-header">
       <div class="portal-info">
-        <div class="portal-icon">&#128722;</div>
+        <div class="portal-icon"><i class=lzi data-i=carrito></i></div>
         <div>
           <div class="portal-name">Facebook Marketplace</div>
           <div class="portal-desc">Publicacion via Graph API - requiere pagina de Facebook</div>
@@ -218,7 +219,7 @@ input:focus{border-color:#c9a96e}
   <div class="portal-card" id="card-instagram">
     <div class="portal-header">
       <div class="portal-info">
-        <div class="portal-icon">&#128247;</div>
+        <div class="portal-icon"><i class=lzi data-i=camara></i></div>
         <div>
           <div class="portal-name">Instagram</div>
           <div class="portal-desc">Publicacion automatica via Instagram Graph API</div>

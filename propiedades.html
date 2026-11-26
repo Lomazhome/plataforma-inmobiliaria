@@ -172,6 +172,7 @@ nav.scrolled{background:var(--navy);box-shadow:0 2px 20px rgba(0,0,0,.3);}
 body.nav-show #lm-nav{transform:translateY(0)!important;}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <nav id="main-nav">
@@ -203,7 +204,7 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
           <button class="tipo-btn active" data-tipo="todos" onclick="setTipo(this)">Todos</button>
           <button class="tipo-btn" data-tipo="arriendo" onclick="setTipo(this)">Arriendo</button>
           <button class="tipo-btn" data-tipo="venta" onclick="setTipo(this)">Venta</button>
-          <a class="tipo-btn" href="mapa.html" style="margin-left:.6rem">🗺️ Buscar en el mapa</a>
+          <a class="tipo-btn" href="mapa.html" style="margin-left:.6rem"><i class=lzi data-i=mapa></i> Buscar en el mapa</a>
         </div>
       </div>
       <div class="filter-group">
@@ -272,9 +273,9 @@ body.nav-show #lm-nav{transform:translateY(0)!important;}
         <p class="footer-tagline">Inmobiliaria boutique</p>
         <p class="footer-desc">Conectamos personas con propiedades excepcionales en Bogotá. Asesoría personalizada, transparencia total y resultados reales.</p>
         <div class="footer-social">
-          <a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">&#128222;</a>
-          <a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email">&#9993;</a>
-          <a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">&#128247;</a>
+          <a href="https://wa.me/573003300343" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp"><i class=lzi data-i=telefono></i></a>
+          <a href="mailto:lomazhome@gmail.com" class="social-link" aria-label="Email"><i class=lzi data-i=correo></i></a>
+          <a href="https://instagram.com" class="social-link" target="_blank" rel="noopener" aria-label="Instagram"><i class=lzi data-i=camara></i></a>
         </div>
       </div>
       <div class="footer-col">
@@ -568,7 +569,7 @@ function processAria(txt){
   const t=txt.toLowerCase();
   // WA escalation
   if(t.includes("asesor")||t.includes("humano")||t.includes("hablar con")||t.includes("llamar")){
-    addBotMsg("Con gusto te comunico con uno de nuestros asesores. Puedes escribirnos ahora mismo:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'>&#128222; Hablar por WhatsApp</a>");
+    addBotMsg("Con gusto te comunico con uno de nuestros asesores. Puedes escribirnos ahora mismo:<br><a class='aria-wa-btn' href='https://wa.me/573003300343' target='_blank' rel='noopener'><i class=lzi data-i=telefono></i> Hablar por WhatsApp</a>");
     return;
   }
   // Arriendo

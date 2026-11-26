@@ -32,6 +32,7 @@ input,select,textarea{font-family:var(--sans)}
 .gate-card button:hover{background:var(--gold-d)}
 .gate-error{color:var(--red);font-size:.8rem;margin-top:10px;min-height:18px}
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <style>
@@ -265,7 +266,7 @@ table.acm-table tr.bad-row{opacity:.55;text-decoration:line-through}
 <div class="step-panel" id="panel4">
 <div class="card"><div class="section-band">Paso 4 &middot; Registro fotográfico</div>
 <p class="sub">Mínimo 2, máximo 12 fotos. Se comprimen automáticamente (máx. 1200px de ancho) antes de incluirlas en el PDF.</p>
-<div class="dropzone" id="dropzone"><div class="ico">&#128247;</div><div>Arrastra tus fotos aquí o <b style="color:var(--gold-d)">haz clic para seleccionar</b></div><div class="hint">JPG, PNG &middot; compatible con la cámara del celular</div><input type="file" id="fileInput" accept="image/*" multiple capture="environment" class="hidden"/></div>
+<div class="dropzone" id="dropzone"><div class="ico"><i class=lzi data-i=camara></i></div><div>Arrastra tus fotos aquí o <b style="color:var(--gold-d)">haz clic para seleccionar</b></div><div class="hint">JPG, PNG &middot; compatible con la cámara del celular</div><input type="file" id="fileInput" accept="image/*" multiple capture="environment" class="hidden"/></div>
 <div class="photo-count" id="photoCount"></div>
 <div class="photo-grid" id="photoGrid"></div>
 </div>
@@ -605,8 +606,8 @@ function compCardHTML(c, idx){
   c._calc = calc;
   var cardClass = calc.semaforo.ok ? 'ok' : 'bad';
   var badge = calc.semaforo.ok
-    ? '<span class="semaforo-badge green">&#128994; Comparable útil</span>'
-    : '<span class="semaforo-badge red">&#128308; Descartar</span>';
+    ? '<span class="semaforo-badge green"><i class=lzp style=--c:#2e9e5b></i> Comparable útil</span>'
+    : '<span class="semaforo-badge red"><i class=lzp style=--c:#c0392b></i> Descartar</span>';
   var motivo = calc.semaforo.ok ? '' : ('<div class="motivo">Motivo: ' + calc.semaforo.motivo + '</div>');
   var html = '';
   html += '<div class="comp-card ' + cardClass + '" data-id="' + c.id + '">';
@@ -700,9 +701,9 @@ function renderResultados(){
     return;
   }
   if(r.stats.cv>0.075){
-    qa.innerHTML = '<div class="alert-box amber">&#9888; Muestra poco homogénea — CV de ' + formatPct(r.stats.cv) + ' supera el 7,5%. Se recomienda depurar comparables (criterio Res. 620/2008 IGAC).</div>';
+    qa.innerHTML = '<div class="alert-box amber"><i class=lzi data-i=alerta></i> Muestra poco homogénea — CV de ' + formatPct(r.stats.cv) + ' supera el 7,5%. Se recomienda depurar comparables (criterio Res. 620/2008 IGAC).</div>';
   } else {
-    qa.innerHTML = '<div class="alert-box green">&#9989; Muestra homogénea — CV de ' + formatPct(r.stats.cv) + ' dentro del umbral de confianza (≤ 7,5%, criterio Res. 620/2008 IGAC).</div>';
+    qa.innerHTML = '<div class="alert-box green"><i class=lzi data-i=ok></i> Muestra homogénea — CV de ' + formatPct(r.stats.cv) + ' dentro del umbral de confianza (≤ 7,5%, criterio Res. 620/2008 IGAC).</div>';
   }
   sg.innerHTML =
     '<div class="stat-box"><div class="v">' + formatCOP(r.stats.promedio) + '</div><div class="l">Promedio $/m²</div></div>' +
@@ -717,9 +718,9 @@ function renderResultados(){
   });
   table.innerHTML = rows;
   cards.innerHTML =
-    '<div class="sem-card min"><div class="ico">&#128308;</div><div class="lbl">Valor mínimo de venta</div><div class="val">' + formatCOP(r.valorMinimo) + '</div><div class="desc">Piso de negociación</div></div>' +
-    '<div class="sem-card mid"><div class="ico">&#128993;</div><div class="lbl">Valor comercial estimado</div><div class="val">' + formatCOP(r.valorComercial) + '</div><div class="desc">Precio justo de mercado</div></div>' +
-    '<div class="sem-card max"><div class="ico">&#128994;</div><div class="lbl">Valor máximo de oferta</div><div class="val">' + formatCOP(r.valorMaximo) + '</div><div class="desc">Precio de salida para publicar</div></div>';
+    '<div class="sem-card min"><div class="ico"><i class=lzp style=--c:#c0392b></i></div><div class="lbl">Valor mínimo de venta</div><div class="val">' + formatCOP(r.valorMinimo) + '</div><div class="desc">Piso de negociación</div></div>' +
+    '<div class="sem-card mid"><div class="ico"><i class=lzp style=--c:#d4a017></i></div><div class="lbl">Valor comercial estimado</div><div class="val">' + formatCOP(r.valorComercial) + '</div><div class="desc">Precio justo de mercado</div></div>' +
+    '<div class="sem-card max"><div class="ico"><i class=lzp style=--c:#2e9e5b></i></div><div class="lbl">Valor máximo de oferta</div><div class="val">' + formatCOP(r.valorMaximo) + '</div><div class="desc">Precio de salida para publicar</div></div>';
   letras.textContent = numeroALetras(r.valorComercial);
   saveDraft();
 }

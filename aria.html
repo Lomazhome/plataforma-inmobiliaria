@@ -229,6 +229,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
 .fade-in{animation:fade-in 0.4s ease;}
 </style>
 <link rel="stylesheet" href="lomaz-mobile.css">
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="app">
@@ -288,12 +289,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
     <div class="quick-actions">
       <p class="quick-actions-title">Acciones rápidas</p>
       <div>
-        <span class="quick-chip" onclick="sendQuick('Chapinero Alto')">📍 Chapinero</span>
-        <span class="quick-chip" onclick="sendQuick('Usaquén')">📍 Usaquén</span>
-        <span class="quick-chip" onclick="sendQuick('La Cabrera')">📍 La Cabrera</span>
-        <span class="quick-chip" onclick="sendQuick('Rosales')">📍 Rosales</span>
-        <span class="quick-chip" onclick="sendQuick('Apartamento 3 habitaciones')">🏢 3 hab.</span>
-        <span class="quick-chip" onclick="sendQuick('Casa con jardín')">🏡 Casa</span>
+        <span class="quick-chip" onclick="sendQuick('Chapinero Alto')"><i class=lzi data-i=pin></i> Chapinero</span>
+        <span class="quick-chip" onclick="sendQuick('Usaquén')"><i class=lzi data-i=pin></i> Usaquén</span>
+        <span class="quick-chip" onclick="sendQuick('La Cabrera')"><i class=lzi data-i=pin></i> La Cabrera</span>
+        <span class="quick-chip" onclick="sendQuick('Rosales')"><i class=lzi data-i=pin></i> Rosales</span>
+        <span class="quick-chip" onclick="sendQuick('Apartamento 3 habitaciones')"><i class=lzi data-i=edificio></i> 3 hab.</span>
+        <span class="quick-chip" onclick="sendQuick('Casa con jardín')"><i class=lzi data-i=casa></i> Casa</span>
       </div>
     </div>
 
@@ -338,7 +339,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
     <!-- DROP ZONE -->
     <div class="drop-zone" id="drop-zone">
       <div class="drop-zone-content">
-        <div class="drop-zone-icon">📎</div>
+        <div class="drop-zone-icon"><i class=lzi data-i=clip></i></div>
         <div class="drop-zone-text">Suelta tu archivo aquí</div>
       </div>
     </div>
@@ -364,16 +365,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
         <div class="input-footer">
           <div class="input-hints" id="hints-container">
             <span class="hint-chip" onclick="insertHint('¿Cuánto cuesta un apartamento en')">
-              💰 Precios
+              <i class=lzi data-i=dinero></i> Precios
             </span>
             <span class="hint-chip" onclick="insertHint('¿Qué documentos necesito para')">
-              📄 Docs
+              <i class=lzi data-i=archivo></i> Docs
             </span>
             <span class="hint-chip" onclick="insertHint('Compara Usaquén vs Chapinero')">
-              🔍 Comparar
+              <i class=lzi data-i=buscar></i> Comparar
             </span>
             <span class="hint-chip" onclick="insertHint('¿Cuál es el proceso de compra en')">
-              📋 Proceso
+              <i class=lzi data-i=lista></i> Proceso
             </span>
           </div>
           <span class="char-count" id="char-count"></span>
@@ -432,19 +433,19 @@ function renderMessages() {
         <p class="empty-subtitle">Tu asesora de inteligencia artificial para encontrar la propiedad perfecta en Bogotá. Estoy aquí para ayudarte.</p>
         <div class="empty-suggestions">
           <div class="suggestion-card" onclick="sendQuick('¿Qué propiedades tienen disponibles en Usaquén?')">
-            <span class="suggestion-icon">🏠</span>
+            <span class="suggestion-icon"><i class=lzi data-i=casa></i></span>
             ¿Qué propiedades tienen disponibles en Usaquén?
           </div>
           <div class="suggestion-card" onclick="sendQuick('¿Cuál es el proceso para comprar un apartamento en Bogotá?')">
-            <span class="suggestion-icon">📋</span>
+            <span class="suggestion-icon"><i class=lzi data-i=lista></i></span>
             ¿Cuál es el proceso para comprar un apartamento?
           </div>
           <div class="suggestion-card" onclick="sendQuick('¿Qué zonas premium recomiendas para invertir?')">
-            <span class="suggestion-icon">💎</span>
+            <span class="suggestion-icon"></span>
             ¿Qué zonas premium recomiendas para invertir?
           </div>
           <div class="suggestion-card" onclick="sendQuick('Necesito un apartamento de 2 habitaciones para arrendar')">
-            <span class="suggestion-icon">🔑</span>
+            <span class="suggestion-icon"><i class=lzi data-i=llave></i></span>
             Necesito un apartamento de 2 habitaciones para arrendar
           </div>
         </div>
@@ -580,7 +581,7 @@ async function sendMessage() {
   // Add user message
   let userContent = text;
   if(attachedFiles.length > 0) {
-    userContent = text + (text ? '\n' : '') + attachedFiles.map(f => `📎 [${f.name}]`).join('\n');
+    userContent = text + (text ? '\n' : '') + attachedFiles.map(f => `[${f.name}]`).join('\n');
   }
   
   addMsg('user', userContent);
@@ -639,7 +640,7 @@ function generateLocalResponse(msg, history) {
     if(m.includes('chapinero') || ctx.includes('chapinero')) {
       return `En **Chapinero Alto**, una de las zonas más exclusivas:\n\n- **Apartamentos 2 hab.**: $380M - $720M COP\n- **Apartamentos 3 hab.**: $600M - $1.500M COP\n- **Arriendos**: $2.2M - $6.5M/mes\n\n¿Quieres que te muestre propiedades específicas disponibles en Chapinero?`;
     }
-    return `Los precios en Bogotá varían mucho según la zona. ¿En qué barrio o sector te interesa buscar? Las zonas **premium** más cotizadas son:\n\n- 📍 **Usaquén** — Alta valorización\n- 📍 **Chapinero Alto** — Zona exclusiva\n- 📍 **La Cabrera** — Máximo lujo\n- 📍 **Rosales** — Tranquilidad premium\n\nCuéntame más sobre lo que buscas y te doy precios exactos.`;
+    return `Los precios en Bogotá varían mucho según la zona. ¿En qué barrio o sector te interesa buscar? Las zonas **premium** más cotizadas son:\n\n- **Usaquén** — Alta valorización\n- **Chapinero Alto** — Zona exclusiva\n- **La Cabrera** — Máximo lujo\n- **Rosales** — Tranquilidad premium\n\nCuéntame más sobre lo que buscas y te doy precios exactos.`;
   }
   
   if(m.includes('arrend') || m.includes('alquil')) {
@@ -647,29 +648,29 @@ function generateLocalResponse(msg, history) {
   }
   
   if(m.includes('compr') || m.includes('adquir')) {
-    return `Para **comprar una propiedad** en Bogotá con LoMaz Home:\n\n**Pasos del proceso:**\n1. 🔍 Definir presupuesto y zona\n2. 📋 Pre-aprobación de crédito hipotecario (si aplica)\n3. 🏠 Visita y selección del inmueble\n4. 📄 Promesa de compraventa\n5. ✅ Escrituración y registro en Notaría\n\n**Documentos necesarios:**\n- Cédula de ciudadanía\n- Extractos bancarios (6 meses)\n- Declaración de renta\n- Certificado laboral\n\n¿En qué zona y con qué presupuesto estás pensando?`;
+    return `Para **comprar una propiedad** en Bogotá con LoMaz Home:\n\n**Pasos del proceso:**\n1. Definir presupuesto y zona\n2. Pre-aprobación de crédito hipotecario (si aplica)\n3. Visita y selección del inmueble\n4. Promesa de compraventa\n5. ✅ Escrituración y registro en Notaría\n\n**Documentos necesarios:**\n- Cédula de ciudadanía\n- Extractos bancarios (6 meses)\n- Declaración de renta\n- Certificado laboral\n\n¿En qué zona y con qué presupuesto estás pensando?`;
   }
   
   if(m.includes('usaquén') || m.includes('chapinero') || m.includes('cabrera') || m.includes('rosales') || m.includes('zona')) {
-    return `Estas son las **zonas premium** de Bogotá donde trabajamos:\n\n**🌟 La Cabrera** — El sector más exclusivo. Embajadas, gastronomía de alto nivel, alta seguridad.\n\n**🏆 Rosales** — Barrio residencial con parques, tranquilidad y arquitectura colonial moderna.\n\n**📍 Usaquén** — Perfecta mezcla de tradición y modernidad. Excelente valorización.\n\n**🔷 Chapinero Alto** — Zona vibrante con vida cultural, restaurantes y buena conectividad.\n\nCada zona tiene su encanto particular. ¿Qué estilo de vida prefieres?`;
+    return `Estas son las **zonas premium** de Bogotá donde trabajamos:\n\n**La Cabrera** — El sector más exclusivo. Embajadas, gastronomía de alto nivel, alta seguridad.\n\n**Rosales** — Barrio residencial con parques, tranquilidad y arquitectura colonial moderna.\n\n**Usaquén** — Perfecta mezcla de tradición y modernidad. Excelente valorización.\n\n**Chapinero Alto** — Zona vibrante con vida cultural, restaurantes y buena conectividad.\n\nCada zona tiene su encanto particular. ¿Qué estilo de vida prefieres?`;
   }
   
   if(m.includes('avalúo') || m.includes('cuánto vale') || m.includes('valor de mi')) {
-    return `Para hacer el **avalúo de tu propiedad**, necesito algunos datos:\n\n- 📍 Dirección o barrio\n- 📐 Área en m²\n- 🛏️ Número de habitaciones y baños\n- 🏗️ Año de construcción\n- ✨ Estado actual (excelente/bueno/regular)\n- 🏊 Amenidades (parqueadero, depósito, piscina, etc.)\n\nCon esa información puedo darte un estimado muy preciso basado en el mercado actual.\n\n¿Me compartes esos datos?`;
+    return `Para hacer el **avalúo de tu propiedad**, necesito algunos datos:\n\n- Dirección o barrio\n- Área en m²\n- Número de habitaciones y baños\n- Año de construcción\n- Estado actual (excelente/bueno/regular)\n- Amenidades (parqueadero, depósito, piscina, etc.)\n\nCon esa información puedo darte un estimado muy preciso basado en el mercado actual.\n\n¿Me compartes esos datos?`;
   }
   
   if(m.includes('calculadora') || m.includes('hipoteca') || m.includes('crédito')) {
-    return `Te ayudo con la **calculadora hipotecaria** 🏦\n\nPara un apartamento de **$500 millones COP**:\n\n| Plazo | Cuota aprox. (tasa ~12% EA) |\n|-------|---------------------------|\n| 10 años | ~$7.1M/mes |\n| 15 años | ~$5.9M/mes |\n| 20 años | ~$5.4M/mes |\n\n> Puedes ver la calculadora completa en nuestra web\n\n¿Con qué valor de inmueble y cuota mensual estás pensando?`;
+    return `Te ayudo con la **calculadora hipotecaria**\n\nPara un apartamento de **$500 millones COP**:\n\n| Plazo | Cuota aprox. (tasa ~12% EA) |\n|-------|---------------------------|\n| 10 años | ~$7.1M/mes |\n| 15 años | ~$5.9M/mes |\n| 20 años | ~$5.4M/mes |\n\n> Puedes ver la calculadora completa en nuestra web\n\n¿Con qué valor de inmueble y cuota mensual estás pensando?`;
   }
   
   if(m.includes('hola') || m.includes('buenas') || m.includes('buenos') || m.includes('saludos')) {
     const hour = new Date().getHours();
     const greeting = hour < 12 ? '¡Buenos días' : hour < 18 ? '¡Buenas tardes' : '¡Buenas noches';
-    return `${greeting}! 👋 Soy **ARIA**, tu asesora virtual de LoMaz Home.\n\nEstoy aquí para ayudarte a encontrar **la propiedad perfecta** en Bogotá — ya sea para comprar, arrendar o invertir.\n\n¿Por dónde quieres comenzar? Puedo mostrarte propiedades disponibles, darte información de precios por zona, o explicarte el proceso de compra paso a paso.`;
+    return `${greeting}! Soy **ARIA**, tu asesora virtual de LoMaz Home.\n\nEstoy aquí para ayudarte a encontrar **la propiedad perfecta** en Bogotá — ya sea para comprar, arrendar o invertir.\n\n¿Por dónde quieres comenzar? Puedo mostrarte propiedades disponibles, darte información de precios por zona, o explicarte el proceso de compra paso a paso.`;
   }
   
   if(m.includes('gracias') || m.includes('perfecto') || m.includes('excelente') || m.includes('listo')) {
-    return `¡Me alegra haber podido ayudarte! 😊\n\nRecuerda que estoy disponible para cualquier consulta adicional. Si quieres agendar una **visita presencial** o hablar con uno de nuestros asesores especializados, puedo coordinarlo.\n\n¿Hay algo más en lo que pueda ayudarte?`;
+    return `¡Me alegra haber podido ayudarte! \n\nRecuerda que estoy disponible para cualquier consulta adicional. Si quieres agendar una **visita presencial** o hablar con uno de nuestros asesores especializados, puedo coordinarlo.\n\n¿Hay algo más en lo que pueda ayudarte?`;
   }
   
   // Generic intelligent response
@@ -890,10 +891,10 @@ function clearFiles() {
 }
 
 function getFileIcon(type) {
-  if(type.includes('image')) return '🖼️';
-  if(type.includes('pdf')) return '📄';
-  if(type.includes('word') || type.includes('document')) return '📝';
-  return '📎';
+  if(type.includes('image')) return '<i class=lzi data-i=imagen></i> ';
+  if(type.includes('pdf')) return '<i class=lzi data-i=archivo></i> ';
+  if(type.includes('word') || type.includes('document')) return '<i class=lzi data-i=nota></i> ';
+  return '<i class=lzi data-i=clip></i> ';
 }
 
 function formatSize(bytes) {
@@ -1046,7 +1047,7 @@ async function init() {
       showThinking();
       setTimeout(async () => {
         hideThinking();
-        await streamResponse(`¡Bienvenido a **LoMaz Home**! Soy **ARIA**, tu asesora virtual de inteligencia artificial 🌟\n\nEstoy aquí para ayudarte a encontrar **la propiedad perfecta en Bogotá** — ya sea para comprar, arrendar o invertir en zonas exclusivas como Usaquén, Chapinero Alto, La Cabrera y Rosales.\n\n¿Con qué puedo ayudarte hoy?`);
+        await streamResponse(`¡Bienvenido a **LoMaz Home**! Soy **ARIA**, tu asesora virtual de inteligencia artificial \n\nEstoy aquí para ayudarte a encontrar **la propiedad perfecta en Bogotá** — ya sea para comprar, arrendar o invertir en zonas exclusivas como Usaquén, Chapinero Alto, La Cabrera y Rosales.\n\n¿Con qué puedo ayudarte hoy?`);
         isTyping = false;
       }, 1200);
     }, 400);

@@ -64,6 +64,7 @@ textarea{resize:vertical;min-height:70px}
 .img-preview{margin-top:.6rem;max-height:180px;border-radius:var(--r-sm);border:1px solid var(--line);display:none}
 @media(max-width:900px){.form-grid{grid-template-columns:1fr}.topbar{padding:.75rem 1rem}.brand-text{font-size:1.3rem}.container{padding:0 1rem;margin:1.5rem auto}}
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -87,7 +88,7 @@ textarea{resize:vertical;min-height:70px}
 <div class="page-sub">Redacta y publica un nuevo articulo en el blog de LoMaz Home. Disponible para todos los asesores.</div>
 <div id="alert" class="alert"></div>
 <div class="card">
-<h3>&#128221; Datos del <em>articulo</em></h3>
+<h3><i class=lzi data-i=nota></i> Datos del <em>articulo</em></h3>
 <div class="form-grid">
 <div class="form-group full"><label>TITULO *</label><input type="text" id="titulo" placeholder="Ej: Como arrendar un apartamento en Bogota paso a paso"/></div>
 <div class="form-group"><label>CATEGORIA *</label><select id="categoria">
@@ -105,7 +106,7 @@ textarea{resize:vertical;min-height:70px}
 </div>
 </div>
 <div class="card">
-<h3>&#9998; Contenido del <em>articulo</em></h3>
+<h3>Contenido del <em>articulo</em></h3>
 <div class="rt-toolbar" id="rtToolbar">
 <button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h2" title="Titulo">H2</button>
 <button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h3" title="Subtitulo">H3</button>
@@ -119,13 +120,13 @@ textarea{resize:vertical;min-height:70px}
 <button type="button" class="rt-btn" data-cmd="insertOrderedList" title="Lista numerada">1. Lista</button>
 <button type="button" class="rt-btn" data-cmd="formatBlock" data-val="blockquote" title="Cita">&#8220; Cita</button>
 <span class="rt-sep"></span>
-<button type="button" class="rt-btn" data-cmd="createLink" title="Insertar enlace">&#128279; Link</button>
+<button type="button" class="rt-btn" data-cmd="createLink" title="Insertar enlace"><i class=lzi data-i=enlace></i> Link</button>
 <button type="button" class="rt-btn" data-cmd="removeFormat" title="Quitar formato">&#10005; Formato</button>
 </div>
 <div class="rt-editor" id="editor" contenteditable="true" data-ph="Escribe aqui el contenido del articulo. Usa la barra de herramientas para dar formato..."></div>
 <div class="hint">El contenido se guarda como HTML con formato.</div>
 </div>
-<button class="btn-publish" id="btnPublicar" onclick="guardarArticulo('publicado')">&#128640; Publicar articulo</button>
+<button class="btn-publish" id="btnPublicar" onclick="guardarArticulo('publicado')">Publicar articulo</button>
 <button class="btn-draft" id="btnBorrador" onclick="guardarArticulo('borrador')">Guardar como borrador</button>
 </div>
 <script>

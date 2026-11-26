@@ -137,6 +137,7 @@ img,video,iframe{max-width:100%}
 *{min-width:0}
 }
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div id="loading-screen"><div class="loading-spinner"></div><div style="color:#e4a853;font-size:16px;font-weight:600">Verificando acceso admin...</div></div>
@@ -153,16 +154,16 @@ img,video,iframe{max-width:100%}
 </div>
 <nav class="sidebar-nav">
 <div class="nav-section">Principal</div>
-<a class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span>Vista General</a>
-<a class="nav-item" data-tab="propiedades"><span class="nav-icon">🏠</span>Propiedades<span class="badge" id="b-prop">0</span></a>
-<a class="nav-item" data-tab="asesores"><span class="nav-icon">👤</span>Asesores<span class="badge" id="b-ases">0</span></a>
-<a class="nav-item" data-tab="leads"><span class="nav-icon">📩</span>Leads<span class="badge" id="b-leads">0</span></a>
-<a class="nav-item" data-tab="clientes"><span class="nav-icon">🤝</span>Clientes</a>
+<a class="nav-item active" data-tab="overview"><span class="nav-icon"><i class=lzi data-i=grafica></i></span>Vista General</a>
+<a class="nav-item" data-tab="propiedades"><span class="nav-icon"><i class=lzi data-i=casa></i></span>Propiedades<span class="badge" id="b-prop">0</span></a>
+<a class="nav-item" data-tab="asesores"><span class="nav-icon"><i class=lzi data-i=persona></i></span>Asesores<span class="badge" id="b-ases">0</span></a>
+<a class="nav-item" data-tab="leads"><span class="nav-icon"><i class=lzi data-i=correo></i></span>Leads<span class="badge" id="b-leads">0</span></a>
+<a class="nav-item" data-tab="clientes"><span class="nav-icon"><i class=lzi data-i=personas></i></span>Clientes</a>
 <div class="nav-section">Contenido</div>
-<a class="nav-item" data-tab="blog"><span class="nav-icon">📝</span>Blog</a>
+<a class="nav-item" data-tab="blog"><span class="nav-icon"><i class=lzi data-i=nota></i></span>Blog</a>
 <div class="nav-section">Plataforma</div>
-<a class="nav-item" href="dashboard.html"><span class="nav-icon">🏡</span>Volver al Dashboard</a>
-<a class="nav-item" id="logout-btn"><span class="nav-icon">🚪</span>Cerrar Sesion</a>
+<a class="nav-item" href="dashboard.html"><span class="nav-icon"><i class=lzi data-i=casa></i></span>Volver al Dashboard</a>
+<a class="nav-item" id="logout-btn"><span class="nav-icon"><i class=lzi data-i=salir></i></span>Cerrar Sesion</a>
 </nav>
 <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.35)">
 Lomaz Home v2.0 &bull; <span id="today-date"></span>
@@ -180,24 +181,24 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 <div class="content">
 <!-- ===== OVERVIEW TAB ===== -->
 <div id="tab-overview" class="tab-content fade-in">
-<div class="alert info">📌 Solo los administradores autorizados pueden acceder a este panel.</div>
+<div class="alert info"><i class=lzi data-i=pin></i> Solo los administradores autorizados pueden acceder a este panel.</div>
 <div class="stats-grid">
-<div class="stat-card"><div class="stat-icon gold">🏠</div><div><div class="stat-val" id="s-props">--</div><div class="stat-label">Total Propiedades</div><div class="stat-change up" id="s-props-pub">-- publicadas</div></div></div>
-<div class="stat-card"><div class="stat-icon blue">👤</div><div><div class="stat-val" id="s-ases">--</div><div class="stat-label">Asesores Activos</div><div class="stat-change up">Registrados en plataforma</div></div></div>
-<div class="stat-card"><div class="stat-icon green">📩</div><div><div class="stat-val" id="s-leads">--</div><div class="stat-label">Leads Total</div><div class="stat-change up" id="s-leads-new">-- nuevos</div></div></div>
-<div class="stat-card"><div class="stat-icon purple">🤝</div><div><div class="stat-val" id="s-clientes">--</div><div class="stat-label">Clientes</div><div class="stat-change up">En CRM</div></div></div>
-<div class="stat-card"><div class="stat-icon red">📝</div><div><div class="stat-val" id="s-blog">--</div><div class="stat-label">Articulos Blog</div><div class="stat-change up">Publicados</div></div></div>
+<div class="stat-card"><div class="stat-icon gold"><i class=lzi data-i=casa></i></div><div><div class="stat-val" id="s-props">--</div><div class="stat-label">Total Propiedades</div><div class="stat-change up" id="s-props-pub">-- publicadas</div></div></div>
+<div class="stat-card"><div class="stat-icon blue"><i class=lzi data-i=persona></i></div><div><div class="stat-val" id="s-ases">--</div><div class="stat-label">Asesores Activos</div><div class="stat-change up">Registrados en plataforma</div></div></div>
+<div class="stat-card"><div class="stat-icon green"><i class=lzi data-i=correo></i></div><div><div class="stat-val" id="s-leads">--</div><div class="stat-label">Leads Total</div><div class="stat-change up" id="s-leads-new">-- nuevos</div></div></div>
+<div class="stat-card"><div class="stat-icon purple"><i class=lzi data-i=personas></i></div><div><div class="stat-val" id="s-clientes">--</div><div class="stat-label">Clientes</div><div class="stat-change up">En CRM</div></div></div>
+<div class="stat-card"><div class="stat-icon red"><i class=lzi data-i=nota></i></div><div><div class="stat-val" id="s-blog">--</div><div class="stat-label">Articulos Blog</div><div class="stat-change up">Publicados</div></div></div>
 </div>
 <!-- CHARTS ROW -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-<div class="section"><div class="section-header"><div class="section-title"><span class="icon">📈</span>Propiedades por Tipo</div></div>
+<div class="section"><div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=grafica></i></span>Propiedades por Tipo</div></div>
 <div class="section-body"><div id="chart-tipos" class="chart-bar"></div></div></div>
-<div class="section"><div class="section-header"><div class="section-title"><span class="icon">💰</span>Propiedades por Negocio</div></div>
+<div class="section"><div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=dinero></i></span>Propiedades por Negocio</div></div>
 <div class="section-body"><div id="chart-negocios" class="chart-bar"></div></div></div>
 </div>
 <!-- RECENT ACTIVITY -->
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon">⏰</span>Actividad Reciente</div></div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=reloj></i></span>Actividad Reciente</div></div>
 <div class="section-body">
 <div class="tbl-wrap"><table>
 <thead><tr><th>Tipo</th><th>Descripcion</th><th>Fecha</th><th>Estado</th></tr></thead>
@@ -208,7 +209,7 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 <!-- ===== PROPIEDADES TAB ===== -->
 <div id="tab-propiedades" class="tab-content" style="display:none">
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon">🏠</span>Gestion de Propiedades</div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=casa></i></span>Gestion de Propiedades</div>
 <a href="agregar-propiedad.html" class="btn btn-primary">+ Agregar</a></div>
 <div class="section-body">
 <div class="search-bar">
@@ -240,7 +241,7 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 <!-- ===== ASESORES TAB ===== -->
 <div id="tab-asesores" class="tab-content" style="display:none">
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon">👤</span>Gestion de Asesores</div></div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=persona></i></span>Gestion de Asesores</div></div>
 <div class="section-body">
 <div class="search-bar">
 <input class="search-input" id="ases-search" placeholder="Buscar asesor por nombre o email..." oninput="filterTable('ases')">
@@ -259,7 +260,7 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 <!-- ===== LEADS TAB ===== -->
 <div id="tab-leads" class="tab-content" style="display:none">
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon">📩</span>Todos los Leads</div></div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=correo></i></span>Todos los Leads</div></div>
 <div class="section-body">
 <div class="search-bar">
 <input class="search-input" id="leads-search" placeholder="Buscar lead por nombre, email o telefono..." oninput="filterTable('leads')">
@@ -281,7 +282,7 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 <!-- ===== CLIENTES TAB ===== -->
 <div id="tab-clientes" class="tab-content" style="display:none">
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon">🤝</span>Base de Clientes</div></div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=personas></i></span>Base de Clientes</div></div>
 <div class="section-body">
 <div class="search-bar">
 <input class="search-input" id="cli-search" placeholder="Buscar cliente por nombre o email..." oninput="filterTable('cli')">
@@ -302,9 +303,9 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 </div>
 <!-- ===== BLOG TAB ===== -->
 <div id="tab-blog" class="tab-content" style="display:none">
-<div class="alert warn">✏️ Gestion completa de articulos del blog. Puedes crear, publicar o despublicar articulos.</div>
+<div class="alert warn"><i class=lzi data-i=nota></i> Gestion completa de articulos del blog. Puedes crear, publicar o despublicar articulos.</div>
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon">📝</span>Articulos del Blog</div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=nota></i></span>Articulos del Blog</div>
 <a href="blog.html" target="_blank" class="btn btn-outline">Ver Blog</a>
 </div>
 <div class="section-body">
@@ -322,7 +323,7 @@ Lomaz Home v2.0 &bull; <span id="today-date"></span>
 <!-- Modal confirm delete -->
 <div class="modal-overlay" id="modal-confirm">
 <div class="modal">
-<div class="modal-title">⚠️ Confirmar Accion</div>
+<div class="modal-title"><i class=lzi data-i=alerta></i> Confirmar Accion</div>
 <p id="modal-msg" style="color:#555;font-size:14px"></p>
 <div class="modal-actions">
 <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>

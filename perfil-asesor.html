@@ -82,6 +82,7 @@ textarea{resize:vertical;min-height:90px}
 .danger-card h3{color:#ff8080 !important}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -101,7 +102,7 @@ textarea{resize:vertical;min-height:90px}
 <div class="layout">
 <main class="content">
   <div class="page-header">
-    <h1>⚙️ Mi Perfil</h1>
+    <h1><i class=lzi data-i=ajustes></i> Mi Perfil</h1>
     <p>Gestiona tu información personal, profesional y configuración de cuenta.</p>
   </div>
   <div id="globalAlert" class="alert"></div>
@@ -110,7 +111,7 @@ textarea{resize:vertical;min-height:90px}
     <div class="avatar-info">
       <h4 id="profileName">Tu Nombre</h4>
       <p>JPG, PNG o WebP · La foto se ajusta sola al subirla · Ideal: cuadrada y con tu rostro centrado</p>
-      <label class="btn-upload" for="fotoInput" id="btnFoto">📤 Cambiar foto</label>
+      <label class="btn-upload" for="fotoInput" id="btnFoto"><i class=lzi data-i=subir></i> Cambiar foto</label>
       <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp,image/*" style="display:none" onchange="uploadFoto(this)"/>
     </div>
   </div>
@@ -121,15 +122,15 @@ textarea{resize:vertical;min-height:90px}
     <div class="stat-mini"><div class="val" id="stClientes">-</div><div class="lbl">Clientes</div></div>
   </div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('info')">👤 Información Personal</button>
-    <button class="tab-btn" onclick="showTab('pro')">🏆 Perfil Profesional</button>
-    <button class="tab-btn" onclick="showTab('tarjeta')">&#128179; Mi Tarjeta Digital</button>
-    <button class="tab-btn" onclick="showTab('seg')">🔒 Seguridad</button>
+    <button class="tab-btn active" onclick="showTab('info')"><i class=lzi data-i=persona></i> Información Personal</button>
+    <button class="tab-btn" onclick="showTab('pro')"><i class=lzi data-i=estrella></i> Perfil Profesional</button>
+    <button class="tab-btn" onclick="showTab('tarjeta')"><i class=lzi data-i=tarjeta></i> Mi Tarjeta Digital</button>
+    <button class="tab-btn" onclick="showTab('seg')"><i class=lzi data-i=candado></i> Seguridad</button>
   </div>
   <!-- TAB 1: Informacion Personal -->
   <div id="tab-info" class="tab-panel active">
     <div class="card">
-      <h3>📝 Datos Personales</h3>
+      <h3><i class=lzi data-i=nota></i> Datos Personales</h3>
       <div class="form-grid">
         <div class="form-group"><label>Nombre *</label><input type="text" id="pNombre" placeholder="Tu nombre" /></div>
         <div class="form-group"><label>Apellido *</label><input type="text" id="pApellido" placeholder="Tu apellido" /></div>
@@ -140,14 +141,14 @@ textarea{resize:vertical;min-height:90px}
         <div class="form-group full"><label>Dirección de oficina</label><input type="text" id="pDireccion" placeholder="Dirección de tu oficina o agencia" /></div>
       </div>
       <div style="margin-top:18px">
-        <button class="btn-primary" id="btnGuardarInfo" onclick="saveInfo()">💾 Guardar Cambios</button>
+        <button class="btn-primary" id="btnGuardarInfo" onclick="saveInfo()"><i class=lzi data-i=guardar></i> Guardar Cambios</button>
       </div>
     </div>
   </div>
   <!-- TAB 2: Perfil Profesional -->
   <div id="tab-pro" class="tab-panel">
     <div class="card">
-      <h3>🏆 Información Profesional</h3>
+      <h3><i class=lzi data-i=estrella></i> Información Profesional</h3>
       <div class="form-grid">
         <div class="form-group"><label>Agencia / Empresa</label><input type="text" id="pAgencia" placeholder="Lomaz Home, Century 21..." /></div>
         <div class="form-group"><label>Cargo / Título</label><input type="text" id="pCargo" placeholder="Asesor Inmobiliario Senior" /></div>
@@ -159,17 +160,17 @@ textarea{resize:vertical;min-height:90px}
       </div>
     </div>
     <div class="card">
-      <h3>&#128241; Redes Sociales</h3>
+      <h3><i class=lzi data-i=celular></i> Redes Sociales</h3>
       <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Tus redes ahora se editan en la pesta&ntilde;a <b>Mi Tarjeta Digital</b>, para que la tarjeta y el perfil siempre digan lo mismo.</p>
       <div style="margin-top:18px">
-        <button class="btn-primary" id="btnGuardarPro" onclick="savePro()">💾 Guardar Perfil Profesional</button>
+        <button class="btn-primary" id="btnGuardarPro" onclick="savePro()"><i class=lzi data-i=guardar></i> Guardar Perfil Profesional</button>
       </div>
     </div>
   </div>
   <!-- TAB: Mi Tarjeta Digital -->
   <div id="tab-tarjeta" class="tab-panel">
     <div class="card">
-      <h3>&#128179; Datos que aparecen en tu tarjeta</h3>
+      <h3><i class=lzi data-i=tarjeta></i> Datos que aparecen en tu tarjeta</h3>
       <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Rellena estos campos y tu tarjeta digital se genera sola. No hay que programar nada.</p>
       <div id="tjCheck" style="margin-bottom:16px"></div>
       <div class="form-grid">
@@ -186,7 +187,7 @@ textarea{resize:vertical;min-height:90px}
       </div>
     </div>
     <div class="card">
-      <h3>&#128241; Tus redes en la tarjeta</h3>
+      <h3><i class=lzi data-i=celular></i> Tus redes en la tarjeta</h3>
       <div style="font-size:.85rem;color:#667085;margin-bottom:14px">Escribe solo tu usuario (ejemplo: <b>lomazhome</b>). Si pegas el enlace completo tambi&eacute;n funciona. Lo que dejes vac&iacute;o no aparece en la tarjeta.</div>
       <div class="form-grid single">
         <div class="form-group"><label>Instagram</label><div class="social-row"><span class="social-prefix">instagram.com/</span><input type="text" id="tjInstagram" placeholder="tu_usuario" style="flex:1" /></div></div>
@@ -198,12 +199,12 @@ textarea{resize:vertical;min-height:90px}
         <div class="form-group"><label>Sitio web personal</label><input type="url" id="tjWeb" placeholder="https://tu-sitio.com" /></div>
       </div>
       <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn-primary" id="btnGuardarTarjeta" onclick="saveTarjeta()">&#128190; Guardar mi tarjeta</button>
-        <a class="btn-primary" id="tjVer" href="asesores.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">&#128065; Ver mi tarjeta</a>
+        <button class="btn-primary" id="btnGuardarTarjeta" onclick="saveTarjeta()"><i class=lzi data-i=guardar></i> Guardar mi tarjeta</button>
+        <a class="btn-primary" id="tjVer" href="asesores.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block"><i class=lzi data-i=ojo></i> Ver mi tarjeta</a>
       </div>
     </div>
     <div class="card">
-      <h3>&#128279; Un enlace por cada red social</h3>
+      <h3><i class=lzi data-i=enlace></i> Un enlace por cada red social</h3>
       <p style="color:#667085;font-size:.9rem;margin-bottom:14px">Copia el enlace de cada red y p&eacute;galo en tu bio. Cada uno viene marcado para saber de qu&eacute; red te llegan los clientes.</p>
       <div id="tjLinks"></div>
       <div style="display:flex;gap:22px;flex-wrap:wrap;align-items:center;margin-top:18px">
@@ -215,7 +216,7 @@ textarea{resize:vertical;min-height:90px}
   <!-- TAB 3: Seguridad -->
   <div id="tab-seg" class="tab-panel">
     <div class="card">
-      <h3>🔑 Cambiar Contraseña</h3>
+      <h3><i class=lzi data-i=llave></i> Cambiar Contraseña</h3>
       <div id="alertSeg" class="alert"></div>
       <div class="form-grid single">
         <div class="form-group"><label>Nueva contraseña</label><input type="password" id="newPass" placeholder="Mínimo 8 caracteres" oninput="checkPwd(this.value)" /></div>
@@ -224,11 +225,11 @@ textarea{resize:vertical;min-height:90px}
         <div class="form-group"><label>Confirmar nueva contraseña</label><input type="password" id="confirmPass" placeholder="Repite la contraseña" /></div>
       </div>
       <div style="margin-top:18px">
-        <button class="btn-primary" onclick="changePassword()">🔒 Actualizar Contraseña</button>
+        <button class="btn-primary" onclick="changePassword()"><i class=lzi data-i=candado></i> Actualizar Contraseña</button>
       </div>
     </div>
     <div class="card">
-      <h3>📧 Información de Cuenta</h3>
+      <h3><i class=lzi data-i=correo></i> Información de Cuenta</h3>
       <div class="form-grid">
         <div class="form-group"><label>Correo electrónico (login)</label><input type="email" id="accountEmail" readonly /></div>
         <div class="form-group"><label>Fecha de registro</label><input type="text" id="accountCreated" readonly /></div>
@@ -237,9 +238,9 @@ textarea{resize:vertical;min-height:90px}
       </div>
     </div>
     <div class="card danger-card">
-      <h3 style="color:#ff8080">⚠️ Zona de Peligro</h3>
+      <h3 style="color:#ff8080"><i class=lzi data-i=alerta></i> Zona de Peligro</h3>
       <p style="font-size:.82rem;color:#666;margin-bottom:14px">Estas acciones son irreversibles. Procede con cuidado.</p>
-      <button class="btn-danger" onclick="signOutAll()">🚪 Cerrar sesión en todos los dispositivos</button>
+      <button class="btn-danger" onclick="signOutAll()"><i class=lzi data-i=salir></i> Cerrar sesión en todos los dispositivos</button>
     </div>
   </div>
 </main>
@@ -447,7 +448,7 @@ function tjHints(){
   if(!redes) faltan.push('Al menos una red social o tu sitio web');
   var total=6, pct=Math.round((total-faltan.length)*100/total);
   if(!faltan.length){
-    c.innerHTML='<div style="background:#e8f8ef;border:1px solid #b7e4c7;color:#14532d;padding:12px 14px;border-radius:10px;font-size:.9rem">&#9989; <b>Tu tarjeta est&aacute; completa (100%).</b> No olvides pulsar <b>Guardar mi tarjeta</b>.</div>';
+    c.innerHTML='<div style="background:#e8f8ef;border:1px solid #b7e4c7;color:#14532d;padding:12px 14px;border-radius:10px;font-size:.9rem"><i class=lzi data-i=ok></i> <b>Tu tarjeta est&aacute; completa (100%).</b> No olvides pulsar <b>Guardar mi tarjeta</b>.</div>';
   }else{
     c.innerHTML='<div style="background:#fff7e6;border:1px solid #ffe0a3;color:#7a4b00;padding:12px 14px;border-radius:10px;font-size:.9rem"><b>Tu tarjeta est&aacute; al '+pct+'%.</b> Para que quede perfecta falta:<ul style="margin:6px 0 0 18px">'+faltan.map(function(f){ return '<li>'+f+'</li>'; }).join("")+'</ul></div>';
   }
@@ -617,7 +618,7 @@ async function saveInfo(){
   if(!res.ok){showAlert("No se guardo la informacion. "+res.msg,"error");return;}
   document.getElementById("profileName").textContent=res.fila.nombre_completo||nombre_completo;
   renderTjLinks();
-  showAlert("✅ Información personal guardada correctamente","success");
+  showAlert("Información personal guardada correctamente","success");
 }
 
 async function savePro(){
@@ -648,7 +649,7 @@ async function savePro(){
   setV2("tjBio",bioPro);
   if(!(res.fila.datos_perfil&&res.fila.datos_perfil.cargo_publico)) setV2("tjCargo",payload.cargo);
   renderTjLinks();
-  showAlert("✅ Perfil profesional guardado correctamente","success");
+  showAlert("Perfil profesional guardado correctamente","success");
 }
 
 // Reduce la foto en el navegador (max 1200px, JPG) para que las fotos del celular
@@ -713,7 +714,7 @@ async function uploadFoto(input){
     document.getElementById("bigAvatar").innerHTML=`<img src="${urlNueva}" alt="foto"/>`;
     var __ta2=document.getElementById("topAvatar");if(__ta2)__ta2.innerHTML=`<img src="${urlNueva}" alt="foto"/>`;
     renderTjLinks();
-    showAlert("✅ Foto de perfil actualizada","success");
+    showAlert("Foto de perfil actualizada","success");
   }catch(e){
     showAlert("No se pudo subir la foto: "+mensajeError(e),"error");
   }
@@ -745,7 +746,7 @@ async function changePassword(){
   if(error){showAlert("Error: "+error.message,"error","alertSeg");return;}
   document.getElementById("newPass").value="";
   document.getElementById("confirmPass").value="";
-  showAlert("✅ Contraseña actualizada correctamente","success","alertSeg");
+  showAlert("Contraseña actualizada correctamente","success","alertSeg");
 }
 
 init();
