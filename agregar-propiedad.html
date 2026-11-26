@@ -156,6 +156,7 @@ img,video,iframe{max-width:100%}
 
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -175,7 +176,7 @@ img,video,iframe{max-width:100%}
 <div class="container">
 <div class="page-title">Agregar <em>Propiedad</em></div>
 <div class="page-sub">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
-<div id="alert" class="alert" style="display:none"></div><button type="button" id="btnGuardarFlotante" onclick="if(typeof publicarPropiedad==='function'){publicarPropiedad();}" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:linear-gradient(135deg,#c9a96e,#b08d57);color:#fff;border:none;padding:14px 26px;border-radius:30px;font-size:15px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;">💾 Guardar cambios</button>
+<div id="alert" class="alert" style="display:none"></div><button type="button" id="btnGuardarFlotante" onclick="if(typeof publicarPropiedad==='function'){publicarPropiedad();}" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:linear-gradient(135deg,#c9a96e,#b08d57);color:#fff;border:none;padding:14px 26px;border-radius:30px;font-size:15px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;"><i class=lzi data-i=guardar></i> Guardar cambios</button>
 
 <div class="wizard-steps" id="wizard">
 <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info basica</div></div>
@@ -193,7 +194,7 @@ img,video,iframe{max-width:100%}
             <div style="font-weight:700;color:#7a5b12;">¿El cliente ya envió su predio?</div>
             <div style="font-size:13px;color:#8a6d2a;">Importa los datos automáticamente desde el formulario de captación.</div>
           </div>
-          <button type="button" id="btnImportarCaptacion" style="background:#c8a24a;color:#fff;border:none;padding:11px 18px;border-radius:9px;font-weight:700;cursor:pointer;white-space:nowrap;">📥 Importar desde Captación</button>
+          <button type="button" id="btnImportarCaptacion" style="background:#c8a24a;color:#fff;border:none;padding:11px 18px;border-radius:9px;font-weight:700;cursor:pointer;white-space:nowrap;"><i class=lzi data-i=bajar></i> Importar desde Captación</button>
         </div>
         <div id="modalCaptacion" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;">
           <div style="background:#fff;max-width:640px;width:100%;border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
@@ -206,7 +207,7 @@ img,video,iframe{max-width:100%}
           </div>
         </div>
 
-<div class="card"><h3>&#128203; Informacion <em>Basica</em></h3>
+<div class="card"><h3><i class=lzi data-i=lista></i> Informacion <em>Basica</em></h3>
 <div class="form-grid">
 <div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
 <div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="apartaestudio">Apartaestudio</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitacion</option></select></div>
@@ -230,19 +231,19 @@ img,video,iframe{max-width:100%}
 </div>
 
 <div class="step-panel" id="panel2">
-<div class="card"><h3>&#128205; <em>Ubicacion</em></h3>
+<div class="card"><h3><i class=lzi data-i=pin></i> <em>Ubicacion</em></h3>
 <div class="form-grid">
 <div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar departamento...</option></select></div>
 <div class="form-group"><label>CIUDAD *</label><select id="ciudad"><option value="">Seleccione un departamento primero...</option></select></div>
 <div class="form-group" id="grupo_localidad" style="display:none;"><label>LOCALIDAD (Bogotá)</label><select id="localidad"><option value="">Seleccione localidad...</option></select></div><div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" list="barriosList" placeholder="Escribe para buscar el barrio..." autocomplete="off"/><datalist id="barriosList"></datalist></div>
 <div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
-<div class="form-group full"><label>UBICACI&Oacute;N EN EL MAPA</label><div style="display:flex;gap:8px;margin-bottom:8px"><button type="button" id="btnGeocode" class="btn-secondary" style="white-space:nowrap">&#128269; Buscar direcci&oacute;n en el mapa</button><span id="geoStatus" style="font-size:12px;color:#888;align-self:center"></span></div><div id="mapa" style="height:320px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"></div><small style="color:#888;font-weight:400;display:block;margin-top:6px">Escribe la ciudad, barrio y direcci&oacute;n arriba, luego pulsa "Buscar". Tambi&eacute;n puedes arrastrar el marcador o hacer clic en el mapa para ajustar el punto exacto. La latitud y longitud se calculan autom&aacute;ticamente.</small></div><div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="latitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
+<div class="form-group full"><label>UBICACI&Oacute;N EN EL MAPA</label><div style="display:flex;gap:8px;margin-bottom:8px"><button type="button" id="btnGeocode" class="btn-secondary" style="white-space:nowrap"><i class=lzi data-i=buscar></i> Buscar direcci&oacute;n en el mapa</button><span id="geoStatus" style="font-size:12px;color:#888;align-self:center"></span></div><div id="mapa" style="height:320px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"></div><small style="color:#888;font-weight:400;display:block;margin-top:6px">Escribe la ciudad, barrio y direcci&oacute;n arriba, luego pulsa "Buscar". Tambi&eacute;n puedes arrastrar el marcador o hacer clic en el mapa para ajustar el punto exacto. La latitud y longitud se calculan autom&aacute;ticamente.</small></div><div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="latitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
 <div class="form-group"><label>LONGITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="longitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
 <div class="form-group full"><label>COMO LLEGAR (referencias)</label><textarea id="como_llegar" placeholder="Ej: Frente al parque principal, junto al centro comercial..." style="min-height:60px"></textarea></div>
 </div></div>
-<div class="card"><h3>&#127909; Multimedia y <em>Tours</em></h3>
+<div class="card"><h3><i class=lzi data-i=video></i> Multimedia y <em>Tours</em></h3>
 <div class="form-grid">
-<div class="form-group full"><label>FOTOS (sube hasta 30 desde tu PC)</label><div id="fotoDropzone" style="border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02)"><input type="file" id="fotos_files" accept="image/*" multiple style="display:none"/><div style="font-size:32px">&#128247;</div><div style="margin-top:6px">Arrastra tus fotos aqu&iacute; o <span style="color:var(--gold);text-decoration:underline">haz clic para seleccionar</span></div><div style="font-size:12px;color:#888;margin-top:4px">JPG, PNG, WEBP &middot; m&aacute;x 5MB c/u &middot; hasta 30 fotos</div></div><div id="fotoProgress" style="display:none;margin-top:8px;font-size:13px;color:var(--gold)"></div><div id="fotoPreviews" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div><input type="hidden" id="fotos_url"/></div>
+<div class="form-group full"><label>FOTOS (sube hasta 30 desde tu PC)</label><div id="fotoDropzone" style="border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02)"><input type="file" id="fotos_files" accept="image/*" multiple style="display:none"/><div style="font-size:32px"><i class=lzi data-i=camara></i></div><div style="margin-top:6px">Arrastra tus fotos aqu&iacute; o <span style="color:var(--gold);text-decoration:underline">haz clic para seleccionar</span></div><div style="font-size:12px;color:#888;margin-top:4px">JPG, PNG, WEBP &middot; m&aacute;x 5MB c/u &middot; hasta 30 fotos</div></div><div id="fotoProgress" style="display:none;margin-top:8px;font-size:13px;color:var(--gold)"></div><div id="fotoPreviews" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div><input type="hidden" id="fotos_url"/></div>
 <div class="form-group"><label>VIDEO YOUTUBE (URL)</label><input type="url" id="video_url" placeholder="https://youtube.com/watch?v=..."/></div>
 <div class="form-group"><label>RECORRIDO VIRTUAL 360 (URL)</label><input type="url" id="recorrido_virtual" placeholder="https://matterport.com/show/?m=..."/></div>
 </div></div>
@@ -250,7 +251,7 @@ img,video,iframe{max-width:100%}
 </div>
 
 <div class="step-panel" id="panel3">
-<div class="card"><h3>&#127968; Caracteristicas y <em>Amenidades</em></h3>
+<div class="card"><h3><i class=lzi data-i=casa></i> Caracteristicas y <em>Amenidades</em></h3>
 <p style="color:#888;font-size:.85rem;margin-bottom:1rem">Selecciona todas las que apliquen a tu propiedad</p>
 <div class="char-grid" id="charGrid">
 <div class="amenity-group-title">Recreación y Bienestar</div>
@@ -372,25 +373,25 @@ img,video,iframe{max-width:100%}
 </div>
 
 <div class="step-panel" id="panel4">
-<div class="card"><h3>&#128203; Resumen de la <em>propiedad</em></h3><table class="summary-table" id="summaryTable"></table></div>
-<div class="card"><h3>&#127758; Publicar en <em>portales externos</em></h3>
+<div class="card"><h3><i class=lzi data-i=lista></i> Resumen de la <em>propiedad</em></h3><table class="summary-table" id="summaryTable"></table></div>
+<div class="card"><h3><i class=lzi data-i=mundo></i> Publicar en <em>portales externos</em></h3>
 <p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Marca los portales adicionales: los inmobiliarios se envian en paralelo y antes de mandar nada te pedimos confirmacion.</p>
 <div class="portales-grid">
-<div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name">&#127968; Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
-<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">PORTALES INMOBILIARIOS &middot; ENVIO EN PARALELO &middot; ELIGE LOS QUE QUIERAS</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name">&#127970; Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
-<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name">&#127969; Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
-<div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name">&#128225; Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
-<div style="font-size:.74rem;letter-spacing:.08em;color:#8a94a6;font-weight:700;margin:.9rem 0 .35rem">REDES SOCIALES &middot; PUBLICACION ASISTIDA (TU PEGAS EL TEXTO)</div><div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name">&#128722; Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
-<div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name">&#128247; Instagram</div><div class="portal-desc">Genera caption + descarga fotos + abre Instagram</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
+<div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name"><i class=lzi data-i=casa></i> Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">PORTALES INMOBILIARIOS &middot; ENVIO EN PARALELO &middot; ELIGE LOS QUE QUIERAS</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name"><i class=lzi data-i=edificio></i> Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
+<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name"><i class=lzi data-i=casa></i> Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
+<div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name"><i class=lzi data-i=mundo></i> Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
+<div style="font-size:.74rem;letter-spacing:.08em;color:#8a94a6;font-weight:700;margin:.9rem 0 .35rem">REDES SOCIALES &middot; PUBLICACION ASISTIDA (TU PEGAS EL TEXTO)</div><div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name"><i class=lzi data-i=carrito></i> Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
+<div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name"><i class=lzi data-i=camara></i> Instagram</div><div class="portal-desc">Genera caption + descarga fotos + abre Instagram</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
 </div>
 <div class="publish-log" id="publishLog" style="display:none">
-<p style="color:#888;font-size:.8rem;margin-bottom:.5rem">&#128202; Registro de publicacion:</p>
+<p style="color:#888;font-size:.8rem;margin-bottom:.5rem"><i class=lzi data-i=grafica></i> Registro de publicacion:</p>
 <div id="logEntries"></div>
 </div>
 </div>
-      <div class="card"><h3>&#10024; Copys para <em>Redes Sociales</em></h3><p style="color:#888;font-size:13px;margin-bottom:10px">Genera autom&aacute;ticamente el texto listo para publicar en Instagram y Facebook. Solo c&oacute;pialo y p&eacute;galo.</p><button type="button" id="btnGenCopys" class="btn-secondary" style="margin-bottom:12px">&#9889; Generar copys</button><div id="copysWrap" style="display:none"><div class="form-group full"><label>&#128241; INSTAGRAM <button type="button" class="btnCopyTxt" data-target="copyInstagram" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyInstagram" rows="9" style="width:100%;font-family:inherit"></textarea></div><div class="form-group full"><label>&#128242; FACEBOOK <button type="button" class="btnCopyTxt" data-target="copyFacebook" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyFacebook" rows="9" style="width:100%;font-family:inherit"></textarea></div><div id="copyStatus" style="font-size:12px;color:var(--gold)"></div></div></div>
-<button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">&#128640; Publicar Propiedad</button>
-<button class="btn-publish" id="btn-activar-fr" onclick="activarEnFincaraiz()" style="display:none;background:linear-gradient(135deg,#79b8ff 0%,#3b82f6 100%);color:#fff;margin-top:.6rem">&#9989; Activar en Finca Raiz (pasar de Pendiente a Activa)</button>
+      <div class="card"><h3>Copys para <em>Redes Sociales</em></h3><p style="color:#888;font-size:13px;margin-bottom:10px">Genera autom&aacute;ticamente el texto listo para publicar en Instagram y Facebook. Solo c&oacute;pialo y p&eacute;galo.</p><button type="button" id="btnGenCopys" class="btn-secondary" style="margin-bottom:12px">Generar copys</button><div id="copysWrap" style="display:none"><div class="form-group full"><label><i class=lzi data-i=celular></i> INSTAGRAM <button type="button" class="btnCopyTxt" data-target="copyInstagram" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyInstagram" rows="9" style="width:100%;font-family:inherit"></textarea></div><div class="form-group full"><label><i class=lzi data-i=celular></i> FACEBOOK <button type="button" class="btnCopyTxt" data-target="copyFacebook" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyFacebook" rows="9" style="width:100%;font-family:inherit"></textarea></div><div id="copyStatus" style="font-size:12px;color:var(--gold)"></div></div></div>
+<button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">Publicar Propiedad</button>
+<button class="btn-publish" id="btn-activar-fr" onclick="activarEnFincaraiz()" style="display:none;background:linear-gradient(135deg,#79b8ff 0%,#3b82f6 100%);color:#fff;margin-top:.6rem"><i class=lzi data-i=ok></i> Activar en Finca Raiz (pasar de Pendiente a Activa)</button>
 <div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">&#8592; Anterior</button><div></div></div>
 </div>
 </div>
@@ -1185,8 +1186,8 @@ try {
     d.onclick=function(){
       var faltan=autofill(p);
       $("modalCaptacion").style.display="none";
-      if(faltan.length){ alert("✅ Datos importados.\n\n⚠️ Faltan o revisar estos campos antes de publicar:\n• "+faltan.join("\n• ")); }
-      else { alert("✅ Datos importados correctamente. Revisa y sube las fotos/videos manualmente."); }
+      if(faltan.length){ alert("Datos importados.\n\nFaltan o revisar estos campos antes de publicar:\n• "+faltan.join("\n• ")); }
+      else { alert("Datos importados correctamente. Revisa y sube las fotos/videos manualmente."); }
     };
     return d;
   }
@@ -1363,7 +1364,7 @@ try {
         var upd = await c.from('propiedades').update(data).eq('id', EDIT_ID).select().single();
         if(upd.error){ alert('Error al guardar cambios: '+upd.error.message); return; }
         if(upd.data) window.__EDIT_ROW = upd.data;
-        showAlert('✅ Cambios guardados correctamente.','success'); window.scrollTo({top:0,behavior:'smooth'});
+        showAlert('Cambios guardados correctamente.','success'); window.scrollTo({top:0,behavior:'smooth'});
         // --- Portales: actualizacion en paralelo al editar ---
         try {
           if (typeof window.lmzActualizarPortalesAlEditar === "function") {
@@ -1590,7 +1591,7 @@ try {
     var html='<div style="line-height:1.55">';
     html+=enFeed
       ? '<div style="color:#22c55e;font-weight:700;margin-bottom:.4rem">&#10004; Esta propiedad esta incluida en el feed XML de Proppit (referencia '+esc(EDIT_ID)+').</div>'
-      : '<div style="color:#f59e0b;font-weight:700;margin-bottom:.4rem">&#9888; Esta propiedad NO entra al feed de Proppit porque '+esc(faltas.join(" y "))+'.</div>';
+      : '<div style="color:#f59e0b;font-weight:700;margin-bottom:.4rem"><i class=lzi data-i=alerta></i> Esta propiedad NO entra al feed de Proppit porque '+esc(faltas.join(" y "))+'.</div>';
     html+='<div>Proppit no tiene una pagina propia del aviso: lee el feed una vez al dia y lo publica en <b>Trovit, Mitula, Nestoria, Nuroa y puntopropiedad</b>. Un aviso nuevo o editado puede tardar hasta 24-48 h en verse en esos portales.</div>';
     html+='<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem">';
     html+='<a href="https://casas.trovit.com.co/search?text='+busq+'" target="_blank" rel="noopener" style="background:#22c55e;color:#0b1220;font-weight:700;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Buscar en Trovit</a>';

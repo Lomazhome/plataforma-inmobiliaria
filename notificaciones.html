@@ -88,6 +88,7 @@ body{background:#f0f2f5;color:#1a1a2e}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeInUp 0.4s ease forwards}
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div id="ls" style="position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:14px">
@@ -100,31 +101,31 @@ body{background:#f0f2f5;color:#1a1a2e}
 <div class="sb-logo"><div class="icon">L</div><div><div class="name">Lomaz Home</div><div style="font-size:10px;color:rgba(255,255,255,0.4)">Notificaciones</div></div></div>
 <nav class="sb-nav">
 <div class="sb-sec">Menu Principal</div>
-<a class="sb-link" href="dashboard.html"><span class="ico">🏡</span>Dashboard</a>
-<a class="sb-link" href="propiedades.html"><span class="ico">🏠</span>Propiedades</a>
-<a class="sb-link" href="contactos.html"><span class="ico">👥</span>Contactos (CRM)</a>
-<a class="sb-link" href="formatos.html"><span class="ico">📄</span>Formatos</a>
+<a class="sb-link" href="dashboard.html"><span class="ico"><i class=lzi data-i=casa></i></span>Dashboard</a>
+<a class="sb-link" href="propiedades.html"><span class="ico"><i class=lzi data-i=casa></i></span>Propiedades</a>
+<a class="sb-link" href="contactos.html"><span class="ico"><i class=lzi data-i=personas></i></span>Contactos (CRM)</a>
+<a class="sb-link" href="formatos.html"><span class="ico"><i class=lzi data-i=archivo></i></span>Formatos</a>
 <div class="sb-sec">Herramientas</div>
-<a class="sb-link active" href="notificaciones.html"><span class="ico">🔔</span>Notificaciones<span class="cnt" id="sb-unread">0</span></a>
-<a class="sb-link" href="favoritos.html"><span class="ico">❤️</span>Favoritos</a>
-<a class="sb-link" href="comparador.html"><span class="ico">⚖️</span>Comparador</a>
-<a class="sb-link" href="calculadora.html"><span class="ico">🧮</span>Calculadora</a>
-<a class="sb-link" href="portales.html"><span class="ico">🔗</span>Portales</a>
-<a class="sb-link" href="aria.html"><span class="ico">🤖</span>Chat ARIA</a>
-<a class="sb-link" href="blog.html"><span class="ico">📝</span>Blog</a>
+<a class="sb-link active" href="notificaciones.html"><span class="ico"><i class=lzi data-i=campana></i></span>Notificaciones<span class="cnt" id="sb-unread">0</span></a>
+<a class="sb-link" href="favoritos.html"><span class="ico"><i class=lzi data-i=corazon></i></span>Favoritos</a>
+<a class="sb-link" href="comparador.html"><span class="ico"></span>Comparador</a>
+<a class="sb-link" href="calculadora.html"><span class="ico"><i class=lzi data-i=calculadora></i></span>Calculadora</a>
+<a class="sb-link" href="portales.html"><span class="ico"><i class=lzi data-i=enlace></i></span>Portales</a>
+<a class="sb-link" href="aria.html"><span class="ico"></span>Chat ARIA</a>
+<a class="sb-link" href="blog.html"><span class="ico"><i class=lzi data-i=nota></i></span>Blog</a>
 <div class="sb-sec">Cuenta</div>
-<a class="sb-link" href="perfil-asesor.html"><span class="ico">👤</span>Mi Perfil</a>
-<a class="sb-link" id="logout-btn"><span class="ico">🚪</span>Cerrar Sesion</a>
+<a class="sb-link" href="perfil-asesor.html"><span class="ico"><i class=lzi data-i=persona></i></span>Mi Perfil</a>
+<a class="sb-link" id="logout-btn"><span class="ico"><i class=lzi data-i=salir></i></span>Cerrar Sesion</a>
 </nav>
 </aside>
 <main class="main">
 <div class="topbar">
 <div class="topbar-left">
-<div class="topbar-title"><span>🔔</span> Notificaciones</div>
+<div class="topbar-title"><span><i class=lzi data-i=campana></i></span> Notificaciones</div>
 </div>
 <div style="display:flex;gap:10px">
 <button class="btn btn-ghost" onclick="markAllRead()">✓ Marcar todas como leidas</button>
-<button class="btn btn-ghost" onclick="clearRead()">🗑 Limpiar leidas</button>
+<button class="btn btn-ghost" onclick="clearRead()"><i class=lzi data-i=papelera></i> Limpiar leidas</button>
 <button class="btn btn-gold" onclick="loadNotifs()">↺ Actualizar</button>
 </div>
 </div>
@@ -139,11 +140,11 @@ body{background:#f0f2f5;color:#1a1a2e}
 <!-- FILTER TABS -->
 <div class="filter-tabs">
 <button class="ftab active" data-type="all" onclick="filterNotifs('all',this)">Todas <span class="badge" id="fb-all">0</span></button>
-<button class="ftab" data-type="lead" onclick="filterNotifs('lead',this)">📩 Leads <span class="badge" id="fb-lead">0</span></button>
-<button class="ftab" data-type="propiedad" onclick="filterNotifs('propiedad',this)">🏠 Propiedades <span class="badge" id="fb-prop">0</span></button>
-<button class="ftab" data-type="cliente" onclick="filterNotifs('cliente',this)">🤝 Clientes <span class="badge" id="fb-cli">0</span></button>
-<button class="ftab" data-type="sistema" onclick="filterNotifs('sistema',this)">⚙️ Sistema <span class="badge" id="fb-sis">0</span></button>
-<button class="ftab" data-type="portal" onclick="filterNotifs('portal',this)">🔗 Portales <span class="badge" id="fb-port">0</span></button>
+<button class="ftab" data-type="lead" onclick="filterNotifs('lead',this)"><i class=lzi data-i=correo></i> Leads <span class="badge" id="fb-lead">0</span></button>
+<button class="ftab" data-type="propiedad" onclick="filterNotifs('propiedad',this)"><i class=lzi data-i=casa></i> Propiedades <span class="badge" id="fb-prop">0</span></button>
+<button class="ftab" data-type="cliente" onclick="filterNotifs('cliente',this)"><i class=lzi data-i=personas></i> Clientes <span class="badge" id="fb-cli">0</span></button>
+<button class="ftab" data-type="sistema" onclick="filterNotifs('sistema',this)"><i class=lzi data-i=ajustes></i> Sistema <span class="badge" id="fb-sis">0</span></button>
+<button class="ftab" data-type="portal" onclick="filterNotifs('portal',this)"><i class=lzi data-i=enlace></i> Portales <span class="badge" id="fb-port">0</span></button>
 </div>
 <!-- LIST -->
 <div id="notif-list" class="notif-list"></div>
@@ -153,7 +154,7 @@ body{background:#f0f2f5;color:#1a1a2e}
 <!-- Toast container -->
 <div id="toast-container"></div>
 <!-- Floating ARIA button -->
-<a id="aria-float" href="aria.html" title="Hablar con ARIA">🤖</a>
+<a id="aria-float" href="aria.html" title="Hablar con ARIA"></a>
 <!-- Back to top -->
 <button id="back-top" title="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>
@@ -189,7 +190,7 @@ async function loadNotifs(){
   if(res1.data){
     var TIP={propietario:"Propietario",comprador:"Comprador",inquilino:"Inquilino",otro:"Contacto"};
     res1.data.forEach(function(l){
-      notifs.push({id:"lead_"+l.id,tipo:"lead",icon:"📩",titulo:"Nuevo "+(TIP[l.tipo]||"contacto").toLowerCase()+": "+(l.nombre||"Anonimo"),desc:(l.telefono||"Sin teléfono")+(l.mensaje?" - "+l.mensaje.substring(0,60):"")+(l.canal?" · "+l.canal.replace(/_/g," "):""),fecha:l.created_at,link:"contactos.html?id="+l.id});
+      notifs.push({id:"lead_"+l.id,tipo:"lead",icon:"<i class=lzi data-i=correo></i>",titulo:"Nuevo "+(TIP[l.tipo]||"contacto").toLowerCase()+": "+(l.nombre||"Anonimo"),desc:(l.telefono||"Sin teléfono")+(l.mensaje?" - "+l.mensaje.substring(0,60):"")+(l.canal?" · "+l.canal.replace(/_/g," "):""),fecha:l.created_at,link:"contactos.html?id="+l.id});
     });
   }
   // Load recent propiedades as notifications
@@ -197,21 +198,21 @@ async function loadNotifs(){
   if(res2.data){
     res2.data.forEach(function(p){
       var msg=p.estado==="publicado"?"fue publicada":"fue guardada como borrador";
-      notifs.push({id:"prop_"+p.id,tipo:"propiedad",icon:"🏠",titulo:"Propiedad: "+(p.titulo||"Sin titulo"),desc:"La propiedad "+msg+" en "+(p.ciudad||"--"),fecha:p.created_at,link:"propiedad.html?id="+p.id});
+      notifs.push({id:"prop_"+p.id,tipo:"propiedad",icon:"<i class=lzi data-i=casa></i>",titulo:"Propiedad: "+(p.titulo||"Sin titulo"),desc:"La propiedad "+msg+" en "+(p.ciudad||"--"),fecha:p.created_at,link:"propiedad.html?id="+p.id});
     });
   }
   // Load recent clientes
   var res3=await sb.from("contactos").select("id,nombre,etapa,cerrado_at,precio_final").eq("etapa","cerrado").order("cerrado_at",{ascending:false}).limit(10);
   if(res3.data){
     res3.data.forEach(function(c){
-      notifs.push({id:"cli_"+c.id,tipo:"cliente",icon:"🏁",titulo:"Negocio cerrado: "+(c.nombre||"Sin nombre"),desc:c.precio_final?("$"+Number(c.precio_final).toLocaleString("es-CO")):"Sin valor registrado",fecha:c.cerrado_at||new Date().toISOString(),link:"contactos.html?id="+c.id});
+      notifs.push({id:"cli_"+c.id,tipo:"cliente",icon:"<i class=lzi data-i=bandera></i>",titulo:"Negocio cerrado: "+(c.nombre||"Sin nombre"),desc:c.precio_final?("$"+Number(c.precio_final).toLocaleString("es-CO")):"Sin valor registrado",fecha:c.cerrado_at||new Date().toISOString(),link:"contactos.html?id="+c.id});
     });
   }
   // System notifications (static milestones)
-  notifs.push({id:"sys_welcome",tipo:"sistema",icon:"🎉",titulo:"Bienvenido a Lomaz Home",desc:"Tu plataforma inmobiliaria esta lista. Completa tu perfil para mejor visibilidad.",fecha:new Date().toISOString(),link:"perfil-asesor.html"});
-  notifs.push({id:"sys_aria",tipo:"sistema",icon:"🤖",titulo:"ARIA lista para usar",desc:"El asistente virtual ARIA esta activo. Puedes hablar con ella desde cualquier pagina.",fecha:new Date().toISOString(),link:"aria.html"});
-  notifs.push({id:"sys_portales",tipo:"portal",icon:"🔗",titulo:"Portales de publicacion configurados",desc:"Conecta Metrocuadrado, Finca Raiz y Proppit para publicar automaticamente.",fecha:new Date().toISOString(),link:"portales.html"});
-  notifs.push({id:"sys_calcu",tipo:"sistema",icon:"🧮",titulo:"Calculadora financiera disponible",desc:"Calcula ROI, credito hipotecario y rentabilidad de arriendo en segundos.",fecha:new Date().toISOString(),link:"calculadora.html"});
+  notifs.push({id:"sys_welcome",tipo:"sistema",icon:"<i class=lzi data-i=campana></i>",titulo:"Bienvenido a Lomaz Home",desc:"Tu plataforma inmobiliaria esta lista. Completa tu perfil para mejor visibilidad.",fecha:new Date().toISOString(),link:"perfil-asesor.html"});
+  notifs.push({id:"sys_aria",tipo:"sistema",icon:"<i class=lzi data-i=campana></i>",titulo:"ARIA lista para usar",desc:"El asistente virtual ARIA esta activo. Puedes hablar con ella desde cualquier pagina.",fecha:new Date().toISOString(),link:"aria.html"});
+  notifs.push({id:"sys_portales",tipo:"portal",icon:"<i class=lzi data-i=enlace></i>",titulo:"Portales de publicacion configurados",desc:"Conecta Metrocuadrado, Finca Raiz y Proppit para publicar automaticamente.",fecha:new Date().toISOString(),link:"portales.html"});
+  notifs.push({id:"sys_calcu",tipo:"sistema",icon:"<i class=lzi data-i=calculadora></i>",titulo:"Calculadora financiera disponible",desc:"Calcula ROI, credito hipotecario y rentabilidad de arriendo en segundos.",fecha:new Date().toISOString(),link:"calculadora.html"});
   // sort by date desc
   notifs.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});
   allNotifs=notifs;
@@ -242,7 +243,7 @@ function updateStats(){
 function renderNotifs(arr){
   var el=document.getElementById("notif-list");
   if(!arr||!arr.length){
-    el.innerHTML='<div class="empty-state"><div class="emoji">🔔</div><div class="msg">Sin notificaciones</div><div class="sub">No hay notificaciones en esta categoria.</div></div>';
+    el.innerHTML='<div class="empty-state"><div class="emoji"><i class=lzi data-i=campana></i></div><div class="msg">Sin notificaciones</div><div class="sub">No hay notificaciones en esta categoria.</div></div>';
     return;
   }
   el.innerHTML=arr.map(function(n){
@@ -319,7 +320,7 @@ function escHtml(s){
 
 // ===== TOAST SYSTEM =====
 function showToast(msg,type){
-  var icons={success:"✅",error:"❌",info:"ℹ️",default:"🔔"};
+  var icons={success:"<i class=lzi data-i=ok></i>",error:"<i class=lzi data-i=error></i>",info:"<i class=lzi data-i=campana></i>",default:"<i class=lzi data-i=campana></i>"};
   var tc=document.getElementById("toast-container");
   var t=document.createElement("div");
   t.className="toast "+(type||"default");

@@ -206,7 +206,12 @@ textarea{resize:vertical;min-height:70px}
 @media(max-width:900px){.topbar{padding:.75rem 1rem}.container{margin:1rem auto;padding:0 .9rem}.page-title{font-size:1.7rem}.g-panels{grid-template-columns:1fr}.topbar .btn-back{display:none}.btn-fab{display:flex}#btnNuevoTop{display:none}}
 @media(max-width:600px){.list{grid-template-columns:1fr}.steps{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr}.bigpick{grid-template-columns:repeat(3,1fr)}.cita{flex-direction:column;gap:.4rem}.cita .when{min-width:0}}
 @media(min-width:601px){.modal-ov{align-items:center;padding:1.5rem}.modal{border-radius:16px}}
+
+/* Fase 5: la etapa se marca con un punto de su color en vez de un emoji */
+.step .e:empty{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ec,#c9a96e)}
+.ic .lzi{width:16px;height:16px}
 </style>
+<link rel="stylesheet" href="lomaz-iconos.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -225,11 +230,11 @@ textarea{resize:vertical;min-height:70px}
   <div id="aviso"></div>
 
   <div class="tabs" id="tabs">
-    <button class="tab active" data-v="hoy" onclick="verTab('hoy')">☀️ Hoy <span class="n" id="nHoy">0</span></button>
-    <button class="tab" data-v="todos" onclick="verTab('todos')">👥 Todos <span class="n" id="nTodos">0</span></button>
-    <button class="tab" data-v="agenda" onclick="verTab('agenda')">📅 Agenda</button>
-    <button class="tab" data-v="numeros" onclick="verTab('numeros')">📈 Números</button>
-    <button class="tab" data-v="agente" onclick="verTab('agente')">🤖 Agente</button>
+    <button class="tab active" data-v="hoy" onclick="verTab('hoy')"><i class=lzi data-i=reloj></i> Hoy <span class="n" id="nHoy">0</span></button>
+    <button class="tab" data-v="todos" onclick="verTab('todos')"><i class=lzi data-i=personas></i> Todos <span class="n" id="nTodos">0</span></button>
+    <button class="tab" data-v="agenda" onclick="verTab('agenda')"><i class=lzi data-i=calendario></i> Agenda</button>
+    <button class="tab" data-v="numeros" onclick="verTab('numeros')"><i class=lzi data-i=grafica></i> Números</button>
+    <button class="tab" data-v="agente" onclick="verTab('agente')">Agente</button>
   </div>
 
   <!-- HOY -->
@@ -237,7 +242,7 @@ textarea{resize:vertical;min-height:70px}
 
   <!-- TODOS -->
   <div class="view" id="vTodos">
-    <div class="search"><input type="search" id="q" placeholder="🔍 Buscar por nombre, teléfono, zona o inmueble…" oninput="pintarLista()"></div>
+    <div class="search"><input type="search" id="q" placeholder="Buscar por nombre, teléfono, zona o inmueble…" oninput="pintarLista()"></div>
     <div class="chips" id="chipsTipo"></div>
     <div class="chips" id="chipsEtapa"></div>
     <div class="list" id="lista"></div>
@@ -246,7 +251,7 @@ textarea{resize:vertical;min-height:70px}
   <!-- AGENDA -->
   <div class="view" id="vAgenda">
     <div class="panel">
-      <h3>📅 Nueva <em>cita</em></h3>
+      <h3><i class=lzi data-i=calendario></i> Nueva <em>cita</em></h3>
       <div class="g2">
         <div class="field"><label>Qué es *</label><input type="text" id="czTitulo" placeholder="Ej: Diagnóstico con Ana · Visita apto Colina"></div>
         <div class="field"><label>Tipo</label><select id="czTipo"><option>Diagnóstico</option><option>Visita</option><option>Llamada</option><option>Reunión</option><option>Firma</option><option>Avalúo</option><option>Seguimiento</option></select></div>
@@ -259,7 +264,7 @@ textarea{resize:vertical;min-height:70px}
       </div>
       <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap"><button class="btn gold" onclick="guardarCita()">Guardar cita</button><span id="czMsg" class="hint"></span></div>
     </div>
-    <div class="panel"><h3>🕒 Próximas <em>citas</em></h3><div id="agendaList"><div class="empty">Cargando...</div></div></div>
+    <div class="panel"><h3><i class=lzi data-i=reloj></i> Próximas <em>citas</em></h3><div id="agendaList"><div class="empty">Cargando...</div></div></div>
   </div>
 
   <!-- NÚMEROS -->
@@ -268,7 +273,7 @@ textarea{resize:vertical;min-height:70px}
   <!-- AGENTE -->
   <div class="view" id="vAgente">
     <div class="panel">
-      <h3>🤖 Agente <em>de seguimiento</em></h3>
+      <h3>Agente <em>de seguimiento</em></h3>
       <p class="hint" style="margin-bottom:.8rem">Ordena tus contactos por urgencia y te dice qué hacer con cada uno. Toca «Redactar» para tener el mensaje listo para WhatsApp.</p>
       <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
         <select class="inp" id="agFocus" style="width:auto;min-width:220px"><option value="prioridad">Los más urgentes primero</option><option value="nuevos">Nuevos sin contactar</option><option value="seguimiento">Pendientes de seguimiento</option><option value="propietarios">Solo propietarios</option></select>
@@ -277,7 +282,7 @@ textarea{resize:vertical;min-height:70px}
     </div>
     <div id="agResults"></div>
     <div class="panel" id="agMsgPanel" style="display:none">
-      <h3>✍️ Mensaje <em>sugerido</em> <span id="agMsgFor" class="hint"></span></h3>
+      <h3><i class=lzi data-i=nota></i> Mensaje <em>sugerido</em> <span id="agMsgFor" class="hint"></span></h3>
       <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem">
         <select class="inp" id="agMsgCanal" style="width:auto" onchange="agenteRedactar()"><option value="whatsapp">WhatsApp</option><option value="email">Correo</option><option value="llamada">Guion de llamada</option></select>
         <select class="inp" id="agMsgTono" style="width:auto" onchange="agenteRedactar()"><option value="cercano">Tono cercano</option><option value="formal">Tono formal</option><option value="directo">Tono directo</option></select>
@@ -301,9 +306,9 @@ textarea{resize:vertical;min-height:70px}
     <div id="mNuevoAlert"></div>
     <label class="hint" style="display:block;margin-bottom:.4rem;color:var(--gold);font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase">¿Quién es?</label>
     <div class="bigpick" id="pickTipo">
-      <button type="button" data-t="propietario" style="--pc:var(--c-prop)"><span class="e">🔑</span>Propietario</button>
-      <button type="button" data-t="comprador" style="--pc:var(--c-comp)"><span class="e">🏠</span>Comprador</button>
-      <button type="button" data-t="inquilino" style="--pc:var(--c-inq)"><span class="e">🛋️</span>Inquilino</button>
+      <button type="button" data-t="propietario" style="--pc:var(--c-prop)"><span class="e"><i class=lzi data-i=llave></i></span>Propietario</button>
+      <button type="button" data-t="comprador" style="--pc:var(--c-comp)"><span class="e"><i class=lzi data-i=casa></i></span>Comprador</button>
+      <button type="button" data-t="inquilino" style="--pc:var(--c-inq)"><span class="e"></span>Inquilino</button>
     </div>
     <div class="g2">
       <div class="field"><label>Nombre *</label><input type="text" id="nNombre" placeholder="Nombre y apellido"></div>
@@ -321,15 +326,15 @@ textarea{resize:vertical;min-height:70px}
 <!-- MODAL PERDIDO -->
 <div class="modal-ov" id="mPerdido">
   <div class="modal">
-    <h3>✖ Marcar como perdido</h3>
+    <h3>Marcar como perdido</h3>
     <p class="hint" style="margin-bottom:.8rem">¿Por qué se perdió? Esto después te dice en qué estás fallando más.</p>
     <div class="bigpick" id="pickMotivo" style="grid-template-columns:1fr 1fr">
-      <button type="button" data-m="precio" style="--pc:#ff9f43"><span class="e">💰</span>Precio</button>
-      <button type="button" data-m="otra inmobiliaria" style="--pc:#ff9f43"><span class="e">🏢</span>Otra inmobiliaria</button>
-      <button type="button" data-m="sin respuesta" style="--pc:#ff9f43"><span class="e">🙈</span>No respondió</button>
-      <button type="button" data-m="desistió" style="--pc:#ff9f43"><span class="e">🤷</span>Ya no quiere</button>
-      <button type="button" data-m="no calificaba" style="--pc:#ff9f43"><span class="e">🚫</span>No calificaba</button>
-      <button type="button" data-m="otro" style="--pc:#ff9f43"><span class="e">✏️</span>Otro</button>
+      <button type="button" data-m="precio" style="--pc:#ff9f43"><span class="e"><i class=lzi data-i=dinero></i></span>Precio</button>
+      <button type="button" data-m="otra inmobiliaria" style="--pc:#ff9f43"><span class="e"><i class=lzi data-i=edificio></i></span>Otra inmobiliaria</button>
+      <button type="button" data-m="sin respuesta" style="--pc:#ff9f43"><span class="e"><i class=lzi data-i=ojo-no></i></span>No respondió</button>
+      <button type="button" data-m="desistió" style="--pc:#ff9f43"><span class="e"></span>Ya no quiere</button>
+      <button type="button" data-m="no calificaba" style="--pc:#ff9f43"><span class="e"><i class=lzi data-i=error></i></span>No calificaba</button>
+      <button type="button" data-m="otro" style="--pc:#ff9f43"><span class="e"><i class=lzi data-i=nota></i></span>Otro</button>
     </div>
     <div class="field"><label>Detalle (opcional)</label><input type="text" id="pNota" placeholder="Ej: pedía 50M por encima del mercado"></div>
     <div class="btns"><button class="btn" onclick="cerrarModal('mPerdido')">Cancelar</button><button class="btn danger" onclick="confirmarPerdido()">Marcar perdido</button></div>
@@ -339,7 +344,7 @@ textarea{resize:vertical;min-height:70px}
 <!-- MODAL CERRADO -->
 <div class="modal-ov" id="mCerrado">
   <div class="modal">
-    <h3>✅ ¡Negocio cerrado!</h3>
+    <h3><i class=lzi data-i=ok></i> ¡Negocio cerrado!</h3>
     <p class="hint" style="margin-bottom:.8rem">Estos datos alimentan tu base de conocimiento (precios, tiempos, demanda). Pon lo que sepas; lo demás déjalo vacío.</p>
     <div class="g2">
       <div class="field"><label>Precio final (COP)</label><input type="number" id="cPrecio" placeholder="Ej: 420000000" inputmode="numeric"></div>
@@ -368,20 +373,20 @@ const sb=supabase.createClient(U,K);
 
 /* ---------- Catálogos ---------- */
 const TIPOS={
-  propietario:{n:'Propietario',e:'🔑',c:'var(--c-prop)'},
-  comprador:{n:'Comprador',e:'🏠',c:'var(--c-comp)'},
-  inquilino:{n:'Inquilino',e:'🛋️',c:'var(--c-inq)'},
-  otro:{n:'Otro',e:'👤',c:'var(--c-otro)'}
+  propietario:{n:'Propietario',e:'',c:'var(--c-prop)'},
+  comprador:{n:'Comprador',e:'',c:'var(--c-comp)'},
+  inquilino:{n:'Inquilino',e:'',c:'var(--c-inq)'},
+  otro:{n:'Otro',e:'',c:'var(--c-otro)'}
 };
 const ETAPAS=[
-  {k:'nuevo',n:'Nuevo',e:'🆕',c:'#5b9cff',h:'Acaba de llegar. Nadie le ha escrito todavía.'},
-  {k:'contactado',n:'Contactado',e:'💬',c:'#2ec4b6',h:'Ya hablamos con esta persona.'},
-  {k:'cita',n:'Cita',e:'📅',c:'#c9a96e',h:'Tenemos cita: diagnóstico, visita o reunión.'},
-  {k:'propuesta',n:'Propuesta',e:'📄',c:'#e0a458',h:'Le enviamos propuesta / opciones y esperamos respuesta.'},
-  {k:'activo',n:'En proceso',e:'🏠',c:'#9b7bff',h:{propietario:'Inmueble captado y en comercialización.',comprador:'Está viendo inmuebles con nosotros.',inquilino:'Está viendo inmuebles con nosotros.',otro:'En proceso.'}},
-  {k:'oferta',n:'Oferta',e:'🤝',c:'#ff9f43',h:'Hay una oferta sobre la mesa. Negociando.'},
-  {k:'cerrado',n:'Cerrado',e:'✅',c:'#2ecc71',h:'Negocio hecho. ¡Felicitaciones!'},
-  {k:'perdido',n:'Perdido',e:'✖',c:'#8a8f98',h:'No se dio. Queda el motivo para aprender.'}
+  {k:'nuevo',n:'Nuevo',e:'',c:'#5b9cff',h:'Acaba de llegar. Nadie le ha escrito todavía.'},
+  {k:'contactado',n:'Contactado',e:'',c:'#2ec4b6',h:'Ya hablamos con esta persona.'},
+  {k:'cita',n:'Cita',e:'',c:'#c9a96e',h:'Tenemos cita: diagnóstico, visita o reunión.'},
+  {k:'propuesta',n:'Propuesta',e:'',c:'#e0a458',h:'Le enviamos propuesta / opciones y esperamos respuesta.'},
+  {k:'activo',n:'En proceso',e:'',c:'#9b7bff',h:{propietario:'Inmueble captado y en comercialización.',comprador:'Está viendo inmuebles con nosotros.',inquilino:'Está viendo inmuebles con nosotros.',otro:'En proceso.'}},
+  {k:'oferta',n:'Oferta',e:'',c:'#ff9f43',h:'Hay una oferta sobre la mesa. Negociando.'},
+  {k:'cerrado',n:'Cerrado',e:'',c:'#2ecc71',h:'Negocio hecho. ¡Felicitaciones!'},
+  {k:'perdido',n:'Perdido',e:'',c:'#8a8f98',h:'No se dio. Queda el motivo para aprender.'}
 ];
 const ETAPA_IDX=Object.fromEntries(ETAPAS.map((e,i)=>[e.k,i]));
 const FUENTES={web:'Página web',whatsapp:'WhatsApp',llamada:'Llamada',referido:'Referido',instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',portal:'Portal',google:'Google',valla:'Valla / aviso',manual:'Manual',homepage:'Página web',otro:'Otro'};
@@ -500,55 +505,55 @@ function pintarHoy(){
   const total=t.nuevos.length+t.segs.length+t.acciones.length+t.citas.length;
   $('nHoy').textContent=total;
   let h='';
-  if(!total) h+='<div class="okday"><b>Todo al día 🎉</b>No tienes nada pendiente para hoy.</div>';
+  if(!total) h+='<div class="okday"><b>Todo al día </b>No tienes nada pendiente para hoy.</div>';
   if(t.nuevos.length){
-    h+='<div class="hoy-sec"><h3>🆕 Nuevos sin contactar <span class="n">'+t.nuevos.length+'</span></h3><p class="sub">Escríbeles ya: el primer mensaje rápido es lo que más convierte.</p>';
+    h+='<div class="hoy-sec"><h3>Nuevos sin contactar <span class="n">'+t.nuevos.length+'</span></h3><p class="sub">Escríbeles ya: el primer mensaje rápido es lo que más convierte.</p>';
     t.nuevos.forEach(c=>{const m=msgSeguimiento(c,0);const tp=tipoDe(c);
-      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div>'+
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.n+'</span></div>'+
         '<div class="why">Llegó '+hace(c.created_at)+(c.canal||c.fuente?' por '+esc(CANALES[c.canal]||FUENTES[c.fuente]||c.fuente):'')+(c.propiedad_id&&propTitulo(c.propiedad_id)?' · <b>'+esc(propTitulo(c.propiedad_id))+'</b>':'')+(c.mensaje?'<br>«'+esc(c.mensaje)+'»':'')+'</div></div>'+
-        (c.telefono?'<a class="btn-wa-sm" title="WhatsApp" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarEscrito(\''+c.id+'\',0)">💬</a>':'')+'</div>'+
+        (c.telefono?'<a class="btn-wa-sm" title="WhatsApp" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarEscrito(\''+c.id+'\',0)"><i class=lzi data-i=chat></i></a>':'')+'</div>'+
         '<div class="msg" onclick="this.classList.toggle(\'open\')">'+esc(m)+'</div>'+
-        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarEscrito(\''+c.id+'\',0)">💬 Escribirle</a>':'<span class="hint">Sin teléfono</span>')+
+        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarEscrito(\''+c.id+'\',0)"><i class=lzi data-i=chat></i> Escribirle</a>':'<span class="hint">Sin teléfono</span>')+
         '<button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button><button class="btn sm" onclick="copiar(msgSeguimiento(C.find(x=>x.id===\''+c.id+'\'),0))">Copiar mensaje</button></div></div>';
     });h+='</div>';
   }
   if(t.citas.length){
-    h+='<div class="hoy-sec"><h3>📅 Citas de hoy <span class="n">'+t.citas.length+'</span></h3>';
+    h+='<div class="hoy-sec"><h3><i class=lzi data-i=calendario></i> Citas de hoy <span class="n">'+t.citas.length+'</span></h3>';
     t.citas.forEach(z=>{const c=C.find(x=>x.id===z.contacto_id);const tel=z.contacto_telefono||(c&&c.telefono);
-      h+='<div class="todo" style="--tc:var(--gold)"><div class="t"><div><div class="name">'+esc(z.titulo)+'</div><div class="why">'+fechaHora(z.fecha_hora)+(z.tipo?' · '+esc(z.tipo):'')+(c?' · '+esc(c.nombre):'')+(z.ubicacion?'<br>📍 '+esc(z.ubicacion):'')+'</div></div>'+
-        (tel?'<a class="btn-wa-sm" href="'+waLink(tel,'Hola'+(c?' '+primerNombre(c.nombre):'')+', te confirmo nuestra cita de hoy: '+z.titulo+' a las '+new Date(z.fecha_hora).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+'.')+'" target="_blank">💬</a>':'')+'</div>'+
+      h+='<div class="todo" style="--tc:var(--gold)"><div class="t"><div><div class="name">'+esc(z.titulo)+'</div><div class="why">'+fechaHora(z.fecha_hora)+(z.tipo?' · '+esc(z.tipo):'')+(c?' · '+esc(c.nombre):'')+(z.ubicacion?'<br><i class=lzi data-i=pin></i> '+esc(z.ubicacion):'')+'</div></div>'+
+        (tel?'<a class="btn-wa-sm" href="'+waLink(tel,'Hola'+(c?' '+primerNombre(c.nombre):'')+', te confirmo nuestra cita de hoy: '+z.titulo+' a las '+new Date(z.fecha_hora).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+'.')+'" target="_blank"><i class=lzi data-i=chat></i></a>':'')+'</div>'+
         (c?'<div class="acts"><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div>':'')+'</div>';
     });h+='</div>';
   }
   if(t.segs.length){
-    h+='<div class="hoy-sec"><h3>🔔 Seguimientos <span class="n">'+t.segs.length+'</span></h3><p class="sub">Cada mensaje aporta algo. Nunca «¿alguna novedad?».</p>';
+    h+='<div class="hoy-sec"><h3><i class=lzi data-i=campana></i> Seguimientos <span class="n">'+t.segs.length+'</span></h3><p class="sub">Cada mensaje aporta algo. Nunca «¿alguna novedad?».</p>';
     t.segs.forEach(({s,c})=>{const m=msgSeguimiento(c,s.dia);const tp=tipoDe(c);const atr=-diasHasta(s.fecha);
-      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div>'+
-        '<div class="why'+(atr>0?' late':'')+'">Mensaje del día '+s.dia+(atr>0?' · atrasado '+atr+' día'+(atr!==1?'s':''):' · hoy')+' · '+etapaDe(c).e+' '+etapaDe(c).n+'</div></div>'+
-        (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)">💬</a>':'')+'</div>'+
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.n+'</span></div>'+
+        '<div class="why'+(atr>0?' late':'')+'">Mensaje del día '+s.dia+(atr>0?' · atrasado '+atr+' día'+(atr!==1?'s':''):' · hoy')+' · '+etapaDe(c).n+'</div></div>'+
+        (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)"><i class=lzi data-i=chat></i></a>':'')+'</div>'+
         '<div class="msg" onclick="this.classList.toggle(\'open\')">'+esc(m)+'</div>'+
-        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)">💬 Enviar</a>':'')+
+        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,m)+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)"><i class=lzi data-i=chat></i> Enviar</a>':'')+
         '<button class="btn sm" onclick="marcarSeg(\''+s.id+'\',false)">Omitir</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
     });h+='</div>';
   }
   if(t.acciones.length){
-    h+='<div class="hoy-sec"><h3>📌 Acciones programadas <span class="n">'+t.acciones.length+'</span></h3>';
+    h+='<div class="hoy-sec"><h3><i class=lzi data-i=pin></i> Acciones programadas <span class="n">'+t.acciones.length+'</span></h3>';
     t.acciones.forEach(c=>{const tp=tipoDe(c);const atr=-diasHasta(c.proxima_fecha);
-      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div>'+
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.n+'</span></div>'+
         '<div class="why'+(atr>0?' late':'')+'"><b style="color:#fff">'+esc(c.proxima_accion||'Hacer seguimiento')+'</b>'+(atr>0?' · atrasado '+atr+' día'+(atr!==1?'s':''):' · para hoy')+'</div></div>'+
-        (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,'')+'" target="_blank">💬</a>':'')+'</div>'+
+        (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,'')+'" target="_blank"><i class=lzi data-i=chat></i></a>':'')+'</div>'+
         '<div class="acts"><button class="btn ok sm" onclick="accionHecha(\''+c.id+'\')">✓ Hecho</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
     });h+='</div>';
   }
   if(t.sinPlan.length){
-    h+='<div class="hoy-sec"><h3>🧭 Sin próximo paso <span class="n">'+t.sinPlan.length+'</span></h3><p class="sub">Estos contactos están activos pero nadie les programó nada. Ábrelos y define qué sigue.</p><div class="list">';
+    h+='<div class="hoy-sec"><h3><i class=lzi data-i=brujula></i> Sin próximo paso <span class="n">'+t.sinPlan.length+'</span></h3><p class="sub">Estos contactos están activos pero nadie les programó nada. Ábrelos y define qué sigue.</p><div class="list">';
     t.sinPlan.slice(0,12).forEach(c=>{h+=tarjeta(c);});h+='</div></div>';
   }
   if(t.sinConsent.length){
-    h+='<div class="hoy-sec"><h3>🔒 Sin autorización de datos <span class="n">'+t.sinConsent.length+'</span></h3><p class="sub">La ley pide prueba de la autorización (Ley 1581 de 2012). Envíales el enlace o registra si ya firmaron la captación.</p>';
+    h+='<div class="hoy-sec"><h3><i class=lzi data-i=candado></i> Sin autorización de datos <span class="n">'+t.sinConsent.length+'</span></h3><p class="sub">La ley pide prueba de la autorización (Ley 1581 de 2012). Envíales el enlace o registra si ya firmaron la captación.</p>';
     t.sinConsent.slice(0,10).forEach(c=>{const tp=tipoDe(c);
-      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></div><div class="why">'+(c.consent_enviado_at?'Enlace enviado '+hace(c.consent_enviado_at)+' · aún no responde':'Llegó por '+esc(CANALES[c.canal]||FUENTES[c.fuente]||c.fuente||'')+' sin casilla de autorización')+'</div></div></div>'+
-        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,msgAutorizacion(c))+'" target="_blank" onclick="enlaceEnviado(\''+c.id+'\')">💬 Enviar enlace</a>':'')+'<button class="btn sm" onclick="registrarConsent(\''+c.id+'\',\'captacion\')">Ya firmó la captación</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
+      h+='<div class="todo" style="--tc:'+tp.c+'"><div class="t"><div><div class="name">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.n+'</span></div><div class="why">'+(c.consent_enviado_at?'Enlace enviado '+hace(c.consent_enviado_at)+' · aún no responde':'Llegó por '+esc(CANALES[c.canal]||FUENTES[c.fuente]||c.fuente||'')+' sin casilla de autorización')+'</div></div></div>'+
+        '<div class="acts">'+(c.telefono?'<a class="btn wa sm" href="'+waLink(c.telefono,msgAutorizacion(c))+'" target="_blank" onclick="enlaceEnviado(\''+c.id+'\')"><i class=lzi data-i=chat></i> Enviar enlace</a>':'')+'<button class="btn sm" onclick="registrarConsent(\''+c.id+'\',\'captacion\')">Ya firmó la captación</button><button class="btn sm" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';
     });h+='</div>';
   }
   $('hoyCont').innerHTML=h;
@@ -579,10 +584,10 @@ async function accionHecha(id){
 /* ---------- TODOS ---------- */
 function pintarChips(){
   const act=C.filter(activo);
-  const ct=[['','Todos',act.length,'var(--gold)']].concat(Object.keys(TIPOS).filter(k=>k!=='otro'||act.some(c=>c.tipo==='otro')).map(k=>[k,TIPOS[k].e+' '+TIPOS[k].n,act.filter(c=>c.tipo===k).length,TIPOS[k].c]));
+  const ct=[['','Todos',act.length,'var(--gold)']].concat(Object.keys(TIPOS).filter(k=>k!=='otro'||act.some(c=>c.tipo==='otro')).map(k=>[k,TIPOS[k].n,act.filter(c=>c.tipo===k).length,TIPOS[k].c]));
   $('chipsTipo').innerHTML=ct.map(([k,n,c,col])=>'<button class="chip'+(filtroTipo===k?' active':'')+'" style="--chip:'+col+'" onclick="filtroTipo=\''+k+'\';pintarChips();pintarLista()">'+n+' <span class="n">'+c+'</span></button>').join('');
   const base=filtroTipo?C.filter(c=>c.tipo===filtroTipo):C;
-  const ce=[['activos','Activos',base.filter(activo).length,'var(--gold)']].concat(ETAPAS.map(e=>[e.k,e.e+' '+e.n,base.filter(c=>c.etapa===e.k).length,e.c]));
+  const ce=[['activos','Activos',base.filter(activo).length,'var(--gold)']].concat(ETAPAS.map(e=>[e.k,e.n,base.filter(c=>c.etapa===e.k).length,e.c]));
   $('chipsEtapa').innerHTML=ce.map(([k,n,c,col])=>'<button class="chip'+(filtroEtapa===k?' active':'')+'" style="--chip:'+col+'" onclick="filtroEtapa=\''+k+'\';pintarChips();pintarLista()"><span class="dot"></span>'+n+' <span class="n">'+c+'</span></button>').join('');
 }
 function filtrados(){
@@ -598,14 +603,14 @@ function tarjeta(c){
   const tp=tipoDe(c),et=etapaDe(c);
   let next='',cls='';
   const pend=segPendientes(c.id).sort((a,b)=>a.fecha<b.fecha?-1:1)[0];
-  if(c.proxima_fecha){const d=diasHasta(c.proxima_fecha);next='📌 '+(c.proxima_accion||'Seguimiento')+' · '+(d<0?'atrasado':d===0?'hoy':fechaCorta(c.proxima_fecha));cls=d<0?'late':d===0?'today':'';}
-  else if(pend){const d=diasHasta(pend.fecha);next='🔔 Mensaje día '+pend.dia+' · '+(d<0?'atrasado':d===0?'hoy':fechaCorta(pend.fecha));cls=d<0?'late':d===0?'today':'';}
-  else if(activo(c)&&c.etapa!=='nuevo')next='🧭 Sin próximo paso';
-  else if(c.etapa==='nuevo'){next='🆕 Escribirle hoy';cls='today';}
+  if(c.proxima_fecha){const d=diasHasta(c.proxima_fecha);next=(c.proxima_accion||'Seguimiento')+' · '+(d<0?'atrasado':d===0?'hoy':fechaCorta(c.proxima_fecha));cls=d<0?'late':d===0?'today':'';}
+  else if(pend){const d=diasHasta(pend.fecha);next='Mensaje día '+pend.dia+' · '+(d<0?'atrasado':d===0?'hoy':fechaCorta(pend.fecha));cls=d<0?'late':d===0?'today':'';}
+  else if(activo(c)&&c.etapa!=='nuevo')next='Sin próximo paso';
+  else if(c.etapa==='nuevo'){next='Escribirle hoy';cls='today';}
   const linea=[c.tipo==='propietario'?[c.tipo_inmueble,c.zona,c.precio_esperado?money(c.precio_esperado):''].filter(Boolean).join(' · '):[c.tipo_inmueble_interes,c.zonas_interes||c.zona,c.presupuesto_max?'hasta '+money(c.presupuesto_max):''].filter(Boolean).join(' · '),propTitulo(c.propiedad_id)].filter(Boolean).join(' · ');
   return '<div class="card" style="--tc:'+tp.c+'" onclick="abrirFicha(\''+c.id+'\')">'+
-    '<div class="top"><div style="min-width:0"><div class="name">'+esc(c.nombre)+'</div><div class="meta">'+(linea?'<b>'+esc(linea)+'</b><br>':'')+'<span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span> <span class="pill etapa" style="--ec:'+et.c+'">'+et.e+' '+et.n+'</span></div></div>'+
-    (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,'')+'" target="_blank" onclick="event.stopPropagation()">💬</a>':'')+'</div>'+
+    '<div class="top"><div style="min-width:0"><div class="name">'+esc(c.nombre)+'</div><div class="meta">'+(linea?'<b>'+esc(linea)+'</b><br>':'')+'<span class="pill tipo" style="--tc:'+tp.c+'">'+tp.n+'</span> <span class="pill etapa" style="--ec:'+et.c+'">'+et.e+' '+et.n+'</span></div></div>'+
+    (c.telefono?'<a class="btn-wa-sm" href="'+waLink(c.telefono,'')+'" target="_blank" onclick="event.stopPropagation()"><i class=lzi data-i=chat></i></a>':'')+'</div>'+
     '<div class="row"><div class="next '+cls+'">'+esc(next)+'</div><div style="display:flex;align-items:center;gap:.4rem"><span class="hint">'+hace(c.updated_at||c.created_at)+'</span><span class="av" title="'+esc(nombreUsuario(c.asesor_id))+'">'+esc(c.asesor_id?iniciales(nombreUsuario(c.asesor_id)):'·')+'</span></div></div></div>';
 }
 function pintarLista(){
@@ -639,10 +644,10 @@ function pintarFicha(){
   const c=cur,tp=tipoDe(c),et=etapaDe(c),idx=ETAPA_IDX[c.etapa];
   const hintEt=typeof et.h==='string'?et.h:(et.h[c.tipo]||et.h.otro);
   const segs=segsDe(c.id);
-  let h='<div class="fh"><div class="r1"><button class="back" onclick="cerrarFicha()" aria-label="Cerrar">←</button><div class="nm" id="fNombre">'+esc(c.nombre)+'</div><button class="btn xs" onclick="editarBasico()">✏️</button></div>'+
-    '<div class="r2">'+Object.keys(TIPOS).filter(k=>k!=='otro'||c.tipo==='otro').map(k=>'<button class="chip'+(c.tipo===k?' active':'')+'" style="--chip:'+TIPOS[k].c+'" onclick="cambiarCampo(\'tipo\',\''+k+'\')">'+TIPOS[k].e+' '+TIPOS[k].n+'</button>').join('')+
+  let h='<div class="fh"><div class="r1"><button class="back" onclick="cerrarFicha()" aria-label="Cerrar">←</button><div class="nm" id="fNombre">'+esc(c.nombre)+'</div><button class="btn xs" onclick="editarBasico()"><i class=lzi data-i=nota></i></button></div>'+
+    '<div class="r2">'+Object.keys(TIPOS).filter(k=>k!=='otro'||c.tipo==='otro').map(k=>'<button class="chip'+(c.tipo===k?' active':'')+'" style="--chip:'+TIPOS[k].c+'" onclick="cambiarCampo(\'tipo\',\''+k+'\')">'+TIPOS[k].n+'</button>').join('')+
     '<select class="inp" style="width:auto;min-height:38px;padding:.35rem .6rem;font-size:.8rem" onchange="cambiarCampo(\'asesor_id\',this.value||null)"><option value="">Sin responsable</option>'+Object.keys(USERS).map(u=>'<option value="'+u+'"'+(c.asesor_id===u?' selected':'')+'>'+esc(USERS[u]||'Usuario')+'</option>').join('')+'</select></div>'+
-    '<div class="ctc">'+(c.telefono?'<a class="w" href="'+waLink(c.telefono,'')+'" target="_blank">💬 WhatsApp</a><a href="tel:'+tel10(c.telefono)+'">📞 '+esc(c.telefono)+'</a>':'<span class="hint">Sin teléfono</span>')+(c.email?'<a href="mailto:'+esc(c.email)+'">✉️ Correo</a>':'')+'</div>'+
+    '<div class="ctc">'+(c.telefono?'<a class="w" href="'+waLink(c.telefono,'')+'" target="_blank"><i class=lzi data-i=chat></i> WhatsApp</a><a href="tel:'+tel10(c.telefono)+'">'+esc(c.telefono)+'</a>':'<span class="hint">Sin teléfono</span>')+(c.email?'<a href="mailto:'+esc(c.email)+'"><i class=lzi data-i=correo></i> Correo</a>':'')+'</div>'+
     consentHTML(c)+'</div>';
   h+='<div class="fb">';
   // Etapa
@@ -683,7 +688,7 @@ function pintarFicha(){
     h+='<div class="sec"><h4>Seguimiento automático <span>'+segs.filter(s=>s.hecho).length+' de '+segs.length+' enviados</span></h4>';
     segs.sort((a,b)=>a.dia-b.dia).forEach(s=>{const d=diasHasta(s.fecha);const cls=s.hecho?'done':s.omitido?'skip':d<0?'late':'';
       h+='<div class="seg '+cls+'"><span class="d">Día '+s.dia+'</span><span class="f">'+(s.hecho?'✓ Enviado':s.omitido?'Omitido':(d<0?'Atrasado · ':d===0?'Hoy · ':'')+fechaCorta(s.fecha))+'</span>'+
-        (!s.hecho&&!s.omitido?'<a class="btn wa xs" href="'+waLink(c.telefono,msgSeguimiento(c,s.dia))+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)">💬 Enviar</a><button class="btn xs" onclick="marcarSeg(\''+s.id+'\',false)">Omitir</button>':'')+'</div>';
+        (!s.hecho&&!s.omitido?'<a class="btn wa xs" href="'+waLink(c.telefono,msgSeguimiento(c,s.dia))+'" target="_blank" onclick="marcarSeg(\''+s.id+'\',true)"><i class=lzi data-i=chat></i> Enviar</a><button class="btn xs" onclick="marcarSeg(\''+s.id+'\',false)">Omitir</button>':'')+'</div>';
     });h+='</div>';
   }else if(activo(c)){
     h+='<div class="sec"><h4>Seguimiento automático</h4><p class="hint">Este contacto ya avanzó o fue migrado, así que no tiene secuencia automática. Usa «¿Qué sigue?» para programar cada paso.</p></div>';
@@ -691,18 +696,18 @@ function pintarFicha(){
   // Historial
   h+='<div class="sec"><h4>Historial <span>nunca se borra</span></h4>'+
     '<div style="display:flex;gap:.5rem"><input class="inp" id="fNota" placeholder="Escribe una nota…" onkeydown="if(event.key===\'Enter\')agregarNota()"><button class="btn gold" onclick="agregarNota()">＋</button></div>'+
-    '<div class="quick"><button class="btn xs" onclick="agregarNota(\'📞 Llamé\',\'llamada\')">📞 Llamé</button><button class="btn xs" onclick="agregarNota(\'💬 Le escribí por WhatsApp\',\'whatsapp\')">💬 Le escribí</button><button class="btn xs" onclick="agregarNota(\'🙈 No respondió\',\'nota\')">🙈 No respondió</button><button class="btn xs" onclick="agregarNota(\'🏠 Hicimos visita\',\'cita\')">🏠 Visita hecha</button></div>'+
+    '<div class="quick"><button class="btn xs" onclick="agregarNota(\'<i class=lzi data-i=telefono></i> Llamé\',\'llamada\')"><i class=lzi data-i=telefono></i> Llamé</button><button class="btn xs" onclick="agregarNota(\'<i class=lzi data-i=chat></i> Le escribí por WhatsApp\',\'whatsapp\')"><i class=lzi data-i=chat></i> Le escribí</button><button class="btn xs" onclick="agregarNota(\'<i class=lzi data-i=ojo-no></i> No respondió\',\'nota\')"><i class=lzi data-i=ojo-no></i> No respondió</button><button class="btn xs" onclick="agregarNota(\'<i class=lzi data-i=casa></i> Hicimos visita\',\'cita\')"><i class=lzi data-i=casa></i> Visita hecha</button></div>'+
     '<ul class="hist" id="fHist"><li><span class="hint">Cargando…</span></li></ul></div>';
   // Pie
-  h+='<div class="sec" style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn" onclick="citaDesde()">📅 Agendar cita</button>'+(yo.admin?'<button class="btn danger" onclick="eliminarContacto()">🗑 Eliminar</button>':'')+'</div>';
+  h+='<div class="sec" style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn" onclick="citaDesde()"><i class=lzi data-i=calendario></i> Agendar cita</button>'+(yo.admin?'<button class="btn danger" onclick="eliminarContacto()"><i class=lzi data-i=papelera></i> Eliminar</button>':'')+'</div>';
   h+='</div>';
   $('ficha').innerHTML=h;$('ficha').scrollTop=0;
   if(curActs.length)pintarHistorial();
 }
 function consentHTML(c){
-  if(c.consent_at) return '<div class="consent ok">🔒 Autorización de datos ✓ '+fechaHora(c.consent_at)+' · '+esc(c.consent_version||'')+(c.consent_canal?' · '+esc(c.consent_canal.replace(/_/g,' ')):'')+'</div>';
-  return '<div class="consent warn">⚠ <b>Sin autorización de datos</b> (Ley 1581). '+(c.consent_enviado_at?'Enlace enviado '+hace(c.consent_enviado_at)+'. ':'')+
-    '<div class="quick" style="margin:.5rem 0 0">'+(c.telefono?'<a class="btn wa xs" href="'+waLink(c.telefono,msgAutorizacion(c))+'" target="_blank" onclick="enlaceEnviado(\''+c.id+'\')">💬 Enviar enlace</a>':'')+
+  if(c.consent_at) return '<div class="consent ok"><i class=lzi data-i=candado></i> Autorización de datos ✓ '+fechaHora(c.consent_at)+' · '+esc(c.consent_version||'')+(c.consent_canal?' · '+esc(c.consent_canal.replace(/_/g,' ')):'')+'</div>';
+  return '<div class="consent warn"><i class=lzi data-i=alerta></i> <b>Sin autorización de datos</b> (Ley 1581). '+(c.consent_enviado_at?'Enlace enviado '+hace(c.consent_enviado_at)+'. ':'')+
+    '<div class="quick" style="margin:.5rem 0 0">'+(c.telefono?'<a class="btn wa xs" href="'+waLink(c.telefono,msgAutorizacion(c))+'" target="_blank" onclick="enlaceEnviado(\''+c.id+'\')"><i class=lzi data-i=chat></i> Enviar enlace</a>':'')+
     '<button class="btn xs" onclick="registrarConsent(\''+c.id+'\',\'captacion\')">Ya firmó la captación</button><button class="btn xs" onclick="registrarConsent(\''+c.id+'\',\'verbal\')">Autorizó de palabra</button></div></div>';
 }
 function msgAutorizacion(c){return 'Hola, '+primerNombre(c.nombre)+'. Soy '+(primerNombre(yo.nombre)||'el equipo')+' de LoMaz Home. Para poder atender tu solicitud y guardar tus datos de contacto, la ley nos pide tu autorización. Es un clic, aquí: https://www.lomazhome.com/autorizacion.html?c='+c.consent_token+'\n\nGracias.';}
@@ -712,7 +717,7 @@ async function registrarConsent(id,canal){
   const {error}=await sb.from('contactos').update({consent_at:new Date().toISOString(),consent_version:CONSENT_VERSION,consent_canal:canal,consent_pagina:'contactos.html'}).eq('id',id);
   if(error){toast(error.message);return;} toast('Autorización registrada'); refrescar(id);
 }
-const ICONOS={nota:'📝',etapa:'➡️',whatsapp:'💬',llamada:'📞',cita:'📅',seguimiento:'🔔',sistema:'⚙️',cierre:'✅',perdida:'✖'};
+const ICONOS={nota:'<i class=lzi data-i=nota></i>',etapa:'&rarr;',whatsapp:'<i class=lzi data-i=chat></i>',llamada:'<i class=lzi data-i=telefono></i>',cita:'<i class=lzi data-i=calendario></i>',seguimiento:'<i class=lzi data-i=campana></i>',sistema:'<i class=lzi data-i=ajustes></i>',cierre:'<i class=lzi data-i=ok></i>',perdida:'&times;'};
 function pintarHistorial(){
   const ul=$('fHist');if(!ul)return;
   if(!curActs.length){ul.innerHTML='<li><span class="hint">Sin movimientos todavía.</span></li>';return;}
@@ -737,7 +742,7 @@ async function guardarAccion(){
   if(a&&!f){toast('Ponle fecha: ¿cuándo?');return;}
   const {error}=await sb.from('contactos').update({proxima_accion:a||null,proxima_fecha:a?f:null,asesor_id:cur.asesor_id||uid}).eq('id',cur.id);
   if(error){toast(error.message);return;}
-  if(a)await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'nota',texto:'📌 Programó: '+a+' · '+fechaCorta(f)}]);
+  if(a)await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'nota',texto:'Programó: '+a+' · '+fechaCorta(f)}]);
   toast('Guardado');await refrescar(cur.id);
 }
 function val(id){const e=$(id);if(!e)return undefined;const v=e.value.trim();return v===''?null:(e.type==='number'?Number(v):v);}
@@ -782,7 +787,7 @@ async function confirmarCerrado(){
   const p=val('cProp');if(p)u.propiedad_id=p;
   const nota=$('cNota').value.trim();cerrarModal('mCerrado');
   await aplicarEtapa(u);
-  if(nota)await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'cierre',texto:'🏁 '+nota}]);
+  if(nota)await sb.from('contacto_actividades').insert([{contacto_id:cur.id,usuario_id:uid,tipo:'cierre',texto:nota}]);
   await refrescar(cur.id);
 }
 async function eliminarContacto(){
@@ -849,7 +854,7 @@ async function guardarCita(){
   const {data,error}=await sb.from('citas').insert([payload]).select();
   if(error){msg.textContent='Error: '+error.message;return;}
   msg.textContent='✓ Cita guardada';
-  if(c){await sb.from('contacto_actividades').insert([{contacto_id:c.id,usuario_id:uid,tipo:'cita',texto:'📅 Cita: '+titulo+' · '+fechaHora(payload.fecha_hora)}]);
+  if(c){await sb.from('contacto_actividades').insert([{contacto_id:c.id,usuario_id:uid,tipo:'cita',texto:'Cita: '+titulo+' · '+fechaHora(payload.fecha_hora)}]);
     const u={};if(ETAPA_IDX[c.etapa]<ETAPA_IDX.cita)u.etapa='cita';if(!c.asesor_id)u.asesor_id=uid;if(Object.keys(u).length)await sb.from('contactos').update(u).eq('id',c.id);}
   ['czTitulo','czFecha','czUbic','czNotas'].forEach(i=>$(i).value='');
   await cargarTodo();
@@ -861,8 +866,8 @@ function pintarAgenda(){
   const hoy=hoyISO();
   cont.innerHTML=Z.map(z=>{const d=new Date(z.fecha_hora);const c=C.find(x=>x.id===z.contacto_id);const tel=z.contacto_telefono||(c&&c.telefono);
     return '<div class="cita'+(z.fecha_hora.slice(0,10)===hoy?' hoy':'')+'"><div class="when">'+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+'<small>'+d.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'})+'</small></div>'+
-      '<div class="body"><div class="ct">'+esc(z.titulo)+' <span class="pill etapa" style="--ec:var(--gold)">'+esc(z.tipo||'Cita')+'</span></div><div class="cs">'+(c?'👤 <a style="color:var(--gold)" onclick="abrirFicha(\''+c.id+'\')">'+esc(c.nombre)+'</a> · ':z.contacto_nombre?'👤 '+esc(z.contacto_nombre)+' · ':'')+(z.ubicacion?'📍 '+esc(z.ubicacion)+' · ':'')+(z.propiedad_id&&propTitulo(z.propiedad_id)?'🏠 '+esc(propTitulo(z.propiedad_id)):'')+(z.notas?'<br><i>'+esc(z.notas)+'</i>':'')+'</div>'+
-      '<div class="quick" style="margin-top:.5rem">'+(tel?'<a class="btn wa xs" target="_blank" href="'+waLink(tel,'Hola'+(c?' '+primerNombre(c.nombre):'')+', te confirmo nuestra cita: '+z.titulo+', '+d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})+' a las '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+(z.ubicacion?'. Lugar: '+z.ubicacion:'')+'.')+'">💬 Confirmar</a>':'')+'<a class="btn xs" target="_blank" href="'+gcalLink(z)+'">📅 Google Calendar</a></div></div></div>';}).join('');
+      '<div class="body"><div class="ct">'+esc(z.titulo)+' <span class="pill etapa" style="--ec:var(--gold)">'+esc(z.tipo||'Cita')+'</span></div><div class="cs">'+(c?'<a style="color:var(--gold)" onclick="abrirFicha(\''+c.id+'\')">'+esc(c.nombre)+'</a> · ':z.contacto_nombre?'<i class=lzi data-i=persona></i> '+esc(z.contacto_nombre)+' · ':'')+(z.ubicacion?'<i class=lzi data-i=pin></i> '+esc(z.ubicacion)+' · ':'')+(z.propiedad_id&&propTitulo(z.propiedad_id)?'<i class=lzi data-i=casa></i> '+esc(propTitulo(z.propiedad_id)):'')+(z.notas?'<br><i>'+esc(z.notas)+'</i>':'')+'</div>'+
+      '<div class="quick" style="margin-top:.5rem">'+(tel?'<a class="btn wa xs" target="_blank" href="'+waLink(tel,'Hola'+(c?' '+primerNombre(c.nombre):'')+', te confirmo nuestra cita: '+z.titulo+', '+d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})+' a las '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})+(z.ubicacion?'. Lugar: '+z.ubicacion:'')+'.')+'"><i class=lzi data-i=chat></i> Confirmar</a>':'')+'<a class="btn xs" target="_blank" href="'+gcalLink(z)+'"><i class=lzi data-i=calendario></i> Google Calendar</a></div></div></div>';}).join('');
 }
 
 /* ---------- NÚMEROS ---------- */
@@ -890,7 +895,7 @@ function pintarNumeros(){
   // Embudo (histórico): cuántos llegaron al menos a cada etapa
   const llegaron=k=>C.filter(c=>c.etapa!=='perdido'?ETAPA_IDX[c.etapa]>=ETAPA_IDX[k]:false).length+(k==='nuevo'?C.filter(c=>c.etapa==='perdido').length:0);
   const tot=C.length||1;
-  h+='<div class="g-panels"><div class="panel funnel"><h3>Embudo <em>histórico</em></h3>'+ETAPAS.filter(e=>e.k!=='perdido').map(e=>{const n=llegaron(e.k);return barra(e.e+' '+e.n,n,tot,n+' · '+Math.round(n/tot*100)+'%');}).join('')+'<p class="hint" style="margin-top:.6rem">Cuántos contactos llegaron al menos hasta cada etapa.</p></div>';
+  h+='<div class="g-panels"><div class="panel funnel"><h3>Embudo <em>histórico</em></h3>'+ETAPAS.filter(e=>e.k!=='perdido').map(e=>{const n=llegaron(e.k);return barra(e.n,n,tot,n+' · '+Math.round(n/tot*100)+'%');}).join('')+'<p class="hint" style="margin-top:.6rem">Cuántos contactos llegaron al menos hasta cada etapa.</p></div>';
   // Por fuente (30 días)
   const rec=C.filter(c=>c.created_at>=d30);const porF={};rec.forEach(c=>{const f=FUENTES[c.fuente]||c.fuente||'Otro';porF[f]=(porF[f]||0)+1;});
   const fuentes=Object.entries(porF).sort((a,b)=>b[1]-a[1]);
@@ -934,8 +939,8 @@ function agenteAnalizar(){
   const cont=$('agResults');
   if(!arr.length){cont.innerHTML='<div class="empty"><b>Nada que analizar</b>No hay contactos activos en este filtro.</div>';return;}
   cont.innerHTML=arr.slice(0,15).map(c=>{const p=c.__p;const tp=tipoDe(c);
-    return '<div class="agent-card"><div class="h"><span style="font-weight:600;color:#fff">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.e+' '+tp.n+'</span></span><span class="score '+p.nivel+'">'+(p.nivel==='hot'?'URGENTE':p.nivel==='warm'?'PRONTO':'PUEDE ESPERAR')+'</span></div>'+
-      '<div class="b">'+etapaDe(c).e+' '+etapaDe(c).n+' · '+esc(p.r[0]||'')+'<br>➡️ <b style="color:#e8d5b0">'+esc(siguiente(c))+'</b></div>'+
+    return '<div class="agent-card"><div class="h"><span style="font-weight:600;color:#fff">'+esc(c.nombre)+' <span class="pill tipo" style="--tc:'+tp.c+'">'+tp.n+'</span></span><span class="score '+p.nivel+'">'+(p.nivel==='hot'?'URGENTE':p.nivel==='warm'?'PRONTO':'PUEDE ESPERAR')+'</span></div>'+
+      '<div class="b">'+etapaDe(c).n+' · '+esc(p.r[0]||'')+'<br><b style="color:#e8d5b0">'+esc(siguiente(c))+'</b></div>'+
       '<div class="quick" style="margin-top:.6rem"><button class="btn gold xs" onclick="agenteMsg(\''+c.id+'\')">Redactar mensaje</button><button class="btn xs" onclick="abrirFicha(\''+c.id+'\')">Abrir ficha</button></div></div>';}).join('');
 }
 function agenteMsg(id){agSel=C.find(c=>c.id===id);if(!agSel)return;$('agMsgPanel').style.display='block';$('agMsgFor').textContent='para '+agSel.nombre;agenteRedactar();$('agMsgPanel').scrollIntoView({behavior:'smooth',block:'center'});}
@@ -964,7 +969,7 @@ function agenteRedactar(){
   let out;
   if(canal==='email')out='Asunto: '+(c.tipo==='propietario'?'Tu inmueble en '+(c.zona||'Bogotá')+' · LoMaz Home':'Tu búsqueda de inmueble · LoMaz Home')+'\n\n'+saludo+',\n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+a+', LoMaz Home';
   else if(canal==='llamada')out='GUION DE LLAMADA\n1) Saludo: '+saludo+'.\n2) Motivo: '+cuerpo+'\n3) Calificar: tiempos, valor, con quién más está hablando.\n4) Cierre: '+cierre;
-  else out=saludo+' 👋\n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+a+', LoMaz Home';
+  else out=saludo+' \n\n'+cuerpo+'\n\n'+cierre+'\n\n— '+a+', LoMaz Home';
   $('agMsgOut').innerText=out;
 }
 async function agenteWhats(){if(!agSel||!agSel.telefono){toast('Sin teléfono');return;}window.open(waLink(agSel.telefono,$('agMsgOut').innerText),'_blank');await sb.from('contacto_actividades').insert([{contacto_id:agSel.id,usuario_id:uid,tipo:'whatsapp',texto:'Envió mensaje desde el Agente'}]);if(agSel.etapa==='nuevo')await sb.from('contactos').update({etapa:'contactado',asesor_id:agSel.asesor_id||uid}).eq('id',agSel.id);setTimeout(cargarTodo,800);}
