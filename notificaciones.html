@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notificaciones - Lomaz Home</title>
+<title>Notificaciones - LoMaz Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -17,7 +17,7 @@ body{background:#0A1626;color:#f5f1ea}
 .sb-logo .icon{width:36px;height:36px;background:#c9a96e;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#0D1B2E;font-size:16px}
 .sb-logo .name{font-size:16px;font-weight:700;color:#c9a96e}
 .sb-nav{flex:1;padding:10px 0}
-.sb-sec{padding:8px 18px 3px;font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.sb-sec{padding:8px 18px 3px;font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:0;font-weight:600}
 .sb-link{display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;border-left:3px solid transparent;transition:all 0.2s;cursor:pointer}
 .sb-link:hover,.sb-link.active{background:rgba(228,168,83,0.12);color:#c9a96e;border-left-color:#c9a96e}
 .sb-link .ico{font-size:15px;width:18px;text-align:center}
@@ -105,6 +105,7 @@ input,select,textarea{background:#0A1626;color:#f5f1ea;border-color:rgba(201,169
 table th{color:#a8a29e}
 </style>
 <link rel="stylesheet" href="lomaz-iconos.css"/>
+<link rel="stylesheet" href="lomaz-panel.css"/>
 </head>
 <body>
 <div id="ls" style="position:fixed;inset:0;background:#0A1626;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:14px">
@@ -263,7 +264,7 @@ function updateStats(){
 function renderNotifs(arr){
   var el=document.getElementById("notif-list");
   if(!arr||!arr.length){
-    el.innerHTML='<div class="empty-state"><div class="emoji"><i class=lzi data-i=campana></i></div><div class="msg">Sin notificaciones</div><div class="sub">No hay notificaciones en esta categoria.</div></div>';
+    el.innerHTML='<div class="empty-state"><div class="emoji"><i class=lzi data-i=campana></i></div><div class="msg">Sin notificaciones</div><div class="sub">No hay notificaciones en esta categoría.</div></div>';
     return;
   }
   el.innerHTML=arr.map(function(n){

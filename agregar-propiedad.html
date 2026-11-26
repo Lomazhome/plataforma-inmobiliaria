@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Agregar Propiedad - Lomaz Home</title>
+<title>Agregar Propiedad - LoMaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -39,7 +39,7 @@ a{color:inherit;text-decoration:none}
 .form-group,.field{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
 .form-group.full,.field.full,.full-width{grid-column:1/-1}
 .full{grid-column:1/-1}
-label{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:.3rem}
+label{font-size:.8125rem;color:var(--gold);font-weight:600;letter-spacing:0;display:block;margin-bottom:.3rem}
 input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.78rem 1rem;color:var(--txt);font-family:var(--sans);font-size:.9rem;outline:none;transition:all .25s ease;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
 select option{background:var(--navy-2);color:var(--txt)}
@@ -49,7 +49,7 @@ textarea{resize:vertical;min-height:90px}
 .wizard-steps{display:flex;align-items:center;justify-content:center;gap:0;margin:1.5rem 0 2.2rem;flex-wrap:wrap;padding:1.5rem;background:linear-gradient(180deg,#0F1E36 0%,#0A1626 100%);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-soft)}
 .wizard-steps .step{display:flex;flex-direction:column;align-items:center;gap:.55rem;cursor:default;min-width:90px;transition:all .25s ease}
 .wizard-steps .step-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.15rem;font-weight:600;background:rgba(13,27,46,.85);color:var(--txt-soft);border:2px solid var(--line);transition:all .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.wizard-steps .step-label{font-size:.72rem;color:var(--txt-soft);font-weight:600;letter-spacing:1px;text-transform:uppercase;text-align:center}
+.wizard-steps .step-label{font-size:.8125rem;color:var(--txt-soft);font-weight:600;letter-spacing:0;text-align:center}
 .wizard-steps .step.active .step-circle{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border-color:var(--gold);box-shadow:0 0 0 5px rgba(201,169,110,.18),0 4px 14px rgba(201,169,110,.35);transform:scale(1.06)}
 .wizard-steps .step.active .step-label{color:var(--gold)}
 .wizard-steps .step.done .step-circle{background:linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%);color:#fff;border-color:#2a8a4f}
@@ -63,7 +63,7 @@ textarea{resize:vertical;min-height:90px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 /* ====== NAV BUTTONS (Anterior / Siguiente) ====== */
 .nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;gap:1rem}
-.btn-nav{padding:.85rem 1.8rem;border-radius:var(--r-sm);font-size:.85rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease}
+.btn-nav{padding:.85rem 1.8rem;border-radius:var(--r-sm);font-size:.85rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:0;transition:all .25s ease}
 .btn-nav.btn-next{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);box-shadow:0 2px 8px rgba(201,169,110,.25)}
 .btn-nav.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
 .btn-nav.btn-prev{background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line)}
@@ -80,7 +80,7 @@ textarea{resize:vertical;min-height:90px}
 .summary-table tr{border-bottom:1px solid var(--line)}
 .summary-table tr:last-child{border-bottom:none}
 .summary-table td{padding:.7rem 1rem;font-size:.88rem;color:var(--txt)}
-.summary-table td:first-child{color:var(--gold);font-weight:600;text-transform:uppercase;font-size:.72rem;letter-spacing:1.2px;width:35%}
+.summary-table td:first-child{color:var(--gold);font-weight:600;font-size:.8125rem;letter-spacing:0;width:35%}
 /* ====== PORTALES ====== */
 .portales-grid{display:flex;flex-direction:column;gap:.6rem}
 .portal-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.2rem;background:rgba(13,27,46,.45);border:1px solid var(--line);border-radius:var(--r-sm);transition:all .2s ease}
@@ -89,13 +89,13 @@ textarea{resize:vertical;min-height:90px}
 .portal-check input[type=checkbox]{width:20px;height:20px;accent-color:var(--gold);cursor:pointer;margin:0}
 .portal-name{font-weight:600;color:#fff;font-size:.95rem;margin-bottom:.15rem}
 .portal-desc{font-size:.78rem;color:var(--txt-soft)}
-.portal-status{padding:.3rem .85rem;border-radius:14px;font-size:.7rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.portal-status{padding:.3rem .85rem;border-radius:14px;font-size:.8125rem;font-weight:600;letter-spacing:0;text-transform:capitalize;}
 .portal-status.ok{background:rgba(40,167,69,.12);color:#7dd87d;border:1px solid rgba(40,167,69,.35)}
 .portal-status.pending{background:rgba(201,169,110,.10);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
 .portal-status.publishing{background:rgba(0,123,255,.10);color:#79b8ff;border:1px solid rgba(0,123,255,.3)}
 .portal-status.error{background:rgba(220,53,69,.10);color:#ff8a93;border:1px solid rgba(220,53,69,.35)}
 /* ====== PUBLISH BUTTON ====== */
-.btn-publish{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--sans);font-size:.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(201,169,110,.3);transition:all .25s ease;margin-top:1rem}
+.btn-publish{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--sans);font-size:.95rem;font-weight:700;letter-spacing:0;cursor:pointer;box-shadow:0 4px 14px rgba(201,169,110,.3);transition:all .25s ease;margin-top:1rem}
 .btn-publish:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,169,110,.45)}
 .btn-publish:disabled{opacity:.6;cursor:not-allowed;transform:none}
 /* ====== PUBLISH LOG ====== */
@@ -112,12 +112,12 @@ textarea{resize:vertical;min-height:90px}
 .log-text span{color:var(--txt-soft);font-size:.78rem}
 /* ====== TABS legacy (compatibilidad) ====== */
 .tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin-bottom:2rem}
-.tab{padding:.9rem 1.6rem;cursor:pointer;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease;font-family:var(--sans)}
+.tab{padding:.9rem 1.6rem;cursor:pointer;font-size:.82rem;font-weight:600;letter-spacing:0;color:var(--txt-soft);border-bottom:2px solid transparent;transition:all .25s ease;font-family:var(--sans)}
 .tab:hover{color:var(--gold)}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 .tab-panel,.tab-content{display:none}
 .tab-panel.active,.tab-content.active{display:block}
-.btn,.btn-sm,button.btn-primary,button[type="submit"]{padding:.65rem 1.4rem;border-radius:var(--r-sm);font-size:.8rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease}
+.btn,.btn-sm,button.btn-primary,button[type="submit"]{padding:.65rem 1.4rem;border-radius:var(--r-sm);font-size:.8125rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);letter-spacing:0;transition:all .25s ease}
 .btn-primary,button[type="submit"]{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);box-shadow:0 2px 8px rgba(201,169,110,.25)}
 .btn-primary:hover,button[type="submit"]:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,169,110,.4)}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
@@ -157,6 +157,7 @@ img,video,iframe{max-width:100%}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lomaz-iconos.css"/>
+<link rel="stylesheet" href="lomaz-panel.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -171,19 +172,19 @@ img,video,iframe{max-width:100%}
 </svg>
 <div class="brand-text"><span class="lo">LoMaz</span><span class="ho">Home</span></div>
 </a>
-<div class="topbar-right"><button class="btn-back" onclick="window.location.href='dashboard.html'">← Dashboard</button><div style="position:relative"><div id="topAvatarMini" title="Perfil" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07840);color:#0D1B2E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(201,169,110,.3)">?</div><div id="topAvatarMenu" style="display:none;position:absolute;right:0;top:52px;background:#122036;border:1px solid rgba(201,169,110,.25);border-radius:12px;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;z-index:9999"><div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.25)"><div id="topName" style="font-size:.9rem;color:#f5f1ea;font-weight:600;white-space:nowrap">&nbsp;</div><div id="topRole" style="font-size:.7rem;color:#c9a96e;letter-spacing:1px;text-transform:uppercase;margin-top:2px">&nbsp;</div></div><a href="perfil-asesor.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem">Mi Perfil</a><a href="mis-propiedades.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Mis Propiedades</a><a href="clientes.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Clientes</a><a href="#" id="topLogoutBtn" style="display:block;padding:.75rem 1.1rem;color:#e57373;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Cerrar Sesion</a></div></div><script>(function(){function fmtRol(r){if(!r)return"Usuario";var map={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};var k=String(r).toLowerCase();return map[k]||(r.charAt(0).toUpperCase()+r.slice(1));}async function fillTop(){try{var s=(await sb.auth.getSession()).data.session;if(!s)return;var email=s.user.email||"";var av=document.getElementById("topAvatarMini");if(av&&email)av.textContent=email.charAt(0).toUpperCase();var r=await sb.from("perfiles_usuarios").select("nombre_completo,rol_id,roles(nombre)").eq("id",s.user.id).single();var p=r.data;if(p){var nombre=(p.nombre_completo||"").trim();if(nombre){document.getElementById("topName").textContent=nombre;if(av)av.textContent=nombre.charAt(0).toUpperCase();}var rn=p.roles&&p.roles.nombre?p.roles.nombre:null;document.getElementById("topRole").textContent=fmtRol(rn);}}catch(e){}}(function w(){if(typeof sb!=='undefined'&&sb&&sb.from){fillTop();}else{setTimeout(w,150);}})();var av=document.getElementById("topAvatarMini"),mn=document.getElementById("topAvatarMenu");if(av){av.addEventListener("click",function(e){e.stopPropagation();mn.style.display=(mn.style.display==="none")?"block":"none";});document.addEventListener("click",function(){mn.style.display="none";});}var lo=document.getElementById("topLogoutBtn");if(lo){lo.addEventListener("click",function(e){e.preventDefault();try{Object.keys(localStorage).filter(function(x){return /sb-.*-auth-token/.test(x)}).forEach(function(x){localStorage.removeItem(x);});}catch(_){}window.location.href="login.html";});}})();</script></div>
+<div class="topbar-right"><button class="btn-back" onclick="window.location.href='dashboard.html'">← Dashboard</button><div style="position:relative"><div id="topAvatarMini" title="Perfil" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a07840);color:#0D1B2E;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(201,169,110,.3)">?</div><div id="topAvatarMenu" style="display:none;position:absolute;right:0;top:52px;background:#122036;border:1px solid rgba(201,169,110,.25);border-radius:12px;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;z-index:9999"><div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(201,169,110,.25)"><div id="topName" style="font-size:.9rem;color:#f5f1ea;font-weight:600;white-space:nowrap">&nbsp;</div><div id="topRole" style="font-size:.8125rem;color:#c9a96e;letter-spacing:0;margin-top:2px">&nbsp;</div></div><a href="perfil-asesor.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem">Mi Perfil</a><a href="mis-propiedades.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Mis Propiedades</a><a href="clientes.html" style="display:block;padding:.75rem 1.1rem;color:#e8e8ea;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Clientes</a><a href="#" id="topLogoutBtn" style="display:block;padding:.75rem 1.1rem;color:#e57373;text-decoration:none;font-size:.88rem;border-top:1px solid rgba(255,255,255,.06)">Cerrar Sesión</a></div></div><script>(function(){function fmtRol(r){if(!r)return"Usuario";var map={admin:"Administrador",administrador:"Administrador",coordinador:"Coordinador",asesor:"Asesor Inmobiliario",asesor_inmobiliario:"Asesor Inmobiliario",externo:"Externo"};var k=String(r).toLowerCase();return map[k]||(r.charAt(0).toUpperCase()+r.slice(1));}async function fillTop(){try{var s=(await sb.auth.getSession()).data.session;if(!s)return;var email=s.user.email||"";var av=document.getElementById("topAvatarMini");if(av&&email)av.textContent=email.charAt(0).toUpperCase();var r=await sb.from("perfiles_usuarios").select("nombre_completo,rol_id,roles(nombre)").eq("id",s.user.id).single();var p=r.data;if(p){var nombre=(p.nombre_completo||"").trim();if(nombre){document.getElementById("topName").textContent=nombre;if(av)av.textContent=nombre.charAt(0).toUpperCase();}var rn=p.roles&&p.roles.nombre?p.roles.nombre:null;document.getElementById("topRole").textContent=fmtRol(rn);}}catch(e){}}(function w(){if(typeof sb!=='undefined'&&sb&&sb.from){fillTop();}else{setTimeout(w,150);}})();var av=document.getElementById("topAvatarMini"),mn=document.getElementById("topAvatarMenu");if(av){av.addEventListener("click",function(e){e.stopPropagation();mn.style.display=(mn.style.display==="none")?"block":"none";});document.addEventListener("click",function(){mn.style.display="none";});}var lo=document.getElementById("topLogoutBtn");if(lo){lo.addEventListener("click",function(e){e.preventDefault();try{Object.keys(localStorage).filter(function(x){return /sb-.*-auth-token/.test(x)}).forEach(function(x){localStorage.removeItem(x);});}catch(_){}window.location.href="login.html";});}})();</script></div>
 </div>
 <div class="container">
 <div class="page-title">Agregar <em>Propiedad</em></div>
-<div class="page-sub">Completa los pasos para publicar tu propiedad en Lomaz Home y portales externos.</div>
+<div class="page-sub">Completa los pasos para publicar tu propiedad en LoMaz Home y portales externos.</div>
 <div id="alert" class="alert" style="display:none"></div><button type="button" id="btnGuardarFlotante" onclick="if(typeof publicarPropiedad==='function'){publicarPropiedad();}" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:linear-gradient(135deg,#c9a96e,#b08d57);color:#fff;border:none;padding:14px 26px;border-radius:30px;font-size:15px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;"><i class=lzi data-i=guardar></i> Guardar cambios</button>
 
 <div class="wizard-steps" id="wizard">
-<div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info basica</div></div>
+<div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Info básica</div></div>
 <div class="step-line"></div>
-<div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Ubicacion</div></div>
+<div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Ubicación</div></div>
 <div class="step-line"></div>
-<div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Caracteristicas</div></div>
+<div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Características</div></div>
 <div class="step-line"></div>
 <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Portales</div></div>
 </div>
@@ -207,51 +208,51 @@ img,video,iframe{max-width:100%}
           </div>
         </div>
 
-<div class="card"><h3><i class=lzi data-i=lista></i> Informacion <em>Basica</em></h3>
+<div class="card"><h3><i class=lzi data-i=lista></i> Información <em>Básica</em></h3>
 <div class="form-grid">
-<div class="form-group"><label>TIPO DE NEGOCIO *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
-<div class="form-group"><label>TIPO DE INMUEBLE *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="apartaestudio">Apartaestudio</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitacion</option></select></div>
-<div class="form-group"><label>ESTADO DE LA PROPIEDAD *</label><select id="status_propiedad"><option value="borrador">Borrador (no visible)</option><option value="activa" selected>Activa (publicada)</option><option value="pausada">Pausada (oculta temporal)</option><option value="vendida">Vendida</option><option value="arrendada">Arrendada</option><option value="reservada">Reservada</option></select></div>
-<div class="form-group"><label>EXCLUSIVA</label><select id="exclusiva"><option value="no">No</option><option value="si">Si (LoMaz Home exclusiva)</option></select></div>
-<div class="form-group full"><label>TITULO DEL AVISO *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
-<div class="form-group"><label>PRECIO (COP) *</label><input type="number" id="precio" placeholder="Ej: 450000000"/></div>
-<div class="form-group"><label>ADMINISTRACION (COP)</label><input type="number" id="precio_admin" placeholder="0 si no aplica"/></div>
-<div class="form-group"><label>AREA CONSTRUIDA (m2) *</label><input type="number" step="any" id="m2_construccion" placeholder="Ej: 120"/></div>
-<div class="form-group"><label>AREA DE TERRENO (m2)</label><input type="number" step="any" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
-<div class="form-group"><label>HABITACIONES</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
-<div class="form-group"><label>BAÑOS</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
-<div class="form-group"><label>PARQUEADEROS/GARAJES</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div><div class="form-group"><label>TIPO DE PARQUEADERO</label><select id="tipo_parqueadero"><option value="">Seleccionar</option><option value="privado">Privado / Propio</option><option value="comunal">Comunal</option><option value="mixto">Privado y comunal</option></select></div>
-<div class="form-group"><label>ESTRATO</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
-<div class="form-group"><label>ANTIGÜEDAD (años)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
-<div class="form-group"><label>PISO</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
-<div class="form-group"><label>ACEPTA CREDITO</label><select id="acepta_credito"><option value="si">Si</option><option value="no">No</option></select></div>
-<div class="form-group full"><label>DESCRIPCION DETALLADA *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
+<div class="form-group"><label>Tipo de negocio *</label><select id="tipo_operacion"><option value="">Seleccionar</option><option value="venta">Venta</option><option value="arriendo">Arriendo</option><option value="arriendo_temporal">Arriendo Temporal</option><option value="permuta">Permuta</option></select></div>
+<div class="form-group"><label>Tipo de inmueble *</label><select id="tipo_propiedad"><option value="">Seleccionar</option><option value="apartamento">Apartamento</option><option value="apartaestudio">Apartaestudio</option><option value="casa">Casa</option><option value="local">Local Comercial</option><option value="oficina">Oficina</option><option value="bodega">Bodega</option><option value="lote">Lote</option><option value="finca">Finca/Rural</option><option value="parqueadero">Parqueadero</option><option value="consultorio">Consultorio</option><option value="habitacion">Habitación</option></select></div>
+<div class="form-group"><label>Estado de la propiedad *</label><select id="status_propiedad"><option value="borrador">Borrador (no visible)</option><option value="activa" selected>Activa (publicada)</option><option value="pausada">Pausada (oculta temporal)</option><option value="vendida">Vendida</option><option value="arrendada">Arrendada</option><option value="reservada">Reservada</option></select></div>
+<div class="form-group"><label>Exclusiva</label><select id="exclusiva"><option value="no">No</option><option value="si">Si (LoMaz Home exclusiva)</option></select></div>
+<div class="form-group full"><label>Título del aviso *</label><input type="text" id="titulo" placeholder="Ej: Hermoso apartamento en El Poblado con vista panoramica"/></div>
+<div class="form-group"><label>Precio (COP) *</label><input type="number" id="precio" placeholder="Ej: 450000000"/></div>
+<div class="form-group"><label>Administración (COP)</label><input type="number" id="precio_admin" placeholder="0 si no aplica"/></div>
+<div class="form-group"><label>Área construida (m2) *</label><input type="number" step="any" id="m2_construccion" placeholder="Ej: 120"/></div>
+<div class="form-group"><label>Área de terreno (m2)</label><input type="number" step="any" id="m2_terreno" placeholder="Solo casas/lotes/fincas"/></div>
+<div class="form-group"><label>Habitaciones</label><input type="number" id="habitaciones" placeholder="0" min="0" max="20"/></div>
+<div class="form-group"><label>Baños</label><input type="number" id="banos" placeholder="0" min="0" max="10"/></div>
+<div class="form-group"><label>Parqueaderos/garajes</label><input type="number" id="garajes" placeholder="0" min="0" max="10"/></div><div class="form-group"><label>Tipo de parqueadero</label><select id="tipo_parqueadero"><option value="">Seleccionar</option><option value="privado">Privado / Propio</option><option value="comunal">Comunal</option><option value="mixto">Privado y comunal</option></select></div>
+<div class="form-group"><label>Estrato</label><select id="estrato"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+<div class="form-group"><label>AntigÜedad (años)</label><input type="number" id="antiguedad" placeholder="0 si es nuevo" min="0"/></div>
+<div class="form-group"><label>Piso</label><input type="number" id="piso" placeholder="0 si es casa" min="0" max="60"/></div>
+<div class="form-group"><label>Acepta crédito</label><select id="acepta_credito"><option value="si">Si</option><option value="no">No</option></select></div>
+<div class="form-group full"><label>Descripción detallada *</label><textarea id="descripcion" placeholder="Describe el inmueble: acabados, vista, sector, puntos de interes cercanos..."></textarea></div>
 </div></div>
 <div class="nav-btns"><div></div><button class="btn-nav btn-next" onclick="goStep(2)">Siguiente &#8594;</button></div>
 </div>
 
 <div class="step-panel" id="panel2">
-<div class="card"><h3><i class=lzi data-i=pin></i> <em>Ubicacion</em></h3>
+<div class="card"><h3><i class=lzi data-i=pin></i> <em>Ubicación</em></h3>
 <div class="form-grid">
-<div class="form-group"><label>DEPARTAMENTO *</label><select id="departamento"><option value="">Seleccionar departamento...</option></select></div>
-<div class="form-group"><label>CIUDAD *</label><select id="ciudad"><option value="">Seleccione un departamento primero...</option></select></div>
-<div class="form-group" id="grupo_localidad" style="display:none;"><label>LOCALIDAD (Bogotá)</label><select id="localidad"><option value="">Seleccione localidad...</option></select></div><div class="form-group"><label>BARRIO/SECTOR *</label><input type="text" id="barrio" list="barriosList" placeholder="Escribe para buscar el barrio..." autocomplete="off"/><datalist id="barriosList"></datalist></div>
-<div class="form-group"><label>DIRECCION (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
-<div class="form-group full"><label>UBICACI&Oacute;N EN EL MAPA</label><div style="display:flex;gap:8px;margin-bottom:8px"><button type="button" id="btnGeocode" class="btn-secondary" style="white-space:nowrap"><i class=lzi data-i=buscar></i> Buscar direcci&oacute;n en el mapa</button><span id="geoStatus" style="font-size:12px;color:#888;align-self:center"></span></div><div id="mapa" style="height:320px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"></div><small style="color:#888;font-weight:400;display:block;margin-top:6px">Escribe la ciudad, barrio y direcci&oacute;n arriba, luego pulsa "Buscar". Tambi&eacute;n puedes arrastrar el marcador o hacer clic en el mapa para ajustar el punto exacto. La latitud y longitud se calculan autom&aacute;ticamente.</small></div><div class="form-group"><label>LATITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="latitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
-<div class="form-group"><label>LONGITUD <small style="color:#888;font-weight:400">(autom&aacute;tica)</small></label><input type="number" id="longitud" placeholder="Autom&aacute;tica" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
-<div class="form-group full"><label>COMO LLEGAR (referencias)</label><textarea id="como_llegar" placeholder="Ej: Frente al parque principal, junto al centro comercial..." style="min-height:60px"></textarea></div>
+<div class="form-group"><label>Departamento *</label><select id="departamento"><option value="">Seleccionar departamento...</option></select></div>
+<div class="form-group"><label>Ciudad *</label><select id="ciudad"><option value="">Seleccione un departamento primero...</option></select></div>
+<div class="form-group" id="grupo_localidad" style="display:none;"><label>Localidad (Bogotá)</label><select id="localidad"><option value="">Seleccione localidad...</option></select></div><div class="form-group"><label>Barrio/sector *</label><input type="text" id="barrio" list="barriosList" placeholder="Escribe para buscar el barrio..." autocomplete="off"/><datalist id="barriosList"></datalist></div>
+<div class="form-group"><label>DIRECCIÓN (opcional - por seguridad)</label><input type="text" id="direccion" placeholder="Se muestra solo al interesado confirmado"/></div>
+<div class="form-group full"><label>Ubicación en el mapa</label><div style="display:flex;gap:8px;margin-bottom:8px"><button type="button" id="btnGeocode" class="btn-secondary" style="white-space:nowrap"><i class=lzi data-i=buscar></i> Buscar dirección en el mapa</button><span id="geoStatus" style="font-size:12px;color:#888;align-self:center"></span></div><div id="mapa" style="height:320px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"></div><small style="color:#888;font-weight:400;display:block;margin-top:6px">Escribe la ciudad, barrio y dirección arriba, luego pulsa "Buscar". También puedes arrastrar el marcador o hacer clic en el mapa para ajustar el punto exacto. La latitud y longitud se calculan automáticamente.</small></div><div class="form-group"><label>Latitud <small style="color:#888;font-weight:400">(automática)</small></label><input type="number" id="latitud" placeholder="Automática" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
+<div class="form-group"><label>Longitud <small style="color:#888;font-weight:400">(automática)</small></label><input type="number" id="longitud" placeholder="Automática" step="0.0000001" readonly style="background:rgba(255,255,255,.04)"/></div>
+<div class="form-group full"><label>Como llegar (referencias)</label><textarea id="como_llegar" placeholder="Ej: Frente al parque principal, junto al centro comercial..." style="min-height:60px"></textarea></div>
 </div></div>
 <div class="card"><h3><i class=lzi data-i=video></i> Multimedia y <em>Tours</em></h3>
 <div class="form-grid">
-<div class="form-group full"><label>FOTOS (sube hasta 30 desde tu PC)</label><div id="fotoDropzone" style="border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02)"><input type="file" id="fotos_files" accept="image/*" multiple style="display:none"/><div style="font-size:32px"><i class=lzi data-i=camara></i></div><div style="margin-top:6px">Arrastra tus fotos aqu&iacute; o <span style="color:var(--gold);text-decoration:underline">haz clic para seleccionar</span></div><div style="font-size:12px;color:#888;margin-top:4px">JPG, PNG, WEBP &middot; m&aacute;x 5MB c/u &middot; hasta 30 fotos</div></div><div id="fotoProgress" style="display:none;margin-top:8px;font-size:13px;color:var(--gold)"></div><div id="fotoPreviews" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div><input type="hidden" id="fotos_url"/></div>
-<div class="form-group"><label>VIDEO YOUTUBE (URL)</label><input type="url" id="video_url" placeholder="https://youtube.com/watch?v=..."/></div>
-<div class="form-group"><label>RECORRIDO VIRTUAL 360 (URL)</label><input type="url" id="recorrido_virtual" placeholder="https://matterport.com/show/?m=..."/></div>
+<div class="form-group full"><label>FOTOS (sube hasta 30 desde tu PC)</label><div id="fotoDropzone" style="border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02)"><input type="file" id="fotos_files" accept="image/*" multiple style="display:none"/><div style="font-size:32px"><i class=lzi data-i=camara></i></div><div style="margin-top:6px">Arrastra tus fotos aquí o <span style="color:var(--gold);text-decoration:underline">haz clic para seleccionar</span></div><div style="font-size:12px;color:#888;margin-top:4px">JPG, PNG, WEBP &middot; máx 5MB c/u &middot; hasta 30 fotos</div></div><div id="fotoProgress" style="display:none;margin-top:8px;font-size:13px;color:var(--gold)"></div><div id="fotoPreviews" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div><input type="hidden" id="fotos_url"/></div>
+<div class="form-group"><label>Video YouTube (URL)</label><input type="url" id="video_url" placeholder="https://youtube.com/watch?v=..."/></div>
+<div class="form-group"><label>Recorrido virtual 360 (URL)</label><input type="url" id="recorrido_virtual" placeholder="https://matterport.com/show/?m=..."/></div>
 </div></div>
 <div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(1)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(3)">Siguiente &#8594;</button></div>
 </div>
 
 <div class="step-panel" id="panel3">
-<div class="card"><h3><i class=lzi data-i=casa></i> Caracteristicas y <em>Amenidades</em></h3>
+<div class="card"><h3><i class=lzi data-i=casa></i> Características y <em>Amenidades</em></h3>
 <p style="color:#888;font-size:.85rem;margin-bottom:1rem">Selecciona todas las que apliquen a tu propiedad</p>
 <div class="char-grid" id="charGrid">
 <div class="amenity-group-title">Recreación y Bienestar</div>
@@ -362,11 +363,11 @@ img,video,iframe{max-width:100%}
 <label class="char-item"><input type="checkbox" name="char" value="Pisos en mármol"/> <span>Pisos en mármol</span></label>
 </div>
 <div class="form-grid" style="margin-top:1.5rem">
-<div class="form-group"><label>DEPÓSITO INCLUIDO</label><select id="deposito"><option value="false">No</option><option value="true">Si</option></select></div>
-<div class="form-group"><label>UNIDAD CERRADA</label><select id="unidad_cerrada"><option value="no">No</option><option value="si">Si (conjunto/edificio cerrado)</option></select></div>
-<div class="form-group"><label>TIPO DE PISO PRINCIPAL</label><select id="tipo_piso"><option value="">Seleccionar</option><option value="madera">Madera</option><option value="porcelanato">Porcelanato</option><option value="ceramica">Ceramica</option><option value="marmol">Marmol</option><option value="alfombra">Alfombra</option><option value="vinilo">Vinilo</option><option value="laminado">Laminado</option><option value="baldosa">Baldosa</option><option value="cera_epoxica">Cera ep&oacute;xica</option><option value="otro">Otros (especificar)</option></select></div>
-<div class="form-group" id="grupo_tipo_piso_otro" style="display:none"><label>ESPECIFIQUE EL MATERIAL DEL PISO</label><input type="text" id="tipo_piso_otro" placeholder="Ej: cemento pulido, piedra, gres"></div>
-<div class="form-group"><label>NUMERO DE NIVELES</label><input type="number" id="niveles" placeholder="1" min="1" max="10"/></div>
+<div class="form-group"><label>Depósito incluido</label><select id="deposito"><option value="false">No</option><option value="true">Si</option></select></div>
+<div class="form-group"><label>Unidad cerrada</label><select id="unidad_cerrada"><option value="no">No</option><option value="si">Si (conjunto/edificio cerrado)</option></select></div>
+<div class="form-group"><label>Tipo de piso principal</label><select id="tipo_piso"><option value="">Seleccionar</option><option value="madera">Madera</option><option value="porcelanato">Porcelanato</option><option value="ceramica">Ceramica</option><option value="marmol">Marmol</option><option value="alfombra">Alfombra</option><option value="vinilo">Vinilo</option><option value="laminado">Laminado</option><option value="baldosa">Baldosa</option><option value="cera_epoxica">Cera epóxica</option><option value="otro">Otros (especificar)</option></select></div>
+<div class="form-group" id="grupo_tipo_piso_otro" style="display:none"><label>Especifique el material del piso</label><input type="text" id="tipo_piso_otro" placeholder="Ej: cemento pulido, piedra, gres"></div>
+<div class="form-group"><label>Número de niveles</label><input type="number" id="niveles" placeholder="1" min="1" max="10"/></div>
 </div>
 </div>
 <div class="nav-btns"><button class="btn-nav btn-prev" onclick="goStep(2)">&#8592; Anterior</button><button class="btn-nav btn-next" onclick="goStep(4)">Siguiente &#8594;</button></div>
@@ -375,23 +376,23 @@ img,video,iframe{max-width:100%}
 <div class="step-panel" id="panel4">
 <div class="card"><h3><i class=lzi data-i=lista></i> Resumen de la <em>propiedad</em></h3><table class="summary-table" id="summaryTable"></table></div>
 <div class="card"><h3><i class=lzi data-i=mundo></i> Publicar en <em>portales externos</em></h3>
-<p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en Lomaz Home. Marca los portales adicionales: los inmobiliarios se envian en paralelo y antes de mandar nada te pedimos confirmacion.</p>
+<p style="color:#888;font-size:.85rem;margin-bottom:1rem">La propiedad se publica SIEMPRE en LoMaz Home. Marca los portales adicionales: los inmobiliarios se envian en paralelo y antes de mandar nada te pedimos confirmacion.</p>
 <div class="portales-grid">
-<div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name"><i class=lzi data-i=casa></i> Lomaz Home</div><div class="portal-desc">Publicacion inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
-<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">PORTALES INMOBILIARIOS &middot; ENVIO EN PARALELO &middot; ELIGE LOS QUE QUIERAS</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name"><i class=lzi data-i=edificio></i> Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Mapeo de ubicacion Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>REGION</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>CIUDAD (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona region...</option></select></div><div class="form-group"><label>ZONA</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>SECTOR</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicacion exacta segun el catalogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
-<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name"><i class=lzi data-i=casa></i> Finca Raiz</div><div class="portal-desc">Portal inmobiliario Colombia - Integracion QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
+<div class="portal-row selected" id="row-lomazhome"><div class="portal-check"><input type="checkbox" id="ch-lomazhome" checked disabled/><div><div class="portal-name"><i class=lzi data-i=casa></i> LoMaz Home</div><div class="portal-desc">Publicación inmediata en tu plataforma</div></div></div><span class="portal-status ok" id="st-lomazhome">Listo</span></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.7rem 0 .35rem"><div style="font-size:.74rem;letter-spacing:.08em;color:var(--gold);font-weight:700">Portales inmobiliarios &middot; envio en paralelo &middot; elige los que quieras</div><button type="button" onclick="marcarPortalesInmobiliarios()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;white-space:nowrap">Marcar los 3</button></div><div class="portal-row" id="row-metrocuadrado"><div class="portal-check"><input type="checkbox" id="ch-metrocuadrado" onchange="togglePortal(this,'row-metrocuadrado');toggleMetroMapa(this)"/><div><div class="portal-name"><i class=lzi data-i=edificio></i> Metrocuadrado</div><div class="portal-desc">Portal #1 Colombia - requiere API Key</div></div></div><span class="portal-status pending" id="st-metrocuadrado">En espera</span></div><div class="portal-row" id="mapaMetroRow" style="display:none;flex-direction:column;align-items:stretch;gap:.6rem"><div style="font-size:.8125rem;color:var(--gold);font-weight:600;letter-spacing:0;">Mapeo de ubicación Metrocuadrado (obligatorio)</div><div class="form-grid"><div class="form-group"><label>Región</label><select id="metro_region"><option value="">Cargando...</option></select></div><div class="form-group"><label>Ciudad (Metrocuadrado)</label><select id="metro_city_sel"><option value="">Selecciona región...</option></select></div><div class="form-group"><label>Zona</label><select id="metro_zone_sel"><option value="">Selecciona ciudad...</option></select></div><div class="form-group"><label>Sector</label><select id="metro_sector_sel"><option value="">Selecciona zona...</option></select></div></div><input type="hidden" id="metro_city_id"/><input type="hidden" id="metro_zone_id"/><input type="hidden" id="metro_sector_id"/><small style="color:#888">Estos datos identifican la ubicación exacta según el catálogo oficial de Metrocuadrado y son obligatorios para publicar alli.</small></div>
+<div class="portal-row" id="row-fincaraiz"><div class="portal-check"><input type="checkbox" id="ch-fincaraiz" onchange="togglePortal(this,'row-fincaraiz')"/><div><div class="portal-name"><i class=lzi data-i=casa></i> Finca Raíz</div><div class="portal-desc">Portal inmobiliario Colombia - Integración QA activa</div></div></div><span class="portal-status pending" id="st-fincaraiz">En espera</span></div>
 <div class="portal-row" id="row-proppit"><div class="portal-check"><input type="checkbox" id="ch-proppit" onchange="togglePortal(this,'row-proppit')"/><div><div class="portal-name"><i class=lzi data-i=mundo></i> Proppit (x6 portales)</div><div class="portal-desc">XML feed activo - Trovit, Mitula, Nestoria, Nuroa, puntopropiedad (1x dia)</div></div></div><span class="portal-status pending" id="st-proppit">En espera</span></div>
-<div style="font-size:.74rem;letter-spacing:.08em;color:#8a94a6;font-weight:700;margin:.9rem 0 .35rem">REDES SOCIALES &middot; PUBLICACION ASISTIDA (TU PEGAS EL TEXTO)</div><div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name"><i class=lzi data-i=carrito></i> Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
+<div style="font-size:.74rem;letter-spacing:.08em;color:#8a94a6;font-weight:700;margin:.9rem 0 .35rem">Redes sociales &middot; publicación asistida (tú pegas el texto)</div><div class="portal-row" id="row-marketplace"><div class="portal-check"><input type="checkbox" id="ch-marketplace" onchange="togglePortal(this,'row-marketplace')"/><div><div class="portal-name"><i class=lzi data-i=carrito></i> Facebook Marketplace</div><div class="portal-desc">Genera texto + descarga fotos + abre Marketplace</div></div></div><span class="portal-status pending" id="st-marketplace">En espera</span></div>
 <div class="portal-row" id="row-instagram"><div class="portal-check"><input type="checkbox" id="ch-instagram" onchange="togglePortal(this,'row-instagram')"/><div><div class="portal-name"><i class=lzi data-i=camara></i> Instagram</div><div class="portal-desc">Genera caption + descarga fotos + abre Instagram</div></div></div><span class="portal-status pending" id="st-instagram">En espera</span></div>
 </div>
 <div class="publish-log" id="publishLog" style="display:none">
-<p style="color:#888;font-size:.8rem;margin-bottom:.5rem"><i class=lzi data-i=grafica></i> Registro de publicacion:</p>
+<p style="color:#888;font-size:.8rem;margin-bottom:.5rem"><i class=lzi data-i=grafica></i> Registro de publicación:</p>
 <div id="logEntries"></div>
 </div>
 </div>
-      <div class="card"><h3>Copys para <em>Redes Sociales</em></h3><p style="color:#888;font-size:13px;margin-bottom:10px">Genera autom&aacute;ticamente el texto listo para publicar en Instagram y Facebook. Solo c&oacute;pialo y p&eacute;galo.</p><button type="button" id="btnGenCopys" class="btn-secondary" style="margin-bottom:12px">Generar copys</button><div id="copysWrap" style="display:none"><div class="form-group full"><label><i class=lzi data-i=celular></i> INSTAGRAM <button type="button" class="btnCopyTxt" data-target="copyInstagram" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyInstagram" rows="9" style="width:100%;font-family:inherit"></textarea></div><div class="form-group full"><label><i class=lzi data-i=celular></i> FACEBOOK <button type="button" class="btnCopyTxt" data-target="copyFacebook" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyFacebook" rows="9" style="width:100%;font-family:inherit"></textarea></div><div id="copyStatus" style="font-size:12px;color:var(--gold)"></div></div></div>
+      <div class="card"><h3>Copys para <em>Redes Sociales</em></h3><p style="color:#888;font-size:13px;margin-bottom:10px">Genera automáticamente el texto listo para publicar en Instagram y Facebook. Solo cópialo y pégalo.</p><button type="button" id="btnGenCopys" class="btn-secondary" style="margin-bottom:12px">Generar copys</button><div id="copysWrap" style="display:none"><div class="form-group full"><label><i class=lzi data-i=celular></i> Instagram <button type="button" class="btnCopyTxt" data-target="copyInstagram" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyInstagram" rows="9" style="width:100%;font-family:inherit"></textarea></div><div class="form-group full"><label><i class=lzi data-i=celular></i> Facebook <button type="button" class="btnCopyTxt" data-target="copyFacebook" style="margin-left:8px;font-size:11px;padding:2px 8px;cursor:pointer;background:var(--gold);color:#000;border:none;border-radius:4px">Copiar</button></label><textarea id="copyFacebook" rows="9" style="width:100%;font-family:inherit"></textarea></div><div id="copyStatus" style="font-size:12px;color:var(--gold)"></div></div></div>
 <button class="btn-publish" id="btnPublish" onclick="publicarPropiedad()">Publicar Propiedad</button>
-<button class="btn-publish" id="btn-activar-fr" onclick="activarEnFincaraiz()" style="display:none;background:linear-gradient(135deg,#79b8ff 0%,#3b82f6 100%);color:#fff;margin-top:.6rem"><i class=lzi data-i=ok></i> Activar en Finca Raiz (pasar de Pendiente a Activa)</button>
+<button class="btn-publish" id="btn-activar-fr" onclick="activarEnFincaraiz()" style="display:none;background:linear-gradient(135deg,#79b8ff 0%,#3b82f6 100%);color:#fff;margin-top:.6rem"><i class=lzi data-i=ok></i> Activar en Finca Raíz (pasar de Pendiente a Activa)</button>
 <div class="nav-btns" style="margin-top:1rem"><button class="btn-nav btn-prev" onclick="goStep(3)">&#8592; Anterior</button><div></div></div>
 </div>
 </div>
@@ -412,8 +413,8 @@ function __genCopys(){ var NL=String.fromCharCode(10); var v=function(id){ retur
   var precioLine = precio? ("\uD83D\uDCB0 "+fmtMoney(precio)+(op==="arriendo"?" /mes":"")+((admin&&admin!=="0")?(" + Admin "+fmtMoney(admin)):"")) : "";
   var ubic = (barrio?barrio:"")+((barrio&&ciudad)?", ":"")+(ciudad?ciudad:"");
   var tags=["#"+(ciudad||"Colombia").replace(/\s/g,""),"#"+tipoCap.replace(/\s/g,""),(op==="arriendo"?"#Arriendo":"#Venta"),"#FincaRaiz","#Inmobiliaria","#LomazHome"];
-  var igParts=[]; igParts.push(emoji+" "+tipoCap+" "+opTxt+(ubic?(" en "+ubic):"")); if(titulo) igParts.push(titulo); if(precioLine) igParts.push(precioLine); if(feats.length) igParts.push(feats.join("  -  ")); if(desc) igParts.push(desc); igParts.push("\uD83D\uDCF2 Escribenos por mensaje directo para mas informacion y fotos."); igParts.push(tags.join(" ")); var ig=igParts.join(NL+NL);
-  var fbParts=[]; fbParts.push((op==="arriendo"?"ARRIENDO ":"VENTA ")+tipoCap.toUpperCase()+(ubic?(" - "+ubic.toUpperCase()):"")); if(titulo) fbParts.push(titulo); if(precioLine) fbParts.push(precioLine); if(feats.length) fbParts.push("Caracteristicas:"+NL+feats.map(function(f){return "\u2705 "+f;}).join(NL)); if(desc) fbParts.push(desc); fbParts.push("\uD83D\uDCDE Contactanos para agendar visita."+NL+"Lomaz Home - Tu inmobiliaria de confianza."); fbParts.push(tags.join(" ")); var fb=fbParts.join(NL+NL);
+  var igParts=[]; igParts.push(emoji+" "+tipoCap+" "+opTxt+(ubic?(" en "+ubic):"")); if(titulo) igParts.push(titulo); if(precioLine) igParts.push(precioLine); if(feats.length) igParts.push(feats.join("  -  ")); if(desc) igParts.push(desc); igParts.push("\uD83D\uDCF2 Escríbenos por mensaje directo para más información y fotos."); igParts.push(tags.join(" ")); var ig=igParts.join(NL+NL);
+  var fbParts=[]; fbParts.push((op==="arriendo"?"ARRIENDO ":"VENTA ")+tipoCap.toUpperCase()+(ubic?(" - "+ubic.toUpperCase()):"")); if(titulo) fbParts.push(titulo); if(precioLine) fbParts.push(precioLine); if(feats.length) fbParts.push("Caracteristicas:"+NL+feats.map(function(f){return "\u2705 "+f;}).join(NL)); if(desc) fbParts.push(desc); fbParts.push("\uD83D\uDCDE Contáctanos para agendar visita."+NL+"LoMaz Home - Tu inmobiliaria de confianza."); fbParts.push(tags.join(" ")); var fb=fbParts.join(NL+NL);
   var igEl=document.getElementById("copyInstagram"), fbEl=document.getElementById("copyFacebook"); if(igEl) igEl.value=ig; if(fbEl) fbEl.value=fb; var w=document.getElementById("copysWrap"); if(w) w.style.display="block"; }
 async function __copyText(targetId){ var el=document.getElementById(targetId); var st=document.getElementById("copyStatus"); if(!el) return; try{ el.select(); await navigator.clipboard.writeText(el.value); if(st){ st.textContent="Texto copiado al portapapeles."; setTimeout(function(){ st.textContent=""; },2500); } }catch(e){ try{ document.execCommand("copy"); }catch(_){} } }
 document.addEventListener("DOMContentLoaded",function(){ var b=document.getElementById("btnGenCopys"); if(b) b.addEventListener("click",__genCopys); document.querySelectorAll(".btnCopyTxt").forEach(function(btn){ btn.addEventListener("click",function(){ __copyText(btn.getAttribute("data-target")); }); }); });
@@ -463,7 +464,7 @@ function __pausa(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
 function __limpiaDireccion(txt){ var s=" "+String(txt||"").trim()+" "; s=s.replace(/\bnro\.?\s*/gi," # ").replace(/\bno\.?\s*/gi," # ").replace(/n[\u00b0\u00ba]\s*/gi," # "); for(var i=0;i<__ABREV.length;i++){ s=s.replace(__ABREV[i][0],__ABREV[i][1]); } s=s.replace(/\b(apto|apartamento|apart|apt|torre|tor|int|interior|casa|of|ofc|oficina|local|piso|bloque|bl|mz|manzana|conjunto|edificio|edif)\b[\s.:#-]*[\w-]*/gi," "); s=s.replace(/\s{2,}/g," ").trim(); return s; }
 function __parseDir(d){ var m=String(d||"").match(/^(Avenida Carrera|Avenida Calle|Autopista|Carrera|Calle|Avenida|Diagonal|Transversal)\s+(\d+[A-Za-z]?(?:\s+(?:Sur|Este|Norte|Oeste))?)\s*#\s*(\d+[A-Za-z]?)/i); if(!m) return null; var tipo=m[1], num=m[2], cruce=m[3]; var esVertical=/carrera|transversal/i.test(tipo); var tipoCruce= esVertical? "Calle" : "Carrera"; var suf=(num.match(/\b(Sur|Este|Norte|Oeste)\b/i)||[])[1]||""; return { via: tipo+" "+num, cruce: tipoCruce+" "+cruce, cruceSuf: suf? (tipoCruce+" "+cruce+" "+suf) : null }; }
 function __setCoords(lat,lng,msg,tono){ var la=document.getElementById("latitud"), lo=document.getElementById("longitud"); if(la) la.value=Number(lat).toFixed(7); if(lo) lo.value=Number(lng).toFixed(7); if(msg!=null){ var st=document.getElementById("geoStatus"); if(st){ st.innerHTML=msg; st.style.color=(tono==="ok")?"#7ed957":((tono==="warn")?"#ffc86b":""); } } }
-function __ensureMap(){ if(window.__map){ setTimeout(function(){ try{ window.__map.invalidateSize(); }catch(e){} },200); return; } var el=document.getElementById("mapa"); if(!el||!window.L) return; var lat=parseFloat((document.getElementById("latitud")||{}).value); var lng=parseFloat((document.getElementById("longitud")||{}).value); if(isNaN(lat)||isNaN(lng)){ lat=4.6533; lng=-74.0836; } window.__map=L.map(el).setView([lat,lng],13); L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(window.__map); window.__marker=L.marker([lat,lng],{draggable:true}).addTo(window.__map); window.__marker.on("dragend",function(){ var p=window.__marker.getLatLng(); __setCoords(p.lat,p.lng,"<b>Pin ajustado manualmente.</b> Estas son las coordenadas que se guardaran.","ok"); }); window.__map.on("click",function(e){ if(window.__marker) window.__marker.setLatLng(e.latlng); __setCoords(e.latlng.lat,e.latlng.lng,"<b>Ubicacion fijada con clic en el mapa.</b> Puedes arrastrar el pin para afinar.","ok"); }); setTimeout(function(){ try{ window.__map.invalidateSize(); }catch(e){} },250); }
+function __ensureMap(){ if(window.__map){ setTimeout(function(){ try{ window.__map.invalidateSize(); }catch(e){} },200); return; } var el=document.getElementById("mapa"); if(!el||!window.L) return; var lat=parseFloat((document.getElementById("latitud")||{}).value); var lng=parseFloat((document.getElementById("longitud")||{}).value); if(isNaN(lat)||isNaN(lng)){ lat=4.6533; lng=-74.0836; } window.__map=L.map(el).setView([lat,lng],13); L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(window.__map); window.__marker=L.marker([lat,lng],{draggable:true}).addTo(window.__map); window.__marker.on("dragend",function(){ var p=window.__marker.getLatLng(); __setCoords(p.lat,p.lng,"<b>Pin ajustado manualmente.</b> Estas son las coordenadas que se guardaran.","ok"); }); window.__map.on("click",function(e){ if(window.__marker) window.__marker.setLatLng(e.latlng); __setCoords(e.latlng.lat,e.latlng.lng,"<b>Ubicación fijada con clic en el mapa.</b> Puedes arrastrar el pin para afinar.","ok"); }); setTimeout(function(){ try{ window.__map.invalidateSize(); }catch(e){} },250); }
 window.__cityBox=window.__cityBox||{};
 async function __bboxCiudad(ciudad,depto){ var k=(ciudad||"")+"|"+(depto||""); if(window.__cityBox[k]!==undefined) return window.__cityBox[k]; var res=null; if(ciudad){ var urls=[__NOM+"&limit=5&featureType=city&city="+encodeURIComponent(ciudad), __NOM+"&limit=5&featureType=city&q="+encodeURIComponent(ciudad+", Colombia")]; for(var i=0;i<urls.length && !res;i++){ try{ var j=await (await fetch(urls[i],{headers:{Accept:"application/json"}})).json(); if(Array.isArray(j)&&j.length){ var best=null; for(var n=0;n<j.length;n++){ var it=j[n]; if(!it.boundingbox) continue; if(it.class!=="boundary" && it.class!=="place") continue; var puntos=0; if(depto && String(it.display_name||"").toLowerCase().indexOf(String(depto).toLowerCase())>=0) puntos+=2; if(String(it.display_name||"").toLowerCase().indexOf(String(ciudad).toLowerCase())===0) puntos+=1; if(!best || puntos>best.p) best={p:puntos,it:it}; } if(best) res=best.it.boundingbox; } }catch(e){} if(!res) await __pausa(1100); } } window.__cityBox[k]=res; return res; }
 function __vb(bb){ return bb? ("&viewbox="+bb[2]+","+bb[0]+","+bb[3]+","+bb[1]+"&bounded=1") : ""; }
@@ -472,9 +473,9 @@ function __masCercano(a,b){ var best=null; for(var i=0;i<a.length;i++){ for(var 
 function __precision(it){ var a=(it&&it.address)||{}; if(a.house_number) return "exacta"; if(it&&(it.class==="building"||it.type==="house"||it.type==="building")) return "exacta"; if(a.road||(it&&it.class==="highway")) return "calle"; return "zona"; }
 function __contCand(){ var st=document.getElementById("geoStatus"); if(!st) return null; var c=document.getElementById("geoCandidatos"); if(!c){ c=document.createElement("div"); c.id="geoCandidatos"; c.style.cssText="margin-top:.5rem;display:flex;flex-direction:column;gap:.25rem"; st.parentNode.insertBefore(c, st.nextSibling); } return c; }
 function __limpiaCandidatos(){ var c=document.getElementById("geoCandidatos"); if(c) c.innerHTML=""; }
-function __eligeCandidato(it){ __setCoords(it.lat,it.lon,null,null); if(window.__marker) window.__marker.setLatLng([it.lat,it.lon]); if(window.__map) window.__map.setView([it.lat,it.lon],17); var st=document.getElementById("geoStatus"); if(st){ st.innerHTML="<b>Ubicacion seleccionada:</b> "+__esc(it.display_name); st.style.color=""; } }
+function __eligeCandidato(it){ __setCoords(it.lat,it.lon,null,null); if(window.__marker) window.__marker.setLatLng([it.lat,it.lon]); if(window.__map) window.__map.setView([it.lat,it.lon],17); var st=document.getElementById("geoStatus"); if(st){ st.innerHTML="<b>Ubicación seleccionada:</b> "+__esc(it.display_name); st.style.color=""; } }
 function __renderCandidatos(items){ var c=__contCand(); if(!c) return; c.innerHTML=""; if(!items||items.length<2) return; var t=document.createElement("small"); t.textContent="Otras coincidencias (haz clic en la correcta):"; t.style.opacity=".8"; c.appendChild(t); items.slice(0,6).forEach(function(it,idx){ var b=document.createElement("button"); b.type="button"; b.textContent=(idx+1)+". "+it.display_name; b.style.cssText="text-align:left;background:transparent;border:1px solid rgba(201,169,110,.5);color:inherit;border-radius:6px;padding:.35rem .5rem;cursor:pointer;font-size:.8rem"; b.addEventListener("click",function(){ __eligeCandidato(it); }); c.appendChild(b); }); }
-async function __geocodeDireccion(){ var st=document.getElementById("geoStatus"); var gv=function(id){ var e=document.getElementById(id); return e? String(e.value||"").trim() : ""; }; var dirRaw=gv("direccion"), ciudad=gv("ciudad"), depto=gv("departamento"), barrio=gv("barrio"); __ensureMap(); __limpiaCandidatos(); if(!dirRaw){ if(st){ st.innerHTML="Escribe primero la direccion del inmueble."; st.style.color="#ffc86b"; } return; } if(!ciudad){ if(st){ st.innerHTML="Selecciona el departamento y la ciudad antes de buscar la direccion."; st.style.color="#ffc86b"; } return; } if(st){ st.innerHTML="Buscando la direccion..."; st.style.color=""; } var dir=__limpiaDireccion(dirRaw); var bb=await __bboxCiudad(ciudad,depto); var vb=__vb(bb); var intentos=[__NOM+"&limit=8"+vb+"&city="+encodeURIComponent(ciudad)+"&street="+encodeURIComponent(dir), __NOM+"&limit=8"+vb+"&q="+encodeURIComponent(dir+", "+(barrio?(barrio+", "):"")+ciudad+", Colombia")]; if(vb){ intentos.push(__NOM+"&limit=8&city="+encodeURIComponent(ciudad)+"&street="+encodeURIComponent(dir)); } var items=[]; for(var i=0;i<intentos.length && !items.length;i++){ if(i>0) await __pausa(1100); try{ var j=await (await fetch(intentos[i],{headers:{Accept:"application/json"}})).json(); if(Array.isArray(j)&&j.length) items=j; }catch(e){ if(st){ st.innerHTML="No se pudo consultar el servicio de mapas. Detalle: "+__esc((e&&e.message)||e)+"<br><small>Marca la ubicacion haciendo clic sobre el mapa.</small>"; st.style.color="#ffc86b"; } return; } } if(!items.length){ if(st){ st.innerHTML="No se encontro esa direccion en "+__esc(ciudad)+". Haz clic sobre el mapa para marcar la ubicacion exacta o arrastra el pin."; st.style.color="#ffc86b"; } return; } var prim=items[0], prec=__precision(prim); if(prec==="exacta"){ __setCoords(prim.lat,prim.lon,null,null); if(window.__marker) window.__marker.setLatLng([prim.lat,prim.lon]); if(window.__map) window.__map.setView([prim.lat,prim.lon],17); if(st){ st.innerHTML="<b>Direccion encontrada:</b> "+__esc(prim.display_name)+"<br><small>Verifica el pin; puedes arrastrarlo o hacer clic en el mapa para ajustarlo.</small>"; st.style.color=""; } __renderCandidatos(items); return; } var p=__parseDir(dir); var puesto=false; if(p){ if(st){ st.innerHTML="Afinando con el cruce de vias ("+__esc(p.via)+" con "+__esc(p.cruce)+")..."; } await __pausa(1100); var A=await __segmentos(p.via,ciudad,bb); await __pausa(1100); var B=await __segmentos(p.cruce,ciudad,bb); if((!B||!B.length) && p.cruceSuf){ await __pausa(1100); B=await __segmentos(p.cruceSuf,ciudad,bb); } if(A&&A.length&&B&&B.length){ var c=__masCercano(A,B); if(c){ __setCoords(c.p[0],c.p[1],null,null); if(window.__marker) window.__marker.setLatLng([c.p[0],c.p[1]]); if(window.__map) window.__map.setView([c.p[0],c.p[1]],16); if(st){ st.innerHTML="<b>Ubicacion aproximada al cruce</b> de "+__esc(p.via)+" con "+__esc(p.cruce)+".<br><small>OpenStreetMap no tiene numeros de puerta en Colombia. Ajusta el pin con un clic en el mapa o arrastrandolo antes de guardar.</small>"; st.style.color="#ffc86b"; } puesto=true; } } } if(!puesto){ __setCoords(prim.lat,prim.lon,null,null); if(window.__marker) window.__marker.setLatLng([prim.lat,prim.lon]); if(window.__map) window.__map.setView([prim.lat,prim.lon], prec==="calle"?16:14); if(st){ st.innerHTML="<b>"+((prec==="calle")?"Se ubico la via, pero no el numero exacto":"Solo se pudo ubicar la zona")+":</b> "+__esc(prim.display_name)+"<br><small>Ajusta el pin con un clic en el mapa o arrastrandolo antes de guardar.</small>"; st.style.color="#ffc86b"; } } __renderCandidatos(items); }
+async function __geocodeDireccion(){ var st=document.getElementById("geoStatus"); var gv=function(id){ var e=document.getElementById(id); return e? String(e.value||"").trim() : ""; }; var dirRaw=gv("direccion"), ciudad=gv("ciudad"), depto=gv("departamento"), barrio=gv("barrio"); __ensureMap(); __limpiaCandidatos(); if(!dirRaw){ if(st){ st.innerHTML="Escribe primero la dirección del inmueble."; st.style.color="#ffc86b"; } return; } if(!ciudad){ if(st){ st.innerHTML="Selecciona el departamento y la ciudad antes de buscar la dirección."; st.style.color="#ffc86b"; } return; } if(st){ st.innerHTML="Buscando la dirección..."; st.style.color=""; } var dir=__limpiaDireccion(dirRaw); var bb=await __bboxCiudad(ciudad,depto); var vb=__vb(bb); var intentos=[__NOM+"&limit=8"+vb+"&city="+encodeURIComponent(ciudad)+"&street="+encodeURIComponent(dir), __NOM+"&limit=8"+vb+"&q="+encodeURIComponent(dir+", "+(barrio?(barrio+", "):"")+ciudad+", Colombia")]; if(vb){ intentos.push(__NOM+"&limit=8&city="+encodeURIComponent(ciudad)+"&street="+encodeURIComponent(dir)); } var items=[]; for(var i=0;i<intentos.length && !items.length;i++){ if(i>0) await __pausa(1100); try{ var j=await (await fetch(intentos[i],{headers:{Accept:"application/json"}})).json(); if(Array.isArray(j)&&j.length) items=j; }catch(e){ if(st){ st.innerHTML="No se pudo consultar el servicio de mapas. Detalle: "+__esc((e&&e.message)||e)+"<br><small>Marca la ubicación haciendo clic sobre el mapa.</small>"; st.style.color="#ffc86b"; } return; } } if(!items.length){ if(st){ st.innerHTML="No se encontro esa dirección en "+__esc(ciudad)+". Haz clic sobre el mapa para marcar la ubicación exacta o arrastra el pin."; st.style.color="#ffc86b"; } return; } var prim=items[0], prec=__precision(prim); if(prec==="exacta"){ __setCoords(prim.lat,prim.lon,null,null); if(window.__marker) window.__marker.setLatLng([prim.lat,prim.lon]); if(window.__map) window.__map.setView([prim.lat,prim.lon],17); if(st){ st.innerHTML="<b>Dirección encontrada:</b> "+__esc(prim.display_name)+"<br><small>Verifica el pin; puedes arrastrarlo o hacer clic en el mapa para ajustarlo.</small>"; st.style.color=""; } __renderCandidatos(items); return; } var p=__parseDir(dir); var puesto=false; if(p){ if(st){ st.innerHTML="Afinando con el cruce de vias ("+__esc(p.via)+" con "+__esc(p.cruce)+")..."; } await __pausa(1100); var A=await __segmentos(p.via,ciudad,bb); await __pausa(1100); var B=await __segmentos(p.cruce,ciudad,bb); if((!B||!B.length) && p.cruceSuf){ await __pausa(1100); B=await __segmentos(p.cruceSuf,ciudad,bb); } if(A&&A.length&&B&&B.length){ var c=__masCercano(A,B); if(c){ __setCoords(c.p[0],c.p[1],null,null); if(window.__marker) window.__marker.setLatLng([c.p[0],c.p[1]]); if(window.__map) window.__map.setView([c.p[0],c.p[1]],16); if(st){ st.innerHTML="<b>Ubicación aproximada al cruce</b> de "+__esc(p.via)+" con "+__esc(p.cruce)+".<br><small>OpenStreetMap no tiene numeros de puerta en Colombia. Ajusta el pin con un clic en el mapa o arrastrandolo antes de guardar.</small>"; st.style.color="#ffc86b"; } puesto=true; } } } if(!puesto){ __setCoords(prim.lat,prim.lon,null,null); if(window.__marker) window.__marker.setLatLng([prim.lat,prim.lon]); if(window.__map) window.__map.setView([prim.lat,prim.lon], prec==="calle"?16:14); if(st){ st.innerHTML="<b>"+((prec==="calle")?"Se ubicó la vía, pero no el número exacto":"Solo se pudo ubicar la zona")+":</b> "+__esc(prim.display_name)+"<br><small>Ajusta el pin con un clic en el mapa o arrastrandolo antes de guardar.</small>"; st.style.color="#ffc86b"; } } __renderCandidatos(items); }
 document.addEventListener("DOMContentLoaded", function(){ var d=document.getElementById("direccion"); if(d){ d.addEventListener("keydown", function(ev){ if(ev.key==="Enter"){ ev.preventDefault(); __geocodeDireccion(); } }); } });
 // ===== Subida de fotos a Supabase Storage (bucket fotos-propiedades) =====
 window.__uploadedFotos = [];
@@ -517,7 +518,7 @@ p.className="step-panel"+(i===n?" active":"");
 window.scrollTo({top:0,behavior:"smooth"});
 }
 function validateStep1(){
-const fields=[["tipo_operacion","Tipo de negocio"],["tipo_propiedad","Tipo de inmueble"],["titulo","Titulo"],["precio","Precio"],["m2_construccion","Area construida"],["descripcion","Descripcion"]];
+const fields=[["tipo_operacion","Tipo de negocio"],["tipo_propiedad","Tipo de inmueble"],["titulo","Titulo"],["precio","Precio"],["m2_construccion","Área construida"],["descripcion","Descripcion"]];
 for(const[id,name]of fields){
 if(!document.getElementById(id).value.trim()){
 showAlert("Campo requerido: "+name,"error");return false;
@@ -543,7 +544,7 @@ const rows=[
 ["Titulo", v("titulo")],
 ["Precio","$"+Number(v("precio")||0).toLocaleString("es-CO")+" COP"],
 ["Administracion","$"+Number(v("precio_admin")||0).toLocaleString("es-CO")],
-["Area construida", v("m2_construccion")+" m2"],
+["Área construida", v("m2_construccion")+" m2"],
 ["Habitaciones", v("habitaciones")],
 ["Baños", v("banos")],
 ["Parqueaderos", v("garajes")],
@@ -583,7 +584,7 @@ const amenidades=[...document.querySelectorAll("input[name=char]:checked")].map(
 const v = id => (document.getElementById(id)||{}).value || "";
 if(document.getElementById("ch-metrocuadrado") && document.getElementById("ch-metrocuadrado").checked){
 if(!v("metro_city_id")||!v("metro_zone_id")||!v("metro_sector_id")){
-showAlert("Para publicar en Metrocuadrado selecciona Region, Ciudad, Zona y Sector en la seccion de Portales.","error");
+showAlert("Para publicar en Metrocuadrado selecciona Región, Ciudad, Zona y Sector en la sección de Portales.","error");
 btn.disabled=false;btn.textContent="Publicar Propiedad";
 return;
 }
@@ -634,31 +635,31 @@ metro_zone_id: (document.getElementById("ch-metrocuadrado")&&document.getElement
 metro_sector_id: (document.getElementById("ch-metrocuadrado")&&document.getElementById("ch-metrocuadrado").checked && v("metro_sector_id")) ? parseInt(v("metro_sector_id")) : null,
 asesor_id: currentUser.id
 };
-addLog("loading","Lomaz Home","Guardando propiedad en la plataforma...");
+addLog("loading","LoMaz Home","Guardando propiedad en la plataforma...");
 setPortalStatus("lomazhome","publishing","Publicando...");
 // Insercion directa - todos los campos mapean a columnas reales
 let res = await sb.from("propiedades").insert([data]).select().single();
 let prop = res.data, errProp = res.error;
 if(errProp){
-addLog("error","Lomaz Home","Error: "+errProp.message);
+addLog("error","LoMaz Home","Error: "+errProp.message);
 setPortalStatus("lomazhome","error","Error");
 showAlert("Error al guardar: "+errProp.message,"error");
 btn.disabled=false;btn.textContent="Publicar Propiedad";
 return;
 }
 propiedadId=prop.id;
-addLog("success","Lomaz Home","Propiedad publicada correctamente (ID: "+prop.id+")");
+addLog("success","LoMaz Home","Propiedad publicada correctamente (ID: "+prop.id+")");
 setPortalStatus("lomazhome","ok","Publicado");
 const portales=[
 {id:"metrocuadrado",name:"Metrocuadrado",cb:"ch-metrocuadrado"},
-{id:"fincaraiz",name:"Finca Raiz",cb:"ch-fincaraiz"},
+{id:"fincaraiz",name:"Finca Raíz",cb:"ch-fincaraiz"},
 {id:"proppit",name:"Proppit",cb:"ch-proppit"},
 {id:"marketplace",name:"Facebook Marketplace",cb:"ch-marketplace"},
 {id:"instagram",name:"Instagram",cb:"ch-instagram"}
 ];
 const msgs={
-"metrocuadrado":"Para publicacion automatica configura tu API Key en Ajustes > Portales > Metrocuadrado.",
-"proppit":"Proppit lee automaticamente el feed XML cada dia. Esta propiedad aparecera en Trovit, Mitula, Nestoria, Nuroa y puntopropiedad en proxima sincronizacion.",
+"metrocuadrado":"Para publicación automática configura tu API Key en Ajustes > Portales > Metrocuadrado.",
+"proppit":"Proppit lee automáticamente el feed XML cada dia. Esta propiedad aparecerá en Trovit, Mitula, Nestoria, Nuroa y puntopropiedad en próxima sincronización.",
 "marketplace":"Texto copiado para Facebook Marketplace. Abre Facebook Marketplace > Crear anuncio > Pega el texto.",
 "instagram":"Post generado para Instagram. Abre tu app Instagram y publica con el caption preparado."
 };
@@ -700,8 +701,8 @@ if(p.id === "fincaraiz"){
 const result = await window.publicarEnFincaraiz(data, prop.id);
 const estado = result.ok ? "publicado" : "en_proceso";
 await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:"fincaraiz",estado,mensaje:result.msg,asesor_id:currentUser.id});
-if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raiz",result.msg);}
-else{setPortalStatus("fincaraiz","pending","En proceso");addLog("info","Finca Raiz",result.msg);}
+if(result.ok){setPortalStatus("fincaraiz","ok","Publicado");addLog("success","Finca Raíz",result.msg);}
+else{setPortalStatus("fincaraiz","pending","En proceso");addLog("info","Finca Raíz",result.msg);}
 return;
 }
 if(p.id === "proppit"){
@@ -712,7 +713,7 @@ addLog("success","Proppit",proppitMsg);
 return;
 }
 await new Promise(r=>setTimeout(r,800));
-const{error:ePortal}=await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:p.id,estado:"pendiente_credenciales",mensaje:msgs[p.id]||"Requiere configuracion.",asesor_id:currentUser.id});
+const{error:ePortal}=await sb.from("publicaciones_portales").insert({propiedad_id:prop.id,portal:p.id,estado:"pendiente_credenciales",mensaje:msgs[p.id]||"Requiere configuración.",asesor_id:currentUser.id});
 if(ePortal){setPortalStatus(p.id,"error","Error DB");addLog("error",p.name,"Error: "+ePortal.message);}
 else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,msgs[p.id]);}
 }});
@@ -720,7 +721,7 @@ else{setPortalStatus(p.id,"pending","Config. requerida");addLog("info",p.name,ms
 if(__tareas.length){
 const __apro = await confirmarPublicacionPortales(__tareas);
 if(!__apro){
-addLog("info","Portales","No se aprobo el envio. La propiedad quedo publicada solo en Lomaz Home.");
+addLog("info","Portales","No se aprobo el envio. La propiedad quedo publicada solo en LoMaz Home.");
 __tareas.forEach(function(t){ setPortalStatus(t.id,"pending","No enviado"); });
 __tareas.length=0;
 }
@@ -733,8 +734,8 @@ await Promise.allSettled(__auto.map(function(t){ return (async function(){ try {
 }
 for(const t of __asis){ try { await t.run(); } catch(e) { setPortalStatus(t.id,"error","Error"); addLog("error",t.name,"Error: "+((e&&e.message)||e)); } }
 try { await sincronizarPortalesDePropiedad(prop.id); } catch(_sp) {}
-btn.textContent="Publicado en Lomaz Home";
-showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicacion.","success");
+btn.textContent="Publicado en LoMaz Home";
+showAlert("Propiedad publicada. Revisa el registro de portales para ver el estado de cada publicación.","success");
   btn.textContent="Redirigiendo a Mis Propiedades...";
   setTimeout(function(){ window.location.href="mis-propiedades.html"; }, 2500);
 }
@@ -815,12 +816,12 @@ function confirmarPublicacionPortales(tareas){
       ov.id="ovConfirmPortales";
       ov.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:1rem";
       var h='<div style="max-width:430px;width:100%;background:#111827;border:1px solid #b8892b;border-radius:14px;padding:1.1rem 1.2rem;color:#e8eefc">';
-      h+='<div style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem">Confirma la publicacion en portales</div>';
-      h+='<div style="font-size:.86rem;color:#9aa7bd;margin-bottom:.8rem">La propiedad ya quedo publicada en Lomaz Home. Esto es lo que se enviara ahora:</div>';
-      if(autos.length){ h+='<div style="font-size:.78rem;letter-spacing:.06em;color:#b8892b;font-weight:700">EN PARALELO, AUTOMATICO</div><ul style="margin:.2rem 0 .7rem 1.1rem;font-size:.9rem">'+autos.map(function(n){return "<li>"+n+"</li>";}).join("")+"</ul>"; }
-      if(asis.length){ h+='<div style="font-size:.78rem;letter-spacing:.06em;color:#9aa7bd;font-weight:700">ASISTIDO, TU PEGAS EL TEXTO</div><ul style="margin:.2rem 0 .7rem 1.1rem;font-size:.9rem">'+asis.map(function(n){return "<li>"+n+"</li>";}).join("")+"</ul>"; }
-      h+='<div style="font-size:.78rem;color:#9aa7bd;margin-bottom:.9rem">Despues puedes revisar el estado de cada aviso en la pagina Portales.</div>';
-      h+='<div style="display:flex;gap:.5rem;justify-content:flex-end"><button type="button" id="btnNoPortales" style="background:transparent;border:1px solid #475569;color:#e8eefc;border-radius:8px;padding:.5rem .8rem;cursor:pointer">Solo Lomaz Home</button><button type="button" id="btnSiPortales" style="background:linear-gradient(135deg,#b8892b,#8a6620);border:0;color:#fff;border-radius:8px;padding:.5rem .9rem;font-weight:700;cursor:pointer">Si, publicar ahora</button></div></div>';
+      h+='<div style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem">Confirma la publicación en portales</div>';
+      h+='<div style="font-size:.86rem;color:#9aa7bd;margin-bottom:.8rem">La propiedad ya quedo publicada en LoMaz Home. Esto es lo que se enviará ahora:</div>';
+      if(autos.length){ h+='<div style="font-size:.78rem;letter-spacing:.06em;color:#b8892b;font-weight:700">EN PARALELO, AUTOMÁTICO</div><ul style="margin:.2rem 0 .7rem 1.1rem;font-size:.9rem">'+autos.map(function(n){return "<li>"+n+"</li>";}).join("")+"</ul>"; }
+      if(asis.length){ h+='<div style="font-size:.78rem;letter-spacing:.06em;color:#9aa7bd;font-weight:700">ASISTIDO, TÚ PEGAS EL TEXTO</div><ul style="margin:.2rem 0 .7rem 1.1rem;font-size:.9rem">'+asis.map(function(n){return "<li>"+n+"</li>";}).join("")+"</ul>"; }
+      h+='<div style="font-size:.78rem;color:#9aa7bd;margin-bottom:.9rem">Después puedes revisar el estado de cada aviso en la página Portales.</div>';
+      h+='<div style="display:flex;gap:.5rem;justify-content:flex-end"><button type="button" id="btnNoPortales" style="background:transparent;border:1px solid #475569;color:#e8eefc;border-radius:8px;padding:.5rem .8rem;cursor:pointer">Solo LoMaz Home</button><button type="button" id="btnSiPortales" style="background:linear-gradient(135deg,#b8892b,#8a6620);border:0;color:#fff;border-radius:8px;padding:.5rem .9rem;font-weight:700;cursor:pointer">Si, publicar ahora</button></div></div>';
       ov.innerHTML=h;
       document.body.appendChild(ov);
       var fin=function(v){ try { ov.remove(); } catch(_e) {} resolve(v); };
@@ -868,7 +869,7 @@ var selR = document.getElementById("metro_region");
 try{
 var regiones = await mcCatalog("regions");
 __metroCache.regions = regiones;
-mcFillSelect(selR, regiones, "id", "name", "Selecciona region...");
+mcFillSelect(selR, regiones, "id", "name", "Selecciona región...");
 }catch(e){ selR.innerHTML = '<option value="">Error cargando</option>'; console.error("metro regions",e); }
 }
 }
@@ -880,7 +881,7 @@ var selS = document.getElementById("metro_sector_sel");
 if(selR) selR.addEventListener("change", async function(){
 mcSetHidden("metro_city_id",""); mcSetHidden("metro_zone_id",""); mcSetHidden("metro_sector_id","");
 selC.innerHTML='<option value="">Cargando...</option>'; selZ.innerHTML='<option value="">Selecciona ciudad...</option>'; selS.innerHTML='<option value="">Selecciona zona...</option>';
-if(!selR.value) { selC.innerHTML='<option value="">Selecciona region...</option>'; return; }
+if(!selR.value) { selC.innerHTML='<option value="">Selecciona región...</option>'; return; }
 try{ var ciudades = await mcCatalog("cities", {regionId: selR.value}); mcFillSelect(selC, ciudades, "id","name","Selecciona ciudad..."); }catch(e){ selC.innerHTML='<option value="">Error cargando</option>'; console.error("metro cities",e); }
 });
 if(selC) selC.addEventListener("change", async function(){
@@ -916,11 +917,11 @@ headers:_hdr,
 body: JSON.stringify({propertyId: propId, ticket: tk.data})
 });
 var json = await resp.json().catch(function(){return {};});
-// Metrocuadrado responde 200 "Transaccion de publicacion recibida" (no 201): cualquier 2xx es exito.
+// Metrocuadrado responde 200 "Transacción de publicación recibida" (no 201): cualquier 2xx es exito.
 if(resp.status >= 200 && resp.status < 300 && json && json.status >= 200 && json.status < 300){
 var tid = json.transactionId || (json.respuesta && (json.respuesta.transactionId || json.respuesta.transaction_id)) || "";
 var rid = json.realEstateId || "";
-return {ok:true, msg:"Publicado en Metrocuadrado correctamente."+(rid?(" Codigo Metrocuadrado: "+rid):"")+(tid?(" Transaction ID: "+tid):"")};
+return {ok:true, msg:"Publicado en Metrocuadrado correctamente."+(rid?(" Código Metrocuadrado: "+rid):"")+(tid?(" Transaction ID: "+tid):"")};
 }
 var errMsg = (json && (json.error || (json.respuesta && (json.respuesta.message || JSON.stringify(json.respuesta))))) || ("Error HTTP "+resp.status);
 var _pend = (window.lmzMetroPendiente ? window.lmzMetroPendiente(errMsg) : "");
@@ -952,21 +953,21 @@ if (json && json.ok) {
     const btnA = document.getElementById('btn-activar-fr');
     if (btnA) { btnA.style.display='inline-block'; btnA.dataset.taskId = taskId; btnA.dataset.propId = propId; }
   }, 200);
-  try { setTimeout(function(){ try { if (typeof window.activarEnFincaraiz === 'function') window.activarEnFincaraiz(); } catch(_e) {} }, 1500); } catch(_e) {} return { ok:true, msg: 'Enviado a Finca Raiz. Task ID: ' + taskId + '. Activando automaticamente, revisa el registro.' };
+  try { setTimeout(function(){ try { if (typeof window.activarEnFincaraiz === 'function') window.activarEnFincaraiz(); } catch(_e) {} }, 1500); } catch(_e) {} return { ok:true, msg: 'Enviado a Finca Raíz. Task ID: ' + taskId + '. Activando automáticamente, revisa el registro.' };
 }
-if (json && json.status === 'en_proceso') { const _tid = json.task_id || ''; window._LAST_FR_TASK_ID = _tid; window._LAST_FR_PROP_ID = propId; setTimeout(function(){ const _b = document.getElementById('btn-activar-fr'); if (_b) { _b.style.display='inline-block'; _b.dataset.taskId=_tid; _b.dataset.propId=propId; } }, 200); return { ok:false, msg: 'Finca Raiz devolvio en_proceso (task ' + (_tid || 'sin id') + '). Usa el boton ACTIVAR para completar la publicacion.' }; } if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raiz.' };
-return { ok:false, msg: 'Error Finca Raiz: ' + (json && json.msg ? json.msg : JSON.stringify(json).substring(0,300)) };
+if (json && json.status === 'en_proceso') { const _tid = json.task_id || ''; window._LAST_FR_TASK_ID = _tid; window._LAST_FR_PROP_ID = propId; setTimeout(function(){ const _b = document.getElementById('btn-activar-fr'); if (_b) { _b.style.display='inline-block'; _b.dataset.taskId=_tid; _b.dataset.propId=propId; } }, 200); return { ok:false, msg: 'Finca Raíz devolvio en_proceso (task ' + (_tid || 'sin id') + '). Usa el botón ACTIVAR para completar la publicación.' }; } if (json && json.status === 'pendiente_credenciales') return { ok:false, msg: 'Pendiente: faltan credenciales de Finca Raíz.' };
+return { ok:false, msg: 'Error Finca Raíz: ' + (json && json.msg ? json.msg : JSON.stringify(json).substring(0,300)) };
 } catch(e) {
 return { ok:false, msg: 'Error de red: ' + e.message };
 }
 };
 
-window.__frVerificarActivacion = async function(taskId, propId, btn){ var supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co'; var supaKey = (typeof SKEY!=='undefined') ? SKEY : ''; for (var i=0; i<18; i++){ await new Promise(function(res){ setTimeout(res, 10000); }); var st=null, jj=null; try { var rr = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', { method:'POST', headers:{ 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey }, body: JSON.stringify({ accion:'consultar_task', task_id: taskId }) }); jj = await rr.json().catch(function(){ return {}; }); st = jj && jj.status; } catch(_e) { continue; } if (st==='COMPLETED' || st==='FORWARDED') { addLog('success','Finca Raiz - ACTIVAR','Propiedad activada correctamente en Finca Raiz. Ya esta visible publicamente.'); if (btn) { btn.disabled=true; btn.textContent='Activada en Finca Raiz'; btn.style.background='linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; btn.style.color='#fff'; } try { var _txt=''; try { _txt = JSON.stringify(jj||{}); } catch(_j) { _txt=''; } var _mp = _txt.match(/"fr_property_id"\s*:\s*"?(\d{4,})/) || _txt.match(/"(?:property_id|propertyId)"\s*:\s*"?(\d{4,})/); var _lid2 = null; try { var _q2 = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); _lid2 = (_q2 && _q2.data && _q2.data.url_publicacion) || null; } catch(_e2) {} var _msg = 'Aviso ACTIVO en Finca Raiz.' + (_lid2 ? ' listing_id ' + _lid2 : '') + (_mp ? ', fr_property_id ' + _mp[1] : ''); await sb.from('publicaciones_portales').update({ estado:'activo', mensaje:_msg }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_u) {} try { await sincronizarPortalesDePropiedad(propId); } catch(_sp2) {} return true; } if (st==='ERROR') { var _m=''; try { var _c = jj.task && jj.task.content; _c = Array.isArray(_c) ? _c[0] : _c; _m = (_c && _c.error && (_c.error.message || _c.error)) || ''; } catch(_x) {} addLog('error','Finca Raiz - ACTIVAR','Finca Raiz rechazo la activacion: ' + (_m || 'error no especificado')); if (btn) { btn.disabled=false; btn.textContent='Reintentar activacion'; } return false; } } addLog('info','Finca Raiz - ACTIVAR','Finca Raiz sigue procesando la activacion (task ' + taskId + '). Suele completarse en unos minutos; vuelve a abrir la propiedad mas tarde para confirmar.'); if (btn) { btn.disabled=false; btn.textContent='Verificar activacion'; } return null; }; // Boton para activar la propiedad en Finca Raiz (PATCH /listing/status)
+window.__frVerificarActivacion = async function(taskId, propId, btn){ var supaUrl = (typeof SURL!=='undefined') ? SURL : 'https://lniouebpuuuqctrgxoiw.supabase.co'; var supaKey = (typeof SKEY!=='undefined') ? SKEY : ''; for (var i=0; i<18; i++){ await new Promise(function(res){ setTimeout(res, 10000); }); var st=null, jj=null; try { var rr = await fetch(supaUrl + '/functions/v1/publicar-en-fincaraiz', { method:'POST', headers:{ 'Content-Type':'application/json', 'apikey': supaKey, 'Authorization': 'Bearer ' + supaKey }, body: JSON.stringify({ accion:'consultar_task', task_id: taskId }) }); jj = await rr.json().catch(function(){ return {}; }); st = jj && jj.status; } catch(_e) { continue; } if (st==='COMPLETED' || st==='FORWARDED') { addLog('success','Finca Raíz - ACTIVAR','Propiedad activada correctamente en Finca Raíz. Ya esta visible publicamente.'); if (btn) { btn.disabled=true; btn.textContent='Activada en Finca Raíz'; btn.style.background='linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; btn.style.color='#fff'; } try { var _txt=''; try { _txt = JSON.stringify(jj||{}); } catch(_j) { _txt=''; } var _mp = _txt.match(/"fr_property_id"\s*:\s*"?(\d{4,})/) || _txt.match(/"(?:property_id|propertyId)"\s*:\s*"?(\d{4,})/); var _lid2 = null; try { var _q2 = await sb.from('publicaciones_portales').select('url_publicacion').eq('propiedad_id', propId).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); _lid2 = (_q2 && _q2.data && _q2.data.url_publicacion) || null; } catch(_e2) {} var _msg = 'Aviso ACTIVO en Finca Raíz.' + (_lid2 ? ' listing_id ' + _lid2 : '') + (_mp ? ', fr_property_id ' + _mp[1] : ''); await sb.from('publicaciones_portales').update({ estado:'activo', mensaje:_msg }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_u) {} try { await sincronizarPortalesDePropiedad(propId); } catch(_sp2) {} return true; } if (st==='ERROR') { var _m=''; try { var _c = jj.task && jj.task.content; _c = Array.isArray(_c) ? _c[0] : _c; _m = (_c && _c.error && (_c.error.message || _c.error)) || ''; } catch(_x) {} addLog('error','Finca Raíz - ACTIVAR','Finca Raíz rechazo la activacion: ' + (_m || 'error no especificado')); if (btn) { btn.disabled=false; btn.textContent='Reintentar activacion'; } return false; } } addLog('info','Finca Raíz - ACTIVAR','Finca Raíz sigue procesando la activacion (task ' + taskId + '). Suele completarse en unos minutos; vuelve a abrir la propiedad mas tarde para confirmar.'); if (btn) { btn.disabled=false; btn.textContent='Verificar activacion'; } return null; }; // Boton para activar la propiedad en Finca Raiz (PATCH /listing/status)
 window.activarEnFincaraiz = async function(){
 const btn = document.getElementById('btn-activar-fr');
 if (!btn) return;
 const propId = btn.dataset.propId;
-if (!propId) { alert('Primero publica la propiedad en Finca Raiz'); return; }
+if (!propId) { alert('Primero publica la propiedad en Finca Raíz'); return; }
 btn.disabled = true;
 btn.textContent = 'Activando...';
 try {
@@ -979,17 +980,17 @@ body: JSON.stringify({ accion: 'activar', propiedad_id: propId, task_id: (btn.da
 });
 const json = await resp.json().catch(function(){return {};});
 if (json && json.ok) {
-  addLog('success','Finca Raiz - ACTIVAR', 'Propiedad activada correctamente en Finca Raiz. Ya esta visible publicamente.');
-  btn.textContent = 'Activada en Finca Raiz'; try { await sb.from('publicaciones_portales').update({ estado: 'activo', mensaje: 'Aviso ACTIVO en Finca Raiz.' }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_e){}
+  addLog('success','Finca Raíz - ACTIVAR', 'Propiedad activada correctamente en Finca Raíz. Ya esta visible publicamente.');
+  btn.textContent = 'Activada en Finca Raíz'; try { await sb.from('publicaciones_portales').update({ estado: 'activo', mensaje: 'Aviso ACTIVO en Finca Raíz.' }).eq('propiedad_id', propId).eq('portal','fincaraiz'); } catch(_e){}
   btn.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)';
   btn.style.color = '#fff';
 } else {
-  if (json && json.status === 'en_proceso') { var _tk = json.task_id || btn.dataset.taskId || window._LAST_FR_TASK_ID || ''; addLog('loading','Finca Raiz - ACTIVAR', 'Activacion enviada a Finca Raiz (task ' + (_tk || 'sin id') + '). El portal la esta procesando; verificando automaticamente cada 10 segundos...'); btn.disabled = true; btn.textContent = 'Activacion en proceso, verificando...'; if (typeof window.__frVerificarActivacion === 'function') { window.__frVerificarActivacion(_tk, propId, btn); } return; } addLog('error','Finca Raiz - ACTIVAR', 'Error al activar: ' + (json && json.msg ? json.msg : 'respuesta no esperada'));
+  if (json && json.status === 'en_proceso') { var _tk = json.task_id || btn.dataset.taskId || window._LAST_FR_TASK_ID || ''; addLog('loading','Finca Raíz - ACTIVAR', 'Activacion enviada a Finca Raíz (task ' + (_tk || 'sin id') + '). El portal la esta procesando; verificando automáticamente cada 10 segundos...'); btn.disabled = true; btn.textContent = 'Activacion en proceso, verificando...'; if (typeof window.__frVerificarActivacion === 'function') { window.__frVerificarActivacion(_tk, propId, btn); } return; } addLog('error','Finca Raíz - ACTIVAR', 'Error al activar: ' + (json && json.msg ? json.msg : 'respuesta no esperada'));
   btn.disabled = false;
   btn.textContent = 'Reintentar activacion';
 }
 } catch(e) {
-addLog('error','Finca Raiz - ACTIVAR', 'Error de red: ' + e.message);
+addLog('error','Finca Raíz - ACTIVAR', 'Error de red: ' + e.message);
 btn.disabled = false;
 btn.textContent = 'Reintentar activacion';
 }
@@ -1002,7 +1003,7 @@ try {
   var tipo = (propData.tipo_propiedad||'').charAt(0).toUpperCase() + (propData.tipo_propiedad||'').slice(1);
   var op = propData.tipo_operacion === 'venta' ? 'EN VENTA' : (propData.tipo_operacion === 'arriendo' ? 'EN ARRIENDO' : 'DISPONIBLE');
   var precio = '$' + Number(propData.precio||0).toLocaleString('es-CO') + ' COP';
-  var admin = propData.precio_admin > 0 ? NL + 'Administracion: $' + Number(propData.precio_admin).toLocaleString('es-CO') : '';
+  var admin = propData.precio_admin > 0 ? NL + 'Administración: $' + Number(propData.precio_admin).toLocaleString('es-CO') : '';
   var ubic = [propData.barrio, propData.ciudad, propData.departamento].filter(Boolean).join(', ');
   var habs = propData.habitaciones ? NL + 'Habitaciones: ' + propData.habitaciones : '';
   var banos = propData.banos ? NL + 'Baños: ' + propData.banos : '';
@@ -1012,7 +1013,7 @@ try {
   var ament = (propData.amenidades && propData.amenidades.length) ? NL+NL + 'AMENIDADES:' + NL + propData.amenidades.slice(0,15).map(function(a){return '- '+a;}).join(NL) : '';
   var hashtags = ['#Inmobiliaria','#'+(propData.ciudad||'Colombia').replace(/\s+/g,''),'#'+(propData.tipo_propiedad||'Propiedad'),'#'+(propData.tipo_operacion||'Venta'),'#LoMazHome','#BienesRaices'].join(' ');
   var url = 'https://www.lomazhome.com/propiedad.html?id=' + propId;
-  var texto = tipo.toUpperCase() + ' ' + op + NL + NL + propData.titulo + NL + NL + 'Ubicacion: ' + ubic + NL + 'Precio: ' + precio + admin + m2 + habs + banos + parq + estrato + NL + NL + 'DESCRIPCION:' + NL + propData.descripcion + ament + NL + NL + 'Agenda tu visita HOY!' + NL + 'Mas info: ' + url + NL + NL + hashtags;
+  var texto = tipo.toUpperCase() + ' ' + op + NL + NL + propData.titulo + NL + NL + 'Ubicación: ' + ubic + NL + 'Precio: ' + precio + admin + m2 + habs + banos + parq + estrato + NL + NL + 'DESCRIPCION:' + NL + propData.descripcion + ament + NL + NL + 'Agenda tu visita HOY!' + NL + 'Mas info: ' + url + NL + NL + hashtags;
   await navigator.clipboard.writeText(texto);
   var fotos = propData.fotos || [];
   if (fotos.length > 0) {
@@ -1030,7 +1031,7 @@ try {
   }, 1500);
   return { ok:true, msg:'Texto copiado al portapapeles. Se abriran las fotos y Facebook Marketplace en nuevas pestanas. Pega el texto con Ctrl+V y sube las fotos descargadas.' };
 } catch(e) {
-  return { ok:false, msg:'Error preparando publicacion: ' + e.message };
+  return { ok:false, msg:'Error preparando publicación: ' + e.message };
 }
 };
 
@@ -1049,7 +1050,7 @@ try {
   var specs = [habs,banos,parq,m2].filter(Boolean).join(' - ');
   var top3 = (propData.amenidades||[]).slice(0,5).map(function(a){return '- '+a;}).join(NL);
   var tags = ['#inmobiliaria','#bienesraices','#'+(propData.ciudad||'colombia').toLowerCase().replace(/\s+/g,''),'#'+(propData.tipo_propiedad||'propiedad').toLowerCase(),'#'+(propData.tipo_operacion||'venta'),'#lomazhome','#realestate','#vivienda','#'+(propData.tipo_operacion==='venta'?'casaenventa':'casaenarriendo'),'#sebusca','#hogar','#nuevahogar','#sumejorinversion','#asesorinmobiliario','#colombia'].join(' ');
-  var caption = tipo + ' ' + op + NL + NL + propData.titulo + NL + NL + 'Ubicacion: ' + ubic + NL + 'Precio: ' + precio + NL + specs + (top3 ? NL+NL+'Caracteristicas:'+NL+top3 : '') + NL + NL + (propData.descripcion||'').substring(0,500) + NL + NL + 'Mas info: lomazhome.com' + NL + NL + tags;
+  var caption = tipo + ' ' + op + NL + NL + propData.titulo + NL + NL + 'Ubicación: ' + ubic + NL + 'Precio: ' + precio + NL + specs + (top3 ? NL+NL+'Caracteristicas:'+NL+top3 : '') + NL + NL + (propData.descripcion||'').substring(0,500) + NL + NL + 'Mas info: lomazhome.com' + NL + NL + tags;
   await navigator.clipboard.writeText(caption);
   var fotos = propData.fotos || [];
   if (fotos.length > 0) {
@@ -1067,7 +1068,7 @@ try {
   }, 1500);
   return { ok:true, msg:'Caption copiado al portapapeles + fotos descargadas. Abre Instagram, crea un post, sube las fotos y pega el caption con Ctrl+V.' };
 } catch(e) {
-  return { ok:false, msg:'Error preparando publicacion IG: ' + e.message };
+  return { ok:false, msg:'Error preparando publicación IG: ' + e.message };
 }
 };
 
@@ -1258,7 +1259,7 @@ try {
       setTimeout(function(){ sv('ciudad', r.ciudad); setTimeout(function(){ sv('barrio', r.barrio); }, 250); }, 350);
       var h1 = document.querySelector('.page-title') || document.querySelector('h1');
       if(h1){ h1.innerHTML = h1.innerHTML.replace(/Agregar/i,'Editar'); }
-      document.title = 'Editar Propiedad - Lomaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); } try{ (async function(){ try{ var _sbq = window.__editClient || (typeof getClient==='function' ? await getClient() : null); if(!_sbq) return; var _pp = await _sbq.from('publicaciones_portales').select('estado,url_publicacion').eq('propiedad_id', r.id).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); var _row = _pp && _pp.data; if(!_row) return; var _bt = document.getElementById('btn-activar-fr'); if(!_bt) return; _bt.dataset.propId = String(r.id); if(_row.url_publicacion) _bt.dataset.listingId = _row.url_publicacion; _bt.style.display = 'inline-block'; if(_row.estado === 'activo'){ _bt.disabled = true; _bt.textContent = 'Activada en Finca Raiz'; _bt.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; _bt.style.color = '#fff'; } else { _bt.disabled = false; _bt.textContent = 'Activar en Finca Raiz (pasar de Pendiente a Activa)'; } }catch(_be){ console.error('init boton activar FR', _be); } })(); }catch(_bx){}
+      document.title = 'Editar Propiedad - LoMaz Home'; try{ var __ef=r.fotos; if(typeof __ef==='string'){ try{__ef=JSON.parse(__ef);}catch(_){ __ef=__ef.split(',').map(function(s){return s.trim();}).filter(Boolean);} } if(Array.isArray(__ef)&&__ef.length){ window.__uploadedFotos=__ef.slice(); if(typeof __syncFotosUrl==='function')__syncFotosUrl(); if(typeof __renderFotoPreviews==='function')__renderFotoPreviews(); } }catch(_fe){ console.error('precarga fotos', _fe); } try{ var __ch=r.caracteristicas||r.amenidades; if(typeof __ch==='string'){ try{__ch=JSON.parse(__ch);}catch(_){ __ch=__ch.split(',').map(function(s){return s.trim();}); } } if(Array.isArray(__ch)&&__ch.length){ var __set={}; __ch.forEach(function(v){ __set[String(v).trim()]=1; }); [].slice.call(document.querySelectorAll('input[name="char"]')).forEach(function(c){ if(__set[String(c.value).trim()]) c.checked=true; }); } }catch(_ce){ console.error('precarga caracteristicas', _ce); } try{ (async function(){ try{ var _sbq = window.__editClient || (typeof getClient==='function' ? await getClient() : null); if(!_sbq) return; var _pp = await _sbq.from('publicaciones_portales').select('estado,url_publicacion').eq('propiedad_id', r.id).eq('portal','fincaraiz').order('fecha',{ascending:false}).limit(1).maybeSingle(); var _row = _pp && _pp.data; if(!_row) return; var _bt = document.getElementById('btn-activar-fr'); if(!_bt) return; _bt.dataset.propId = String(r.id); if(_row.url_publicacion) _bt.dataset.listingId = _row.url_publicacion; _bt.style.display = 'inline-block'; if(_row.estado === 'activo'){ _bt.disabled = true; _bt.textContent = 'Activada en Finca Raíz'; _bt.style.background = 'linear-gradient(135deg,#2a8a4f 0%,#1f6b3c 100%)'; _bt.style.color = '#fff'; } else { _bt.disabled = false; _bt.textContent = 'Activar en Finca Raíz (pasar de Pendiente a Activa)'; } }catch(_be){ console.error('init botón activar FR', _be); } })(); }catch(_bx){}
       try{ if(typeof __syncParqDesdeChecks==="function") __syncParqDesdeChecks(); }catch(_e){}
       try{ precargarMetro(r); }catch(_pm){ console.error('precarga Metrocuadrado', _pm); }
     }catch(e){ console.error('prefill err', e); }
@@ -1294,7 +1295,7 @@ try {
     if(cb && !cb.checked){ cb.checked = true; try{ togglePortal(cb,'row-metrocuadrado'); }catch(_e){} }
     if(typeof toggleMetroMapa==='function') await toggleMetroMapa(cb||{checked:true});
     if(!tieneMapeo){
-      try{ showAlert('Esta propiedad esta marcada para Metrocuadrado pero le falta la ubicacion de Metrocuadrado. Elige Region, Ciudad, Zona y Sector en la seccion de Portales y guarda cambios.','info'); }catch(_e){}
+      try{ showAlert('Esta propiedad esta marcada para Metrocuadrado pero le falta la ubicación de Metrocuadrado. Elige Región, Ciudad, Zona y Sector en la sección de Portales y guarda cambios.','info'); }catch(_e){}
       return;
     }
     var selR=document.getElementById('metro_region'), selC=document.getElementById('metro_city_sel'), selZ=document.getElementById('metro_zone_sel'), selS=document.getElementById('metro_sector_sel');
@@ -1336,7 +1337,7 @@ try {
         var __row = window.__EDIT_ROW || {};
         var __yaTiene = !!(__row.metro_city_id && __row.metro_zone_id && __row.metro_sector_id);
         if(__chM && __chM.checked && !__mapeo && !__yaTiene){
-          showAlert('Para publicar en Metrocuadrado selecciona Region, Ciudad, Zona y Sector en la seccion de Portales (fila Metrocuadrado) y vuelve a guardar.','error');
+          showAlert('Para publicar en Metrocuadrado selecciona Región, Ciudad, Zona y Sector en la sección de Portales (fila Metrocuadrado) y vuelve a guardar.','error');
           try{ var __mr=document.getElementById('mapaMetroRow'); if(__mr){ __mr.style.display='flex'; __mr.scrollIntoView({behavior:'smooth',block:'center'}); } }catch(_me){}
           return;
         }
@@ -1401,7 +1402,7 @@ try {
   var LS_AUTO = "lmzAutoActualizarPortales";
   var P = {
     metrocuadrado:{name:"Metrocuadrado", tipo:"api", home:"https://www.metrocuadrado.com/"},
-    fincaraiz:{name:"Finca Raiz", tipo:"api", home:"https://www.fincaraiz.com.co/"},
+    fincaraiz:{name:"Finca Raíz", tipo:"api", home:"https://www.fincaraiz.com.co/"},
     proppit:{name:"Proppit", tipo:"feed", home:"https://www.proppit.com/"},
     marketplace:{name:"Facebook Marketplace", tipo:"manual", home:"https://www.facebook.com/marketplace/you/selling"},
     instagram:{name:"Instagram", tipo:"manual", home:"https://www.instagram.com/"}
@@ -1491,13 +1492,13 @@ try {
     lista.forEach(function(r){
       if(r.portal==="metrocuadrado"&&enProceso(r.estado)&&!window.__LMZ_METRO&&!r.property_id){
         r.estado="error";
-        if(!r.mensaje) r.mensaje="Metrocuadrado no acepto el aviso. Revisa que la propiedad tenga Region, Ciudad, Zona y Sector de Metrocuadrado (seccion Portales) y pulsa Reintentar.";
+        if(!r.mensaje) r.mensaje="Metrocuadrado no acepto el aviso. Revisa que la propiedad tenga Región, Ciudad, Zona y Sector de Metrocuadrado (sección Portales) y pulsa Reintentar.";
       }
     });
     var filas=lista.map(function(r){
       var det=[];
       if(r.portal==="metrocuadrado"&&/^error$/i.test(String(r.estado||""))&&r.mensaje) det.push("Motivo: "+String(r.mensaje).replace(/^[^|]*\|\s*/,"").substring(0,220));
-      if(r.portal==="fincaraiz"&&r.property_id) det.push("Codigo Finca Raiz "+r.property_id);
+      if(r.portal==="fincaraiz"&&r.property_id) det.push("Código Finca Raíz "+r.property_id);
       else if(r.property_id) det.push("ID portal "+r.property_id);
       if(r.listing_id) det.push("Aviso "+r.listing_id.substring(0,8));
       if(r.portal==="proppit") det.push("Referencia "+EDIT_ID+" en el feed XML");
@@ -1510,9 +1511,9 @@ try {
       if(!retirado(r.estado)) acc+=boton("Retirar","retirar",r.portal,"#f87171");
       return '<div class="portal-row" style="align-items:center;justify-content:space-between"><div><div class="portal-name">'+esc(nombre(r.portal))+'</div><div class="portal-desc">'+esc(det.join(" - "))+'</div></div><div style="display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;justify-content:flex-end">'+chipEstado(r.estado)+acc+'</div></div>';
     }).join("");
-    if(!filas) filas='<div style="color:#94a3b8;font-size:.82rem">Esta propiedad todavia no se ha enviado a ningun portal. Marca abajo los portales que quieras y guarda los cambios.</div>';
+    if(!filas) filas='<div style="color:#94a3b8;font-size:.82rem">Esta propiedad todavía no se ha enviado a ningún portal. Marca abajo los portales que quieras y guarda los cambios.</div>';
     var auto=false; try{ auto=localStorage.getItem(LS_AUTO)==="1"; }catch(_e){}
-    host.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap"><div style="color:var(--gold);font-size:.78rem;font-weight:700;letter-spacing:.07em">PORTALES DE ESTA PROPIEDAD</div>'+boton("Refrescar","refrescar","","#94a3b8")+'</div><div style="color:#94a3b8;font-size:.78rem;margin:.35rem 0 .7rem">Cada portal es independiente: aqui puedes ver el aviso, pausarlo o retirarlo sin borrar la propiedad de Lomaz Home.</div>'+filas+'<label style="display:flex;align-items:flex-start;gap:.5rem;margin-top:.85rem;font-size:.77rem;color:#cbd5e1;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" id="chAutoPortales" '+(auto?"checked":"")+' style="margin-top:2px;width:16px;height:16px;flex:0 0 16px"/><span>Al guardar cambios, actualizar automaticamente los portales publicados sin preguntarme.</span></label>';
+    host.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap"><div style="color:var(--gold);font-size:.78rem;font-weight:700;letter-spacing:.07em">PORTALES DE ESTA PROPIEDAD</div>'+boton("Refrescar","refrescar","","#94a3b8")+'</div><div style="color:#94a3b8;font-size:.78rem;margin:.35rem 0 .7rem">Cada portal es independiente: aquí puedes ver el aviso, pausarlo o retirarlo sin borrar la propiedad de LoMaz Home.</div>'+filas+'<label style="display:flex;align-items:flex-start;gap:.5rem;margin-top:.85rem;font-size:.77rem;color:#cbd5e1;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" id="chAutoPortales" '+(auto?"checked":"")+' style="margin-top:2px;width:16px;height:16px;flex:0 0 16px"/><span>Al guardar cambios, actualizar automáticamente los portales publicados sin preguntarme.</span></label>';
   }
   window.lmzRenderPortales=render;
   // ---------- Finca Raiz: el aviso publico se abre por su codigo (fr_property_id) ----------
@@ -1558,14 +1559,14 @@ try {
     for(var i=0;i<tasks.length&&i<8;i++){
       var t=await frTarea(tasks[i]); if(!t) continue;
       if(t.code){ best=t; best.task_id=tasks[i]; break; }
-      if(t.c0status==="ERROR"||t.status==="ERROR"){ if(!motivo) motivo="Finca Raiz reporto un error en el aviso"+(t.error?": "+t.error:"")+"."; }
-      else if(t.status&&t.status!=="null"&&!/not found/i.test(t.raw||"")){ if(!motivo) motivo="Finca Raiz sigue procesando el aviso (tarea "+tasks[i].substring(0,8)+"). Intenta de nuevo en unos minutos."; }
+      if(t.c0status==="ERROR"||t.status==="ERROR"){ if(!motivo) motivo="Finca Raíz reporto un error en el aviso"+(t.error?": "+t.error:"")+"."; }
+      else if(t.status&&t.status!=="null"&&!/not found/i.test(t.raw||"")){ if(!motivo) motivo="Finca Raíz sigue procesando el aviso (tarea "+tasks[i].substring(0,8)+"). Intenta de nuevo en unos minutos."; }
     }
-    if(!best) return {ok:false, motivo:motivo||"Finca Raiz no ha devuelto todavia el codigo publico de este aviso. Si ya lo ves en el portal, abre fincaraiz.com.co con tu cuenta y busca la propiedad en Mis inmuebles."};
+    if(!best) return {ok:false, motivo:motivo||"Finca Raíz no ha devuelto todavía el código público de este aviso. Si ya lo ves en el portal, abre fincaraiz.com.co con tu cuenta y busca la propiedad en Mis inmuebles."};
     var inv=await frEstadoInventario(best.code);
     var estado=(inv===4)?"activo":((inv===1)?"inactivo":((activo(r.estado)||enProceso(r.estado))?"publicado":(r.estado||"publicado")));
     var nr={ portal:"fincaraiz", listing_id:(best.listing_id||r.listing_id||""), property_id:best.code, task_id:(best.task_id||r.task_id||""), url_publicacion:(best.listing_id||r.url_publicacion||"") };
-    var nota=(inv===4)?"Aviso visible al publico en Finca Raiz (codigo "+best.code+")":((inv===1)?"Aviso creado en Finca Raiz (codigo "+best.code+") pero NO visible al publico: usa Reactivar o el boton Activar en Finca Raiz.":"Aviso creado en Finca Raiz (codigo "+best.code+").");
+    var nota=(inv===4)?"Aviso visible al público en Finca Raíz (código "+best.code+")":((inv===1)?"Aviso creado en Finca Raíz (código "+best.code+") pero NO visible al público: usa Reactivar o el botón Activar en Finca Raíz.":"Aviso creado en Finca Raíz (código "+best.code+").");
     await registrar(nr,estado,nota);
     return {ok:true, property_id:best.code, listing_id:nr.listing_id, estado:estado, inv:inv, nota:nota};
   }
@@ -1575,15 +1576,15 @@ try {
     var faltas=[];
     if(p){
       // Mismas exigencias que aplica el feed (supabase/functions/proppit-feed): sin estos datos Proppit descarta el aviso.
-      if(["activo","activa","publicada"].indexOf(String(p.estado||"").toLowerCase())===-1) faltas.push("la propiedad no esta activa en Lomaz Home (estado: "+(p.estado||"sin estado")+")");
-      if(p.latitud==null||p.longitud==null||p.latitud===""||p.longitud==="") faltas.push("no tiene ubicacion en el mapa (latitud/longitud), y Proppit la exige");
+      if(["activo","activa","publicada"].indexOf(String(p.estado||"").toLowerCase())===-1) faltas.push("la propiedad no esta activa en LoMaz Home (estado: "+(p.estado||"sin estado")+")");
+      if(p.latitud==null||p.longitud==null||p.latitud===""||p.longitud==="") faltas.push("no tiene ubicación en el mapa (latitud/longitud), y Proppit la exige");
       var _fl=p.fotos; if(typeof _fl==="string"){ try{ _fl=JSON.parse(_fl); }catch(_j){ _fl=_fl.split(","); } } if(!Array.isArray(_fl)) _fl=[]; _fl=_fl.map(function(u){return String(u||"").trim();}).filter(function(u){return /^https?:\/\//i.test(u);});
       if(!_fl.length && !/^https?:\/\//i.test(String(p.foto_principal||""))) faltas.push("no tiene fotos, y Proppit exige al menos una");
       var _n=function(v){ var x=Number(String(v==null?"":v).replace(",",".")); return isFinite(x)?x:0; };
       var _esLote=String(p.tipo_propiedad||"").toLowerCase()==="lote";
       var _constr=_n(p.m2_construccion)||_n(p.area_construida)||_n(p.area_privada), _terr=_n(p.m2_terreno)||_n(p.area_total);
-      if(_esLote){ if(!(_terr>0||_constr>0)) faltas.push("no tiene area del terreno (m2), obligatoria en Proppit para lotes"); }
-      else if(!(_constr>0)) faltas.push("no tiene area construida (m2), obligatoria en Proppit");
+      if(_esLote){ if(!(_terr>0||_constr>0)) faltas.push("no tiene área del terreno (m2), obligatoria en Proppit para lotes"); }
+      else if(!(_constr>0)) faltas.push("no tiene área construida (m2), obligatoria en Proppit");
     }
     if(pausado(r.estado)||retirado(r.estado)) faltas.push("el aviso esta "+(pausado(r.estado)?"pausado":"retirado")+" en Proppit; usa Reactivar");
     var enFeed=!faltas.length;
@@ -1592,13 +1593,13 @@ try {
     html+=enFeed
       ? '<div style="color:#22c55e;font-weight:700;margin-bottom:.4rem">&#10004; Esta propiedad esta incluida en el feed XML de Proppit (referencia '+esc(EDIT_ID)+').</div>'
       : '<div style="color:#f59e0b;font-weight:700;margin-bottom:.4rem"><i class=lzi data-i=alerta></i> Esta propiedad NO entra al feed de Proppit porque '+esc(faltas.join(" y "))+'.</div>';
-    html+='<div>Proppit no tiene una pagina propia del aviso: lee el feed una vez al dia y lo publica en <b>Trovit, Mitula, Nestoria, Nuroa y puntopropiedad</b>. Un aviso nuevo o editado puede tardar hasta 24-48 h en verse en esos portales.</div>';
+    html+='<div>Proppit no tiene una página propia del aviso: lee el feed una vez al dia y lo publica en <b>Trovit, Mitula, Nestoria, Nuroa y puntopropiedad</b>. Un aviso nuevo o editado puede tardar hasta 24-48 h en verse en esos portales.</div>';
     html+='<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem">';
     html+='<a href="https://casas.trovit.com.co/search?text='+busq+'" target="_blank" rel="noopener" style="background:#22c55e;color:#0b1220;font-weight:700;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Buscar en Trovit</a>';
     html+='<a href="https://casas.mitula.com.co/" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Mitula</a>';
     html+='<a href="https://www.nestoria.com.co/" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Nestoria</a>';
     html+='<a href="https://www.proppit.com/" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Panel de Proppit</a>';
-    html+='<a href="'+FN+'proppit-feed" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#94a3b8;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Ver feed XML (tecnico)</a>';
+    html+='<a href="'+FN+'proppit-feed" target="_blank" rel="noopener" style="border:1px solid rgba(148,163,184,.4);color:#94a3b8;border-radius:8px;padding:6px 12px;text-decoration:none;font-size:.82rem">Ver feed XML (técnico)</a>';
     html+='</div></div>';
     await confirmar("Proppit - "+esc((p&&p.titulo)||("Propiedad "+EDIT_ID)),html,"Cerrar",false);
   }
@@ -1608,16 +1609,16 @@ try {
     if(portal==="proppit"){ mostrarPanelProppit(r); return; }
     if(portal==="metrocuadrado"){
       var mc=String(r.property_id||"").match(/^\d+-M\d+$/) ? r.property_id : ((String(r.mensaje||"").match(/Codigo Metrocuadrado[:\s]+(\d+-M\d+)/i)||[])[1]||"");
-      if(mc){ avisar("Abriendo el aviso "+mc+" en Metrocuadrado. Si dice que esta en proceso de publicacion, Metrocuadrado aun lo esta revisando (suele tardar unas horas).","info"); window.open("https://www.metrocuadrado.com/inmueble/inmueble/"+encodeURIComponent(mc),"_blank","noopener"); return; }
+      if(mc){ avisar("Abriendo el aviso "+mc+" en Metrocuadrado. Si dice que esta en proceso de publicación, Metrocuadrado aun lo esta revisando (suele tardar unas horas).","info"); window.open("https://www.metrocuadrado.com/inmueble/inmueble/"+encodeURIComponent(mc),"_blank","noopener"); return; }
     }
     if(portal==="fincaraiz"){
       if(r.property_id){ window.open(frUrl(r.property_id),"_blank","noopener"); return; }
       // La pestana se abre ANTES de consultar, para que el navegador no la bloquee como ventana emergente
-      var w=null; try{ w=window.open("","_blank"); if(w) w.document.write('<p style="font-family:sans-serif;padding:2rem">Consultando el aviso en Finca Raiz...</p>'); }catch(_e){ w=null; }
+      var w=null; try{ w=window.open("","_blank"); if(w) w.document.write('<p style="font-family:sans-serif;padding:2rem">Consultando el aviso en Finca Raíz...</p>'); }catch(_e){ w=null; }
       var res=await resolverFincaraiz(r);
       if(res&&res.ok){ try{ await render(); }catch(_e){} if(w) w.location.href=frUrl(res.property_id); else window.open(frUrl(res.property_id),"_blank","noopener"); if(res.inv===1) avisar(res.nota,"info"); return; }
       if(w){ try{ w.close(); }catch(_e){} }
-      avisar((res&&res.motivo)||"No se pudo consultar el aviso en Finca Raiz.","info");
+      avisar((res&&res.motivo)||"No se pudo consultar el aviso en Finca Raíz.","info");
       return;
     }
     var t="El portal no devolvio una URL publica de este aviso.";
@@ -1669,23 +1670,23 @@ try {
 
   async function ejecutar(r,portal,accion){
     if(portal==="fincaraiz"){
-      if(!r.listing_id && !r.task_id) return {ok:false,msg:"No tengo guardado el identificador del aviso; hay que recuperarlo desde Finca Raiz antes de pausar o retirar."};
+      if(!r.listing_id && !r.task_id) return {ok:false,msg:"No tengo guardado el identificador del aviso; hay que recuperarlo desde Finca Raíz antes de pausar o retirar."};
       var body={ propiedad_id:EDIT_ID, listing_id:(r.listing_id||null), task_id:(r.task_id||null) };
       if(accion==="reactivar"){ body.accion="activar"; }
       else { body.accion="cambiar_estado"; body.estado=(accion==="pausar")?"INACTIVE":"DELETED"; }
       var o=await llamar("publicar-en-fincaraiz",body);
       var j=o.json||{};
-      if(j.ok) return {ok:true,msg:String(j.msg||("Finca Raiz confirmo la accion ("+(j.status||"")+")")).substring(0,300)};
-      if(j.status==="en_proceso"||j.task_id) return {ok:true,msg:"Finca Raiz recibio la orden y la esta procesando"+(j.task_id?" (tarea "+String(j.task_id).substring(0,8)+")":"")+". Puede tardar unos minutos en verse en el portal."};
+      if(j.ok) return {ok:true,msg:String(j.msg||("Finca Raíz confirmo la acción ("+(j.status||"")+")")).substring(0,300)};
+      if(j.status==="en_proceso"||j.task_id) return {ok:true,msg:"Finca Raíz recibio la orden y la esta procesando"+(j.task_id?" (tarea "+String(j.task_id).substring(0,8)+")":"")+". Puede tardar unos minutos en verse en el portal."};
       var txt=JSON.stringify(j);
-      if(accion!=="reactivar" && /propiedad\.id/i.test(txt)) return {ok:false,msg:"La funcion de Finca Raiz instalada aun no acepta pausar/retirar: falta desplegar la version nueva de publicar-en-fincaraiz."};
+      if(accion!=="reactivar" && /propiedad\.id/i.test(txt)) return {ok:false,msg:"La función de Finca Raíz instalada aún no acepta pausar/retirar: falta desplegar la versión nueva de publicar-en-fincaraiz."};
       return {ok:false,msg:String(j.msg||j.error||("HTTP "+o.status)).substring(0,300)};
     }
     if(portal==="metrocuadrado"){
       if(accion==="reactivar"||accion==="reintentar"){
-        if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"La publicacion de Metrocuadrado no esta disponible en esta pagina."};
+        if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"La publicación de Metrocuadrado no esta disponible en esta página."};
         // Metrocuadrado exige Region/Ciudad/Zona/Sector: se guarda lo elegido en el formulario antes de reenviar.
-        if(typeof window.lmzGuardarMapeoMetro==="function"){ var okMap=await window.lmzGuardarMapeoMetro(); if(!okMap) return {ok:false,msg:"Falta la ubicacion de Metrocuadrado: elige Region, Ciudad, Zona y Sector en la seccion de Portales (fila Metrocuadrado) y vuelve a intentar."}; }
+        if(typeof window.lmzGuardarMapeoMetro==="function"){ var okMap=await window.lmzGuardarMapeoMetro(); if(!okMap) return {ok:false,msg:"Falta la ubicación de Metrocuadrado: elige Región, Ciudad, Zona y Sector en la sección de Portales (fila Metrocuadrado) y vuelve a intentar."}; }
         var m=await window.publicarEnMetrocuadrado(EDIT_ID);
         return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
       }
@@ -1694,28 +1695,28 @@ try {
       return {ok:false,msg:String((o2.json&&(o2.json.error||JSON.stringify(o2.json)))||("HTTP "+o2.status)).substring(0,300)};
     }
     if(portal==="proppit"){
-      return {ok:true,msg:(accion==="reactivar")?"La propiedad vuelve al feed XML de Proppit en su proxima lectura.":"La propiedad queda marcada como fuera del feed XML de Proppit."};
+      return {ok:true,msg:(accion==="reactivar")?"La propiedad vuelve al feed XML de Proppit en su próxima lectura.":"La propiedad queda marcada como fuera del feed XML de Proppit."};
     }
-    return {ok:true,msg:(accion==="reactivar")?"Marcado como publicado manualmente.":"Marcado como retirado. Recuerda borrar tambien la publicacion manual en la app del portal."};
+    return {ok:true,msg:(accion==="reactivar")?"Marcado como publicado manualmente.":"Marcado como retirado. Recuerda borrar también la publicación manual en la app del portal."};
   }
 
   window.lmzAccionPortal=async function(portal,accion){
     var r=(window.__LMZ_LISTA||[]).filter(function(x){return x.portal===portal;})[0];
     if(!r) return;
     var n=nombre(portal);
-    var titulos={ pausar:"Pausar el aviso en "+n, reactivar:"Reactivar el aviso en "+n, retirar:"Retirar el aviso de "+n, reintentar:"Reintentar la publicacion en "+n };
+    var titulos={ pausar:"Pausar el aviso en "+n, reactivar:"Reactivar el aviso en "+n, retirar:"Retirar el aviso de "+n, reintentar:"Reintentar la publicación en "+n };
     var textos={
-      pausar:"El aviso deja de mostrarse en "+n+". La propiedad sigue publicada en Lomaz Home y puedes reactivarla cuando quieras.",
-      reactivar:"El aviso vuelve a mostrarse en "+n+" con la informacion actual de Lomaz Home.",
-      retirar:"<b>El aviso se retira de "+n+".</b><br>Segun el portal esta accion puede ser definitiva y habria que volver a publicarlo desde cero. La propiedad NO se borra de Lomaz Home.",
-      reintentar:"Se vuelve a enviar el aviso a "+n+" con la informacion actual de Lomaz Home."
+      pausar:"El aviso deja de mostrarse en "+n+". La propiedad sigue publicada en LoMaz Home y puedes reactivarla cuando quieras.",
+      reactivar:"El aviso vuelve a mostrarse en "+n+" con la información actual de LoMaz Home.",
+      retirar:"<b>El aviso se retira de "+n+".</b><br>Según el portal esta acción puede ser definitiva y habria que volver a publicarlo desde cero. La propiedad NO se borra de LoMaz Home.",
+      reintentar:"Se vuelve a enviar el aviso a "+n+" con la información actual de LoMaz Home."
     };
     var okBtn={ pausar:"Si, pausar", reactivar:"Si, reactivar", retirar:"Si, retirar el aviso", reintentar:"Si, reintentar" };
     var ok=await confirmar(titulos[accion]||"Confirmar",textos[accion]||"",okBtn[accion]||"Confirmar",accion==="retirar");
     if(!ok) return;
-    if(window.__LMZ_BUSY){ avisar("Espera a que termine la accion anterior.","info"); return; }
+    if(window.__LMZ_BUSY){ avisar("Espera a que termine la acción anterior.","info"); return; }
     window.__LMZ_BUSY=true;
-    avisar("Procesando en "+n+"... puede tardar hasta 2 minutos. No cierres esta pagina.","info");
+    avisar("Procesando en "+n+"... puede tardar hasta 2 minutos. No cierres esta página.","info");
     var res={ok:false,msg:""};
     try{ res=await ejecutar(r,portal,accion); }catch(e){ res={ok:false,msg:(e&&e.message)||String(e)}; }
     var nuevos={ pausar:"pausado", reactivar:"activo", retirar:"retirado", reintentar:"activo" };
@@ -1733,7 +1734,7 @@ try {
         var extra=(r.estado==="nuevo")?"se publicara por primera vez":"se actualizara el aviso existente";
         return '<label style="display:flex;align-items:flex-start;gap:.55rem;padding:.4rem 0;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" checked data-p="'+r.portal+'" style="margin-top:3px;width:16px;height:16px;flex:0 0 16px"/><span><b>'+esc(nombre(r.portal))+'</b><br><span style="color:#94a3b8;font-size:.76rem">'+esc(extra)+'</span></span></label>';
       }).join("");
-      ov.innerHTML='<div style="background:#0f172a;border:1px solid rgba(148,163,184,.25);border-radius:14px;max-width:460px;width:100%;padding:1.15rem 1.25rem;color:#e2e8f0;font-size:.88rem"><div style="font-weight:700;margin-bottom:.4rem">Actualizar los portales</div><div style="color:#cbd5e1;font-size:.82rem;margin-bottom:.6rem">Guardaste cambios en Lomaz Home. Elige a que portales quieres enviar la actualizacion (se envian todos al mismo tiempo).</div>'+filas+'<label style="display:flex;align-items:center;gap:.5rem;margin-top:.7rem;font-size:.76rem;color:#94a3b8;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" data-auto="1" style="width:16px;height:16px;flex:0 0 16px"/><span>No preguntarme mas: actualizar siempre en automatico</span></label><div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem;flex-wrap:wrap"><button type="button" data-x="0" style="background:transparent;border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:7px 13px;cursor:pointer">Solo Lomaz Home</button><button type="button" data-x="1" style="background:#22c55e;border:none;color:#0b1220;font-weight:700;border-radius:8px;padding:7px 15px;cursor:pointer">Actualizar seleccionados</button></div></div>';
+      ov.innerHTML='<div style="background:#0f172a;border:1px solid rgba(148,163,184,.25);border-radius:14px;max-width:460px;width:100%;padding:1.15rem 1.25rem;color:#e2e8f0;font-size:.88rem"><div style="font-weight:700;margin-bottom:.4rem">Actualizar los portales</div><div style="color:#cbd5e1;font-size:.82rem;margin-bottom:.6rem">Guardaste cambios en LoMaz Home. Elige a que portales quieres enviar la actualizacion (se envian todos al mismo tiempo).</div>'+filas+'<label style="display:flex;align-items:center;gap:.5rem;margin-top:.7rem;font-size:.76rem;color:#94a3b8;cursor:pointer;text-transform:none;letter-spacing:normal;font-weight:500"><input type="checkbox" data-auto="1" style="width:16px;height:16px;flex:0 0 16px"/><span>No preguntarme mas: actualizar siempre en automático</span></label><div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem;flex-wrap:wrap"><button type="button" data-x="0" style="background:transparent;border:1px solid rgba(148,163,184,.4);color:#cbd5e1;border-radius:8px;padding:7px 13px;cursor:pointer">Solo LoMaz Home</button><button type="button" data-x="1" style="background:#22c55e;border:none;color:#0b1220;font-weight:700;border-radius:8px;padding:7px 15px;cursor:pointer">Actualizar seleccionados</button></div></div>';
       function fin(v){
         var sel=[];
         if(v){
@@ -1755,14 +1756,14 @@ try {
 
   async function actualizarUno(r,data,propId){
     if(r.portal==="fincaraiz"){
-      if(typeof window.publicarEnFincaraiz!=="function") return {ok:false,msg:"Finca Raiz no esta disponible en esta pagina."};
+      if(typeof window.publicarEnFincaraiz!=="function") return {ok:false,msg:"Finca Raíz no esta disponible en esta página."};
       var f=await window.publicarEnFincaraiz(data,propId);
       return {ok:!!(f&&f.ok),msg:String((f&&f.msg)||"").substring(0,300)};
     }
     if(r.portal==="metrocuadrado"){
       if(r.estado==="nuevo" || !window.__LMZ_METRO){
-        if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"Metrocuadrado no esta disponible en esta pagina."};
-        if(typeof window.lmzGuardarMapeoMetro==="function"){ var okMap=await window.lmzGuardarMapeoMetro(); if(!okMap) return {ok:false,msg:"Falta la ubicacion de Metrocuadrado: elige Region, Ciudad, Zona y Sector en la seccion de Portales (fila Metrocuadrado) y guarda de nuevo."}; }
+        if(typeof window.publicarEnMetrocuadrado!=="function") return {ok:false,msg:"Metrocuadrado no esta disponible en esta página."};
+        if(typeof window.lmzGuardarMapeoMetro==="function"){ var okMap=await window.lmzGuardarMapeoMetro(); if(!okMap) return {ok:false,msg:"Falta la ubicación de Metrocuadrado: elige Región, Ciudad, Zona y Sector en la sección de Portales (fila Metrocuadrado) y guarda de nuevo."}; }
         var m=await window.publicarEnMetrocuadrado(propId);
         return {ok:!!(m&&m.ok),msg:String((m&&m.msg)||"").substring(0,300)};
       }
@@ -1793,7 +1794,7 @@ try {
     try{ auto=localStorage.getItem(LS_AUTO)==="1"; }catch(_e){}
     if(auto) sel=cands.map(function(r){ return r.portal; });
     else sel=await modalSeleccion(cands);
-    if(!sel || !sel.length){ avisar("Cambios guardados en Lomaz Home. No se actualizo ningun portal.","info"); return; }
+    if(!sel || !sel.length){ avisar("Cambios guardados en LoMaz Home. No se actualizo ningún portal.","info"); return; }
     var tareas=cands.filter(function(r){ return sel.indexOf(r.portal)!==-1; });
     avisar("Actualizando en paralelo: "+tareas.map(function(r){ return nombre(r.portal); }).join(", ")+"...","info");
     var out=await Promise.allSettled(tareas.map(function(r){
@@ -1853,8 +1854,8 @@ try {
   }
   window.lmzMetroPendiente=function(m){
     var t=String(m||"");
-    if(/No active membership|Incorrect username or password/i.test(t)) return "La cuenta de Metrocuadrado no tiene membresia activa todavia. La propiedad quedo guardada en LoMaz Home y en los demas portales; Metrocuadrado queda pendiente hasta que activen el plan.";
-    if(/Invalid authentication credentials|401/.test(t)) return "Metrocuadrado aun no habilita nuestra API Key (error 401). La propiedad quedo guardada en LoMaz Home y en los demas portales; se enviara a Metrocuadrado cuando habiliten el acceso.";
+    if(/No active membership|Incorrect username or password/i.test(t)) return "La cuenta de Metrocuadrado no tiene membresia activa todavía. La propiedad quedo guardada en LoMaz Home y en los demas portales; Metrocuadrado queda pendiente hasta que activen el plan.";
+    if(/Invalid authentication credentials|401/.test(t)) return "Metrocuadrado aún no habilita nuestra API Key (error 401). La propiedad quedo guardada en LoMaz Home y en los demas portales; se enviará a Metrocuadrado cuando habiliten el acceso.";
     return "";
   };
   window.lmzChequearMetro=async function(){
@@ -1864,10 +1865,10 @@ try {
       var tok=(ses&&ses.data&&ses.data.session)?ses.data.session.access_token:sb.supabaseKey;
       var r=await fetch(sb.supabaseUrl+"/functions/v1/metrocuadrado-integracion/estado",{headers:{apikey:sb.supabaseKey,Authorization:"Bearer "+tok}});
       var j=await r.json().catch(function(){return {};});
-      if(j && j.listo_para_publicar){ _pinta("ok","Metrocuadrado esta habilitado: el aviso se enviara al publicar."); return; }
+      if(j && j.listo_para_publicar){ _pinta("ok","Metrocuadrado esta habilitado: el aviso se enviará al publicar."); return; }
       var t=String((j&&(j.resumen||j.mensaje_metrocuadrado||j.error))||"");
       var m=window.lmzMetroPendiente(t);
-      if(!m) m="Metrocuadrado aun no esta habilitado. Puedes publicar igual: la propiedad se guarda en LoMaz Home y en los demas portales, y Metrocuadrado queda pendiente.";
+      if(!m) m="Metrocuadrado aún no esta habilitado. Puedes publicar igual: la propiedad se guarda en LoMaz Home y en los demas portales, y Metrocuadrado queda pendiente.";
       _pinta("warn",m);
     }catch(e){ _pinta("warn","No se pudo verificar el estado de Metrocuadrado ("+e.message+")."); }
   };
@@ -1920,7 +1921,7 @@ try {
         var r = await fetch("https://nominatim.openstreetmap.org/search" + "?format=json&limit=1&countrycodes=co&q=" + encodeURIComponent(q));
         var d = await r.json();
         if (d && d.length) {
-          pintar(d[0].lat, d[0].lon, "Ubicacion aproximada (" + q + "). Arrastra el marcador para ajustar el punto exacto.");
+          pintar(d[0].lat, d[0].lon, "Ubicación aproximada (" + q + "). Arrastra el marcador para ajustar el punto exacto.");
           return true;
         }
       } catch (e) {}

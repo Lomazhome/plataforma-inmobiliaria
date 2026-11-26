@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Crear Articulo - Blog | Lomaz Home</title>
+<title>Crear Artículo - Blog | LoMaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -35,7 +35,7 @@ a{color:inherit;text-decoration:none}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
 .form-group{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
 .form-group.full{grid-column:1/-1}
-label{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:.3rem}
+label{font-size:.8125rem;color:var(--gold);font-weight:600;letter-spacing:0;display:block;margin-bottom:.3rem}
 input,select,textarea{background:rgba(13,27,46,.6);border:1px solid var(--line);border-radius:var(--r-sm);padding:.78rem 1rem;color:var(--txt);font-family:var(--sans);font-size:.9rem;outline:none;transition:all .25s ease;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(13,27,46,.85);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
 select option{background:var(--navy-2);color:var(--txt)}
@@ -56,15 +56,16 @@ textarea{resize:vertical;min-height:70px}
 .rt-editor a{color:var(--gold);text-decoration:underline}
 .rt-editor blockquote{border-left:3px solid var(--gold);margin:.8rem 0;padding:.3rem 0 .3rem 1rem;color:var(--txt-soft);font-style:italic}
 .hint{font-size:.78rem;color:var(--txt-mute);font-weight:400;margin-top:.35rem}
-.btn-publish{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--sans);font-size:.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(201,169,110,.3);transition:all .25s ease;margin-top:.5rem}
+.btn-publish{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--sans);font-size:.95rem;font-weight:700;letter-spacing:0;cursor:pointer;box-shadow:0 4px 14px rgba(201,169,110,.3);transition:all .25s ease;margin-top:.5rem}
 .btn-publish:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,169,110,.45)}
 .btn-publish:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.btn-draft{width:100%;padding:.9rem;background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line);border-radius:var(--r);font-family:var(--sans);font-size:.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s ease;margin-top:.6rem}
+.btn-draft{width:100%;padding:.9rem;background:rgba(255,255,255,.04);color:var(--txt-soft);border:1px solid var(--line);border-radius:var(--r);font-family:var(--sans);font-size:.85rem;font-weight:600;letter-spacing:0;cursor:pointer;transition:all .25s ease;margin-top:.6rem}
 .btn-draft:hover{border-color:var(--gold);color:var(--gold)}
 .img-preview{margin-top:.6rem;max-height:180px;border-radius:var(--r-sm);border:1px solid var(--line);display:none}
 @media(max-width:900px){.form-grid{grid-template-columns:1fr}.topbar{padding:.75rem 1rem}.brand-text{font-size:1.3rem}.container{padding:0 1rem;margin:1.5rem auto}}
 </style>
 <link rel="stylesheet" href="lomaz-iconos.css"/>
+<link rel="stylesheet" href="lomaz-panel.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -84,14 +85,14 @@ textarea{resize:vertical;min-height:70px}
 </div>
 </div>
 <div class="container">
-<div class="page-title">Crear <em>Articulo</em></div>
-<div class="page-sub">Redacta y publica un nuevo articulo en el blog de LoMaz Home. Disponible para todos los asesores.</div>
+<div class="page-title">Crear <em>Artículo</em></div>
+<div class="page-sub">Redacta y publica un nuevo artículo en el blog de LoMaz Home. Disponible para todos los asesores.</div>
 <div id="alert" class="alert"></div>
 <div class="card">
-<h3><i class=lzi data-i=nota></i> Datos del <em>articulo</em></h3>
+<h3><i class=lzi data-i=nota></i> Datos del <em>artículo</em></h3>
 <div class="form-grid">
-<div class="form-group full"><label>TITULO *</label><input type="text" id="titulo" placeholder="Ej: Como arrendar un apartamento en Bogota paso a paso"/></div>
-<div class="form-group"><label>CATEGORIA *</label><select id="categoria">
+<div class="form-group full"><label>Título *</label><input type="text" id="titulo" placeholder="Ej: Como arrendar un apartamento en Bogota paso a paso"/></div>
+<div class="form-group"><label>Categoría *</label><select id="categoria">
 <option value="">Seleccionar</option>
 <option value="Arrendamiento">Arrendamiento</option>
 <option value="Compraventa">Compraventa</option>
@@ -100,15 +101,15 @@ textarea{resize:vertical;min-height:70px}
 <option value="Zonas">Zonas</option>
 <option value="Tramites">Tramites</option>
 </select></div>
-<div class="form-group"><label>TIEMPO DE LECTURA (min)</label><input type="number" id="tiempo_lectura" placeholder="Ej: 5" min="1" max="60"/></div>
-<div class="form-group full"><label>EXTRACTO / RESUMEN *</label><textarea id="extracto" placeholder="Resumen corto que aparece en la tarjeta del articulo (1-2 frases)."></textarea></div>
-<div class="form-group full"><label>IMAGEN DE PORTADA (URL)</label><input type="url" id="imagen_url" placeholder="https://... (pega la URL de la imagen)" oninput="previewImg()"/><img id="imgPreview" class="img-preview" alt="Vista previa"/><div class="hint">Pega una URL de imagen (por ejemplo de Unsplash). En una version posterior podemos anadir subida directa como en propiedades.</div></div>
+<div class="form-group"><label>Tiempo de lectura (min)</label><input type="number" id="tiempo_lectura" placeholder="Ej: 5" min="1" max="60"/></div>
+<div class="form-group full"><label>Extracto / resumen *</label><textarea id="extracto" placeholder="Resumen corto que aparece en la tarjeta del artículo (1-2 frases)."></textarea></div>
+<div class="form-group full"><label>Imagen de portada (URL)</label><input type="url" id="imagen_url" placeholder="https://... (pega la URL de la imagen)" oninput="previewImg()"/><img id="imgPreview" class="img-preview" alt="Vista previa"/><div class="hint">Pega una URL de imagen (por ejemplo de Unsplash). En una versión posterior podemos anadir subida directa como en propiedades.</div></div>
 </div>
 </div>
 <div class="card">
-<h3>Contenido del <em>articulo</em></h3>
+<h3>Contenido del <em>artículo</em></h3>
 <div class="rt-toolbar" id="rtToolbar">
-<button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h2" title="Titulo">H2</button>
+<button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h2" title="Título">H2</button>
 <button type="button" class="rt-btn" data-cmd="formatBlock" data-val="h3" title="Subtitulo">H3</button>
 <button type="button" class="rt-btn" data-cmd="formatBlock" data-val="p" title="Parrafo">P</button>
 <span class="rt-sep"></span>
@@ -126,7 +127,7 @@ textarea{resize:vertical;min-height:70px}
 <div class="rt-editor" id="editor" contenteditable="true" data-ph="Escribe aqui el contenido del articulo. Usa la barra de herramientas para dar formato..."></div>
 <div class="hint">El contenido se guarda como HTML con formato.</div>
 </div>
-<button class="btn-publish" id="btnPublicar" onclick="guardarArticulo('publicado')">Publicar articulo</button>
+<button class="btn-publish" id="btnPublicar" onclick="guardarArticulo('publicado')">Publicar artículo</button>
 <button class="btn-draft" id="btnBorrador" onclick="guardarArticulo('borrador')">Guardar como borrador</button>
 </div>
 <script>
@@ -171,10 +172,10 @@ async function guardarArticulo(estado){
   const contenido=document.getElementById("editor").innerHTML.trim();
   const imagen_url=document.getElementById("imagen_url").value.trim()||null;
   const tiempo=parseInt(document.getElementById("tiempo_lectura").value)||null;
-  if(!titulo){showAlert("El titulo es obligatorio.","error");return;}
-  if(!categoria){showAlert("Selecciona una categoria.","error");return;}
+  if(!titulo){showAlert("El título es obligatorio.","error");return;}
+  if(!categoria){showAlert("Selecciona una categoría.","error");return;}
   if(!extracto){showAlert("El extracto es obligatorio.","error");return;}
-  if(!contenido || contenido==="<br>"){showAlert("El contenido del articulo no puede estar vacio.","error");return;}
+  if(!contenido || contenido==="<br>"){showAlert("El contenido del artículo no puede estar vacío.","error");return;}
   const btnP=document.getElementById("btnPublicar"), btnB=document.getElementById("btnBorrador");
   btnP.disabled=true; btnB.disabled=true;
   (estado==="publicado"?btnP:btnB).textContent = estado==="publicado"?"Publicando...":"Guardando...";
@@ -188,7 +189,7 @@ async function guardarArticulo(estado){
   if(error){
     showAlert("Error al guardar: "+error.message,"error");
     btnP.disabled=false; btnB.disabled=false;
-    btnP.textContent="\uD83D\uDE80 Publicar articulo"; btnB.textContent="Guardar como borrador";
+    btnP.textContent="\uD83D\uDE80 Publicar artículo"; btnB.textContent="Guardar como borrador";
     return;
   }
     if(estado==="publicado" && data && data.id){
@@ -196,7 +197,7 @@ async function guardarArticulo(estado){
         await sb.functions.invoke("notificar-articulo",{ body:{ record: data } });
       }catch(_notifErr){ /* no bloquear la publicacion si el envio de correos falla */ }
     }
-  showAlert(estado==="publicado"?"Articulo publicado correctamente.":"Borrador guardado.","success");
+  showAlert(estado==="publicado"?"Artículo publicado correctamente.":"Borrador guardado.","success");
   btnP.textContent="Guardado \u2713";
   setTimeout(function(){ window.location.href="dashboard.html"; }, 2000);
 }

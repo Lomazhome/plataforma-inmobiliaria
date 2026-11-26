@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Lomaz Home</title>
+<title>Admin - LoMaz Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -22,7 +22,7 @@ body{background:#0A1626;color:#f5f1ea}
 .user-info .u-name{font-size:13px;font-weight:600}
 .user-info .u-role{font-size:11px;color:#c9a96e;background:rgba(228,168,83,0.15);padding:2px 8px;border-radius:20px;display:inline-block;margin-top:2px}
 .sidebar-nav{flex:1;padding:12px 0}
-.nav-section{padding:8px 20px 4px;font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.nav-section{padding:8px 20px 4px;font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:0;font-weight:600}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all 0.2s;font-size:14px;color:rgba(255,255,255,0.75);text-decoration:none;border-left:3px solid transparent}
 .nav-item:hover,.nav-item.active{background:rgba(228,168,83,0.12);color:#c9a96e;border-left-color:#c9a96e}
 .nav-item .nav-icon{font-size:16px;width:20px;text-align:center}
@@ -103,7 +103,7 @@ tr:hover td{background:#162a47}
 .progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#c9a96e,#a07840);transition:width 0.6s}
 /* FORM */
 .form-group{margin-bottom:16px}
-.form-label{display:block;font-size:12px;font-weight:700;color:#d6d3d1;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.form-label{display:block;font-size:13px;font-weight:700;color:#d6d3d1;margin-bottom:6px;letter-spacing:0;}
 .form-input{width:100%;padding:9px 12px;border:1.5px solid rgba(201,169,110,.18);border-radius:8px;font-size:13px;outline:none;transition:border 0.2s}
 .form-input:focus{border-color:#c9a96e}
 /* MODAL */
@@ -154,6 +154,7 @@ input,select,textarea{background:#0A1626;color:#f5f1ea;border-color:rgba(201,169
 table th{color:#a8a29e}
 </style>
 <link rel="stylesheet" href="lomaz-iconos.css"/>
+<link rel="stylesheet" href="lomaz-panel.css"/>
 </head>
 <body>
 <div id="loading-screen"><div class="loading-spinner"></div><div style="color:#c9a96e;font-size:16px;font-weight:600">Verificando acceso admin...</div></div>
@@ -225,11 +226,11 @@ LoMaz Home &bull; <span id="today-date"></span>
 <!-- ===== PROPIEDADES TAB ===== -->
 <div id="tab-propiedades" class="tab-content" style="display:none">
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=casa></i></span>Gestion de Propiedades</div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=casa></i></span>Gestión de Propiedades</div>
 <a href="agregar-propiedad.html" class="btn btn-primary">+ Agregar</a></div>
 <div class="section-body">
 <div class="search-bar">
-<input class="search-input" id="prop-search" placeholder="Buscar por titulo, ciudad, barrio..." oninput="filterTable('prop')">
+<input class="search-input" id="prop-search" placeholder="Buscar por título, ciudad, barrio..." oninput="filterTable('prop')">
 <select class="filter-select" id="prop-filter-tipo" onchange="filterTable('prop')">
 <option value="">Todos los tipos</option>
 <option value="Casa">Casa</option>
@@ -248,7 +249,7 @@ LoMaz Home &bull; <span id="today-date"></span>
 </select>
 </div>
 <div class="tbl-wrap"><table>
-<thead><tr><th>ID</th><th>Titulo</th><th>Tipo</th><th>Negocio</th><th>Precio</th><th>Ciudad</th><th>Estado</th><th>Asesor</th><th>Fecha</th><th>Acciones</th></tr></thead>
+<thead><tr><th>ID</th><th>Título</th><th>Tipo</th><th>Negocio</th><th>Precio</th><th>Ciudad</th><th>Estado</th><th>Asesor</th><th>Fecha</th><th>Acciones</th></tr></thead>
 <tbody id="prop-table"><tr><td colspan="10" style="text-align:center;padding:24px;color:#a8a29e">Cargando propiedades...</td></tr></tbody>
 </table></div>
 <div id="prop-pagination" style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"></div>
@@ -257,7 +258,7 @@ LoMaz Home &bull; <span id="today-date"></span>
 <!-- ===== ASESORES TAB ===== -->
 <div id="tab-asesores" class="tab-content" style="display:none">
 <div class="section">
-<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=persona></i></span>Gestion de Asesores</div></div>
+<div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=persona></i></span>Gestión de Asesores</div></div>
 <div class="section-body">
 <div class="search-bar">
 <input class="search-input" id="ases-search" placeholder="Buscar asesor por nombre o email..." oninput="filterTable('ases')">
@@ -268,7 +269,7 @@ LoMaz Home &bull; <span id="today-date"></span>
 </select>
 </div>
 <div class="tbl-wrap"><table>
-<thead><tr><th>Asesor</th><th>Email</th><th>Telefono</th><th>Propiedades</th><th>Leads</th><th>Estado</th><th>Miembro desde</th><th>Acciones</th></tr></thead>
+<thead><tr><th>Asesor</th><th>Email</th><th>Teléfono</th><th>Propiedades</th><th>Leads</th><th>Estado</th><th>Miembro desde</th><th>Acciones</th></tr></thead>
 <tbody id="ases-table"><tr><td colspan="8" style="text-align:center;padding:24px;color:#a8a29e">Cargando asesores...</td></tr></tbody>
 </table></div>
 </div></div>
@@ -279,7 +280,7 @@ LoMaz Home &bull; <span id="today-date"></span>
 <div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=correo></i></span>Todos los Leads</div></div>
 <div class="section-body">
 <div class="search-bar">
-<input class="search-input" id="leads-search" placeholder="Buscar lead por nombre, email o telefono..." oninput="filterTable('leads')">
+<input class="search-input" id="leads-search" placeholder="Buscar lead por nombre, email o teléfono..." oninput="filterTable('leads')">
 <select class="filter-select" id="leads-filter-estado" onchange="filterTable('leads')">
 <option value="">Todos los estados</option>
 <option value="nuevo">Nuevo</option>
@@ -290,7 +291,7 @@ LoMaz Home &bull; <span id="today-date"></span>
 </select>
 </div>
 <div class="tbl-wrap"><table>
-<thead><tr><th>Nombre</th><th>Email</th><th>Telefono</th><th>Mensaje</th><th>Propiedad</th><th>Asesor</th><th>Estado</th><th>Fecha</th></tr></thead>
+<thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Mensaje</th><th>Propiedad</th><th>Asesor</th><th>Estado</th><th>Fecha</th></tr></thead>
 <tbody id="leads-table"><tr><td colspan="8" style="text-align:center;padding:24px;color:#a8a29e">Cargando leads...</td></tr></tbody>
 </table></div>
 </div></div>
@@ -312,26 +313,26 @@ LoMaz Home &bull; <span id="today-date"></span>
 </select>
 </div>
 <div class="tbl-wrap"><table>
-<thead><tr><th>Cliente</th><th>Email</th><th>Telefono</th><th>Tipo</th><th>Ciudad</th><th>Presupuesto</th><th>Asesor</th><th>Fecha</th></tr></thead>
+<thead><tr><th>Cliente</th><th>Email</th><th>Teléfono</th><th>Tipo</th><th>Ciudad</th><th>Presupuesto</th><th>Asesor</th><th>Fecha</th></tr></thead>
 <tbody id="cli-table"><tr><td colspan="8" style="text-align:center;padding:24px;color:#a8a29e">Cargando clientes...</td></tr></tbody>
 </table></div>
 </div></div>
 </div>
 <!-- ===== BLOG TAB ===== -->
 <div id="tab-blog" class="tab-content" style="display:none">
-<div class="alert warn"><i class=lzi data-i=nota></i> Gestion completa de articulos del blog. Puedes crear, publicar o despublicar articulos.</div>
+<div class="alert warn"><i class=lzi data-i=nota></i> Gestión completa de artículos del blog. Puedes crear, publicar o despublicar artículos.</div>
 <div class="section">
 <div class="section-header"><div class="section-title"><span class="icon"><i class=lzi data-i=nota></i></span>Artículos del Blog</div>
 <a href="blog.html" target="_blank" class="btn btn-outline">Ver Blog</a>
 </div>
 <div class="section-body">
 <div class="search-bar">
-<input class="search-input" id="blog-search" placeholder="Buscar articulo por titulo o categoria..." oninput="filterTable('blog')">
+<input class="search-input" id="blog-search" placeholder="Buscar artículo por título o categoría..." oninput="filterTable('blog')">
 </div>
 <div class="tbl-wrap"><table>
-<thead><tr><th>Titulo</th><th>Categoria</th><th>Autor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+<thead><tr><th>Título</th><th>Categoría</th><th>Autor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
 <tbody id="blog-table">
-<tr><td colspan="6" style="text-align:center;padding:24px;color:#a8a29e">Cargando articulos...</td></tr>
+<tr><td colspan="6" style="text-align:center;padding:24px;color:#a8a29e">Cargando artículos...</td></tr>
 </tbody>
 </table></div>
 </div></div>
@@ -339,7 +340,7 @@ LoMaz Home &bull; <span id="today-date"></span>
 <!-- Modal confirm delete -->
 <div class="modal-overlay" id="modal-confirm">
 <div class="modal">
-<div class="modal-title"><i class=lzi data-i=alerta></i> Confirmar Accion</div>
+<div class="modal-title"><i class=lzi data-i=alerta></i> Confirmar Acción</div>
 <p id="modal-msg" style="color:#d6d3d1;font-size:14px"></p>
 <div class="modal-actions">
 <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
@@ -434,7 +435,7 @@ function renderOverview(){
   // activity
   var acts=[];
   var recentProps=allData.props.slice(0,5);
-  recentProps.forEach(p=>{acts.push({tipo:"Propiedad",desc:p.titulo||"Sin titulo",fecha:p.created_at,estado:p.estado||"borrador"});});
+  recentProps.forEach(p=>{acts.push({tipo:"Propiedad",desc:p.titulo||"Sin título",fecha:p.created_at,estado:p.estado||"borrador"});});
   var recentLeads=allData.leads.slice(0,5);
   recentLeads.forEach(l=>{acts.push({tipo:"Lead",desc:(l.nombre||"Lead")+" - "+(l.email||""),fecha:l.created_at,estado:l.estado||"nuevo"});});
   acts.sort(function(a,b){return new Date(b.fecha)-new Date(a.fecha);});
@@ -465,7 +466,7 @@ function renderPropTable(arr){
     var precio=p.precio?formatMoney(p.precio):"--";
     return '<tr>'+
       '<td style="font-size:11px;color:#a8a29e">'+p.id.substring(0,8)+'...</td>'+
-      '<td style="font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escHtml(p.titulo||"Sin titulo")+'</td>'+
+      '<td style="font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escHtml(p.titulo||"Sin título")+'</td>'+
       '<td>'+escHtml(p.tipo||"--")+'</td>'+
       '<td>'+escHtml(p.tipo_negocio||"--")+'</td>'+
       '<td style="color:#c9a96e;font-weight:700">'+precio+'</td>'+
@@ -543,7 +544,7 @@ function renderCliTable(arr){
 function renderBlogTable(){
   var tbody=document.getElementById("blog-table");
   var seedBlog=[
-    {titulo:"Guia para comprar tu primer apartamento",cat:"Compra",fecha:"2024-01-15",estado:"publicado"},
+    {titulo:"Guía para comprar tu primer apartamento",cat:"Compra",fecha:"2024-01-15",estado:"publicado"},
     {titulo:"Como calcular la rentabilidad de una propiedad",cat:"Inversion",fecha:"2024-02-01",estado:"publicado"},
     {titulo:"Errores al arrendar un inmueble",cat:"Arriendo",fecha:"2024-02-20",estado:"publicado"},
     {titulo:"Tendencias del mercado inmobiliario 2025",cat:"Mercado",fecha:"2024-03-05",estado:"publicado"},
@@ -630,7 +631,7 @@ function showTab(name){
 
 function confirmDelete(type,id){
   modalAction={type:type,id:id};
-  document.getElementById("modal-msg").textContent="Esta accion es permanente. Deseas continuar?";
+  document.getElementById("modal-msg").textContent="Esta acción es permanente. Deseas continuar?";
   document.getElementById("modal-confirm").classList.add("open");
 }
 

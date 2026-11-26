@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Ajustes Portales - Lomaz Home</title>
+<title>Ajustes Portales - LoMaz Home</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -52,25 +52,26 @@ input:focus{border-color:#c9a96e}
 .test-result{padding:.6rem .9rem;border-radius:6px;font-size:.82rem;margin-top:.6rem;display:none}
 .test-result.ok{background:rgba(40,167,69,.1);border:1px solid rgba(40,167,69,.3);color:#5dd879}
 .test-result.fail{background:rgba(220,53,69,.1);border:1px solid rgba(220,53,69,.3);color:#ff6b7a}
-.section-title{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #1a1a1a}
+.section-title{font-size:.8125rem;letter-spacing:0;color:#555;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #1a1a1a}
 .access-denied{text-align:center;padding:4rem 1rem;display:none}
 .access-denied h2{color:#ff6b7a;font-size:1.5rem;margin-bottom:.8rem}
 .access-denied p{color:#888;font-size:.9rem}
 </style>
 <link rel="stylesheet" href="lomaz-iconos.css"/>
+<link rel="stylesheet" href="lomaz-panel.css"/>
 </head>
 <body>
 <div class="topbar">
-  <div class="logo">LOMAZ HOME</div>
+  <div class="logo">LoMaz Home</div>
   <div class="user-info"><span id="user-email"></span><button class="btn-back" onclick="window.location.href='dashboard.html'">&#8592; Panel</button></div>
 </div>
 <div class="access-denied" id="access-denied">
   <h2><i class=lzi data-i=candado></i> Acceso Denegado</h2>
-  <p>Solo el administrador puede configurar los portales de publicacion.</p>
+  <p>Solo el administrador puede configurar los portales de publicación.</p>
 </div>
 <div class="container" id="main-content" style="display:none">
   <div class="page-title"><i class=lzi data-i=mundo></i> Ajustes de Portales</div>
-  <div class="page-sub">Configura las credenciales de cada portal para activar la publicacion automatica de propiedades.</div>
+  <div class="page-sub">Configura las credenciales de cada portal para activar la publicación automática de propiedades.</div>
   <div id="alert" class="alert" style="display:none"></div>
   <div class="portal-card" id="card-metrocuadrado">
   <div class="portal-header">
@@ -78,7 +79,7 @@ input:focus{border-color:#c9a96e}
   <div class="portal-icon"><i class=lzi data-i=edificio></i></div>
   <div>
   <div class="portal-name">Metrocuadrado</div>
-  <div class="portal-desc">Portal #1 de Colombia - Integracion API real</div>
+  <div class="portal-desc">Portal #1 de Colombia - Integración API real</div>
   </div>
   </div>
   <div style="display:flex;align-items:center;gap:.8rem">
@@ -88,32 +89,32 @@ input:focus{border-color:#c9a96e}
   </div>
   <div class="portal-body" id="body-metrocuadrado">
   <div class="section-title">Credenciales del Integrador</div>
-  <div class="form-group"><label>AMBIENTE</label>
+  <div class="form-group"><label>Ambiente</label>
   <select id="metro-ambiente">
   <option value="dev">Desarrollo (DEV / pruebas)</option>
-  <option value="prod">Produccion (PROD)</option>
+  <option value="prod">Produccion (prod)</option>
   </select>
   </div>
   <div class="form-group"><label>USUARIO (correo asignado por Metrocuadrado)</label><input type="text" id="metro-username" placeholder="correo@asignado.com" autocomplete="off"/></div>
-  <div class="form-group"><label>CONTRASENA</label>
+  <div class="form-group"><label>Contraseña</label>
   <div class="input-row">
-  <input type="password" id="metro-password" placeholder="Contrasena asignada" autocomplete="off"/>
+  <input type="password" id="metro-password" placeholder="Contraseña asignada" autocomplete="off"/>
   <button class="btn-save" onclick="savePortal('metrocuadrado')">Guardar</button>
   <button class="btn-test" onclick="testPortal('metrocuadrado')">Probar</button>
   </div>
   </div>
-  <div class="form-group"><label>IDENTIFICACION (NIT del integrador)</label><input type="text" id="metro-identification" placeholder="NIT sin puntos ni guiones"/></div>
+  <div class="form-group"><label>IDENTIFICACIÓN (NIT del integrador)</label><input type="text" id="metro-identification" placeholder="NIT sin puntos ni guiones"/></div>
   <div class="test-result" id="test-metrocuadrado"></div>
   <div class="info-box">
   <strong>Como obtener tus credenciales:</strong><br/>
-  1. Solicita la integracion a tu comercial de Metrocuadrado via Metro Tickets.<br/>
-  2. Te entregaran usuario, contrasena e identificacion (NIT) para el ambiente DEV.<br/></div></div></div>
+  1. Solicita la integración a tu comercial de Metrocuadrado vía Metro Tickets.<br/>
+  2. Te entregarán usuario, contraseña e identificación (NIT) para el ambiente DEV.<br/></div></div></div>
   <div class="portal-card" id="card-fincaraiz">
     <div class="portal-header">
       <div class="portal-info">
         <div class="portal-icon"><i class=lzi data-i=casa></i></div>
         <div>
-          <div class="portal-name">Finca Raiz</div>
+          <div class="portal-name">Finca Raíz</div>
           <div class="portal-desc">Portal inmobiliario especializado de Colombia</div>
         </div>
       </div>
@@ -126,22 +127,22 @@ input:focus{border-color:#c9a96e}
       <div class="section-title">Credenciales API</div>
       <div class="form-group"><label>API KEY (campo apikey)</label>
         <div class="input-row">
-          <input type="password" id="fincaraiz-token" placeholder="Tu API Key de integrador Finca Raiz" autocomplete="off"/>
+          <input type="password" id="fincaraiz-token" placeholder="Tu API Key de integrador Finca Raíz" autocomplete="off"/>
           <button class="btn-save" onclick="savePortal('fincaraiz')">Guardar</button>
           <button class="btn-test" onclick="testPortal('fincaraiz')">Probar</button>
         </div>
       </div>
-      <div class="form-group"><label>CLIENT ID (UUID del cliente en Finca Raiz)</label><input type="text" id="fincaraiz-clientid" placeholder="ej: df03d199-be5c-4c5c-98f6-849361cb7fae"/></div>
+      <div class="form-group"><label>CLIENT ID (UUID del cliente en Finca Raíz)</label><input type="text" id="fincaraiz-clientid" placeholder="ej: df03d199-be5c-4c5c-98f6-849361cb7fae"/></div>
       <div class="test-result" id="test-fincaraiz"></div>
       <div class="info-box">
-        <strong>Como obtener tu API Key de Finca Raiz:</strong><br/>
+        <strong>Como obtener tu API Key de Finca Raíz:</strong><br/>
         1. Registrate como integrador en <a href="https://www.fincaraiz.com.co" target="_blank">fincaraiz.com.co</a><br/>
-        2. Solicita tu API Key al equipo de Finca Raiz (proceso de verificacion de inmobiliaria).<br/>
-        3. Finca Raiz te entregara un <strong>API Key</strong> y un <strong>Client ID</strong> (formato UUID).<br/>
+        2. Solicita tu API Key al equipo de Finca Raíz (proceso de verificacion de inmobiliaria).<br/>
+        3. Finca Raíz te entregara un <strong>API Key</strong> y un <strong>Client ID</strong> (formato uuid).<br/>
         4. Pega el API Key arriba y el Client ID abajo, luego haz clic en "Guardar".<br/>
-        5. Al publicar desde LoMaz Home, el inmueble se enviara a Finca Raiz en estado Pendiente.<br/>
-        6. Activa los inmuebles desde tu panel en Finca Raiz o via el endpoint /listing/status.<br/><br/>
-        <strong>Nota:</strong> Requiere cuenta de inmobiliaria verificada y plan activo en Finca Raiz. <a href="https://app.swaggerhub.com/apis-docs/Fincaraiz.com.co/Integradores/1.0.0" target="_blank">Ver doc API</a>
+        5. Al publicar desde LoMaz Home, el inmueble se enviará a Finca Raíz en estado Pendiente.<br/>
+        6. Activa los inmuebles desde tu panel en Finca Raíz o vía el endpoint /listing/status.<br/><br/>
+        <strong>Nota:</strong> Requiere cuenta de inmobiliaria verificada y plan activo en Finca Raíz. <a href="https://app.swaggerhub.com/apis-docs/Fincaraiz.com.co/Integradores/1.0.0" target="_blank">Ver doc API</a>
       </div>
     </div>
   </div>
@@ -151,7 +152,7 @@ input:focus{border-color:#c9a96e}
         <div class="portal-icon"><i class=lzi data-i=mundo></i></div>
         <div>
           <div class="portal-name">Proppit (x6 portales)</div>
-          <div class="portal-desc">Publica simultaneamente en Metrocuadrado, Finca Raiz, Properati, Lamudi, Vivendo y mas</div>
+          <div class="portal-desc">Publica simultaneamente en Metrocuadrado, Finca Raíz, Properati, Lamudi, Vivendo y mas</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:.8rem">
@@ -160,24 +161,24 @@ input:focus{border-color:#c9a96e}
       </div>
     </div>
     <div class="portal-body" id="body-proppit">
-      <div class="section-title">Token de integracion Proppit</div>
-      <div class="form-group"><label>API TOKEN</label>
+      <div class="section-title">Token de integración Proppit</div>
+      <div class="form-group"><label>API token</label>
         <div class="input-row">
           <input type="password" id="proppit-token" placeholder="Tu API Token de Proppit" autocomplete="off"/>
           <button class="btn-save" onclick="savePortal('proppit')">Guardar</button>
           <button class="btn-test" onclick="testPortal('proppit')">Probar</button>
         </div>
       </div>
-      <div class="form-group"><label>USUARIO PROPPIT</label><input type="text" id="proppit-usuario" placeholder="Tu usuario o email en Proppit"/></div>
+      <div class="form-group"><label>Usuario Proppit</label><input type="text" id="proppit-usuario" placeholder="Tu usuario o email en Proppit"/></div>
       <div class="test-result" id="test-proppit"></div>
       <div class="info-box">
         <strong><i class=lzi data-i=estrella></i> Con un solo token publicas en 6 portales:</strong><br/>
-        Metrocuadrado, Finca Raiz, Properati, Lamudi, Vivendo, Icasas<br/><br/>
+        Metrocuadrado, Finca Raíz, Properati, Lamudi, Vivendo, Icasas<br/><br/>
         <strong>Como obtenerlo:</strong><br/>
         1. Crea cuenta en <a href="https://www.proppit.com" target="_blank">proppit.com</a> como inmobiliaria<br/>
-        2. Ve a Configuracion &gt; Integraciones &gt; API Token<br/>
+        2. Ve a Configuración &gt; Integraciones &gt; API Token<br/>
         3. Genera y copia tu token de acceso<br/>
-        4. Pega aqui - todas tus propiedades se distribuiran automaticamente.
+        4. Pega aquí - todas tus propiedades se distribuirán automáticamente.
       </div>
     </div>
   </div>
@@ -187,7 +188,7 @@ input:focus{border-color:#c9a96e}
         <div class="portal-icon"><i class=lzi data-i=carrito></i></div>
         <div>
           <div class="portal-name">Facebook Marketplace</div>
-          <div class="portal-desc">Publicacion via Graph API - requiere pagina de Facebook</div>
+          <div class="portal-desc">Publicación vía Graph API - requiere página de Facebook</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:.8rem">
@@ -197,22 +198,22 @@ input:focus{border-color:#c9a96e}
     </div>
     <div class="portal-body" id="body-marketplace">
       <div class="section-title">Credenciales Graph API</div>
-      <div class="form-group"><label>PAGE ACCESS TOKEN (token de pagina de Facebook)</label>
+      <div class="form-group"><label>Page access token (token de página de Facebook)</label>
         <div class="input-row">
           <input type="password" id="fb-token" placeholder="EAAxxxxxx..." autocomplete="off"/>
           <button class="btn-save" onclick="savePortal('marketplace')">Guardar</button>
           <button class="btn-test" onclick="testPortal('marketplace')">Probar</button>
         </div>
       </div>
-      <div class="form-group"><label>PAGE ID (ID de tu pagina de Facebook)</label><input type="text" id="fb-pageid" placeholder="Ej: 123456789012345"/></div>
+      <div class="form-group"><label>PAGE ID (ID de tu página de Facebook)</label><input type="text" id="fb-pageid" placeholder="Ej: 123456789012345"/></div>
       <div class="test-result" id="test-marketplace"></div>
       <div class="info-box">
         <strong>Requisitos Facebook Marketplace API:</strong><br/>
-        1. Debes tener una Pagina de Facebook verificada como negocio<br/>
+        1. Debes tener una Página de Facebook verificada como negocio<br/>
         2. Solicita acceso a la API de Marketplace en: <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a><br/>
         3. Crea una app, obtiene permisos pages_manage_posts y catalog_management<br/>
-        4. Genera un Page Access Token de larga duracion (60 dias)<br/><br/>
-        <strong>Importante:</strong> Meta (Facebook) requiere aprobacion de la app para publicar en Marketplace de forma automatica. El proceso puede tomar 2-4 semanas.
+        4. Genera un Page Access Token de larga duración (60 días)<br/><br/>
+        <strong>Importante:</strong> Meta (Facebook) requiere aprobación de la app para publicar en Marketplace de forma automática. El proceso puede tomar 2-4 semanas.
       </div>
     </div>
   </div>
@@ -222,7 +223,7 @@ input:focus{border-color:#c9a96e}
         <div class="portal-icon"><i class=lzi data-i=camara></i></div>
         <div>
           <div class="portal-name">Instagram</div>
-          <div class="portal-desc">Publicacion automatica via Instagram Graph API</div>
+          <div class="portal-desc">Publicación automática vía Instagram Graph API</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:.8rem">
@@ -239,16 +240,16 @@ input:focus{border-color:#c9a96e}
           <button class="btn-test" onclick="testPortal('instagram')">Probar</button>
         </div>
       </div>
-      <div class="form-group"><label>INSTAGRAM BUSINESS ACCOUNT ID</label><input type="text" id="ig-accountid" placeholder="Ej: 17841400000000000"/></div>
+      <div class="form-group"><label>Instagram business account ID</label><input type="text" id="ig-accountid" placeholder="Ej: 17841400000000000"/></div>
       <div class="form-group"><label>HASHTAGS AUTOMATICOS (separados por espacio)</label><input type="text" id="ig-hashtags" placeholder="#inmuebles #colombia #apartamento #casas"/></div>
       <div class="test-result" id="test-instagram"></div>
       <div class="info-box">
         <strong>Requisitos Instagram Graph API:</strong><br/>
         1. Cuenta de Instagram debe ser Business o Creator<br/>
-        2. Vincula la cuenta de Instagram a tu Pagina de Facebook<br/>
+        2. Vincula la cuenta de Instagram a tu Página de Facebook<br/>
         3. En <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a> crea app con permiso instagram_content_publish<br/>
-        4. Genera un token de larga duracion (60 dias renovable)<br/><br/>
-        <strong>Funcionamiento:</strong> Al publicar una propiedad, se crea automaticamente un post con la primera imagen y caption optimizado con hashtags.
+        4. Genera un token de larga duración (60 días renovable)<br/><br/>
+        <strong>Funcionamiento:</strong> Al publicar una propiedad, se crea automáticamente un post con la primera imagen y caption optimizado con hashtags.
       </div>
     </div>
   </div>
@@ -311,7 +312,7 @@ async function verificarEstadoReal(){
       pintarBadge('metrocuadrado','badge-connected','Conectado','Llave y credenciales validas en '+(est.ambiente||''));
       if(card)card.classList.add('connected');
     } else {
-      pintarBadge('metrocuadrado','badge-disconnected','Falta activar',est.resumen||'Metrocuadrado todavia no acepta la publicacion.');
+      pintarBadge('metrocuadrado','badge-disconnected','Falta activar',est.resumen||'Metrocuadrado todavía no acepta la publicación.');
       if(card)card.classList.remove('connected');
     }
   }catch(e){
@@ -321,18 +322,18 @@ async function verificarEstadoReal(){
   try{
     const {data:efr,error:errFr}=await sb.functions.invoke('publicar-en-fincaraiz/estado?t='+Date.now(),{method:'GET'});
     if(errFr||!efr){
-      pintarBadge('fincaraiz','badge-unavailable','Sin verificar','No se pudo consultar el estado de Finca Raiz en este momento.');
+      pintarBadge('fincaraiz','badge-unavailable','Sin verificar','No se pudo consultar el estado de Finca Raíz en este momento.');
     }else if(efr.listo_para_publicar){
-      pintarBadge('fincaraiz','badge-connected','Conectado',efr.resumen||'Finca Raiz acepta las credenciales y apunta al ambiente real.');
+      pintarBadge('fincaraiz','badge-connected','Conectado',efr.resumen||'Finca Raíz acepta las credenciales y apunta al ambiente real.');
     }else if(efr.credenciales_ok&&efr.ambiente!=='produccion'){
-      pintarBadge('fincaraiz','badge-disconnected','Solo pruebas',efr.resumen||'Las credenciales sirven pero apuntan al ambiente de pruebas de Finca Raiz. Lo que publiques no saldra en fincaraiz.com.co.');
+      pintarBadge('fincaraiz','badge-disconnected','Solo pruebas',efr.resumen||'Las credenciales sirven pero apuntan al ambiente de pruebas de Finca Raíz. Lo que publiques no saldra en fincaraiz.com.co.');
     }else{
-      pintarBadge('fincaraiz','badge-disconnected','Falta credencial',efr.resumen||'Finca Raiz no acepta la llave configurada en el servidor.');
+      pintarBadge('fincaraiz','badge-disconnected','Falta credencial',efr.resumen||'Finca Raíz no acepta la llave configurada en el servidor.');
     }
   }catch(e){
-    pintarBadge('fincaraiz','badge-unavailable','Sin verificar','Error al consultar Finca Raiz: '+(e&&e.message?e.message:e));
+    pintarBadge('fincaraiz','badge-unavailable','Sin verificar','Error al consultar Finca Raíz: '+(e&&e.message?e.message:e));
   }
-  pintarBadge('proppit','badge-unavailable','Se configura en el servidor','Proppit lee un feed publico del servidor. Falta registrar la direccion del feed en el panel de Proppit.');
+  pintarBadge('proppit','badge-unavailable','Se configura en el servidor','Proppit lee un feed público del servidor. Falta registrar la dirección del feed en el panel de Proppit.');
 }
 async function loadCredentials(){
   const{data:creds}=await sb.from("configuracion_portales").select("*");
@@ -343,7 +344,7 @@ async function loadCredentials(){
     const badge=document.getElementById("badge-"+c.portal);
     const card=document.getElementById("card-"+c.portal);
     if(c.activo&&c[f.keyName]){
-      if(badge){badge.className='portal-status-badge badge-disconnected';badge.textContent='Guardado (sin verificar)';badge.title='Los datos estan guardados, pero esta pantalla aun no ha comprobado si el portal los acepta.';}
+      if(badge){badge.className='portal-status-badge badge-disconnected';badge.textContent='Guardado (sin verificar)';badge.title='Los datos estan guardados, pero esta pantalla aún no ha comprobado si el portal los acepta.';}
     }
     // Show masked key
     const el=document.getElementById(f.key);
@@ -386,7 +387,7 @@ async function testPortal(portal){
   if(!resultEl)return;
   resultEl.style.display="block";
   resultEl.className="test-result";
-  resultEl.textContent="Probando conexion con "+portal+"...";
+  resultEl.textContent="Probando conexión con "+portal+"...";
   // Verify we have credentials saved
   const{data:cred}=await sb.from("configuracion_portales").select("*").eq("portal",portal).single();
   if(!cred||!cred.activo){
@@ -404,17 +405,17 @@ async function testPortal(portal){
       });
       if(resp.status === 200 || resp.status === 404) {
         resultEl.className="test-result ok";
-        resultEl.textContent="Conexion exitosa con la API de Finca Raiz. Credenciales validas.";
+        resultEl.textContent="Conexión exitosa con la API de Finca Raíz. Credenciales validas.";
       } else if(resp.status === 401) {
         resultEl.className="test-result fail";
-        resultEl.textContent="API Key invalida (401 Unauthorized). Verifica tu API Key en Finca Raiz.";
+        resultEl.textContent="API Key invalida (401 Unauthorized). Verifica tu API Key en Finca Raíz.";
       } else {
         resultEl.className="test-result ok";
         resultEl.textContent="Respuesta API: "+resp.status+". Credenciales guardadas - verifica manualmente.";
       }
     } catch(e) {
       resultEl.className="test-result ok";
-      resultEl.textContent="Credenciales guardadas. La verificacion en vivo puede fallar por CORS desde el navegador; la integracion funciona correctamente al publicar.";
+      resultEl.textContent="Credenciales guardadas. La verificacion en vivo puede fallar por CORS desde el navegador; la integración funciona correctamente al publicar.";
     }
     return;
   }
@@ -443,7 +444,7 @@ async function testPortal(portal){
     instagram:'Credenciales guardadas. No hay prueba en vivo; se usara para generar posts de Instagram.'
   };
   resultEl.className='test-result';
-  resultEl.textContent=msgs[portal]||'Credenciales guardadas. Este portal no tiene prueba automatica.';
+  resultEl.textContent=msgs[portal]||'Credenciales guardadas. Este portal no tiene prueba automática.';
 }
 </script>
 <script src="lomaz-admin-nav.js" defer></script>

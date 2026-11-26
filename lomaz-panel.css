@@ -1,0 +1,5 @@
+/* LoMaz Home · ajustes comunes del panel del equipo */
+/* La cursiva dorada queda solo para el logo: en títulos del panel el texto va parejo. */
+h1 em,h2 em,h3 em,h4 em,.page-title em,.section-title em,.card h3 em{font-style:normal;color:inherit}
+label,th,.lbl,.label{letter-spacing:0}
+table td,table th,.num,.stat-val,.precio{font-variant-numeric:tabular-nums}
