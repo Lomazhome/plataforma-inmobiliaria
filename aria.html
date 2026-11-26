@@ -275,9 +275,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
           Avalúo
         </div>
         <div class="nav-divider"></div>
-        <div class="nav-item" onclick="sendQuick('Zonas premium en Bogotá')">
+        <div class="nav-item" onclick="sendQuick('¿En qué zonas hay inmuebles?')">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Zonas premium
+          Zonas con inmuebles
         </div>
         <div class="nav-item" onclick="sendQuick('Calculadora hipotecaria')">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="10" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="18"/><line x1="12" y1="10" x2="12" y2="18"/></svg>
@@ -289,12 +289,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
     <div class="quick-actions">
       <p class="quick-actions-title">Acciones rápidas</p>
       <div>
-        <span class="quick-chip" onclick="sendQuick('Chapinero Alto')"><i class=lzi data-i=pin></i> Chapinero</span>
-        <span class="quick-chip" onclick="sendQuick('Usaquén')"><i class=lzi data-i=pin></i> Usaquén</span>
-        <span class="quick-chip" onclick="sendQuick('La Cabrera')"><i class=lzi data-i=pin></i> La Cabrera</span>
-        <span class="quick-chip" onclick="sendQuick('Rosales')"><i class=lzi data-i=pin></i> Rosales</span>
-        <span class="quick-chip" onclick="sendQuick('Apartamento 3 habitaciones')"><i class=lzi data-i=edificio></i> 3 hab.</span>
-        <span class="quick-chip" onclick="sendQuick('Casa con jardín')"><i class=lzi data-i=casa></i> Casa</span>
+        <span id="aria-zonas"></span>
+        <span class="quick-chip" onclick="sendQuick('Inmuebles de 3 habitaciones')"><i class=lzi data-i=edificio></i> 3 hab.</span>
+        <span class="quick-chip" onclick="sendQuick('¿Qué hay en arriendo?')"><i class=lzi data-i=llave></i> Arriendo</span>
       </div>
     </div>
 
@@ -367,11 +364,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg-primary);color:var(--t
             <span class="hint-chip" onclick="insertHint('¿Cuánto cuesta un apartamento en')">
               <i class=lzi data-i=dinero></i> Precios
             </span>
-            <span class="hint-chip" onclick="insertHint('¿Qué documentos necesito para')">
-              <i class=lzi data-i=archivo></i> Docs
+            <span class="hint-chip" onclick="insertHint('¿Qué hay en arriendo en')">
+              <i class=lzi data-i=llave></i> En arriendo
             </span>
-            <span class="hint-chip" onclick="insertHint('Compara Usaquén vs Chapinero')">
-              <i class=lzi data-i=buscar></i> Comparar
+            <span class="hint-chip" onclick="insertHint('¿Qué hay en venta en')">
+              <i class=lzi data-i=casa></i> En venta
             </span>
             <span class="hint-chip" onclick="insertHint('¿Cuál es el proceso de compra en')">
               <i class=lzi data-i=lista></i> Proceso
@@ -430,19 +427,19 @@ function renderMessages() {
       <div class="empty-state-content">
         <div class="empty-logo">A</div>
         <h1 class="empty-title">Hola, soy ARIA</h1>
-        <p class="empty-subtitle">Tu asesora de inteligencia artificial para encontrar la propiedad perfecta en Bogotá. Estoy aquí para ayudarte.</p>
+        <p class="empty-subtitle">Te digo qué inmuebles hay publicados hoy y te llevo a las calculadoras.</p>
         <div class="empty-suggestions">
-          <div class="suggestion-card" onclick="sendQuick('¿Qué propiedades tienen disponibles en Usaquén?')">
+          <div class="suggestion-card" onclick="sendQuick('¿Qué inmuebles hay disponibles?')">
             <span class="suggestion-icon"><i class=lzi data-i=casa></i></span>
-            ¿Qué propiedades tienen disponibles en Usaquén?
+            ¿Qué inmuebles hay disponibles?
           </div>
           <div class="suggestion-card" onclick="sendQuick('¿Cuál es el proceso para comprar un apartamento en Bogotá?')">
             <span class="suggestion-icon"><i class=lzi data-i=lista></i></span>
             ¿Cuál es el proceso para comprar un apartamento?
           </div>
-          <div class="suggestion-card" onclick="sendQuick('¿Qué zonas premium recomiendas para invertir?')">
-            <span class="suggestion-icon"></span>
-            ¿Qué zonas premium recomiendas para invertir?
+          <div class="suggestion-card" onclick="sendQuick('¿En qué zonas hay inmuebles?')">
+            <span class="suggestion-icon"><i class=lzi data-i=pin></i></span>
+            ¿En qué zonas hay inmuebles?
           </div>
           <div class="suggestion-card" onclick="sendQuick('Necesito un apartamento de 2 habitaciones para arrendar')">
             <span class="suggestion-icon"><i class=lzi data-i=llave></i></span>
@@ -548,6 +545,8 @@ function renderMarkdown(text) {
   html = html.replace(/(<\/h[123]>)<\/p>/g, '$1');
   html = html.replace(/<p>(<ul>)/g, '$1');
   html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+  // Enlaces internos del sitio: [texto](pagina.html)
+  html = html.replace(/\[([^\]]+)\]\(([a-z0-9-]+\.html[^)\s]*)\)/g, '<a href="$2" style="color:var(--accent-light);text-decoration:underline">$1</a>');
   html = html.replace(/<p>(<div)/g, '$1');
   html = html.replace(/(<\/pre>)<\/p>/g, '$1');
   html = html.replace(/<p><br><\/p>/g, '');
@@ -614,72 +613,129 @@ async function sendMessage() {
 
 // ==================== AI RESPONSE ENGINE ====================
 async function getARIAResponse(history, userMsg) {
-  // Try Supabase Edge Function
-  if(supabaseClient) {
-    try {
-      const { data, error } = await supabaseClient.functions.invoke('aria-chat', {
-        body: { messages: history, message: userMsg, sessionId }
-      });
-      if(!error && data?.response) return data.response;
-    } catch(e) {}
-  }
-  
-  // Fallback: intelligent local response
+  if(!INVENTARIO) await cargarInventario();
   return generateLocalResponse(userMsg, history);
 }
 
+// ARIA responde con los inmuebles publicados hoy. No usa precios, zonas ni plazos fijos.
+let INVENTARIO = null;
+async function cargarInventario() {
+  try {
+    const U = 'https://lniouebpuuuqctrgxoiw.supabase.co';
+    const K = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW14dWFXOTFaV0p3ZFhWMWNXTjBjbWQ0YjJsM0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpnd09ETTVOamdzSW1WNGNDSTZNakE1TXpZMU9UazJPSDAuOHctVGNEOEpLa0hRcG55YmFqLUFOei00azRoem5Gb0l3RnJfWmF0cVB0QQ==');
+    const r = await fetch(U + '/rest/v1/propiedades?select=barrio,ciudad,tipo_operacion,tipo_propiedad,precio,habitaciones&estado=eq.activa&limit=1000', { headers: { apikey: K, Authorization: 'Bearer ' + K } });
+    if(r.ok) { INVENTARIO = await r.json(); pintarZonas(); }
+  } catch(e) {}
+}
+const sinTilde = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const bonito = s => String(s || '').toLowerCase().replace(/(^|\s)\S/g, c => c.toUpperCase());
+const cuantos = n => n === 1 ? '1 inmueble' : n + ' inmuebles';
+function plata(n) {
+  n = Number(n) || 0;
+  if(n >= 1e6) { const m = n / 1e6; return '$ ' + (m % 1 ? m.toFixed(1).replace('.', ',') : m.toLocaleString('es-CO')) + ' millones'; }
+  return '$ ' + n.toLocaleString('es-CO');
+}
+function rango(lista) {
+  const p = lista.map(x => Number(x.precio)).filter(x => x > 0).sort((a, b) => a - b);
+  if(!p.length) return '';
+  return p.length === 1 ? plata(p[0]) : 'desde ' + plata(p[0]) + ' hasta ' + plata(p[p.length - 1]);
+}
+const enVenta = l => l.filter(x => sinTilde(x.tipo_operacion).includes('venta'));
+const enArriendo = l => l.filter(x => sinTilde(x.tipo_operacion).includes('arriendo'));
+function zonasConInventario() {
+  const m = {};
+  (INVENTARIO || []).forEach(x => { const k = bonito(x.barrio || x.ciudad); if(k) m[k] = (m[k] || 0) + 1; });
+  return Object.keys(m).map(k => [k, m[k]]).sort((a, b) => b[1] - a[1]);
+}
+function zonaEnMensaje(m) {
+  const x = sinTilde(m);
+  const lugares = [];
+  (INVENTARIO || []).forEach(p => { [p.barrio, p.ciudad].forEach(v => { const k = sinTilde(v).trim(); if(k.length > 2 && lugares.indexOf(k) < 0) lugares.push(k); }); });
+  lugares.sort((a, b) => b.length - a.length);
+  let hit = lugares.find(k => x.includes(k));
+  if(!hit) hit = lugares.find(k => k.split(/\s+/).some(w => w.length > 3 && x.includes(w)));
+  return hit || null;
+}
+function resumenZona(k) {
+  const l = INVENTARIO.filter(p => sinTilde(p.barrio).includes(k) || sinTilde(p.ciudad).includes(k));
+  const v = enVenta(l), a = enArriendo(l);
+  let s = 'Hoy tenemos **' + cuantos(l.length) + '** en **' + bonito(k) + '**:\n\n';
+  if(v.length) s += '- En venta: ' + v.length + ' (' + rango(v) + ')\n';
+  if(a.length) s += '- En arriendo: ' + a.length + ' (' + rango(a) + ' al mes)\n';
+  return s + '\nPuedes verlos en el [listado de inmuebles](propiedades-publica.html) o en el [mapa](mapa.html).';
+}
+function resumenGeneral() {
+  const v = enVenta(INVENTARIO), a = enArriendo(INVENTARIO);
+  let s = 'Hoy tenemos **' + cuantos(INVENTARIO.length) + '** publicados:\n\n';
+  if(v.length) s += '- En venta: ' + v.length + ' (' + rango(v) + ')\n';
+  if(a.length) s += '- En arriendo: ' + a.length + ' (' + rango(a) + ' al mes)\n';
+  const z = zonasConInventario().slice(0, 6).map(x => x[0] + ' (' + x[1] + ')').join(', ');
+  if(z) s += '\nZonas con inmuebles: ' + z + '.\n';
+  return s + '\nMíralos en el [listado de inmuebles](propiedades-publica.html) o en el [mapa](mapa.html).';
+}
+const SIN_DATOS = 'En este momento no pude consultar el inventario. Puedes verlo en el [listado de inmuebles](propiedades-publica.html).';
+
 function generateLocalResponse(msg, history) {
-  const m = msg.toLowerCase();
-  const ctx = history.slice(-4).map(h => h.content.toLowerCase()).join(' ');
-  
-  // Contextual responses
-  if(m.includes('precio') || m.includes('costo') || m.includes('valor') || m.includes('cuánto')) {
-    if(m.includes('usaquén') || ctx.includes('usaquén')) {
-      return `En **Usaquén**, los precios actuales para 2025 son:\n\n- **Apartamentos 2 hab.**: $450M - $850M COP\n- **Apartamentos 3 hab.**: $700M - $1.800M COP\n- **Casas**: $1.500M - $5.000M COP\n\n> Los arriendos oscilan entre $2.5M y $8M/mes según el inmueble.\n\n¿Te interesa algún rango específico o quieres ver propiedades disponibles?`;
-    }
-    if(m.includes('chapinero') || ctx.includes('chapinero')) {
-      return `En **Chapinero Alto**, una de las zonas más exclusivas:\n\n- **Apartamentos 2 hab.**: $380M - $720M COP\n- **Apartamentos 3 hab.**: $600M - $1.500M COP\n- **Arriendos**: $2.2M - $6.5M/mes\n\n¿Quieres que te muestre propiedades específicas disponibles en Chapinero?`;
-    }
-    return `Los precios en Bogotá varían mucho según la zona. ¿En qué barrio o sector te interesa buscar? Las zonas **premium** más cotizadas son:\n\n- **Usaquén** — Alta valorización\n- **Chapinero Alto** — Zona exclusiva\n- **La Cabrera** — Máximo lujo\n- **Rosales** — Tranquilidad premium\n\nCuéntame más sobre lo que buscas y te doy precios exactos.`;
+  const m = sinTilde(msg);
+  const hay = Array.isArray(INVENTARIO);
+  const zona = hay ? zonaEnMensaje(msg) : null;
+
+  if(m.includes('calculadora') || m.includes('hipotec') || m.includes('credito') || m.includes('cuota')) {
+    return 'El crédito lo aprueba el banco según tus ingresos y tu historial. Para simular tu caso usa la [calculadora de crédito](calculadora.html#credito) y la de [capacidad de endeudamiento](calculadora.html#endeudamiento).';
   }
-  
-  if(m.includes('arrend') || m.includes('alquil')) {
-    return `Para **arrendar una propiedad** con LoMaz Home, el proceso es:\n\n1. **Búsqueda personalizada** — Te presento opciones según tu presupuesto y necesidades\n2. **Visita virtual o presencial** — Coordinamos visitas en 24-48 horas\n3. **Verificación de documentos** — Cédula, extractos bancarios, cartas laborales\n4. **Contrato y depósito** — Generalmente 1-2 meses de depósito\n5. **Entrega de llaves** — ¡Listo para mudarte!\n\n¿Tienes algún presupuesto en mente o zona preferida?`;
+  if(m.includes('avaluo') || m.includes('cuanto vale') || m.includes('valor de mi') || m.includes('vender mi')) {
+    return 'Yo no hago avalúos. El valor comercial lo estima un asesor con un análisis comparativo de mercado (ACM), a partir de inmuebles parecidos en tu sector.\n\nPara empezar se necesita: dirección o barrio, área en m², habitaciones y baños, antigüedad, estado y garajes.\n\nSi eres del equipo, el ACM está en la [calculadora](calculadora.html#acm).';
   }
-  
-  if(m.includes('compr') || m.includes('adquir')) {
-    return `Para **comprar una propiedad** en Bogotá con LoMaz Home:\n\n**Pasos del proceso:**\n1. Definir presupuesto y zona\n2. Pre-aprobación de crédito hipotecario (si aplica)\n3. Visita y selección del inmueble\n4. Promesa de compraventa\n5. ✅ Escrituración y registro en Notaría\n\n**Documentos necesarios:**\n- Cédula de ciudadanía\n- Extractos bancarios (6 meses)\n- Declaración de renta\n- Certificado laboral\n\n¿En qué zona y con qué presupuesto estás pensando?`;
+  if(m.includes('notari') || m.includes('escritura') || m.includes('registro')) {
+    return 'Los gastos de notaría y registro dependen del valor de la venta. Calcula el estimado en la [calculadora de gastos notariales](calculadora.html#notariales); el valor definitivo lo liquida la notaría.';
   }
-  
-  if(m.includes('usaquén') || m.includes('chapinero') || m.includes('cabrera') || m.includes('rosales') || m.includes('zona')) {
-    return `Estas son las **zonas premium** de Bogotá donde trabajamos:\n\n**La Cabrera** — El sector más exclusivo. Embajadas, gastronomía de alto nivel, alta seguridad.\n\n**Rosales** — Barrio residencial con parques, tranquilidad y arquitectura colonial moderna.\n\n**Usaquén** — Perfecta mezcla de tradición y modernidad. Excelente valorización.\n\n**Chapinero Alto** — Zona vibrante con vida cultural, restaurantes y buena conectividad.\n\nCada zona tiene su encanto particular. ¿Qué estilo de vida prefieres?`;
+  if(zona) return resumenZona(zona);
+  if(/usaquen|chapinero|cabrera|rosales|chico|cedritos|colina|suba/.test(m)) {
+    return hay ? 'Hoy no tenemos inmuebles publicados en esa zona.\n\n' + resumenGeneral() : SIN_DATOS;
   }
-  
-  if(m.includes('avalúo') || m.includes('cuánto vale') || m.includes('valor de mi')) {
-    return `Para hacer el **avalúo de tu propiedad**, necesito algunos datos:\n\n- Dirección o barrio\n- Área en m²\n- Número de habitaciones y baños\n- Año de construcción\n- Estado actual (excelente/bueno/regular)\n- Amenidades (parqueadero, depósito, piscina, etc.)\n\nCon esa información puedo darte un estimado muy preciso basado en el mercado actual.\n\n¿Me compartes esos datos?`;
+  if(m.includes('zona') || m.includes('barrio') || m.includes('sector')) {
+    if(!hay) return SIN_DATOS;
+    const z = zonasConInventario();
+    if(!z.length) return 'Hoy no tenemos inmuebles publicados.';
+    return 'Estas son las zonas donde tenemos inmuebles publicados hoy:\n\n' + z.map(x => '- **' + x[0] + '**: ' + x[1]).join('\n') + '\n\nDime una y te cuento qué hay.';
   }
-  
-  if(m.includes('calculadora') || m.includes('hipoteca') || m.includes('crédito')) {
-    return `Te ayudo con la **calculadora hipotecaria**\n\nPara un apartamento de **$500 millones COP**:\n\n| Plazo | Cuota aprox. (tasa ~12% EA) |\n|-------|---------------------------|\n| 10 años | ~$7.1M/mes |\n| 15 años | ~$5.9M/mes |\n| 20 años | ~$5.4M/mes |\n\n> Puedes ver la calculadora completa en nuestra web\n\n¿Con qué valor de inmueble y cuota mensual estás pensando?`;
+  const hab = m.match(/(\d+)\s*(hab|alcoba|cuarto|dormitorio)/);
+  if(hab) {
+    if(!hay) return SIN_DATOS;
+    const n = parseInt(hab[1], 10);
+    const l = INVENTARIO.filter(p => Number(p.habitaciones) === n);
+    if(!l.length) return 'Hoy no tenemos inmuebles publicados de ' + n + ' habitaciones.\n\n' + resumenGeneral();
+    const v = enVenta(l), a = enArriendo(l);
+    return 'Hoy tenemos **' + cuantos(l.length) + '** de ' + n + ' habitaciones' + (v.length ? ': ' + v.length + ' en venta (' + rango(v) + ')' : '') + (a.length ? (v.length ? ' y ' : ': ') + a.length + ' en arriendo (' + rango(a) + ' al mes)' : '') + '.\n\nMíralos en el [listado de inmuebles](propiedades-publica.html).';
   }
-  
+  if(m.includes('arriend') || m.includes('arrend') || m.includes('alquil') || m.includes('rentar')) {
+    const l = hay ? enArriendo(INVENTARIO) : null;
+    const cab = l ? (l.length ? 'Hoy tenemos **' + cuantos(l.length) + '** en arriendo, ' + rango(l) + ' al mes. Míralos en el [listado](propiedades-publica.html?negocio=arriendo).' : 'Hoy no tenemos inmuebles publicados en arriendo.') : SIN_DATOS;
+    return cab + '\n\nUn arriendo pasa por estos pasos: visita, estudio de la solicitud (lo hace la aseguradora o el propietario), contrato y entrega con inventario.';
+  }
+  if(m.includes('compr') || m.includes('adquir') || m.includes('venta')) {
+    const l = hay ? enVenta(INVENTARIO) : null;
+    const cab = l ? (l.length ? 'Hoy tenemos **' + cuantos(l.length) + '** en venta, ' + rango(l) + '. Míralos en el [listado](propiedades-publica.html?negocio=venta).' : 'Hoy no tenemos inmuebles publicados en venta.') : SIN_DATOS;
+    return cab + '\n\nUna compra pasa por estos pasos: oferta, promesa de compraventa, estudio de títulos, crédito si lo necesitas, escritura en notaría y registro.';
+  }
+  if(m.includes('precio') || m.includes('costo') || m.includes('valor') || m.includes('cuanto') || m.includes('propiedad') || m.includes('inmueble') || m.includes('disponible') || m.includes('casa') || m.includes('apartamento')) {
+    return hay ? (INVENTARIO.length ? resumenGeneral() : 'Hoy no tenemos inmuebles publicados.') : SIN_DATOS;
+  }
   if(m.includes('hola') || m.includes('buenas') || m.includes('buenos') || m.includes('saludos')) {
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? '¡Buenos días' : hour < 18 ? '¡Buenas tardes' : '¡Buenas noches';
-    return `${greeting}! Soy **ARIA**, tu asesora virtual de LoMaz Home.\n\nEstoy aquí para ayudarte a encontrar **la propiedad perfecta** en Bogotá — ya sea para comprar, arrendar o invertir.\n\n¿Por dónde quieres comenzar? Puedo mostrarte propiedades disponibles, darte información de precios por zona, o explicarte el proceso de compra paso a paso.`;
+    return 'Hola, soy **ARIA**, la asistente de LoMaz Home.\n\nTe digo qué inmuebles hay publicados hoy, por zona, por número de habitaciones o por tipo de negocio, y te llevo a las calculadoras. ¿Qué necesitas?';
   }
-  
   if(m.includes('gracias') || m.includes('perfecto') || m.includes('excelente') || m.includes('listo')) {
-    return `¡Me alegra haber podido ayudarte! \n\nRecuerda que estoy disponible para cualquier consulta adicional. Si quieres agendar una **visita presencial** o hablar con uno de nuestros asesores especializados, puedo coordinarlo.\n\n¿Hay algo más en lo que pueda ayudarte?`;
+    return 'Con gusto. Si necesitas algo más, aquí estoy.';
   }
-  
-  // Generic intelligent response
-  const responses = [
-    `Entiendo tu consulta. En LoMaz Home nos especializamos en propiedades exclusivas en **Bogotá**. Para darte la mejor asesoría, ¿podrías contarme más sobre lo que buscas? Por ejemplo:\n\n- ¿Buscas para comprar o arrendar?\n- ¿Tienes alguna zona preferida?\n- ¿Cuál es tu presupuesto aproximado?\n- ¿Para cuántas personas sería la propiedad?`,
-    `Excelente pregunta. Basándome en el mercado inmobiliario actual de Bogotá, puedo darte información muy precisa si me cuentas un poco más sobre tu situación. ¿Qué es lo más importante para ti al buscar una propiedad?`,
-    `Con gusto te ayudo con eso. Contamos con un portafolio exclusivo de propiedades en las zonas más cotizadas de Bogotá. ¿Te interesa ver opciones disponibles o prefieres que primero hablemos de presupuesto y requisitos?`
-  ];
-  return responses[Math.floor(Math.random() * responses.length)];
+  return 'Puedo decirte qué inmuebles hay publicados hoy. Pregúntame por una zona, por venta o arriendo, o por número de habitaciones. También te llevo a las calculadoras de crédito y de gastos notariales.';
+}
+
+function pintarZonas() {
+  const caja = document.getElementById('aria-zonas');
+  if(!caja) return;
+  const z = zonasConInventario().slice(0, 4);
+  caja.innerHTML = z.map(x => '<span class="quick-chip" data-z="' + escapeHtml(x[0]) + '"><i class=lzi data-i=pin></i> ' + escapeHtml(x[0]) + '</span>').join('');
+  caja.querySelectorAll('[data-z]').forEach(el => el.addEventListener('click', () => sendQuick(el.getAttribute('data-z'))));
 }
 
 // ==================== STREAMING ====================
@@ -1047,7 +1103,7 @@ async function init() {
       showThinking();
       setTimeout(async () => {
         hideThinking();
-        await streamResponse(`¡Bienvenido a **LoMaz Home**! Soy **ARIA**, tu asesora virtual de inteligencia artificial \n\nEstoy aquí para ayudarte a encontrar **la propiedad perfecta en Bogotá** — ya sea para comprar, arrendar o invertir en zonas exclusivas como Usaquén, Chapinero Alto, La Cabrera y Rosales.\n\n¿Con qué puedo ayudarte hoy?`);
+        await streamResponse('Hola, soy **ARIA**, la asistente de LoMaz Home.\n\nTe digo qué inmuebles hay publicados hoy y te llevo a las calculadoras. ¿Qué necesitas?');
         isTyping = false;
       }, 1200);
     }, 400);
@@ -1056,6 +1112,7 @@ async function init() {
   // Init systems
   initDragDrop();
   await initSupabase();
+  cargarInventario();
   
   // Focus input
   setTimeout(() => inputEl()?.focus(), 800);

@@ -68,7 +68,7 @@ body{font-family:Inter,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh
 <div class="topbar">
   <a href="index.html" class="logo">Lomaz <span>Home</span></a>
   <div class="topbar-right">
-    <a href="propiedades.html" class="btn-topbar">🔍 Buscar propiedades</a>
+    <a href="propiedades-publica.html" class="btn-topbar">🔍 Buscar propiedades</a>
     <a href="dashboard.html" class="btn-topbar">🏠 Dashboard</a>
   </div>
 </div>
@@ -191,7 +191,7 @@ function renderCards(){
   // Empty state
   if(items.length===0){
     if(total===0){
-      grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="icon">❤️</div><h3>No tienes favoritos guardados</h3><p>Explora las propiedades disponibles y guarda las que más te gusten.</p><a href="propiedades.html" class="btn-primary">🔍 Explorar propiedades</a></div>`;
+      grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="icon">❤️</div><h3>No tienes favoritos guardados</h3><p>Explora las propiedades disponibles y guarda las que más te gusten.</p><a href="propiedades-publica.html" class="btn-primary">🔍 Explorar propiedades</a></div>`;
     }else{
       grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div><h3>Sin resultados</h3><p>Ningún favorito coincide con los filtros aplicados.</p></div>`;
     }

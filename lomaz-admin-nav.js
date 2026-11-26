@@ -16,7 +16,7 @@
   var IC = {
       "dashboard.html": "<path d=\"M3 11.5 12 4l9 7.5\"/><path d=\"M5.5 10v10h13V10\"/><path d=\"M10 20v-5h4v5\"/>",
       "catalogo-global.html": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"1\"/><path d=\"M3 9h18M9 9v11M15 9v11\"/>",
-      "propiedades.html": "<path d=\"M4 20V8l6-4v16\"/><path d=\"M10 20V10h10v10\"/><path d=\"M2.5 20h19M13.5 13.5h3M13.5 16.5h3\"/>",
+      "propiedades-publica.html": "<path d=\"M4 20V8l6-4v16\"/><path d=\"M10 20V10h10v10\"/><path d=\"M2.5 20h19M13.5 13.5h3M13.5 16.5h3\"/>",
       "agregar-propiedad.html": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 8v8M8 12h8\"/>",
       "mis-propiedades.html": "<path d=\"M8 6h12M8 12h12M8 18h12\"/><path d=\"M4 6h.01M4 12h.01M4 18h.01\"/>",
       "contactos.html": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5\"/><path d=\"M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.7.8 2.7 2.5 3 5.2\"/>",
@@ -34,7 +34,7 @@
     { t: 'Principal', l: [
       { h: 'dashboard.html',       n: 'Inicio' },
       { h: 'catalogo-global.html', n: 'Inventario compartido' },
-      { h: 'propiedades.html',     n: 'Todos los inmuebles' } ] },
+      { h: 'propiedades-publica.html',     n: 'Todos los inmuebles' } ] },
     { t: 'Mis herramientas', l: [
       { h: 'agregar-propiedad.html', n: 'Agregar inmueble' },
       { h: 'mis-propiedades.html',   n: 'Mis inmuebles' },

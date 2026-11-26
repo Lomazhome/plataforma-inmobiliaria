@@ -970,7 +970,7 @@ metaEtiqueta("twitter:card", "summary_large_image", true) + metaEtiqueta("twitte
 '<nav id="main-nav" class="nav" aria-label="Principal">\n' +
 '<a href="index.html" class="nav-logo">LoMaz <span>Home</span></a>\n' +
 '<ul class="nav-links" id="nav-links">' +
-'<li><a href="index.html">Inicio</a></li><li><a href="propiedades.html">Propiedades</a></li><li><a href="blog.html" class="activo">Blog</a></li>' +
+'<li><a href="index.html">Inicio</a></li><li><a href="propiedades-publica.html">Propiedades</a></li><li><a href="blog.html" class="activo">Blog</a></li>' +
 '<li><a href="calculadora.html">Calculadora</a></li><li><a href="sobre-nosotros.html">Nosotros</a></li><li><a href="contacto.html">Contacto</a></li></ul>\n' +
 '<a href="login.html" class="nav-acceso">Acceso Asesores</a>\n' +
 '<button class="nav-ham" id="nav-ham" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>\n</nav>\n' +
@@ -985,7 +985,7 @@ relacionados +
 '<div class="volver"><a class="btn-volver" href="/blog.html">← Volver al blog</a></div>\n</main>\n' +
 '<footer class="site-footer"><div class="footer-inner"><div class="footer-grid">' +
 '<div><div class="brand-name">LoMaz <span>Home</span></div><p class="footer-tagline">Inmobiliaria boutique</p><p class="footer-desc">Conectamos personas con propiedades excepcionales en Bogotá. Asesoría personalizada, transparencia total y resultados reales.</p></div>' +
-'<div class="footer-col"><h4>Propiedades</h4><ul><li><a href="propiedades.html?tipo=arriendo">Arriendo</a></li><li><a href="propiedades.html?tipo=venta">Venta</a></li><li><a href="propiedades.html?barrio=Chapinero">Chapinero</a></li><li><a href="propiedades.html?barrio=Usaquén">Usaquén</a></li><li><a href="propiedades.html?barrio=Chicó">Chicó</a></li></ul></div>' +
+'<div class="footer-col"><h4>Propiedades</h4><ul><li><a href="propiedades-publica.html?negocio=arriendo">Arriendo</a></li><li><a href="propiedades-publica.html?negocio=venta">Venta</a></li><li><a href="propiedades-publica.html?barrio=Chapinero">Chapinero</a></li><li><a href="propiedades-publica.html?barrio=Usaquén">Usaquén</a></li><li><a href="propiedades-publica.html?barrio=Chicó">Chicó</a></li></ul></div>' +
 '<div class="footer-col"><h4>Blog</h4><ul><li><a href="blog.html?cat=Arrendamiento">Arrendamiento</a></li><li><a href="blog.html?cat=Compraventa">Compraventa</a></li><li><a href="blog.html?cat=Financiación">Financiación</a></li><li><a href="blog.html?cat=Trámites">Trámites</a></li></ul></div>' +
 '<div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">+57 300 330 0343</a></li><li><a href="mailto:lomazhome@gmail.com">lomazhome@gmail.com</a></li><li><a href="https://www.instagram.com/lomazhome" target="_blank" rel="noopener">Instagram @lomazhome</a></li><li><a href="contacto.html">Bogotá, Colombia</a></li></ul></div>' +
 '</div><div class="footer-bottom"><span class="footer-copy">© <span id="footer-year">2026</span> LoMaz Home. Todos los derechos reservados.</span><span class="footer-city">Bogotá · Desde 2024</span><a href="login.html" class="footer-admin-link">Acceso asesores</a></div></div></footer>\n' +
